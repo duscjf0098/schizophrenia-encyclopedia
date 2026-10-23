@@ -1,6 +1,6 @@
 /* 단위 테스트 실행기: node tests/run.cjs */
 const path = require('path');
-const files = ['md.test.cjs', 'search.test.cjs', 'gloss.test.cjs'];
+const files = ['md.test.cjs', 'search.test.cjs', 'gloss.test.cjs', 'paths.test.cjs'];
 let pass = 0, fail = 0;
 global.test = function (name, fn) {
   try { fn(); pass++; console.log('  ok   ' + name); }

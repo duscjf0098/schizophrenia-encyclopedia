@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="ko" data-base="../../" data-route="s/1">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#fbfbf9" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#15171c" media="(prefers-color-scheme: dark)">
+<title>이해하기 - 조현병 백과</title>
+<meta name="description" content="조현병이 무엇인지, 왜 생기는지, 어떻게 흘러가는지. 조현병 백과의 이해하기 분류 문서 16개.">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://duscjf0098.github.io/schizophrenia-encyclopedia/s/1/">
+<meta property="og:site_name" content="조현병 백과">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:title" content="이해하기 - 조현병 백과">
+<meta property="og:description" content="조현병이 무엇인지, 왜 생기는지, 어떻게 흘러가는지. 조현병 백과의 이해하기 분류 문서 16개.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://duscjf0098.github.io/schizophrenia-encyclopedia/s/1/">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="../../manifest.webmanifest">
+<link rel="apple-touch-icon" href="../../icon-192.png">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@600;700&display=swap">
+<link rel="stylesheet" href="../../css/style.css">
+
+
+<script>
+/* 옛 해시 주소(#/a/…)로 들어오면 새 경로로 옮기고, 첫 그리기 전에 테마·글자 크기를 적용한다 */
+(function () {
+  var h = location.hash;
+  if (h.indexOf('#/') === 0) {
+    var rest = h.slice(2), qi = rest.indexOf('?');
+    var p = (qi >= 0 ? rest.slice(0, qi) : rest).split('/').filter(Boolean).join('/');
+    location.replace(document.documentElement.getAttribute('data-base') + (p ? p + '/' : '') + (qi >= 0 ? rest.slice(qi) : ''));
+  }
+  try {
+    var t = JSON.parse(localStorage.getItem('jhb.theme') || 'null');
+    if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+    var f = JSON.parse(localStorage.getItem('jhb.fs') || 'null');
+    if (f === 's' || f === 'l') document.documentElement.setAttribute('data-fs', f);
+  } catch (e) { }
+})();
+</script>
+</head>
+<body>
+<a class="skip" href="#app">본문으로 건너뛰기</a>
+<div class="progress" id="progress" aria-hidden="true"></div>
+<header class="topbar">
+  <div class="topbar-inner">
+    <button type="button" class="iconbtn nav-toggle" id="btn-nav" aria-label="분류 목차 열기" aria-expanded="false" aria-controls="sidenav">
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/></svg>
+    </button>
+    <a class="brand" href="../../" aria-label="조현병 백과 첫 화면">
+      <svg class="brand-mark" viewBox="0 0 28 28" aria-hidden="true">
+        <g stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none">
+          <path d="M3 6h22"/><path d="M3 10.5h22"/><path d="M3 15c6 0 8 2.6 11 2.6S19 15 25 15" class="brand-tuned"/><path d="M3 19.5h22"/><path d="M3 24h22"/>
+        </g>
+        <circle cx="14" cy="17.6" r="1.9" class="brand-dot"/>
+      </svg>
+      <span class="brand-name">조현병 백과</span>
+    </a>
+    <div class="qs" role="search">
+      <svg class="qs-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="M15 15l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <input id="q" type="search" autocomplete="off" spellcheck="false" placeholder="문서나 용어 찾기" aria-label="문서나 용어 찾기" aria-autocomplete="list" aria-controls="qs-list" aria-expanded="false" role="combobox">
+      <kbd class="qs-key" aria-hidden="true">/</kbd>
+      <div class="qs-list" id="qs-list" role="listbox" hidden></div>
+    </div>
+    <nav class="tools" aria-label="도구">
+      <a href="../../glossary/" class="tool-link" data-r="glossary">용어 사전</a>
+      <a href="../../random/" class="tool-link" data-r="random" rel="nofollow">아무 문서</a>
+      <a href="../../fav/" class="tool-link" data-r="fav" rel="nofollow">저장한 문서</a>
+      <button type="button" class="iconbtn" id="btn-fs" aria-label="글자 크기 바꾸기" title="글자 크기">
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M3 18l4.5-11L12 18M4.6 14h5.8M14 18l3.2-7.5L20.4 18M15.1 15.6h4.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+      </button>
+      <button type="button" class="iconbtn" id="btn-theme" aria-label="밝게 또는 어둡게" title="밝게/어둡게">
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="12" cy="12" r="7.5" stroke="currentColor" stroke-width="1.6" fill="none"/><path d="M12 4.5a7.5 7.5 0 0 1 0 15z" fill="currentColor"/></svg>
+      </button>
+    </nav>
+  </div>
+</header>
+<div class="shell">
+  <aside class="sidenav" id="sidenav" aria-label="분류 목차"></aside>
+  <div class="scrim" id="scrim" hidden></div>
+  <main id="app" tabindex="-1"><nav class="crumb" aria-label="위치"><a href="../../">첫 화면</a><span class="sep">/</span>분류</nav><h1 class="page-title">이해하기</h1><p class="page-lead">조현병이 무엇인지, 왜 생기는지, 어떻게 흘러가는지</p><ul class="rows"><li class="row"><a href="../../a/what-is-schizophrenia/"><span class="row-t">조현병이란 무엇인가</span><span class="row-s">생각·지각·감정·행동을 조절하는 뇌의 기능이 흔들리는 병이에요. 드물지 않고, 치료하면 많은 사람이 좋아져요.</span></a></li><li class="row"><a href="../../a/name-history/"><span class="row-t">이름의 역사: 정신분열병에서 조현병으로</span><span class="row-s">2011년 우리나라는 병명을 &quot;조현병&quot;으로 바꿨어요. 일본이 2002년에 먼저 바꾼 경험, 이름을 바꾼 뒤 낙인이 얼마나 달라졌는지에 대한 연구를 함께 봐요.</span></a></li><li class="row"><a href="../../a/epidemiology/"><span class="row-t">유병률, 발병 연령, 성차</span><span class="row-s">전 세계 300명 중 1명, 국내 성인 0.5% 안팎이 평생 한 번은 조현병을 겪어요. 대개 10대 후반~20대에 시작되고, 남성이 조금 더 이르고 더 많이 발병해요.</span></a></li><li class="row"><a href="../../a/myths/"><span class="row-t">흔한 오해 12가지</span><span class="row-s">&quot;다중인격이다&quot;, &quot;위험하다&quot;, &quot;평생 못 고친다&quot;, &quot;약은 중독된다&quot; 같은 말은 연구 결과와 달라요. 자주 듣는 오해 12가지를 근거와 함께 하나씩 바로잡아요.</span></a></li><li class="row"><a href="../../a/causes-overview/"><span class="row-t">원인 총론: 스트레스-취약성 모델</span><span class="row-s">조현병은 한 가지 원인으로 생기지 않아요. 타고난 취약성 위에 여러 환경 요인이 쌓여 발병한다는 스트레스-취약성 모델로 전체 그림을 그려요.</span></a></li><li class="row"><a href="../../a/genetics/"><span class="row-t">유전</span><span class="row-s">조현병의 유전율은 약 80%로 높지만, 이것은 &quot;유전되면 걸린다&quot;는 뜻이 아니에요. 쌍둥이 연구, 수백 개의 흔한 변이, 소수의 희귀 변이가 보여 주는 그림을 정리해요.</span></a></li><li class="row"><a href="../../a/dopamine-hypothesis/"><span class="row-t">도파민 가설</span><span class="row-s">조현병의 양성 증상은 뇌 선조체에서 도파민이 지나치게 만들어지고 분비되는 것과 관련이 있어요. 60년 된 가설이 어떻게 다듬어졌고, 무엇을 설명하고 무엇을 설명하지 못하는지 봐요.</span></a></li><li class="row"><a href="../../a/glutamate-hypothesis/"><span class="row-t">글루타메이트 가설</span><span class="row-s">뇌의 주요 흥분성 신호 물질인 글루타메이트, 특히 NMDA 수용체의 기능 저하가 조현병의 음성·인지 증상까지 설명할 수 있다는 가설이에요. 케타민 연구, 자가면역 뇌염, 신약 개발의 실패와 교훈을 정리해요.</span></a></li><li class="row"><a href="../../a/neurodevelopment/"><span class="row-t">신경발달 가설</span><span class="row-s">조현병의 씨앗은 발병 훨씬 전, 태아기와 아동기의 뇌 발달 과정에서 뿌려지고, 청소년기의 뇌 재편 과정에서 증상으로 드러난다는 가설이에요. 1987년 두 편의 논문부터 출생 코호트 연구까지 정리해요.</span></a></li><li class="row"><a href="../../a/inflammation-immune/"><span class="row-t">염증과 면역</span><span class="row-s">면역 유전자 C4, 뇌의 면역세포인 미세아교세포, 혈액의 염증 표지자가 조현병과 연결돼 있어요. 자가면역 뇌염과의 감별, 항염증 보조 치료 연구의 현재 위치까지 정리해요.</span></a></li><li class="row"><a href="../../a/prenatal-factors/"><span class="row-t">임신·출생 요인</span><span class="row-s">임신 중 영양 부족과 감염, 출산 합병증, 아버지의 나이, 태어난 계절이 조현병 위험과 관련이 있어요. 각각의 위험은 작고, 대부분은 부모가 통제할 수 없었던 일이에요.</span></a></li><li class="row"><a href="../../a/cannabis/"><span class="row-t">대마와 조현병</span><span class="row-s">대마, 특히 THC 함량이 높은 대마를 자주 쓰면 정신병 위험이 몇 배로 높아져요. 용량-반응 관계, 청소년기의 취약성, 유전과의 상호작용, &quot;원인인가 결과인가&quot; 논쟁까지 근거를 따라가요.</span></a></li><li class="row"><a href="../../a/social-factors/"><span class="row-t">도시, 이민, 사회적 요인</span><span class="row-s">도시에서 자란 것, 이민, 아동기 역경은 각각 조현병 위험을 2~3배 높여요. 이 서로 다른 요인들을 &quot;사회적 패배&quot;라는 하나의 설명으로 묶으려는 가설과 그 한계를 봐요.</span></a></li><li class="row"><a href="../../a/brain-changes/"><span class="row-t">뇌에서 보이는 변화</span><span class="row-s">조현병이 있는 사람의 뇌는 평균적으로 뇌실이 조금 크고 회백질이 조금 얇아요. 수천 명을 모은 ENIGMA 연구의 숫자, 항정신병약의 영향을 둘러싼 논쟁, 그리고 왜 이것이 &quot;뇌 손상&quot;이 아닌지를 설명해요.</span></a></li><li class="row"><a href="../../a/prognosis/"><span class="row-t">경과와 예후: 1/3 법칙 재검토</span><span class="row-s">&quot;3분의 1은 좋아지고, 3분의 1은 그대로, 3분의 1은 나빠진다&quot;는 오래된 법칙은 어디서 왔고 얼마나 맞을까요. 관해와 회복의 정의, 장기 추적 연구의 숫자, 좋은 예후와 관련된 요인을 정리해요.</span></a></li><li class="row"><a href="../../a/historical-figures/"><span class="row-t">역사 속 인물</span><span class="row-s">조현병과 함께 살며 자기 삶을 공개한 사람들이 있어요. 노벨상을 받은 수학자 존 내시, 법학자 엘린 삭스, 그리고 정신과 의사·연구자와 함께 &quot;목소리 듣기 운동&quot;을 일군 당사자들. 낭만화하지 않고, 추정 진단은 추정으로 밝히며 소개해요.</span></a></li></ul></main>
+</div>
+<footer class="sitefoot">
+  <div class="sitefoot-inner">
+    <p>이 백과는 일반적인 정보를 전해요. 진단과 치료는 담당 의사와 상의하세요. 글마다 출처를 달았고, 틀린 내용은 고쳐 나가요.</p>
+    <p>글은 AI가 공개 자료를 바탕으로 초안을 쓰고 출처를 확인해 만들었어요. 전문가 감수는 받지 않았어요.</p>
+    <p>힘든 생각이 들 때 자살예방상담 <a href="tel:109">109</a>, 정신건강위기상담 <a href="tel:1577-0199">1577-0199</a>에 전화하세요. 24시간 받아요.</p>
+    <p><a href="../../about/">이 백과에 대해</a></p>
+  </div>
+</footer>
+<div class="pop" id="pop" role="dialog" aria-modal="false" hidden></div>
+<script src="../../data/sections.js"></script>
+<script src="../../data/toc.js"></script>
+<script src="../../data/glossary.js"></script>
+<script src="../../data/about.js"></script>
+<script src="../../js/util.js"></script>
+<script src="../../js/paths.js"></script>
+<script src="../../js/md.js"></script>
+<script src="../../js/search.js"></script>
+<script src="../../js/gloss.js"></script>
+<script src="../../js/app.js"></script>
+</body>
+</html>

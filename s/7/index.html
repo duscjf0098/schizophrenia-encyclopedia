@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="ko" data-base="../../" data-route="s/7">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#fbfbf9" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#15171c" media="(prefers-color-scheme: dark)">
+<title>약물 치료 - 조현병 백과</title>
+<meta name="description" content="항정신병약의 원리, 약물별 특징, 부작용과 대처. 조현병 백과의 약물 치료 분류 문서 27개.">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://duscjf0098.github.io/schizophrenia-encyclopedia/s/7/">
+<meta property="og:site_name" content="조현병 백과">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:title" content="약물 치료 - 조현병 백과">
+<meta property="og:description" content="항정신병약의 원리, 약물별 특징, 부작용과 대처. 조현병 백과의 약물 치료 분류 문서 27개.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://duscjf0098.github.io/schizophrenia-encyclopedia/s/7/">
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="../../manifest.webmanifest">
+<link rel="apple-touch-icon" href="../../icon-192.png">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@600;700&display=swap">
+<link rel="stylesheet" href="../../css/style.css">
+
+
+<script>
+/* 옛 해시 주소(#/a/…)로 들어오면 새 경로로 옮기고, 첫 그리기 전에 테마·글자 크기를 적용한다 */
+(function () {
+  var h = location.hash;
+  if (h.indexOf('#/') === 0) {
+    var rest = h.slice(2), qi = rest.indexOf('?');
+    var p = (qi >= 0 ? rest.slice(0, qi) : rest).split('/').filter(Boolean).join('/');
+    location.replace(document.documentElement.getAttribute('data-base') + (p ? p + '/' : '') + (qi >= 0 ? rest.slice(qi) : ''));
+  }
+  try {
+    var t = JSON.parse(localStorage.getItem('jhb.theme') || 'null');
+    if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+    var f = JSON.parse(localStorage.getItem('jhb.fs') || 'null');
+    if (f === 's' || f === 'l') document.documentElement.setAttribute('data-fs', f);
+  } catch (e) { }
+})();
+</script>
+</head>
+<body>
+<a class="skip" href="#app">본문으로 건너뛰기</a>
+<div class="progress" id="progress" aria-hidden="true"></div>
+<header class="topbar">
+  <div class="topbar-inner">
+    <button type="button" class="iconbtn nav-toggle" id="btn-nav" aria-label="분류 목차 열기" aria-expanded="false" aria-controls="sidenav">
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/></svg>
+    </button>
+    <a class="brand" href="../../" aria-label="조현병 백과 첫 화면">
+      <svg class="brand-mark" viewBox="0 0 28 28" aria-hidden="true">
+        <g stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none">
+          <path d="M3 6h22"/><path d="M3 10.5h22"/><path d="M3 15c6 0 8 2.6 11 2.6S19 15 25 15" class="brand-tuned"/><path d="M3 19.5h22"/><path d="M3 24h22"/>
+        </g>
+        <circle cx="14" cy="17.6" r="1.9" class="brand-dot"/>
+      </svg>
+      <span class="brand-name">조현병 백과</span>
+    </a>
+    <div class="qs" role="search">
+      <svg class="qs-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="M15 15l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <input id="q" type="search" autocomplete="off" spellcheck="false" placeholder="문서나 용어 찾기" aria-label="문서나 용어 찾기" aria-autocomplete="list" aria-controls="qs-list" aria-expanded="false" role="combobox">
+      <kbd class="qs-key" aria-hidden="true">/</kbd>
+      <div class="qs-list" id="qs-list" role="listbox" hidden></div>
+    </div>
+    <nav class="tools" aria-label="도구">
+      <a href="../../glossary/" class="tool-link" data-r="glossary">용어 사전</a>
+      <a href="../../random/" class="tool-link" data-r="random" rel="nofollow">아무 문서</a>
+      <a href="../../fav/" class="tool-link" data-r="fav" rel="nofollow">저장한 문서</a>
+      <button type="button" class="iconbtn" id="btn-fs" aria-label="글자 크기 바꾸기" title="글자 크기">
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M3 18l4.5-11L12 18M4.6 14h5.8M14 18l3.2-7.5L20.4 18M15.1 15.6h4.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+      </button>
+      <button type="button" class="iconbtn" id="btn-theme" aria-label="밝게 또는 어둡게" title="밝게/어둡게">
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="12" cy="12" r="7.5" stroke="currentColor" stroke-width="1.6" fill="none"/><path d="M12 4.5a7.5 7.5 0 0 1 0 15z" fill="currentColor"/></svg>
+      </button>
+    </nav>
+  </div>
+</header>
+<div class="shell">
+  <aside class="sidenav" id="sidenav" aria-label="분류 목차"></aside>
+  <div class="scrim" id="scrim" hidden></div>
+  <main id="app" tabindex="-1"><nav class="crumb" aria-label="위치"><a href="../../">첫 화면</a><span class="sep">/</span>분류</nav><h1 class="page-title">약물 치료</h1><p class="page-lead">항정신병약의 원리, 약물별 특징, 부작용과 대처</p><ul class="rows"><li class="row"><a href="../../a/antipsychotic-basics/"><span class="row-t">항정신병약의 원리</span><span class="row-s">항정신병약(환각·망상을 줄이는 약)이 뇌에서 무엇을 하는지, 얼마나 많은 사람에게 듣는지, 무엇을 고치고 무엇은 못 고치는지를 PET 연구와 메타분석 수치로 정리했어요. 중독성은 없고, 끊으면 재발 위험이 크게 올라가요.</span></a></li><li class="row"><a href="../../a/first-generation/"><span class="row-t">1세대 항정신병약</span><span class="row-s">1952년 클로르프로마진에서 시작한 1세대 항정신병약의 역사, 종류, 작용과 부작용(추체외로 증상·지연성 운동장애이 많음), 그리고 &quot;효과는 2세대와 생각보다 비슷하다&quot;는 CATIE·메타분석 결과를 정리했어요.</span></a></li><li class="row"><a href="../../a/second-generation/"><span class="row-t">2세대 항정신병약 총론</span><span class="row-s">&quot;비정형&quot; 항정신병약이라 불리는 2세대의 정의, 공통 특징(추체외로 증상 적고 대사 부작용 많음), 32개 약을 비교한 2019년 네트워크 메타분석의 효과·부작용 순위, 그리고 &quot;선택 기준은 부작용 프로파일&quot;이라는 결론을 정리했어요.</span></a></li><li class="row"><a href="../../a/risperidone/"><span class="row-t">리스페리돈</span><span class="row-s">리스페리돈(risperidone)은 D2·5-HT2A 차단 2세대 약으로 효과 상위권이지만, 용량이 올라가면 프로락틴 상승과 추체외로 증상이 생겨요. 2주 간격 근육주사부터 월 1회 피하주사까지 장기지속형이 여럿 있어요.</span></a></li><li class="row"><a href="../../a/paliperidone/"><span class="row-t">팔리페리돈</span><span class="row-s">팔리페리돈(paliperidone)은 리스페리돈의 활성 대사물을 서방형으로 만든 약이에요. 간 대사가 적고, 1개월·3개월·6개월 간격 장기지속형 주사가 모두 있어요. 프로락틴 상승이 가장 큰 축에 들고, 용량이 오르면 추체외로 증상이 늘어요.</span></a></li><li class="row"><a href="../../a/olanzapine/"><span class="row-t">올란자핀</span><span class="row-s">올란자핀(olanzapine)은 효과가 상위권인 2세대 약이지만 체중·혈당·지질 부작용이 가장 큰 축에 들어요. 진정 작용, 구강붕해정, 대사 모니터링, 그리고 체중 증가를 줄이려 만든 올란자핀+사미도르판(미국 2021년 승인)까지 정리했어요.</span></a></li><li class="row"><a href="../../a/aripiprazole/"><span class="row-t">아리피프라졸</span><span class="row-s">아리피프라졸(aripiprazole)은 도파민 D2 수용체를 &quot;부분적으로 자극&quot;하는 약이에요. 체중과 프로락틴에서 유리하지만, 가만히 있지 못하는 정좌불능과 초기 불면·활성화가 약점이에요. 월 1회 주사제가 있고, 2016년 미국 FDA는 충동조절 문제 경고를 추가했어요.</span></a></li><li class="row"><a href="../../a/quetiapine/"><span class="row-t">쿠에티아핀</span><span class="row-s">쿠에티아핀(quetiapine)은 D2 수용체를 짧고 약하게 점유해 추체외로 증상이 거의 없지만, 조현병에서의 효과는 중간 이하예요. 강한 진정 때문에 저용량이 수면제처럼 쓰이는 문제가 논쟁이고, 체중·대사 부작용이 있어요. 양극성 우울에도 적응증이 있고 서방형이 있어요.</span></a></li><li class="row"><a href="../../a/amisulpride/"><span class="row-t">아미설프리드</span><span class="row-s">아미설프리드(amisulpride)는 도파민 D2·D3 수용체만 골라 막는 약이에요. 32개 약 비교에서 효과 상위권이고 양성 증상에는 1위였지만, 프로락틴 상승과 QT 연장이 약점이에요. 미국에서는 조현병 약으로 허가되지 않았고, 한국·유럽에서 쓰여요.</span></a></li><li class="row"><a href="../../a/lurasidone/"><span class="row-t">루라시돈</span><span class="row-s">루라시돈(lurasidone)은 체중·혈당·지질·QT에서 가장 유리한 축에 드는 2세대 약이에요. 대신 정좌불능과 추체외로 증상이 흔하고, 음식과 함께 먹어야 흡수돼요. 청소년 조현병과 양극성 우울증에도 적응증이 있고, 국내는 2023년 허가됐어요.</span></a></li><li class="row"><a href="../../a/brexpiprazole/"><span class="row-t">브렉스피프라졸</span><span class="row-s">브렉스피프라졸(brexpiprazole)은 아리피프라졸의 후속 부분 작용제예요. D2 자극 정도가 더 낮고 세로토닌 수용체 친화도가 높아 정좌불능이 적은 편이지만, 조현병 효과는 32개 약 중 유의한 약 가운데 가장 작았어요. 우울증 보조와 알츠하이머 초조(2023년 미국 승인) 적응증이 있어요.</span></a></li><li class="row"><a href="../../a/cariprazine/"><span class="row-t">카리프라진</span><span class="row-s">카리프라진(cariprazine)은 D3 수용체를 더 좋아하는 부분 작용제로, 반감기가 몇 주에 이를 만큼 길어요. 음성 증상이 두드러진 사람에서 리스페리돈보다 나았던 26주 시험이 있고, 체중·대사는 유리하지만 정좌불능·추체외로 증상이 흔해요. 국내 시판 허가는 2026년 10월 현재 확인되지 않았어요.</span></a></li><li class="row"><a href="../../a/ziprasidone/"><span class="row-t">지프라시돈</span><span class="row-s">지프라시돈(ziprasidone)은 32개 약 가운데 체중 증가가 가장 적은 약이지만, 조현병 효과는 낮은 편이고 심전도 QT 간격을 다른 약보다 더 늘려요. 18,154명을 추적한 ZODIAC 연구에서 사망률은 올란자핀과 같았어요. 반드시 음식과 함께 먹어야 하고, 급성 초조용 근육주사가 있어요.</span></a></li><li class="row"><a href="../../a/haloperidol/"><span class="row-t">할로페리돌</span><span class="row-s">할로페리돌(haloperidol)은 대표적인 1세대 약이에요. 양성 증상 효과는 2세대 상위권과 비슷하고 체중 증가는 가장 적지만, 떨림·뻣뻣함 같은 추체외로 증상이 가장 많은 축이에요. 급성 초조 때 주사로 쓰이고, 월 1회 데카노에이트 주사가 있어요.</span></a></li><li class="row"><a href="../../a/clozapine/"><span class="row-t">클로자핀</span><span class="row-s">두 가지 약이 듣지 않는 치료저항성 조현병에서 효과가 확인된 유일한 약이에요. 무과립구증(약 0.8%)과 심근염·장폐색 같은 위험 때문에 혈액검사를 하며 쓰고, 자살 행동을 줄인 근거도 있어요. 효과에 비해 너무 늦게, 너무 적게 쓰인다는 문제도 함께 정리했어요.</span></a></li><li class="row"><a href="../../a/lai/"><span class="row-t">장기지속형 주사제(LAI)</span><span class="row-s">2주에서 6개월에 한 번 맞는 항정신병약 주사예요. 먹는 약보다 재발·입원이 적다는 근거가 쌓였고, 첫 삽화에서도 권하는 흐름이에요. 종류와 간격, 장단점, &quot;강제 아니냐&quot;는 오해, 국내 허가·급여까지 확인된 범위에서 정리했어요.</span></a></li><li class="row"><a href="../../a/side-effects-overview/"><span class="row-t">부작용 총론</span><span class="row-s">항정신병약 부작용을 운동·대사·내분비·심장·진정·항콜린·성기능·혈액의 8가지로 나누고, 32개 약을 비교한 2019년 메타분석으로 약별 차이를 정리했어요. 언제 생기는지, 무엇을 얼마나 자주 검사하는지, 그리고 &quot;참지 말고 말하기&quot;의 요령까지 담았어요.</span></a></li><li class="row"><a href="../../a/eps/"><span class="row-t">추체외로 증상과 지연성 운동장애</span><span class="row-s">항정신병약이 일으키는 운동 부작용 네 가지, 즉 급성 근긴장이상·파킨슨증·정좌불능·지연성 운동장애를 각각 정의·시기·빈도로 정리했어요. 지연성 운동장애의 연간 발생률(1세대 6.5%, 2세대 2.6%), AIMS 검사, 2017년 승인된 VMAT2 억제제까지 담았어요.</span></a></li><li class="row"><a href="../../a/metabolic-side-effects/"><span class="row-t">대사 부작용: 체중·혈당·지질</span><span class="row-s">항정신병약이 체중을 늘리는 기전(히스타민 H1·세로토닌 5-HT2C 차단), 약별 체중·혈당·지질 순위, 조현병에서 대사증후군이 32.5%라는 수치, 그리고 메트포르민과 생활 습관 개입의 근거를 정리했어요. 약 교체는 의사와, 실천은 오늘부터예요.</span></a></li><li class="row"><a href="../../a/hyperprolactinemia/"><span class="row-t">고프로락틴혈증</span><span class="row-s">항정신병약이 뇌하수체의 프로락틴 분비를 풀어놓으면서 생기는 부작용이에요. 월경이 끊기고, 유즙이 나오고, 성기능이 떨어지고, 오래되면 뼈가 약해질 수 있어요. 어떤 약이 많이 올리는지, 검사와 대응 선택지, 말하기 어려운 증상을 의사에게 꺼내는 법을 정리했어요.</span></a></li><li class="row"><a href="../../a/sedation-anticholinergic/"><span class="row-t">진정과 항콜린 부작용</span><span class="row-s">졸림·피로가 왜 생기고 어떤 약이 심한지, 시간이 지나면 줄어드는지, 운전과 일은 어떻게 할지 정리했어요. 입마름·변비·시야 흐림·배뇨 곤란·기억력 저하를 묶는 항콜린 부작용과, 항콜린 부담이 인지와 치매 위험에 미치는 연구도 담았어요.</span></a></li><li class="row"><a href="../../a/managing-side-effects/"><span class="row-t">부작용 대처: 기록하고, 말하고, 함께 정하기</span><span class="row-s">부작용 일기 쓰는 법, 우선순위 정하기, 진료실에서 쓸 대화 스크립트, 의사가 고를 수 있는 선택지(용량·시간대·약 교체·보조약·비약물), 공유 의사결정의 근거, 약사 활용법, 그리고 참으면 안 되는 신호 목록이에요.</span></a></li><li class="row"><a href="../../a/switching-reducing-stopping/"><span class="row-t">약 바꾸기·줄이기와 중단의 위험</span><span class="row-s">약을 끊으면 1년 안에 64%가 재발하고(유지하면 27%), 천천히 줄여도 위험은 크게 줄지 않았어요. 2023년 RADAR, 2025년 HAMLETT 같은 감량 연구의 결과, 갑작스런 중단의 반동, &quot;가장 낮은 효과 용량&quot;이라는 개념, 그리고 끊고 싶은 마음을 의사와 나누는 방법을 정리했어요.</span></a></li><li class="row"><a href="../../a/treatment-resistant/"><span class="row-t">치료저항성 조현병</span><span class="row-s">두 가지 약을 충분히 써도 증상이 남는 상태로, 조현병이 있는 사람의 약 1/3이 해당해요. 2017년 국제 합의 기준(TRRIP), 클로자핀의 근거, 클로자핀에도 반응하지 않을 때의 선택지(ECT 등), &quot;도파민이 정상&quot;이라는 가설, 그리고 진짜 저항성인지 먼저 확인해야 할 것들을 정리했어요.</span></a></li><li class="row"><a href="../../a/adjunct-medications/"><span class="row-t">보조 약물: 항정신병약에 더하는 약들</span><span class="row-s">항우울제, 기분안정제(리튬·발프로산·라모트리진), 벤조디아제핀, 항콜린제, 베타차단제, 메트포르민, 수면제, 그리고 항정신병약 2제 병용까지, 각각 무엇을 위해 쓰고 근거는 어느 수준인지 표로 정리했어요. 근거가 약한 조합이 많고, 예외가 되는 조합도 있어요.</span></a></li><li class="row"><a href="../../a/smoking-caffeine-alcohol/"><span class="row-t">담배·카페인·술과 약 농도</span><span class="row-s">담배 연기는 간 효소 CYP1A2를 자극해 클로자핀·올란자핀의 혈중 농도를 낮추고, 금연하면 농도가 크게 올라가요(평균 약 72%). 카페인은 반대로 농도를 올릴 수 있어요. 술, 대마, 다른 약과의 상호작용과 함께, 생활이 바뀔 때 의사에게 알려야 할 체크리스트를 정리했어요.</span></a></li><li class="row"><a href="../../a/new-drugs/"><span class="row-t">신약 동향: 도파민 바깥에서 오는 약들</span><span class="row-s">2024년 9월 미국에서 승인된 자노멜린-트로스피움(코벤피)은 70년 만에 도파민 수용체를 직접 막지 않는 첫 조현병 약이에요. 그 기전과 EMERGENT 시험 결과, 그리고 2023~2025년에 실패한 에모라클리딘·울로타론트·이클레페르틴·롤루페리돈까지, 기대와 주의를 함께 정리했어요.</span></a></li></ul></main>
+</div>
+<footer class="sitefoot">
+  <div class="sitefoot-inner">
+    <p>이 백과는 일반적인 정보를 전해요. 진단과 치료는 담당 의사와 상의하세요. 글마다 출처를 달았고, 틀린 내용은 고쳐 나가요.</p>
+    <p>글은 AI가 공개 자료를 바탕으로 초안을 쓰고 출처를 확인해 만들었어요. 전문가 감수는 받지 않았어요.</p>
+    <p>힘든 생각이 들 때 자살예방상담 <a href="tel:109">109</a>, 정신건강위기상담 <a href="tel:1577-0199">1577-0199</a>에 전화하세요. 24시간 받아요.</p>
+    <p><a href="../../about/">이 백과에 대해</a></p>
+  </div>
+</footer>
+<div class="pop" id="pop" role="dialog" aria-modal="false" hidden></div>
+<script src="../../data/sections.js"></script>
+<script src="../../data/toc.js"></script>
+<script src="../../data/glossary.js"></script>
+<script src="../../data/about.js"></script>
+<script src="../../js/util.js"></script>
+<script src="../../js/paths.js"></script>
+<script src="../../js/md.js"></script>
+<script src="../../js/search.js"></script>
+<script src="../../js/gloss.js"></script>
+<script src="../../js/app.js"></script>
+</body>
+</html>

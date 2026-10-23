@@ -19,7 +19,7 @@ http.createServer(function (req, res) {
   let p;
   try { p = decodeURIComponent(req.url.split('?')[0]); }
   catch (e) { res.writeHead(400, { 'Content-Type': 'text/plain; charset=utf-8' }); return res.end('bad request'); }
-  if (p === '/') p = '/index.html';
+  if (p.endsWith('/')) p += 'index.html';
   const file = path.normalize(path.join(root, p));
   if (file !== root && !file.startsWith(root + path.sep)) { res.writeHead(403); return res.end(); }
   fs.readFile(file, function (err, data) {

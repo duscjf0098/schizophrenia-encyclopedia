@@ -48,7 +48,7 @@ articles.sort(function (a, b) { return Number(a.section) - Number(b.section) || 
 const stamp = new Date().toISOString().slice(0, 10);
 fs.writeFileSync(path.join(root, 'data/toc.js'), '/* 자동 생성: node tools/build-index.cjs (' + stamp + ') — 직접 고치지 마세요 */\nwindow.JHB = window.JHB || {};\nJHB.toc = ' + JSON.stringify({ generated: stamp, sources: sourceUrls.size, articles: articles }, null, 1) + ';\n');
 fs.writeFileSync(path.join(root, 'data/search-index.json'), JSON.stringify(index));
-const shell = ['./', 'index.html', 'css/style.css', 'js/util.js', 'js/md.js', 'js/search.js', 'js/gloss.js', 'js/app.js', 'data/sections.js', 'data/toc.js', 'data/glossary.js', 'data/search-index.json', 'manifest.webmanifest', 'favicon.svg', 'icon-192.png', 'icon-512.png'];
+const shell = ['./', 'index.html', 'app-shell.html', 'css/style.css', 'js/util.js', 'js/paths.js', 'js/md.js', 'js/search.js', 'js/gloss.js', 'js/app.js', 'data/sections.js', 'data/toc.js', 'data/glossary.js', 'data/about.js', 'data/search-index.json', 'manifest.webmanifest', 'favicon.svg', 'icon-192.png', 'icon-512.png'];
 const version = stamp + '-' + files.length + '-' + Date.now().toString(36);
 fs.writeFileSync(path.join(root, 'data/precache.json'), JSON.stringify({ version: version, files: shell.concat(files) }, null, 1));
 const swPath = path.join(root, 'sw.js');

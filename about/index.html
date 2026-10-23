@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="ko" data-base="../" data-route="about">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#fbfbf9" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#15171c" media="(prefers-color-scheme: dark)">
+<title>이 백과에 대해 - 조현병 백과</title>
+<meta name="description" content="조현병 백과가 글을 쓰는 원칙, AI 작성과 전문가 미감수 고지, 읽는 법.">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://duscjf0098.github.io/schizophrenia-encyclopedia/about/">
+<meta property="og:site_name" content="조현병 백과">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:title" content="이 백과에 대해 - 조현병 백과">
+<meta property="og:description" content="조현병 백과가 글을 쓰는 원칙, AI 작성과 전문가 미감수 고지, 읽는 법.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://duscjf0098.github.io/schizophrenia-encyclopedia/about/">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="../manifest.webmanifest">
+<link rel="apple-touch-icon" href="../icon-192.png">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@600;700&display=swap">
+<link rel="stylesheet" href="../css/style.css">
+
+
+<script>
+/* 옛 해시 주소(#/a/…)로 들어오면 새 경로로 옮기고, 첫 그리기 전에 테마·글자 크기를 적용한다 */
+(function () {
+  var h = location.hash;
+  if (h.indexOf('#/') === 0) {
+    var rest = h.slice(2), qi = rest.indexOf('?');
+    var p = (qi >= 0 ? rest.slice(0, qi) : rest).split('/').filter(Boolean).join('/');
+    location.replace(document.documentElement.getAttribute('data-base') + (p ? p + '/' : '') + (qi >= 0 ? rest.slice(qi) : ''));
+  }
+  try {
+    var t = JSON.parse(localStorage.getItem('jhb.theme') || 'null');
+    if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+    var f = JSON.parse(localStorage.getItem('jhb.fs') || 'null');
+    if (f === 's' || f === 'l') document.documentElement.setAttribute('data-fs', f);
+  } catch (e) { }
+})();
+</script>
+</head>
+<body>
+<a class="skip" href="#app">본문으로 건너뛰기</a>
+<div class="progress" id="progress" aria-hidden="true"></div>
+<header class="topbar">
+  <div class="topbar-inner">
+    <button type="button" class="iconbtn nav-toggle" id="btn-nav" aria-label="분류 목차 열기" aria-expanded="false" aria-controls="sidenav">
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/></svg>
+    </button>
+    <a class="brand" href="../" aria-label="조현병 백과 첫 화면">
+      <svg class="brand-mark" viewBox="0 0 28 28" aria-hidden="true">
+        <g stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none">
+          <path d="M3 6h22"/><path d="M3 10.5h22"/><path d="M3 15c6 0 8 2.6 11 2.6S19 15 25 15" class="brand-tuned"/><path d="M3 19.5h22"/><path d="M3 24h22"/>
+        </g>
+        <circle cx="14" cy="17.6" r="1.9" class="brand-dot"/>
+      </svg>
+      <span class="brand-name">조현병 백과</span>
+    </a>
+    <div class="qs" role="search">
+      <svg class="qs-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="M15 15l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <input id="q" type="search" autocomplete="off" spellcheck="false" placeholder="문서나 용어 찾기" aria-label="문서나 용어 찾기" aria-autocomplete="list" aria-controls="qs-list" aria-expanded="false" role="combobox">
+      <kbd class="qs-key" aria-hidden="true">/</kbd>
+      <div class="qs-list" id="qs-list" role="listbox" hidden></div>
+    </div>
+    <nav class="tools" aria-label="도구">
+      <a href="../glossary/" class="tool-link" data-r="glossary">용어 사전</a>
+      <a href="../random/" class="tool-link" data-r="random" rel="nofollow">아무 문서</a>
+      <a href="../fav/" class="tool-link" data-r="fav" rel="nofollow">저장한 문서</a>
+      <button type="button" class="iconbtn" id="btn-fs" aria-label="글자 크기 바꾸기" title="글자 크기">
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M3 18l4.5-11L12 18M4.6 14h5.8M14 18l3.2-7.5L20.4 18M15.1 15.6h4.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+      </button>
+      <button type="button" class="iconbtn" id="btn-theme" aria-label="밝게 또는 어둡게" title="밝게/어둡게">
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="12" cy="12" r="7.5" stroke="currentColor" stroke-width="1.6" fill="none"/><path d="M12 4.5a7.5 7.5 0 0 1 0 15z" fill="currentColor"/></svg>
+      </button>
+    </nav>
+  </div>
+</header>
+<div class="shell">
+  <aside class="sidenav" id="sidenav" aria-label="분류 목차"></aside>
+  <div class="scrim" id="scrim" hidden></div>
+  <main id="app" tabindex="-1"><h1 class="page-title">이 백과에 대해</h1><div class="prose"><p>공공기관·학회·진료 지침·연구 논문을 바탕으로 조현병을 정리한 한국어 백과예요. 어려운 말은 풀어 쓰고, 근거는 글마다 출처로 남겼어요.</p><h2>AI로 만든 백과예요</h2><p>이 백과의 글은 AI(Anthropic의 Claude)가 공개 자료를 찾아 초안을 쓰고, 출처가 실제로 있는지 확인해 만들었어요. 의사나 전문가의 감수는 아직 받지 않았어요. 그래서 틀린 내용이 있을 수 있어요. 중요한 결정은 이 백과만 보고 내리지 말고, 글 아래의 출처와 담당 의사의 의견을 함께 확인하세요.</p><h2>글을 쓰는 원칙</h2><ul><li>출처 우선순위: 국립정신건강센터·대한조현병학회·보건복지부, 그다음 NICE·APA 진료 지침과 NIMH·WHO, 그다음 메타분석과 학술지 논문, 마지막으로 그 밖의 자료.</li><li>글마다 근거 수준을 표시해요. <b>가이드라인</b>은 진료 지침·공공기관, <b>연구</b>는 비교적 확립된 연구, <b>초기 연구</b>는 더 검증이 필요한 가설, <b>경험</b>은 당사자·임상 경험에 바탕을 둔 글이에요.</li><li>약 용량이나 복용 중단 같은 개인별 지시는 쓰지 않아요. 그런 결정은 담당 의사와 하는 거예요.</li><li>낙인이 되는 표현은 쓰지 않아요. "조현병 환자"보다 "조현병이 있는 사람"처럼 사람을 먼저 써요.</li></ul><h2>읽는 법</h2><ul><li>본문에서 점선 밑줄이 있는 말은 용어 사전에 풀이가 있어요. 넓은 화면에서는 오른쪽 여백에, 휴대폰에서는 누르면 아래에 나와요.</li><li>문장 끝의 작은 숫자는 출처 번호예요. 누르면 어떤 자료인지 바로 볼 수 있어요.</li><li>키보드에서 <kbd>/</kbd>를 누르면 검색창으로 바로 가요.</li></ul><h2>꼭 알아둘 것</h2><p>이 백과는 의료 조언이 아니에요. 증상이 심해지거나 위험하다고 느끼면 담당 의사, 정신건강위기상담 1577-0199, 자살예방상담 109, 응급 시 119에 연락하세요.</p><h2>틀린 내용을 찾았다면</h2><p>출처가 바뀌거나 더 나은 연구가 나오면 글을 고쳐요. 틀린 부분을 알려 주시면 확인해서 반영할게요.</p></div></main>
+</div>
+<footer class="sitefoot">
+  <div class="sitefoot-inner">
+    <p>이 백과는 일반적인 정보를 전해요. 진단과 치료는 담당 의사와 상의하세요. 글마다 출처를 달았고, 틀린 내용은 고쳐 나가요.</p>
+    <p>글은 AI가 공개 자료를 바탕으로 초안을 쓰고 출처를 확인해 만들었어요. 전문가 감수는 받지 않았어요.</p>
+    <p>힘든 생각이 들 때 자살예방상담 <a href="tel:109">109</a>, 정신건강위기상담 <a href="tel:1577-0199">1577-0199</a>에 전화하세요. 24시간 받아요.</p>
+    <p><a href="../about/">이 백과에 대해</a></p>
+  </div>
+</footer>
+<div class="pop" id="pop" role="dialog" aria-modal="false" hidden></div>
+<script src="../data/sections.js"></script>
+<script src="../data/toc.js"></script>
+<script src="../data/glossary.js"></script>
+<script src="../data/about.js"></script>
+<script src="../js/util.js"></script>
+<script src="../js/paths.js"></script>
+<script src="../js/md.js"></script>
+<script src="../js/search.js"></script>
+<script src="../js/gloss.js"></script>
+<script src="../js/app.js"></script>
+</body>
+</html>

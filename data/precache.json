@@ -1,10 +1,12 @@
 {
- "version": "2026-10-23-221-mvkstgyv",
+ "version": "2026-10-23-221-mvllhssx",
  "files": [
   "./",
   "index.html",
+  "app-shell.html",
   "css/style.css",
   "js/util.js",
+  "js/paths.js",
   "js/md.js",
   "js/search.js",
   "js/gloss.js",
@@ -12,6 +14,7 @@
   "data/sections.js",
   "data/toc.js",
   "data/glossary.js",
+  "data/about.js",
   "data/search-index.json",
   "manifest.webmanifest",
   "favicon.svg",

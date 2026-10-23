@@ -12,11 +12,13 @@ http://localhost:5174 을 연다. (launch.json 항목 "jhb")
 
 ## 구조
 
-- `index.html` 진입점. 스크립트 순서: data/sections → data/toc → data/glossary → js/util → js/md → js/search → js/app.
+- 페이지는 모두 `tools/shell.html` 틀로 **생성**한다: `index.html`, `a/<slug>/index.html`, `s/<id>/index.html`, `glossary/`, `about/`, `search/`, `fav/`, `random/`, `404.html`, `app-shell.html`(서비스 워커가 오프라인에서 채워 쓰는 틀), `sitemap.xml`. 각 페이지에 본문이 미리 들어 있어 검색엔진이 읽을 수 있고, `<html data-base data-route>`로 앱이 위치를 안다. 이 파일들은 직접 고치지 않는다.
 - `css/style.css` 토큰 기반. 밝음/어두움 모두 지원(`prefers-color-scheme` 기본, `<html data-theme>`로 수동). 글자 크기는 `<html data-fs="s|l">`. 섹션 색은 `.tinted`에 `--h`(색상각)를 주면 계산된다.
 - `js/md.js` 소형 Markdown 렌더러. frontmatter, `##`/`###`, 굵게·기울임·코드, 링크, `[^n]` 각주(출처 번호), 목록, 인용, 표, `::: 종류 제목 … :::` 콜아웃(tip/warn/crisis/note/research/fact/exp). node에서도 쓴다.
 - `js/search.js` 제목·태그·요약·본문 부분일치 점수 검색. `data/search-index.json`을 쓴다.
-- `js/app.js` 해시 라우터. `#/` 홈, `#/s/<섹션id>`, `#/a/<slug>`, `#/search?q=&s=`, `#/fav`, `#/glossary`, `#/about`.
+- `js/app.js` 화면. 실제 경로 주소(`a/<slug>/` 등)를 쓰고, 옛 해시 주소(`#/a/…`)로 들어오면 새 주소로 옮긴다. 화면을 만들 때 쓰는 `#/…` 링크는 `js/paths.js`가 실제 경로로 바꿔 끼운다.
+- `js/paths.js` 주소 규칙(옛 해시 → 경로, 깊이별 `../` 기준). `js/gloss.js` 본문 속 용어 찾기. `data/about.js` 소개 페이지 본문.
+- `tools/site-verify.json` 검색엔진 소유 확인 코드(구글·네이버 HTML 태그의 content 값). 넣고 다시 빌드하면 첫 화면에만 들어간다. 등록 순서는 `docs/검색엔진_등록_안내.md`.
 - `data/sections.js` 섹션 16개(손으로 관리). `data/glossary.js` 용어 사전(손으로 관리, `{term, en, def, related}`, 2026-10-23 기준 158개). check-content가 사전도 검사한다(중복, 160자 초과, 없는 글 링크, 금지 표현).
 - 현재 글 221편(2026-10-23). 섹션 14는 글이 아니라 용어 사전이다. `data/toc.js`, `data/search-index.json`, `data/precache.json`은 **자동 생성**.
 - `content/<섹션폴더>/<slug>.md` 글. slug는 전체에서 유일해야 한다.
@@ -47,7 +49,7 @@ sources:
 글을 추가·수정한 뒤:
 
 ```
-node tools/check-content.cjs && node tools/build-index.cjs
+node tools/check-content.cjs && node tools/build-index.cjs && node tools/build-pages.cjs
 ```
 
 - `check-content.cjs`: 필수 항목, 출처·각주 범위, 금지 표현(용량 지시, 임의 중단 권유, 옛 병명, "조현병 환자", 단정적 완치), 위기 글의 109·1577-0199, 600자 미만 검사.
