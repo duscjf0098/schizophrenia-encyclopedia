@@ -1,0 +1,6 @@
+node_modules/
+*.pid
+.DS_Store
+.claude/CLAUDE.md.onboarding-bak
+.claude/
+.claudeignore

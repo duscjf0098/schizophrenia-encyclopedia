@@ -1,0 +1,85 @@
+---
+title: 부작용 총론
+section: 7
+order: 17
+summary: 항정신병약 부작용을 운동·대사·내분비·심장·진정·항콜린·성기능·혈액의 8가지로 나누고, 32개 약을 비교한 2019년 메타분석으로 약별 차이를 정리했어요. 언제 생기는지, 무엇을 얼마나 자주 검사하는지, 그리고 "참지 말고 말하기"의 요령까지 담았어요.
+tags: 약물 치료, 부작용, 모니터링, 체중, 프로락틴, 추체외로
+updated: 2026-10-23
+evidence: 연구
+sources:
+  - Huhn M 외 | Comparative efficacy and tolerability of 32 oral antipsychotics for the acute treatment of adults with multi-episode schizophrenia: a systematic review and network meta-analysis (Lancet) | 2019 | https://doi.org/10.1016/S0140-6736(19)31135-3
+  - Pillinger T 외 | Comparative effects of 18 antipsychotics on metabolic function in patients with schizophrenia, predictors of metabolic dysregulation, and association with psychopathology: a systematic review and network meta-analysis (Lancet Psychiatry) | 2020 | https://doi.org/10.1016/S2215-0366(19)30416-X
+  - Carbon M 외 | Tardive dyskinesia risk with first- and second-generation antipsychotics in comparative randomized controlled trials: a meta-analysis (World Psychiatry) | 2018 | https://doi.org/10.1002/wps.20579
+  - American Diabetes Association, American Psychiatric Association 외 | Consensus development conference on antipsychotic drugs and obesity and diabetes (Diabetes Care) | 2004 | https://doi.org/10.2337/diacare.27.2.596
+  - Peuskens J 외 | The effects of novel and newly approved antipsychotics on serum prolactin levels: a comprehensive review (CNS Drugs) | 2014 | https://doi.org/10.1007/s40263-014-0157-3
+  - 국립정신건강센터 | 국가정신건강정보포털 · 질환별 정보 · 조현병 | 2026 | https://www.mentalhealth.go.kr/portal/disease/diseaseDetail.do?dissId=26
+  - American Psychiatric Association | APA releases new practice guideline on treatment of patients with schizophrenia (보도자료) | 2020 | https://www.psychiatry.org/news-room/news-releases/apa-releases-new-practice-guideline-on-treatment-o
+---
+## 한 문장으로
+
+항정신병약(환각·망상을 줄이는 약)은 효과는 서로 비슷한데 부작용은 약마다 크게 달라요. 그래서 "어떤 약이 좋은가"보다 "어떤 부작용을 피하고 싶은가"가 약 선택의 핵심이 돼요. 이 글은 부작용의 지도예요. 각 부작용의 자세한 내용은 따로 글이 있어요.
+
+## 부작용의 8가지 갈래
+
+| 갈래 | 대표 증상 | 자세히 |
+|---|---|---|
+| 운동(추체외로) | 근육 뻣뻣함, 떨림, 안절부절(정좌불능), 급성 근긴장이상, 지연성 운동장애 | [추체외로 증상](#/a/eps) |
+| 대사 | 체중 증가, 혈당·지질 상승, 당뇨 | [대사 부작용](#/a/metabolic-side-effects) |
+| 내분비 | 프로락틴 상승: 월경 불순, 유즙, 성기능 저하 | [고프로락틴혈증](#/a/hyperprolactinemia) |
+| 심장 | QTc 연장(심전도 이상), 빈맥, 기립성 저혈압 | 이 글 |
+| 진정 | 졸림, 피로, 둔함 | [진정과 항콜린](#/a/sedation-anticholinergic) |
+| 항콜린 | 입마름, 변비, 시야 흐림, 배뇨 곤란, 기억력 저하 | [진정과 항콜린](#/a/sedation-anticholinergic) |
+| 성기능 | 성욕 저하, 발기·사정 문제, 오르가슴 어려움 | [고프로락틴혈증](#/a/hyperprolactinemia) |
+| 혈액 | 백혈구 감소(주로 클로자핀), 드물게 다른 약도 | [클로자핀](#/a/clozapine) |
+
+여기에 드물지만 위험한 것이 더 있어요. 신경이완제 악성증후군(고열·근육 경직·의식 변화), 경련, 심근염이에요.
+
+## 약별로 얼마나 다른가
+
+::: research 32개 약을 한 번에 비교한 메타분석
+2019년 란셋에 실린 네트워크 메타분석은 402개 임상시험, 5만 3,463명을 모아 먹는 항정신병약 32개를 비교했어요. 효과(전체 증상 감소)는 약 사이 차이가 작았지만 부작용은 차이가 컸어요. 위약 대비 체중 변화는 지프라시돈 −0.16kg에서 조테핀 +3.21kg까지, 프로락틴 변화는 클로자핀 −77에서 팔리페리돈 +48.5ng/mL까지, 진정 위험비는 피모지드 0.92에서 주클로펜틱솔 10.2까지, 항파킨슨약 사용 위험비는 클로자핀 0.46에서 피모지드 6.14까지, QTc 변화는 루라시돈 −2.2ms에서 세르틴돌 +23.9ms까지 벌어졌어요.[^1]
+:::
+
+이 숫자가 말하는 건 "부작용 없는 약"이 아니라 "부작용 종류가 다른 약"이 있다는 거예요. 체중이 덜 느는 약은 프로락틴을 올리거나 운동 부작용이 있을 수 있고, 운동 부작용이 적은 약은 체중이 늘 수 있어요. 대사 쪽만 따로 본 2020년 메타분석(100개 시험, 2만 5,952명)에서는 체중 증가가 할로페리돌 −0.23kg에서 클로자핀 +3.01kg까지, 혈당 변화는 루라시돈이 가장 적고 클로자핀이 가장 컸어요. 올란자핀은 체질량지수와 LDL 콜레스테롤 상승이 가장 컸어요.[^2] 성분별 자세한 비교는 각 약 글([올란자핀](#/a/olanzapine), [아리피프라졸](#/a/aripiprazole), [리스페리돈](#/a/risperidone) 등)에 있어요.
+
+## 언제 생기나: 초기 vs 장기
+
+**첫 며칠~몇 주.** 졸림, 어지러움, 급성 근긴장이상(갑작스런 근육 뒤틀림), 정좌불능, 입마름이 먼저 와요. 상당수는 몸이 적응하면서 줄어요.
+
+**몇 주~몇 달.** 체중 증가는 첫 몇 달에 가장 가팔라요. 프로락틴 관련 증상(월경 변화, 유즙)도 이 시기에 드러나요. 파킨슨증(뻣뻣함·떨림)도 몇 주에 걸쳐 나타나요.
+
+**몇 달~몇 년.** 지연성 운동장애는 이름처럼 늦게 와요. 57개 비교 시험을 분석한 메타분석에서 연간 발생률은 1세대 약 6.5%, 2세대 약 2.6%였어요.[^3] 당뇨·지질 이상은 조용히 쌓여서 검사로만 알 수 있어요.
+
+## 무엇을 얼마나 자주 검사하나
+
+::: fact 2004년 합의안이 기준이 됐어요
+미국당뇨병학회·정신의학회 등 4개 학회의 2004년 합의안은 2세대 항정신병약을 시작할 때 체중·허리둘레·혈압·공복 혈당·지질을 재고, 체중은 4주·8주·12주에, 혈당과 지질은 12주에 다시 재도록 권했어요. 그 뒤로는 체중은 분기마다, 혈당은 매년, 지질은 더 긴 간격으로 보도록 했어요.[^4]
+:::
+
+프로락틴은 증상(월경 변화, 유즙, 성기능 변화)이 있을 때 재는 것이 일반적이고, 리스페리돈·팔리페리돈·아미설프리드처럼 프로락틴을 많이 올리는 약에서는 더 눈여겨봐요.[^5] 심전도(QTc)는 심장 질환이 있거나 QTc를 늘리는 약을 함께 쓸 때 확인해요.[^1] 운동 부작용은 진료 때 의사가 관찰하고, 지연성 운동장애는 이상운동 척도(AIMS) 같은 검사로 정기적으로 봐요. 미국 정신의학회 2020년 진료지침도 약 시작 전후의 신체·대사 평가를 기본으로 두고 있어요.[^7]
+
+## 참지 말고 말하기
+
+국가정신건강정보포털은 부작용 대부분이 조절 가능하다고 안내해요.[^6] 조절이 가능하려면 의사가 알아야 해요. 그런데 당사자들은 부작용을 자주 숨겨요. "약을 바꾸면 다시 나빠질까 봐", "말하면 용량을 올릴까 봐", "성기능 이야기는 민망해서"예요. 숨기면 의사는 "약이 안 듣는다"고 오해하거나, 거르고 있다는 걸 모르고 판단해요.
+
+::: tip 말하기 쉽게 만드는 방법
+- 부작용을 적어 가세요. "언제부터, 하루 중 언제, 얼마나" 세 가지면 충분해요.
+- 가장 힘든 것 하나를 먼저 말하세요. 전부 말하려다 하나도 못 말하는 경우가 많아요.
+- 성기능·배뇨 같은 말하기 어려운 증상은 쪽지로 건네도 돼요.
+- "이 부작용 때문에 약을 거른 적이 있어요"는 가장 중요한 정보예요. 꼭 말하세요.
+:::
+
+구체적인 대화 스크립트와 선택지는 [부작용 대처](#/a/managing-side-effects)에 있어요.
+
+## 나에게 의미하는 것
+
+- 약을 고를 때 "내가 가장 피하고 싶은 부작용"을 말할 권리가 있어요. 효과는 비슷하고 부작용은 다르니까요.[^1]
+- 검사 일정은 나를 위한 거예요. 체중·혈당·지질 수치를 직접 알아 두면 변화를 먼저 알아차릴 수 있어요.[^4]
+- 초기 부작용 중 일부는 지나가요. 하지만 체중, 대사, 지연성 운동장애는 시간이 갈수록 쌓여요. 장기 관리가 필요한 쪽을 구분해 두세요.[^3]
+
+## 담당 의사에게 물어볼 것
+
+- 이 약에서 가장 흔한 부작용 세 가지는 무엇인가요?
+- 체중·혈당·지질·프로락틴·심전도 검사는 언제 하나요? 지난 결과는 어땠나요?
+- 부작용이 생기면 어떤 선택지가 있나요? (용량, 시간대, 보조약, 약 교체)
+- 어떤 증상이 생기면 다음 진료를 기다리지 말고 연락해야 하나요?
