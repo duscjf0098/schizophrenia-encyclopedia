@@ -1,5 +1,5 @@
 {
- "version": "2026-10-23-221-mvko8233",
+ "version": "2026-10-23-221-mvkstgyv",
  "files": [
   "./",
   "index.html",
@@ -7,6 +7,7 @@
   "js/util.js",
   "js/md.js",
   "js/search.js",
+  "js/gloss.js",
   "js/app.js",
   "data/sections.js",
   "data/toc.js",

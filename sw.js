@@ -1,5 +1,5 @@
 /* 조현병 백과 · 오프라인 캐시. 아래 BUILD 는 tools/build-index.cjs 가 갱신한다(바뀌어야 브라우저가 새 캐시를 설치한다). */
-const BUILD = '2026-10-23-221-mvko8233';
+const BUILD = '2026-10-23-221-mvkstgyv';
 const PRECACHE = 'data/precache.json';
 let CACHE = 'jhb-' + BUILD;
 

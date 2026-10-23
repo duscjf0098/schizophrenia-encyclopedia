@@ -2,6 +2,7 @@
 window.JHB = window.JHB || {};
 JHB.toc = {
  "generated": "2026-10-23",
+ "sources": 831,
  "articles": [
   {
    "slug": "what-is-schizophrenia",

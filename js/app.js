@@ -1,14 +1,26 @@
 /* 조현병 백과 · 라우터와 화면
-   경로: #/ 홈 · #/s/<섹션id> · #/a/<slug> · #/search?q=&s= · #/fav · #/glossary · #/about */
+   경로: #/ 첫 화면 · #/s/<섹션id> · #/a/<slug> · #/search?q=&s= · #/fav · #/glossary · #/about · #/random */
 (function () {
   const U = JHB.util, el = U.el, esc = U.esc, md = JHB.md;
   const app = U.qs('#app');
+  const nav = U.qs('#sidenav');
   const sections = JHB.sections;
   const articles = (JHB.toc && JHB.toc.articles) || [];
+  const glossary = JHB.glossary || [];
   const bySlug = {}; articles.forEach(function (a) { bySlug[a.slug] = a; });
   const secById = {}; sections.forEach(function (s) { secById[s.id] = s; });
+  const termByName = {}; glossary.forEach(function (g) { termByName[g.term] = g; });
   const cache = {};
   let searchIndex = null;
+  let pageCleanup = [];
+
+  function sectionArticles(id) {
+    return articles.filter(function (a) { return a.section === id; })
+      .sort(function (a, b) { return (a.order || 999) - (b.order || 999) || a.title.localeCompare(b.title, 'ko'); });
+  }
+  function spine(s) { return el('span.spine', { style: '--h:' + ((s && s.hue) || 250), 'aria-hidden': 'true' }); }
+  function ev(a) { return a.evidence ? el('span.ev', { class: 'ev-' + a.evidence, title: (JHB.EVIDENCE[a.evidence] || {}).desc || '' }, [(JHB.EVIDENCE[a.evidence] || {}).label || a.evidence]) : null; }
+  function setTitle(t) { document.title = t ? t + ' - 조현병 백과' : '조현병 백과'; }
 
   /* ---------- 설정 ---------- */
   function favs() { return U.store.get('jhb.fav', []); }
@@ -35,7 +47,59 @@
     const next = order[(order.indexOf(cur) + 1) % order.length];
     if (next === 'm') document.documentElement.removeAttribute('data-fs'); else document.documentElement.setAttribute('data-fs', next);
     U.store.set('jhb.fs', next);
+    window.dispatchEvent(new Event('jhb:layout'));
   });
+
+  /* ---------- 왼쪽 분류 목차 (서랍) ---------- */
+  const scrim = U.qs('#scrim'), navBtn = U.qs('#btn-nav');
+  function setNav(open) {
+    nav.classList.toggle('open', open);
+    scrim.hidden = !open;
+    navBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+  navBtn.addEventListener('click', function () { setNav(!nav.classList.contains('open')); });
+  scrim.addEventListener('click', function () { setNav(false); });
+
+  function drawNav(curSec, curSlug, toc) {
+    nav.innerHTML = '';
+    nav.appendChild(el('div.nav-sec', null, [el('a.nav-home', { href: '#/' }, [el('span.brand-name', null, ['조현병 백과']), el('span.n', null, ['첫 화면'])])]));
+    nav.appendChild(el('div.nav-head', null, ['분류']));
+    sections.forEach(function (s) {
+      const open = s.id === curSec;
+      const n = s.glossary ? glossary.length : sectionArticles(s.id).length;
+      const box = el('div.nav-sec', { class: open ? 'open' : '' }, [
+        el('a', { href: s.glossary ? '#/glossary' : '#/s/' + s.id, 'aria-current': open && !curSlug ? 'page' : null }, [spine(s), s.title, el('span.n', null, [String(n)])])
+      ]);
+      if (open && !s.glossary) {
+        const ul = el('ul.nav-docs');
+        sectionArticles(s.id).forEach(function (a) {
+          const li = el('li', null, [el('a', { href: '#/a/' + a.slug, 'aria-current': a.slug === curSlug ? 'page' : null }, [a.title])]);
+          if (a.slug === curSlug && toc && toc.length) {
+            li.appendChild(el('ul.nav-toc', null, toc.map(function (t) {
+              return el('li', null, [el('a', { href: '#' + t.id, class: t.level === 3 ? 'l3' : '', 'data-h': t.id, onclick: jumpTo(t.id) }, [t.text])]);
+            })));
+          }
+          ul.appendChild(li);
+        });
+        box.appendChild(ul);
+      }
+      nav.appendChild(box);
+    });
+    nav.appendChild(el('div.nav-extra', null, [
+      el('div.nav-sec', null, [el('a', { href: '#/fav' }, ['저장한 문서'])]),
+      el('div.nav-sec', null, [el('a', { href: '#/about' }, ['이 백과에 대해'])])
+    ]));
+    const cur = nav.querySelector('[aria-current="page"]');
+    if (cur && cur.scrollIntoView) cur.scrollIntoView({ block: 'nearest' });
+  }
+  function jumpTo(id) {
+    return function (e) {
+      e.preventDefault();
+      const n = document.getElementById(id);
+      if (n) n.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+      setNav(false);
+    };
+  }
 
   /* ---------- 라우팅 ---------- */
   function parseHash() {
@@ -48,103 +112,127 @@
     });
     return { path: path, query: query };
   }
-  function setTitle(t) { document.title = t ? t + ' · 조현병 백과' : '조현병 백과'; }
-  function show(nodes, cls) {
+  function show(nodes) {
+    pageCleanup.forEach(function (f) { f(); }); pageCleanup = [];
+    closePop();
     app.innerHTML = '';
-    app.className = 'wrap' + (cls ? ' ' + cls : '');
     nodes.forEach(function (n) { if (n) app.appendChild(n); });
     window.scrollTo(0, 0);
+    setProgress(0);
   }
   function route() {
-    const r = parseHash();
-    const p = r.path;
+    const r = parseHash(), p = r.path;
+    setNav(false);
+    U.qsa('.tool-link').forEach(function (a) { a.removeAttribute('aria-current'); });
+    const tl = U.qs('.tool-link[href="#/' + (p[0] || '') + '"]'); if (tl) tl.setAttribute('aria-current', 'page');
     if (!p.length) return home();
     if (p[0] === 's' && p[1]) return section(p[1]);
     if (p[0] === 'a' && p[1]) return article(p[1]);
     if (p[0] === 'search') return search(r.query);
     if (p[0] === 'fav') return favPage();
-    if (p[0] === 'glossary') return glossary();
+    if (p[0] === 'glossary') return glossaryPage();
     if (p[0] === 'about') return about();
+    if (p[0] === 'random') { const a = articles[Math.floor(Math.random() * articles.length)]; location.replace('#/a/' + a.slug); return; }
     return notFound();
   }
-  window.addEventListener('hashchange', route);
+  window.addEventListener('hashchange', function () {
+    /* 문서 안 소제목(#h-3) 이동은 라우팅하지 않는다 */
+    if (/^#h-\d+$/.test(location.hash)) return;
+    route();
+  });
 
-  /* ---------- 조각 ---------- */
-  function searchBox(q, sec) {
-    const input = el('input', { type: 'search', placeholder: '궁금한 말을 입력하세요 (예: 환청, 클로자핀)', value: q || '', 'aria-label': '검색' });
-    const form = el('form.searchbox', { onsubmit: function (e) { e.preventDefault(); location.hash = '#/search?q=' + encodeURIComponent(input.value.trim()) + (sec ? '&s=' + sec : ''); } }, [input, el('button.pill.primary', { type: 'submit' }, ['찾기'])]);
-    return form;
-  }
-  function sectionArticles(id) {
-    return articles.filter(function (a) { return a.section === id; }).sort(function (a, b) { return (a.order || 999) - (b.order || 999) || a.title.localeCompare(b.title, 'ko'); });
-  }
-  function articleItem(a, snippetHtml) {
+  /* ---------- 문서 행 ---------- */
+  function row(a, snippetHtml) {
     const s = secById[a.section] || {};
-    return el('a.item.tinted', { href: '#/a/' + a.slug, style: '--h:' + (s.hue || 250) }, [
-      el('h3', null, [a.title]),
-      el('p', snippetHtml ? { html: snippetHtml } : null, snippetHtml ? null : [a.summary || '']),
-      el('div.meta', null, [
-        el('span', null, [s.title || '']),
-        a.evidence ? el('span.badge', { class: 'ev-' + a.evidence }, [(JHB.EVIDENCE[a.evidence] || {}).label || a.evidence]) : null,
-        el('span', null, [(a.minutes || 1) + '분'])
-      ])
-    ]);
-  }
-  function disclaimer() {
-    return el('div.disclaimer', null, ['이 글은 일반적인 정보예요. 사람마다 상황이 달라서, 진단과 치료는 담당 의사와 상의하는 게 안전해요. 약은 스스로 늘리거나 줄이거나 끊지 말고 꼭 먼저 상의하세요.']);
-  }
-  function crisisBanner() {
-    return el('div.crisis', { html: '<strong>지금 많이 힘들다면</strong> 혼자 견디지 않아도 돼요. 자살예방상담 <a href="tel:109">109</a>, 정신건강위기상담 <a href="tel:1577-0199">1577-0199</a>는 24시간 받아요. 당장 위험하면 <a href="tel:119">119</a>.' });
+    return el('li.row', null, [el('a', { href: '#/a/' + a.slug }, [
+      el('span.row-t', null, [a.title]),
+      el('span.row-s', snippetHtml ? { html: snippetHtml } : null, snippetHtml ? null : [a.summary || '']),
+      el('span.row-m', null, [el('span.row-sec', null, [spine(s), s.title || '']), ev(a)])
+    ])]);
   }
 
-  /* ---------- 화면 ---------- */
+  /* ---------- 첫 화면 ---------- */
   function home() {
     setTitle('');
-    const total = articles.length;
-    const pick = total ? articles[U.dayIndex(total)] : null;
-    const f = favs().map(function (s) { return bySlug[s]; }).filter(Boolean).slice(0, 3);
-    show([
-      el('section.hero', null, [
-        el('div.eyebrow', null, ['출처와 함께 읽는']),
-        el('h1', { html: '조현병을 <em>제대로</em> 아는 백과' }),
-        el('p.lead', null, ['증상, 진단, 치료, 함께 살아가기, 제도, 최신 연구까지. 어려운 말은 풀어서, 근거는 출처로 남겼어요.']),
-        searchBox('')
+    drawNav(null, null, null);
+    const pick = articles.length ? articles[U.dayIndex(articles.length)] : null;
+    const recent = U.store.get('jhb.recent', []).map(function (s) { return bySlug[s]; }).filter(Boolean).slice(0, 5);
+    const srcCount = (JHB.toc && JHB.toc.sources) || null;
+    const dayTerms = [];
+    if (glossary.length) { const start = U.dayIndex(glossary.length); for (let i = 0; i < 6; i++) dayTerms.push(glossary[(start + i * 23) % glossary.length]); }
+    show([el('div.portal', null, [
+      el('header.portal-head', null, [
+        el('h1.portal-title', null, ['조현병 백과']),
+        el('p.portal-sub', null, ['증상과 진단, 약과 치료, 일상과 제도, 최신 연구까지. 조현병에 관해 궁금한 것을 출처와 함께 찾아볼 수 있어요. 어려운 말에는 밑줄이 있고, 누르면 뜻이 나와요.']),
+        el('div.portal-stats', null, [
+          el('span', null, [el('b', null, [String(articles.length)]), '개 문서']),
+          el('span', null, [el('b', null, [String(glossary.length)]), '개 용어']),
+          srcCount ? el('span', null, [el('b', null, [srcCount.toLocaleString('ko-KR')]), '개 출처']) : null
+        ])
       ]),
-      pick ? el('div', null, [
-        el('h2.sec-title', null, ['오늘의 한 가지']),
-        el('a.today.tinted', { href: '#/a/' + pick.slug, style: '--h:' + ((secById[pick.section] || {}).hue || 250) }, [
-          el('div.eyebrow', null, [(secById[pick.section] || {}).title || '']),
-          el('h3', null, [pick.title]), el('p', null, [pick.summary || ''])
+      pick ? el('section', null, [
+        el('h2.h-sec', null, ['오늘의 문서']),
+        el('div.feature', null, [
+          el('div.feature-m', null, [el('span.row-sec', null, [spine(secById[pick.section]), (secById[pick.section] || {}).title || '']), ev(pick)]),
+          el('h3.feature-t', null, [el('a', { href: '#/a/' + pick.slug }, [pick.title])]),
+          el('p.feature-s', null, [pick.summary || '']),
+          el('div.feature-actions', null, [
+            el('a.btn', { href: '#/a/' + pick.slug }, ['읽기']),
+            el('a.btn', { href: '#/random' }, ['아무 문서나 열기'])
+          ])
         ])
       ]) : null,
-      f.length ? el('div', null, [
-        el('h2.sec-title', null, ['저장한 글', el('a.more', { href: '#/fav' }, ['전체 보기'])]),
-        el('div.list', null, f.map(function (a) { return articleItem(a); }))
+      recent.length ? el('section', null, [
+        el('h2.h-sec', null, ['최근에 읽은 문서']),
+        el('ul.rows', null, recent.map(function (a) { return row(a); }))
       ]) : null,
-      el('h2.sec-title', null, ['목차', el('span.more', null, [total + '편'])]),
-      el('div.grid', null, sections.map(function (s) {
-        const n = s.glossary ? (JHB.glossary || []).length : sectionArticles(s.id).length;
-        return el('a.sec-card.tinted', { href: s.glossary ? '#/glossary' : '#/s/' + s.id, style: '--h:' + s.hue }, [
-          el('span.num', null, [('0' + s.id).slice(-2)]), el('h3', null, [s.title]), el('p', null, [s.desc]),
-          el('span.cnt', null, [n + (s.glossary ? '개 용어' : '편')])
-        ]);
-      }))
-    ]);
+      el('section', null, [
+        el('h2.h-sec', null, ['분류']),
+        el('div.index', null, sections.map(function (s) {
+          if (s.glossary) {
+            return el('div.index-sec', null, [
+              el('h3', null, [spine(s), el('a', { href: '#/glossary' }, [s.title]), el('span.n', null, [glossary.length + '개'])]),
+              el('p', null, [s.desc])
+            ]);
+          }
+          const list = sectionArticles(s.id);
+          const shown = list.slice(0, 5);
+          return el('div.index-sec', null, [
+            el('h3', null, [spine(s), el('a', { href: '#/s/' + s.id }, [s.title]), el('span.n', null, [list.length + '개'])]),
+            el('p', null, [s.desc]),
+            el('ul', null, shown.map(function (a) { return el('li', null, [el('a', { href: '#/a/' + a.slug }, [a.title])]); })
+              .concat(list.length > shown.length ? [el('li.rest', null, [el('a', { href: '#/s/' + s.id }, ['외 ' + (list.length - shown.length) + '개'])])] : []))
+          ]);
+        }))
+      ]),
+      dayTerms.length ? el('section', null, [
+        el('h2.h-sec', null, ['오늘의 용어', el('a.more', { href: '#/glossary' }, ['용어 사전 전체'])]),
+        el('dl.terms', null, dayTerms.map(function (g) {
+          const rel = (g.related || []).filter(function (r) { return bySlug[r]; })[0];
+          return el('div', null, [el('dt', null, [rel ? el('a', { href: '#/a/' + rel }, [g.term]) : g.term]), el('dd', null, [g.def])]);
+        }))
+      ]) : null,
+      el('p.portal-note', null, ['이 백과의 글은 AI가 공개 자료를 바탕으로 초안을 쓰고 출처를 확인해 만들었어요. 전문가 감수는 받지 않았어요. 진단과 치료는 담당 의사와 상의하세요.'])
+    ])]);
   }
 
+  /* ---------- 분류 ---------- */
   function section(id) {
     const s = secById[id];
     if (!s) return notFound();
-    if (s.glossary) return glossary();
+    if (s.glossary) return glossaryPage();
     setTitle(s.title);
+    drawNav(s.id, null, null);
     const list = sectionArticles(id);
     show([
-      el('div.crumb', null, [el('a', { href: '#/' }, ['홈']), '›', s.title]),
-      el('div.sec-head.tinted', { style: '--h:' + s.hue }, [el('h1', null, [s.title]), el('p', null, [s.desc])]),
-      list.length ? el('div.list', null, list.map(function (a) { return articleItem(a); })) : el('div.empty', null, ['아직 글을 준비 중이에요.'])
+      el('nav.crumb', { 'aria-label': '위치' }, [el('a', { href: '#/' }, ['첫 화면']), el('span.sep', null, ['/']), '분류']),
+      el('h1.page-title', null, [s.title]),
+      el('p.page-lead', null, [s.desc + '. 문서 ' + list.length + '개.']),
+      list.length ? el('ul.rows', { style: 'margin-top:22px' }, list.map(function (a) { return row(a); })) : el('p.empty', null, ['이 분류의 문서를 준비하고 있어요.'])
     ]);
   }
 
+  /* ---------- 문서 ---------- */
   function loadArticle(a) {
     if (cache[a.slug]) return Promise.resolve(cache[a.slug]);
     const s = secById[a.section];
@@ -153,153 +241,439 @@
       return r.text();
     }).then(function (txt) { cache[a.slug] = md.parse(txt); return cache[a.slug]; });
   }
+
+  /* 본문 속 용어에 점선 밑줄을 달고, 처음 나올 때만 표시한다 */
+  function linkTerms(root, slug) {
+    const exclude = glossary.filter(function (g) { return (g.related || [])[0] === slug; }).map(function (g) { return g.term; });
+    const re = JHB.gloss.matcher(glossary, { exclude: exclude });
+    if (!re) return [];
+    const used = new Set(), found = [];
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode: function (n) {
+        let p = n.parentNode;
+        while (p && p !== root) {
+          if (/^(A|CODE|H2|H3|SUP|TH)$/.test(p.nodeName) || (p.classList && (p.classList.contains('callout-title') || p.classList.contains('term')))) return NodeFilter.FILTER_REJECT;
+          p = p.parentNode;
+        }
+        return n.nodeValue.trim() ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+      }
+    });
+    const nodes = []; while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(function (n) {
+      if (used.size >= 14) return;
+      const segs = JHB.gloss.split(n.nodeValue, re, used, 14);
+      if (segs.length === 1 && segs[0].text != null) return;
+      const frag = document.createDocumentFragment();
+      segs.forEach(function (sg) {
+        if (sg.text != null) { frag.appendChild(document.createTextNode(sg.text)); return; }
+        const g = termByName[sg.term];
+        const b = el('button.term', { type: 'button', 'data-term': sg.term, 'aria-expanded': 'false', 'aria-label': sg.term + ' 뜻 보기' }, [sg.term]);
+        found.push({ el: b, g: g });
+        frag.appendChild(b);
+      });
+      n.parentNode.replaceChild(frag, n);
+    });
+    return found;
+  }
+
   function article(slug) {
     const a = bySlug[slug];
     if (!a) return notFound();
     const s = secById[a.section] || {};
     setTitle(a.title);
-    show([el('div.crumb', null, [el('a', { href: '#/' }, ['홈']), '›', el('a', { href: '#/s/' + s.id }, [s.title || '']), '›', a.title]), el('div.empty', null, ['불러오는 중…'])]);
+    drawNav(a.section, slug, null);
+    show([el('p.empty', null, ['문서를 불러오고 있어요.'])]);
     loadArticle(a).then(function (doc) {
       if (parseHash().path[1] !== slug) return;
       const meta = Object.assign({}, a, doc.meta);
       const r = md.render(doc.body);
       const tags = meta.tags || [];
-      const favBtn = el('button.pill', { type: 'button', class: isFav(slug) ? 'on' : '', onclick: function () { const on = toggleFav(slug); favBtn.className = 'pill' + (on ? ' on' : ''); favBtn.textContent = on ? '★ 저장됨' : '☆ 저장'; } }, [isFav(slug) ? '★ 저장됨' : '☆ 저장']);
-      const shareBtn = el('button.pill', { type: 'button', onclick: function () {
-        const url = location.href;
-        if (navigator.share) navigator.share({ title: a.title + ' · 조현병 백과', url: url }).catch(function () { });
-        else if (navigator.clipboard) navigator.clipboard.writeText(url).then(function () { shareBtn.textContent = '주소 복사됨'; });
-      } }, ['공유']);
+      const srcs = meta.sources || [];
       const list = sectionArticles(a.section);
       const idx = list.findIndex(function (x) { return x.slug === slug; });
       const prev = idx > 0 ? list[idx - 1] : null, next = idx >= 0 && idx < list.length - 1 ? list[idx + 1] : null;
-      const related = articles.filter(function (x) { return x.slug !== slug && (x.tags || []).some(function (t) { return tags.indexOf(t) >= 0; }); }).slice(0, 4);
-      const srcs = meta.sources || [];
+      const related = articles.filter(function (x) { return x.slug !== slug && (x.tags || []).some(function (t) { return tags.indexOf(t) >= 0; }); })
+        .map(function (x) { return { a: x, n: (x.tags || []).filter(function (t) { return tags.indexOf(t) >= 0; }).length }; })
+        .sort(function (p, q) { return q.n - p.n; }).slice(0, 6).map(function (x) { return x.a; });
+      const minutes = meta.minutes || md.readingMinutes(doc.body);
+
+      function favBtn() {
+        const b = el('button.btn', { type: 'button', class: isFav(slug) ? 'on' : '', 'aria-pressed': isFav(slug) ? 'true' : 'false' }, [isFav(slug) ? '저장됨' : '저장']);
+        b.addEventListener('click', function () {
+          const on = toggleFav(slug);
+          U.qsa('.js-fav').forEach(function (x) { x.className = 'btn js-fav' + (on ? ' on' : ''); x.textContent = on ? '저장됨' : '저장'; x.setAttribute('aria-pressed', on ? 'true' : 'false'); });
+        });
+        b.classList.add('js-fav');
+        return b;
+      }
+      function shareBtn() {
+        const b = el('button.btn', { type: 'button' }, ['공유']);
+        b.addEventListener('click', function () {
+          const url = location.href;
+          if (navigator.share) navigator.share({ title: a.title + ' - 조현병 백과', url: url }).catch(function () { });
+          else if (navigator.clipboard) navigator.clipboard.writeText(url).then(function () { b.textContent = '주소 복사됨'; });
+        });
+        return b;
+      }
+
+      const body = el('div.body', { html: r.html });
+      const notes = el('div.notes');
+      const infobox = el('section.infobox', { 'aria-label': '문서 정보' }, [
+        el('div.infobox-h', null, [spine(s), '문서 정보']),
+        el('dl', null, [
+          el('dt', null, ['분류']), el('dd', null, [el('a', { href: '#/s/' + s.id }, [s.title || ''])]),
+          el('dt', null, ['근거']), el('dd', null, [ev(meta) || '없음']),
+          el('dt', null, ['출처']), el('dd', null, [srcs.length ? el('a', { href: '#sources', onclick: jumpTo('sources') }, [srcs.length + '개']) : '없음']),
+          el('dt', null, ['읽는 시간']), el('dd', null, ['약 ' + minutes + '분']),
+          meta.updated ? el('dt', null, ['고친 날']) : null, meta.updated ? el('dd', null, [U.fmtDate(meta.updated)]) : null
+        ]),
+        el('div.infobox-actions', null, [favBtn(), shareBtn()])
+      ]);
+
       show([
-        el('div.crumb', null, [el('a', { href: '#/' }, ['홈']), '›', el('a', { href: '#/s/' + s.id }, [s.title || '']), '›', a.title]),
-        el('article.article.tinted', { style: '--h:' + (s.hue || 250) }, [
-          el('header.article-head', null, [
-            el('h1', null, [meta.title]),
-            meta.summary ? el('p.summary', null, [meta.summary]) : null,
-            el('div.meta', null, [
-              meta.evidence ? el('span.badge', { class: 'ev-' + meta.evidence, title: (JHB.EVIDENCE[meta.evidence] || {}).desc || '' }, [(JHB.EVIDENCE[meta.evidence] || {}).label || meta.evidence]) : null,
-              el('span', null, ['읽는 데 약 ' + (meta.minutes || md.readingMinutes(doc.body)) + '분']),
-              meta.updated ? el('span', null, [U.fmtDate(meta.updated) + ' 갱신']) : null
+        el('nav.crumb', { 'aria-label': '위치' }, [el('a', { href: '#/' }, ['첫 화면']), el('span.sep', null, ['/']), el('a', { href: '#/s/' + s.id }, [s.title || ''])]),
+        el('article.doc', null, [
+          el('div.doc-main', null, [
+            el('header.doc-head', null, [
+              el('h1.page-title', null, [meta.title]),
+              meta.summary ? el('p.doc-summary', null, [meta.summary]) : null,
+              el('div.doc-meta-m', null, [ev(meta), el('span', null, ['약 ' + minutes + '분']), meta.updated ? el('span', null, [U.fmtDate(meta.updated) + ' 고침']) : null,
+                el('span.acts', null, [favBtn(), shareBtn()])])
             ]),
-            el('div.article-tools', null, [favBtn, shareBtn])
+            tags.indexOf('위기') >= 0 ? el('div.crisis', { role: 'note', html: '<strong>지금 많이 힘들다면</strong> 혼자 견디지 않아도 돼요. 자살예방상담 <a href="tel:109">109</a>, 정신건강위기상담 <a href="tel:1577-0199">1577-0199</a>는 24시간 받아요. 당장 위험하면 <a href="tel:119">119</a>에 전화하세요.' }) : null,
+            r.toc.length >= 3 ? el('details.toc-m', null, [el('summary', null, ['이 문서의 차례']), el('ol', null, r.toc.map(function (t) {
+              return el('li', { class: t.level === 3 ? 'l3' : '' }, [el('a', { href: '#' + t.id, onclick: jumpTo(t.id) }, [t.text])]);
+            }))]) : null,
+            body,
+            srcs.length ? el('section.sources', { id: 'sources' }, [el('h2', null, ['출처']), el('ol', null, srcs.map(function (x, i) {
+              return el('li', { id: 'src-' + (i + 1) }, [x.org ? x.org + '. ' : '', x.url ? el('a', { href: x.url, target: '_blank', rel: 'noopener' }, [x.title || x.url]) : (x.title || ''), x.year ? ' (' + x.year + ')' : '']);
+            }))]) : null,
+            el('p.disclaimer', null, ['일반적인 정보예요. 사람마다 상황이 달라서 진단과 치료는 담당 의사와 상의하는 게 안전해요. 약은 스스로 늘리거나 줄이거나 끊지 말고 먼저 상의하세요. 이 글은 AI가 초안을 쓰고 출처를 확인했으며, 전문가 감수는 받지 않았어요.']),
+            related.length ? el('section.see-also', null, [el('h2', null, ['함께 읽기']), el('ul', null, related.map(function (x) {
+              return el('li', null, [el('a', { href: '#/a/' + x.slug }, [spine(secById[x.section]), x.title])]);
+            }))]) : null,
+            (prev || next) ? el('nav.pager', { 'aria-label': '같은 분류의 앞뒤 문서' }, [
+              prev ? el('a.prev', { href: '#/a/' + prev.slug }, [el('small', null, ['앞 문서']), prev.title]) : null,
+              next ? el('a.next', { href: '#/a/' + next.slug }, [el('small', null, ['다음 문서']), next.title]) : null
+            ]) : null
           ]),
-          tags.indexOf('위기') >= 0 ? crisisBanner() : null,
-          r.toc.length >= 3 ? el('nav.toc', { 'aria-label': '글 목차' }, [el('div.toc-t', null, ['이 글의 차례']), el('ol', null, r.toc.map(function (t) { return el('li', { class: t.level === 3 ? 'l3' : '' }, [el('a', { href: '#' + t.id, onclick: function (e) { e.preventDefault(); const n = document.getElementById(t.id); if (n) n.scrollIntoView({ behavior: 'smooth', block: 'start' }); } }, [t.text])]); }))]) : null,
-          el('div.body', { html: r.html }),
-          srcs.length ? el('section.sources', null, [el('h2', null, ['출처']), el('ol', null, srcs.map(function (x, i) {
-            return el('li', { id: 'src-' + (i + 1) }, [x.org ? x.org + '. ' : '', x.url ? el('a', { href: x.url, target: '_blank', rel: 'noopener' }, [x.title || x.url]) : (x.title || ''), x.year ? ' (' + x.year + ')' : '']);
-          }))]) : null,
-          disclaimer(),
-          related.length ? el('section.related', null, [el('h2.sec-title', null, ['관련 글']), el('div.list', null, related.map(function (x) { return articleItem(x); }))]) : null,
-          (prev || next) ? el('nav.prevnext', null, [
-            prev ? el('a.prev', { href: '#/a/' + prev.slug }, [el('span', null, ['이전']), prev.title]) : el('span'),
-            next ? el('a.next', { href: '#/a/' + next.slug }, [el('span', null, ['다음']), next.title]) : el('span')
-          ]) : null
+          el('aside.doc-margin', { 'aria-label': '문서 정보와 용어 풀이' }, [infobox, notes])
         ])
       ]);
+      drawNav(a.section, slug, r.toc);
+
+      /* 출처 번호: 누르면 출처 팝오버 */
+      U.qsa('.fn a', body).forEach(function (link) {
+        const n = Number(link.textContent);
+        const src = srcs[n - 1];
+        if (!src) return;
+        link.setAttribute('role', 'button');
+        link.setAttribute('aria-label', '출처 ' + n + ' 보기');
+        link.setAttribute('aria-expanded', 'false');
+        link.addEventListener('click', function (e) {
+          e.preventDefault();
+          openPop(link, [
+            el('b', null, ['출처 ' + n]),
+            el('span', null, [src.org ? src.org + '. ' : '', src.title || '', src.year ? ' (' + src.year + ')' : '']),
+            el('div.pop-links', null, [
+              src.url ? el('a', { href: src.url, target: '_blank', rel: 'noopener' }, ['원문 열기']) : null,
+              el('a', { href: '#src-' + n, onclick: function (ev2) { ev2.preventDefault(); closePop(); const li = document.getElementById('src-' + n); if (li) { li.scrollIntoView({ block: 'center' }); li.classList.add('flash'); setTimeout(function () { li.classList.remove('flash'); }, 1800); } } }, ['출처 목록에서 보기'])
+            ])
+          ]);
+        });
+      });
+
+      /* 용어: 점선 밑줄, 넓은 화면은 여백 주석, 좁은 화면은 팝오버 */
+      const found = linkTerms(body, slug);
+      found.forEach(function (f) {
+        f.el.addEventListener('click', function () { openPop(f.el, termPopContent(f.g, slug)); });
+      });
+      const noteEls = [];
+      function layoutNotes() {
+        notes.innerHTML = ''; noteEls.length = 0;
+        const margin = notes.parentNode;
+        if (!margin || getComputedStyle(margin).display === 'none' || !found.length) return;
+        const top0 = notes.getBoundingClientRect().top;
+        let floor = 18;
+        found.forEach(function (f) {
+          const rel = (f.g.related || []).filter(function (x) { return bySlug[x] && x !== slug; })[0];
+          const n = el('div.note', null, [el('b', null, [f.g.term]), f.g.def, rel ? el('div', null, [el('a', { href: '#/a/' + rel }, [bySlug[rel].title + ' 문서'])]) : null]);
+          notes.appendChild(n);
+          const want = f.el.getBoundingClientRect().top - top0 - 2;
+          const top = Math.max(want, floor);
+          n.style.top = top + 'px';
+          floor = top + n.offsetHeight + 14;
+          n.addEventListener('mouseenter', function () { f.el.classList.add('hot'); });
+          n.addEventListener('mouseleave', function () { f.el.classList.remove('hot'); });
+          f.el.addEventListener('mouseenter', function () { n.classList.add('hot'); });
+          f.el.addEventListener('mouseleave', function () { n.classList.remove('hot'); });
+          noteEls.push(n);
+        });
+        notes.style.height = floor + 'px';
+      }
+      requestAnimationFrame(layoutNotes);
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(layoutNotes);
+      let rt; const onResize = function () { clearTimeout(rt); rt = setTimeout(layoutNotes, 120); };
+      window.addEventListener('resize', onResize);
+      window.addEventListener('jhb:layout', onResize);
+
+      /* 읽기 진행 막대와 현재 소제목 표시 */
+      const heads = U.qsa('h2[id], h3[id]', body);
+      const onScroll = function () {
+        const docEl = document.documentElement;
+        const max = Math.max(1, docEl.scrollHeight - innerHeight);
+        setProgress(Math.min(1, scrollY / max));
+        let cur = null;
+        for (let i = 0; i < heads.length; i++) { if (heads[i].getBoundingClientRect().top < 120) cur = heads[i].id; else break; }
+        U.qsa('.nav-toc a', nav).forEach(function (x) { x.classList.toggle('on', x.getAttribute('data-h') === cur); });
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+      pageCleanup.push(function () {
+        window.removeEventListener('resize', onResize); window.removeEventListener('jhb:layout', onResize); window.removeEventListener('scroll', onScroll);
+      });
+
       const recent = U.store.get('jhb.recent', []).filter(function (x) { return x !== slug; }); recent.unshift(slug); U.store.set('jhb.recent', recent.slice(0, 20));
     }).catch(function (e) {
-      show([el('div.empty', null, ['글을 불러오지 못했어요. (' + e.message + ') 파일을 더블클릭해 연 경우라면 node serve.cjs 로 띄워 주세요.'])]);
+      show([el('p.empty', null, ['문서를 불러오지 못했어요(' + e.message + '). 인터넷 연결을 확인하고 새로고침해 주세요.'])]);
     });
   }
 
+  function termPopContent(g, curSlug) {
+    const rels = (g.related || []).filter(function (x) { return bySlug[x] && x !== curSlug; });
+    return [
+      el('b', null, [g.term]),
+      g.en ? el('span.en', null, [g.en]) : null,
+      el('span', null, [g.def]),
+      el('div.pop-links', null, rels.map(function (x) { return el('a', { href: '#/a/' + x }, [bySlug[x].title]); })
+        .concat([el('a', { href: '#/glossary?t=' + encodeURIComponent(g.term) }, ['용어 사전'])]))
+    ];
+  }
+
+  /* ---------- 팝오버 ---------- */
+  const pop = U.qs('#pop');
+  let popAnchor = null;
+  function openPop(anchor, children) {
+    if (popAnchor === anchor && !pop.hidden) { closePop(); return; }
+    closePop();
+    pop.innerHTML = '';
+    children.forEach(function (c) { if (c) pop.appendChild(c); });
+    const x = el('button.pop-x', { type: 'button', 'aria-label': '닫기' }, ['×']);
+    x.addEventListener('click', closePop);
+    pop.appendChild(x);
+    pop.hidden = false;
+    popAnchor = anchor;
+    anchor.setAttribute('aria-expanded', 'true');
+    if (innerWidth <= 760) { pop.classList.add('sheet'); pop.style.left = ''; pop.style.top = ''; }
+    else {
+      pop.classList.remove('sheet');
+      const r = anchor.getBoundingClientRect();
+      const w = pop.offsetWidth, h = pop.offsetHeight;
+      let left = r.left + scrollX + r.width / 2 - w / 2;
+      left = Math.max(scrollX + 12, Math.min(left, scrollX + innerWidth - w - 12));
+      let top = r.bottom + scrollY + 8;
+      if (r.bottom + h + 16 > innerHeight && r.top - h - 8 > 0) top = r.top + scrollY - h - 8;
+      pop.style.left = left + 'px'; pop.style.top = top + 'px';
+    }
+    const first = pop.querySelector('a, button'); if (first && first !== x) { /* 포커스는 그대로 두되 키보드 사용자는 Tab으로 들어올 수 있게 */ }
+  }
+  function closePop() {
+    if (pop.hidden) return;
+    pop.hidden = true;
+    if (popAnchor) { popAnchor.setAttribute('aria-expanded', 'false'); }
+    popAnchor = null;
+  }
+  document.addEventListener('click', function (e) {
+    if (pop.hidden) return;
+    if (pop.contains(e.target) || (popAnchor && popAnchor.contains(e.target))) return;
+    closePop();
+  });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { if (!pop.hidden) { const a = popAnchor; closePop(); if (a) a.focus(); } setNav(false); } });
+
+  function setProgress(v) { const p = U.qs('#progress'); if (p) p.style.width = (v * 100).toFixed(2) + '%'; }
+
+  /* ---------- 상단 검색 제안 ---------- */
+  const q = U.qs('#q'), qsList = U.qs('#qs-list');
+  let qsItems = [], qsSel = -1;
+  function norm(s) { return String(s || '').toLowerCase(); }
+  function hl(text, v) {
+    const i = norm(text).indexOf(norm(v));
+    if (i < 0 || !v) return esc(text);
+    return esc(text.slice(0, i)) + '<mark>' + esc(text.slice(i, i + v.length)) + '</mark>' + esc(text.slice(i + v.length));
+  }
+  function suggest() {
+    const v = q.value.trim();
+    qsList.innerHTML = ''; qsItems = []; qsSel = -1;
+    if (!v) { qsList.hidden = true; q.setAttribute('aria-expanded', 'false'); return; }
+    const lv = norm(v);
+    const docs = articles.map(function (a) {
+      let sc = 0; const t = norm(a.title);
+      if (t === lv) sc = 100; else if (t.indexOf(lv) === 0) sc = 60; else if (t.indexOf(lv) >= 0) sc = 40;
+      else if ((a.tags || []).some(function (x) { return norm(x).indexOf(lv) >= 0; })) sc = 20;
+      else if (norm(a.summary).indexOf(lv) >= 0) sc = 10;
+      return { a: a, sc: sc };
+    }).filter(function (x) { return x.sc; }).sort(function (x, y) { return y.sc - x.sc || x.a.title.length - y.a.title.length; }).slice(0, 7);
+    const terms = glossary.filter(function (g) { return norm(g.term).indexOf(lv) >= 0 || norm(g.en).indexOf(lv) >= 0; }).slice(0, 4);
+    function item(html, sub, go) {
+      const it = el('div.qs-item', { role: 'option', 'aria-selected': 'false' }, [el('span.qs-t', { html: html }), el('span.qs-s', null, [sub])]);
+      it.addEventListener('mousedown', function (e) { e.preventDefault(); go(); });
+      qsItems.push({ el: it, go: go });
+      return it;
+    }
+    if (docs.length) {
+      qsList.appendChild(el('div.qs-group', null, ['문서']));
+      docs.forEach(function (x) { qsList.appendChild(item(hl(x.a.title, v), (secById[x.a.section] || {}).title || '', function () { location.hash = '#/a/' + x.a.slug; closeQs(true); })); });
+    }
+    if (terms.length) {
+      qsList.appendChild(el('div.qs-group', null, ['용어']));
+      terms.forEach(function (g) {
+        qsList.appendChild(item(hl(g.term, v), g.def, function () { location.hash = '#/glossary?t=' + encodeURIComponent(g.term); closeQs(true); }));
+      });
+    }
+    if (!docs.length && !terms.length) qsList.appendChild(el('div.qs-empty', null, ['제목과 용어에서 찾지 못했어요. 본문까지 찾으려면 Enter를 누르세요.']));
+    const all = el('a.qs-all', { href: '#/search?q=' + encodeURIComponent(v) }, ['본문까지 "' + v + '" 찾기']);
+    all.addEventListener('mousedown', function (e) { e.preventDefault(); location.hash = '#/search?q=' + encodeURIComponent(v); closeQs(true); });
+    qsList.appendChild(all);
+    qsList.hidden = false; q.setAttribute('aria-expanded', 'true');
+  }
+  function closeQs(clear) { qsList.hidden = true; q.setAttribute('aria-expanded', 'false'); if (clear) { q.value = ''; q.blur(); } }
+  function moveSel(d) {
+    if (!qsItems.length) return;
+    if (qsSel >= 0) qsItems[qsSel].el.setAttribute('aria-selected', 'false');
+    qsSel = (qsSel + d + qsItems.length) % qsItems.length;
+    qsItems[qsSel].el.setAttribute('aria-selected', 'true');
+    qsItems[qsSel].el.scrollIntoView({ block: 'nearest' });
+  }
+  q.addEventListener('input', suggest);
+  q.addEventListener('focus', function () { if (q.value.trim()) suggest(); });
+  q.addEventListener('blur', function () { setTimeout(function () { closeQs(false); }, 120); });
+  q.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowDown') { e.preventDefault(); moveSel(1); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); moveSel(-1); }
+    else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (qsSel >= 0) qsItems[qsSel].go();
+      else if (q.value.trim()) { location.hash = '#/search?q=' + encodeURIComponent(q.value.trim()); closeQs(true); }
+    } else if (e.key === 'Escape') { closeQs(true); }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === '/' && !/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName)) { e.preventDefault(); q.focus(); }
+  });
+
+  /* ---------- 본문 검색 결과 ---------- */
   function loadIndex() {
     if (searchIndex) return Promise.resolve(searchIndex);
     return fetch('data/search-index.json', { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (docs) { searchIndex = JHB.search.build(docs); return searchIndex; });
   }
   function search(query) {
-    const q = (query.q || '').trim(), sec = query.s || '';
-    setTitle(q ? '"' + q + '" 검색' : '검색');
-    const input = el('input', { type: 'search', placeholder: '궁금한 말을 입력하세요', value: q, 'aria-label': '검색', autofocus: true });
-    const sel = el('select', { 'aria-label': '섹션' }, [el('option', { value: '' }, ['전체'])].concat(sections.filter(function (s) { return !s.glossary; }).map(function (s) { return el('option', { value: s.id, selected: s.id === sec }, [s.title]); })));
-    const results = el('div.list');
-    const status = el('p.small.muted', { style: 'margin:6px 0 12px' });
+    const v0 = (query.q || '').trim(), sec = query.s || '';
+    setTitle(v0 ? '"' + v0 + '" 찾기' : '찾기');
+    drawNav(null, null, null);
+    const input = el('input', { type: 'search', placeholder: '찾을 말을 입력하세요', value: v0, 'aria-label': '본문 검색' });
+    const sel = el('select', { 'aria-label': '분류' }, [el('option', { value: '' }, ['모든 분류'])].concat(sections.filter(function (s) { return !s.glossary; }).map(function (s) { return el('option', { value: s.id, selected: s.id === sec }, [s.title]); })));
+    const results = el('ul.rows');
+    const status = el('p.status');
     function run() {
       const v = input.value.trim(), sv = sel.value;
       history.replaceState(null, '', '#/search?q=' + encodeURIComponent(v) + (sv ? '&s=' + sv : ''));
       if (!v) { results.innerHTML = ''; status.textContent = '제목, 요약, 본문, 태그에서 찾아요.'; return; }
+      status.textContent = '찾고 있어요.';
       loadIndex().then(function (idx) {
-        const r = JHB.search.query(idx, v, { section: sv || null, limit: 50 });
+        const r = JHB.search.query(idx, v, { section: sv || null, limit: 60 });
         results.innerHTML = '';
-        status.textContent = r.length ? r.length + '편 찾음' : '찾은 글이 없어요. 다른 말로 찾아보거나 용어 사전을 봐 주세요.';
-        r.forEach(function (x) { const a = bySlug[x.id]; if (a) results.appendChild(articleItem(a, x.snippet)); });
-        const lv = v.toLowerCase();
-        const g = (JHB.glossary || []).filter(function (t) { return t.term.indexOf(v) >= 0 || t.def.indexOf(v) >= 0 || (t.en || '').toLowerCase().indexOf(lv) >= 0; }).slice(0, 5);
-        if (g.length) results.appendChild(el('dl.gl-item', null, g.map(function (t) { return el('div', null, [el('dt', null, [t.term, t.en ? el('span.gl-en', null, [t.en]) : null]), el('dd', null, [t.def])]); })));
-      }).catch(function () { status.textContent = '검색 색인을 불러오지 못했어요.'; });
+        status.textContent = r.length ? '문서 ' + r.length + '개를 찾았어요.' : '찾은 문서가 없어요. 다른 말로 찾거나 용어 사전을 열어 보세요.';
+        r.forEach(function (x) { const a = bySlug[x.id]; if (a) results.appendChild(row(a, x.snippet)); });
+      }).catch(function () { status.textContent = '검색 색인을 불러오지 못했어요. 인터넷 연결을 확인하고 다시 찾아 주세요.'; });
     }
-    let timer; input.addEventListener('input', function () { clearTimeout(timer); timer = setTimeout(run, 150); });
+    let timer; input.addEventListener('input', function () { clearTimeout(timer); timer = setTimeout(run, 160); });
     sel.addEventListener('change', run);
     show([
-      el('div.crumb', null, [el('a', { href: '#/' }, ['홈']), '›', '검색']),
-      el('form.searchbox', { onsubmit: function (e) { e.preventDefault(); run(); } }, [input, sel]),
+      el('nav.crumb', { 'aria-label': '위치' }, [el('a', { href: '#/' }, ['첫 화면']), el('span.sep', null, ['/']), '찾기']),
+      el('h1.page-title', null, ['본문 찾기']),
+      el('form.searchbar', { onsubmit: function (e) { e.preventDefault(); run(); } }, [input, sel]),
       status, results
     ]);
     run(); input.focus();
   }
 
+  /* ---------- 저장한 문서 ---------- */
   function favPage() {
-    setTitle('저장한 글');
+    setTitle('저장한 문서');
+    drawNav(null, null, null);
     const f = favs().map(function (s) { return bySlug[s]; }).filter(Boolean);
     show([
-      el('div.crumb', null, [el('a', { href: '#/' }, ['홈']), '›', '저장한 글']),
-      el('h1.hero', { style: 'font-size:24px;padding:12px 0' }, ['저장한 글']),
-      f.length ? el('div.list', null, f.map(function (a) { return articleItem(a); })) : el('div.empty', null, ['글 위의 "☆ 저장"을 누르면 여기에 모여요.'])
+      el('nav.crumb', { 'aria-label': '위치' }, [el('a', { href: '#/' }, ['첫 화면']), el('span.sep', null, ['/']), '저장한 문서']),
+      el('h1.page-title', null, ['저장한 문서']),
+      f.length ? el('ul.rows', { style: 'margin-top:22px' }, f.map(function (a) { return row(a); }))
+        : el('p.page-lead', null, ['문서의 "저장" 버튼을 누르면 여기에 모여요. 이 기기의 브라우저에만 저장돼요.'])
     ]);
   }
 
-  function glossary() {
+  /* ---------- 용어 사전 ---------- */
+  function glossaryPage() {
     setTitle('용어 사전');
-    const s = secById['14'] || { hue: 100 };
-    const items = (JHB.glossary || []).slice().sort(function (a, b) { return a.term.localeCompare(b.term, 'ko'); });
-    const groups = {}; const order = [];
+    drawNav('14', null, null);
+    const target = parseHash().query.t || '';
+    const items = glossary.slice().sort(function (a, b) { return a.term.localeCompare(b.term, 'ko'); });
+    const groups = {}, order = [];
     items.forEach(function (t) { const k = U.chosung(t.term); if (!groups[k]) { groups[k] = []; order.push(k); } groups[k].push(t); });
-    const input = el('input', { type: 'search', placeholder: '용어 찾기', 'aria-label': '용어 찾기' });
-    const body = el('div');
+    const input = el('input', { type: 'search', placeholder: '용어 찾기 (한글이나 영문 약어)', 'aria-label': '용어 찾기' });
+    const bodyBox = el('div');
+    function idOf(t) { return 'gl-' + encodeURIComponent(t.term).replace(/%/g, ''); }
     function draw() {
-      const v = input.value.trim();
-      body.innerHTML = '';
+      const v = input.value.trim(), lv = v.toLowerCase();
+      bodyBox.innerHTML = '';
       order.forEach(function (k) {
-        const lv = v.toLowerCase();
         const list = groups[k].filter(function (t) { return !v || t.term.indexOf(v) >= 0 || t.def.indexOf(v) >= 0 || (t.en || '').toLowerCase().indexOf(lv) >= 0; });
         if (!list.length) return;
-        body.appendChild(el('div.gl-group', { id: 'gl-' + k }, [el('h2', null, [k]), el('dl', null, list.map(function (t) {
-          return el('div.gl-item', null, [el('dt', null, [t.term, t.en ? el('span.gl-en', null, [t.en]) : null]), el('dd', null, [t.def]),
-            (t.related || []).filter(function (r) { return bySlug[r]; }).length ? el('div.rel', null, t.related.filter(function (r) { return bySlug[r]; }).map(function (r) { return el('a', { href: '#/a/' + r }, ['→ ' + bySlug[r].title]); })) : null]);
+        bodyBox.appendChild(el('section.gl-group', { id: 'glk-' + k }, [el('h2', null, [k === 'A' ? '영문' : k]), el('dl.gl-list', null, list.map(function (t) {
+          const rels = (t.related || []).filter(function (r) { return bySlug[r]; });
+          return el('div.gl-item', { id: idOf(t) }, [
+            el('dt', null, [t.term, t.en ? el('span.gl-en', null, [t.en]) : null]),
+            el('dd', null, [t.def, rels.length ? el('div.gl-rel', null, rels.map(function (r) { return el('a', { href: '#/a/' + r }, [bySlug[r].title]); })) : null])
+          ]);
         }))]));
       });
-      if (!body.children.length) body.appendChild(el('div.empty', null, ['해당하는 용어가 없어요.']));
+      if (!bodyBox.children.length) bodyBox.appendChild(el('p.empty', null, ['그 말이 들어간 용어가 없어요. 본문 찾기로 찾아보세요.']));
     }
     input.addEventListener('input', draw);
     show([
-      el('div.crumb', null, [el('a', { href: '#/' }, ['홈']), '›', '용어 사전']),
-      el('div.sec-head.tinted', { style: '--h:' + s.hue }, [el('h1', null, ['용어 사전']), el('p', null, [items.length + '개 용어를 가나다순으로 정리했어요.'])]),
-      el('form.searchbox', { onsubmit: function (e) { e.preventDefault(); } }, [input]),
-      el('div.gl-index', null, order.map(function (k) { return el('a', { href: '#gl-' + k, onclick: function (e) { e.preventDefault(); const n = document.getElementById('gl-' + k); if (n) n.scrollIntoView({ behavior: 'smooth' }); } }, [k]); })),
-      body
+      el('nav.crumb', { 'aria-label': '위치' }, [el('a', { href: '#/' }, ['첫 화면']), el('span.sep', null, ['/']), '용어 사전']),
+      el('h1.page-title', null, ['용어 사전']),
+      el('p.page-lead', null, ['문서에 나오는 용어 ' + items.length + '개를 가나다순으로 모았어요. 문서 본문에서 점선 밑줄이 있는 말을 누르면 같은 풀이가 나와요.']),
+      el('form.searchbar', { onsubmit: function (e) { e.preventDefault(); } }, [input]),
+      el('nav.gl-letters', { 'aria-label': '첫 글자로 이동' }, order.map(function (k) {
+        return el('a', { href: '#glk-' + k, onclick: function (e) { e.preventDefault(); const n = document.getElementById('glk-' + k); if (n) n.scrollIntoView({ block: 'start' }); } }, [k === 'A' ? 'A' : k]);
+      })),
+      bodyBox
     ]);
     draw();
+    if (target && termByName[target]) {
+      const n = document.getElementById(idOf(termByName[target]));
+      if (n) { n.scrollIntoView({ block: 'center' }); n.classList.add('flash'); n.style.background = 'var(--mark)'; setTimeout(function () { n.style.background = ''; }, 2000); }
+    }
   }
 
+  /* ---------- 소개 ---------- */
   function about() {
     setTitle('이 백과에 대해');
+    drawNav(null, null, null);
     show([
-      el('div.crumb', null, [el('a', { href: '#/' }, ['홈']), '›', '이 백과에 대해']),
-      el('div.about', { html:
-        '<h1 class="hero" style="font-size:24px;padding:12px 0">이 백과에 대해</h1>' +
+      el('nav.crumb', { 'aria-label': '위치' }, [el('a', { href: '#/' }, ['첫 화면']), el('span.sep', null, ['/']), '이 백과에 대해']),
+      el('h1.page-title', null, ['이 백과에 대해']),
+      el('div.prose', { html:
         '<p>공공기관·학회·진료 지침·연구 논문을 바탕으로 조현병을 정리한 한국어 백과예요. 어려운 말은 풀어 쓰고, 근거는 글마다 출처로 남겼어요.</p>' +
         '<h2>AI로 만든 백과예요</h2>' +
         '<p>이 백과의 글은 AI(Anthropic의 Claude)가 공개 자료를 찾아 초안을 쓰고, 출처가 실제로 있는지 확인해 만들었어요. 의사나 전문가의 감수는 아직 받지 않았어요. 그래서 틀린 내용이 있을 수 있어요. 중요한 결정은 이 백과만 보고 내리지 말고, 글 아래의 출처와 담당 의사의 의견을 함께 확인하세요.</p>' +
         '<h2>글을 쓰는 원칙</h2><ul>' +
-        '<li>출처 우선순위: 국립정신건강센터·대한조현병학회·보건복지부 → NICE·APA 진료 지침, NIMH, WHO → 메타분석·학술지 논문 → 그 밖의 자료.</li>' +
-        '<li>글마다 근거 수준 배지를 달아요. <b>가이드라인</b>(진료 지침·공공기관), <b>연구</b>(비교적 확립된 연구), <b>초기 연구</b>(더 검증이 필요한 가설), <b>경험</b>(당사자·임상 경험).</li>' +
+        '<li>출처 우선순위: 국립정신건강센터·대한조현병학회·보건복지부, 그다음 NICE·APA 진료 지침과 NIMH·WHO, 그다음 메타분석과 학술지 논문, 마지막으로 그 밖의 자료.</li>' +
+        '<li>글마다 근거 수준을 표시해요. <b>가이드라인</b>은 진료 지침·공공기관, <b>연구</b>는 비교적 확립된 연구, <b>초기 연구</b>는 더 검증이 필요한 가설, <b>경험</b>은 당사자·임상 경험에 바탕을 둔 글이에요.</li>' +
         '<li>약 용량이나 복용 중단 같은 개인별 지시는 쓰지 않아요. 그런 결정은 담당 의사와 하는 거예요.</li>' +
         '<li>낙인이 되는 표현은 쓰지 않아요. "조현병 환자"보다 "조현병이 있는 사람"처럼 사람을 먼저 써요.</li></ul>' +
+        '<h2>읽는 법</h2><ul>' +
+        '<li>본문에서 점선 밑줄이 있는 말은 용어 사전에 풀이가 있어요. 넓은 화면에서는 오른쪽 여백에, 휴대폰에서는 누르면 아래에 나와요.</li>' +
+        '<li>문장 끝의 작은 숫자는 출처 번호예요. 누르면 어떤 자료인지 바로 볼 수 있어요.</li>' +
+        '<li>키보드에서 <kbd>/</kbd>를 누르면 검색창으로 바로 가요.</li></ul>' +
         '<h2>꼭 알아둘 것</h2><p>이 백과는 의료 조언이 아니에요. 증상이 심해지거나 위험하다고 느끼면 담당 의사, 정신건강위기상담 1577-0199, 자살예방상담 109, 응급 시 119에 연락하세요.</p>' +
         '<h2>틀린 내용을 찾았다면</h2><p>출처가 바뀌거나 더 나은 연구가 나오면 글을 고쳐요. 틀린 부분을 알려 주시면 확인해서 반영할게요.</p>'
       })
@@ -308,7 +682,8 @@
 
   function notFound() {
     setTitle('없는 페이지');
-    show([el('div.empty', null, ['그런 페이지가 없어요. ', el('a', { href: '#/', style: 'text-decoration:underline' }, ['홈으로'])])]);
+    drawNav(null, null, null);
+    show([el('h1.page-title', null, ['그런 문서가 없어요']), el('p.page-lead', null, ['주소가 바뀌었을 수 있어요. 위의 검색창에서 찾거나 ', el('a', { href: '#/', style: 'color:var(--accent);text-decoration:underline' }, ['첫 화면']), '으로 가세요.'])]);
   }
 
   route();
