@@ -33,10 +33,10 @@ test('title · who · intro 가 채워져 있다', function () {
   });
 });
 
-test('steps 는 8~10개', function () {
+test('steps 는 8~12개', function () {
   courses.forEach(function (c) {
     ok(Array.isArray(c.steps), c.id + ': steps 배열 아님');
-    ok(c.steps.length >= 8 && c.steps.length <= 10, c.id + ': steps ' + c.steps.length + '개');
+    ok(c.steps.length >= 8 && c.steps.length <= 12, c.id + ': steps ' + c.steps.length + '개');
   });
 });
 

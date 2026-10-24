@@ -19,8 +19,8 @@ http://localhost:5174 을 연다. (launch.json 항목 "jhb")
 - `js/app.js` 화면. 실제 경로 주소(`a/<slug>/` 등)를 쓰고, 옛 해시 주소(`#/a/…`)로 들어오면 새 주소로 옮긴다. 화면을 만들 때 쓰는 `#/…` 링크는 `js/paths.js`가 실제 경로로 바꿔 끼운다.
 - `js/paths.js` 주소 규칙(옛 해시 → 경로, 깊이별 `../` 기준). `js/gloss.js` 본문 속 용어 찾기. `data/about.js` 소개 페이지 본문.
 - `tools/site-verify.json` 검색엔진 소유 확인 코드(구글·네이버 HTML 태그의 content 값). 넣고 다시 빌드하면 첫 화면에만 들어간다. 등록 순서는 `docs/검색엔진_등록_안내.md`.
-- `data/sections.js` 섹션 16개(손으로 관리). `data/glossary.js` 용어 사전(손으로 관리, `{term, en, def, related}`, 2026-10-23 기준 158개). check-content가 사전도 검사한다(중복, 160자 초과, 없는 글 링크, 금지 표현).
-- 현재 글 221편(2026-10-23). 섹션 14는 글이 아니라 용어 사전이다. `data/toc.js`, `data/search-index.json`, `data/precache.json`은 **자동 생성**.
+- `data/sections.js` 섹션 16개(손으로 관리). `data/glossary.js` 용어 사전(손으로 관리, `{term, en, def, related}`, 2026-10-24 기준 205개). check-content가 사전도 검사한다(중복, 160자 초과, 없는 글 링크, 금지 표현).
+- 현재 글 251편(2026-10-24). 섹션 14는 글이 아니라 용어 사전이다. `data/toc.js`, `data/search-index.json`, `data/precache.json`은 **자동 생성**.
 - `content/<섹션폴더>/<slug>.md` 글. slug는 전체에서 유일해야 한다.
 - `sw.js` 오프라인 캐시. `build-index.cjs`가 `BUILD` 상수를 새 버전으로 바꿔 넣고, 브라우저는 sw.js가 바뀌면 새 캐시를 설치하고 옛 캐시를 지운다. 글을 추가한 뒤 화면에 안 보이면 새로고침 두 번.
 - `docs/집필가이드.md` 글 형식·출처·문체·안전 규칙. 새 글을 쓰기 전에 읽는다.

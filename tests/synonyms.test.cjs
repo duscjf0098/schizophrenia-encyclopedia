@@ -96,8 +96,8 @@ test('slug 는 최대 8개, terms 는 중복 없음', function () {
   ok(S.expand(M, '약 부작용 때문에 살이 쪄요').slugs.length <= 8);
 });
 
-test('데이터: 항목 200~300개, say 2글자 이상, 모든 slug 가 toc 에 있고 모든 term 이 사전에 있다', function () {
-  ok(SYN.length >= 200 && SYN.length <= 300, '항목 수 ' + SYN.length);
+test('데이터: 항목 200~350개, say 2글자 이상, 모든 slug 가 toc 에 있고 모든 term 이 사전에 있다', function () {
+  ok(SYN.length >= 200 && SYN.length <= 350, '항목 수 ' + SYN.length);
   const slugSet = new Set(TOC.map(function (a) { return a.slug; }));
   const termSet = new Set(GLOSS.map(function (g) { return g.term; }));
   const badSlug = [], badTerm = [], badSay = [];
