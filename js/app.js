@@ -12,6 +12,8 @@
     if (n.matches('a[href^="#/"]')) n.setAttribute('href', L(n.getAttribute('href')));
     U.qsa('a[href^="#/"]', n).forEach(function (a) { a.setAttribute('href', L(a.getAttribute('href'))); });
   }
+  /* 이미 열린 페이지에서 옛 해시 주소(#/…)로 바뀌면 새 주소로 옮긴다 */
+  window.addEventListener('hashchange', function () { if (location.hash.indexOf('#/') === 0) location.replace(L(location.hash)); });
   new MutationObserver(function (muts) { muts.forEach(function (m) { m.addedNodes.forEach(fixLinks); }); }).observe(document.body, { childList: true, subtree: true });
   const app = U.qs('#app');
   const nav = U.qs('#sidenav');
@@ -671,9 +673,10 @@
         const syn = synHits(v).slugs.filter(function (x) { return bySlug[x.slug] && (!sv || bySlug[x.slug].section === sv); });
         if (syn.length) {
           const seen = {}; r.forEach(function (x) { seen[x.id] = 1; });
-          const synIds = {}; syn.forEach(function (x) { synIds[x.slug] = 1; });
-          const front = syn.filter(function (x) { return !seen[x.slug]; }).map(function (x) { return { id: x.slug, snippet: null }; });
-          r = front.concat(r.filter(function (x) { return synIds[x.id]; })).concat(r.filter(function (x) { return !synIds[x.id]; }));
+          const synIds = {}; syn.forEach(function (x) { synIds[x.slug] = x.score; });
+          const bySnip = {}; r.forEach(function (x) { bySnip[x.id] = x.snippet; });
+          const front = syn.map(function (x) { return { id: x.slug, snippet: seen[x.slug] ? bySnip[x.slug] : null }; });
+          r = front.concat(r.filter(function (x) { return !synIds[x.id]; }));
           extra.appendChild(el('p.qs-hint', { style: 'padding:0 0 6px' }, ['일상 말로 입력하신 것 같아 관련 문서를 앞에 두었어요.']));
         }
         results.innerHTML = '';
