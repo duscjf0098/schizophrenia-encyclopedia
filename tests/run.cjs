@@ -1,6 +1,7 @@
 /* 단위 테스트 실행기: node tests/run.cjs */
 const path = require('path');
-const files = ['md.test.cjs', 'search.test.cjs', 'gloss.test.cjs', 'paths.test.cjs'];
+const fs = require('fs');
+const files = fs.readdirSync(__dirname).filter(function (f) { return /.test.cjs$/.test(f); }).sort();
 let pass = 0, fail = 0;
 global.test = function (name, fn) {
   try { fn(); pass++; console.log('  ok   ' + name); }

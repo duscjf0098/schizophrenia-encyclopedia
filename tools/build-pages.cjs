@@ -17,7 +17,8 @@ function load(file) {
   new Function('window', 'JHB', fs.readFileSync(path.join(root, file), 'utf8'))(win, win.JHB);
   return win.JHB;
 }
-const J = Object.assign({}, load('data/sections.js'), load('data/toc.js'), load('data/glossary.js'), load('data/about.js'));
+const J = Object.assign({}, load('data/sections.js'), load('data/toc.js'), load('data/glossary.js'), load('data/about.js'), fs.existsSync(path.join(root, 'data/courses.js')) ? load('data/courses.js') : {});
+const courses = J.courses || [];
 const sections = J.sections, articles = J.toc.articles, glossary = J.glossary;
 const secById = {}; sections.forEach(function (s) { secById[s.id] = s; });
 const bySlug = {}; articles.forEach(function (a) { bySlug[a.slug] = a; });
@@ -122,6 +123,22 @@ pages.push(page('glossary', {
     }).join('') + '</dl>'
 }));
 
+/* 읽기 코스 */
+if (courses.length) {
+  pages.push(page('courses', {
+    title: '읽기 코스 - 조현병 백과', desc: '처음 진단받았을 때, 가족이 진단받았을 때, 약을 시작했을 때처럼 상황별로 읽을 순서를 안내하는 코스 ' + courses.length + '개.',
+    main: crumb([{ href: '#/', text: '첫 화면' }, { text: '읽기 코스' }]) + '<h1 class="page-title">읽기 코스</h1><ul>' +
+      courses.map(function (c) { return '<li><a href="#/course/' + c.id + '">' + esc(c.title) + '</a> ' + esc(c.intro) + '</li>'; }).join('') + '</ul>'
+  }));
+  courses.forEach(function (c) {
+    pages.push(page('course/' + c.id, {
+      title: c.title + ' - 읽기 코스 - 조현병 백과', desc: c.intro.slice(0, 155),
+      main: crumb([{ href: '#/', text: '첫 화면' }, { href: '#/courses', text: '읽기 코스' }]) + '<h1 class="page-title">' + esc(c.title) + '</h1><p class="page-lead">' + esc(c.intro) + '</p><ol class="steps">' +
+        c.steps.map(function (st) { const a = bySlug[st.slug]; return a ? '<li class="step"><a href="#/a/' + a.slug + '">' + esc(a.title) + '</a><span class="why">' + esc(st.why || '') + '</span></li>' : ''; }).join('') + '</ol>'
+    }));
+  });
+}
+
 /* 소개·검색·저장·무작위 */
 pages.push(page('about', { title: '이 백과에 대해 - 조현병 백과', desc: '조현병 백과가 글을 쓰는 원칙, AI 작성과 전문가 미감수 고지, 읽는 법.', main: '<h1 class="page-title">이 백과에 대해</h1><div class="prose">' + J.aboutHtml + '</div>' }));
 pages.push(page('search', { title: '찾기 - 조현병 백과', robots: 'noindex,follow', noCanonical: true, main: '<h1 class="page-title">본문 찾기</h1>' }));
@@ -137,7 +154,7 @@ pages.forEach(function (p) {
   written++;
 });
 /* 지금 없는 문서의 옛 폴더 정리 (a/, s/ 아래만) */
-['a', 's'].forEach(function (dir) {
+['a', 's', 'course'].forEach(function (dir) {
   const d = path.join(root, dir);
   if (!fs.existsSync(d)) return;
   const keep = new Set(pages.filter(function (p) { return p.route.indexOf(dir + '/') === 0; }).map(function (p) { return p.route.split('/')[1]; }));

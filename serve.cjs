@@ -23,7 +23,13 @@ http.createServer(function (req, res) {
   const file = path.normalize(path.join(root, p));
   if (file !== root && !file.startsWith(root + path.sep)) { res.writeHead(403); return res.end(); }
   fs.readFile(file, function (err, data) {
-    if (err) { res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' }); return res.end('not found: ' + p); }
+    if (err) {
+      if (/text\/html/.test(req.headers.accept || '') && fs.existsSync(path.join(root, '404.html'))) {
+        const html = fs.readFileSync(path.join(root, '404.html'), 'utf8').split('/schizophrenia-encyclopedia/').join('/');
+        res.writeHead(404, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' }); return res.end(html);
+      }
+      res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' }); return res.end('not found: ' + p);
+    }
     res.writeHead(200, { 'Content-Type': types[path.extname(file).toLowerCase()] || 'application/octet-stream', 'Cache-Control': 'no-store' });
     res.end(data);
   });

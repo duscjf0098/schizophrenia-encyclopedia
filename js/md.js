@@ -131,9 +131,9 @@
           const cells = function (r) { return r.slice(1, -1).split('|').map(function (c) { return c.trim(); }); };
           let head = null, body = rows;
           if (rows.length >= 2 && /^\|[\s:|-]+\|$/.test(rows[1])) { head = cells(rows[0]); body = rows.slice(2); }
-          let html = '<table>';
+          let html = '<div class="tbl"><table>';
           if (head) html += '<thead><tr>' + head.map(function (c) { return '<th>' + inline(c) + '</th>'; }).join('') + '</tr></thead>';
-          html += '<tbody>' + body.map(function (r) { return '<tr>' + cells(r).map(function (c) { return '<td>' + inline(c) + '</td>'; }).join('') + '</tr>'; }).join('') + '</tbody></table>';
+          html += '<tbody>' + body.map(function (r) { return '<tr>' + cells(r).map(function (c) { return '<td>' + inline(c) + '</td>'; }).join('') + '</tr>'; }).join('') + '</tbody></table></div>';
           out.push(html);
           continue;
         }

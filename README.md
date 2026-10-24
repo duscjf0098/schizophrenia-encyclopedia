@@ -49,11 +49,14 @@ sources:
 글을 추가·수정한 뒤:
 
 ```
-node tools/check-content.cjs && node tools/build-index.cjs && node tools/build-pages.cjs
+node tools/check-content.cjs && node tools/build-index.cjs && node tools/build-links.cjs && node tools/build-pages.cjs
 ```
 
 - `check-content.cjs`: 필수 항목, 출처·각주 범위, 금지 표현(용량 지시, 임의 중단 권유, 옛 병명, "조현병 환자", 단정적 완치), 위기 글의 109·1577-0199, 600자 미만 검사.
 - `build-index.cjs`: toc·검색 색인·프리캐시 목록 생성.
+- `build-links.cjs`: 문서 간 링크 지도(`data/links.js`, 역링크·고아 문서 통계).
+- `build-pages.cjs`: 검색엔진용 정적 페이지와 sitemap.
+- 앱에 붙은 선택 모듈: `data/synonyms.js`+`js/synonyms.js`(일상 말 → 문서), `js/crisis.js`+`data/crisis-card.js`(위기 검색어 안내), `data/courses.js`(읽기 코스), `js/progress.js`(읽은 문서·이어 읽기, localStorage `jhb.read`), `data/links.js`(역링크). 모두 없어도 앱은 동작한다.
 
 ## 테스트
 

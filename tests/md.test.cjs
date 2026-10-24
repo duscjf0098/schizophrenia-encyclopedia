@@ -64,7 +64,7 @@ test('인용·구분선', function () {
 
 test('표', function () {
   const r = md.render('| 약 | 특징 |\n|---|---|\n| 리스페리돈 | 흔함 |');
-  has(r.html, '<table><thead><tr><th>약</th><th>특징</th></tr></thead><tbody><tr><td>리스페리돈</td><td>흔함</td></tr></tbody></table>');
+  has(r.html, '<div class="tbl"><table><thead><tr><th>약</th><th>특징</th></tr></thead><tbody><tr><td>리스페리돈</td><td>흔함</td></tr></tbody></table></div>');
 });
 
 test('콜아웃 ::: 종류 제목', function () {
