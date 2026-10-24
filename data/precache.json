@@ -1,5 +1,5 @@
 {
- "version": "2026-10-24-221-mvlsprgt",
+ "version": "2026-10-24-221-mvlszkl2",
  "files": [
   "./",
   "index.html",
@@ -26,6 +26,7 @@
   "favicon.svg",
   "icon-192.png",
   "icon-512.png",
+  "og.png",
   "content/01-basics/brain-changes.md",
   "content/01-basics/cannabis.md",
   "content/01-basics/causes-overview.md",

@@ -4,3 +4,4 @@ node_modules/
 .claude/CLAUDE.md.onboarding-bak
 .claude/
 .claudeignore
+tools/og-filled.html

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@600;700&display=swap">
+<style>
+  /* 공유 미리보기 배너 1200×630. tools/build-og.cjs 가 이 파일을 열어 og.png 로 찍는다. */
+  html, body { margin: 0; }
+  body { width: 1200px; height: 630px; overflow: hidden; background: #fbfbf9; color: #1d232c; font-family: "Pretendard Variable", Pretendard, sans-serif; position: relative; }
+  .rules { position: absolute; inset: 0; }
+  .rules i { position: absolute; left: 0; right: 0; height: 2px; background: #e3e5e2; }
+  .tuned { position: absolute; left: 0; right: 0; height: 160px; }
+  .spines { position: absolute; left: 72px; bottom: 150px; display: flex; gap: 10px; }
+  .spines i { width: 8px; height: 46px; border-radius: 2px; }
+  .box { position: absolute; left: 72px; top: 96px; width: 1056px; }
+  .mark { display: flex; align-items: center; gap: 18px; color: #3c4450; font-size: 26px; font-weight: 600; letter-spacing: -0.01em; }
+  .mark svg { width: 44px; height: 44px; }
+  h1 { font-family: "Noto Serif KR", serif; font-weight: 700; font-size: 104px; letter-spacing: -0.03em; line-height: 1.1; margin: 26px 0 22px; }
+  p { font-size: 30px; line-height: 1.5; color: #3c4450; margin: 0; max-width: 900px; word-break: keep-all; }
+  .stats { position: absolute; right: 72px; bottom: 150px; display: flex; gap: 40px; font-size: 22px; color: #6a7280; }
+  .stats b { font-family: "Noto Serif KR", serif; font-size: 36px; color: #1d232c; margin-right: 6px; font-variant-numeric: tabular-nums; }
+</style>
+</head>
+<body>
+  <div class="rules" aria-hidden="true">
+    <i style="top:548px"></i><i style="top:572px"></i><i style="top:596px"></i>
+  </div>
+  <svg class="tuned" style="top:470px" viewBox="0 0 1200 160" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 80 C 120 80, 200 128, 300 128 S 480 80, 640 80 L 1200 80" stroke="#4a44b0" stroke-width="3" fill="none"/>
+    <circle cx="300" cy="128" r="9" fill="#4a44b0"/>
+  </svg>
+  <div class="box">
+    <div class="mark">
+      <svg viewBox="0 0 28 28" aria-hidden="true">
+        <g stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none">
+          <path d="M3 6h22"/><path d="M3 10.5h22"/><path d="M3 15c6 0 8 2.6 11 2.6S19 15 25 15" stroke="#4a44b0"/><path d="M3 19.5h22"/><path d="M3 24h22"/>
+        </g>
+        <circle cx="14" cy="17.6" r="1.9" fill="#4a44b0"/>
+      </svg>
+      출처와 함께 읽는 한국어 백과
+    </div>
+    <h1>조현병 백과</h1>
+    <p>증상, 진단, 약과 치료, 함께 살아가기, 제도, 최신 연구까지. 어려운 말은 풀어 쓰고 근거는 글마다 출처로 남겼어요.</p>
+  </div>
+  <div class="spines" aria-hidden="true">
+    <i style="background:hsl(255 38% 56%)"></i><i style="background:hsl(20 38% 56%)"></i><i style="background:hsl(200 38% 56%)"></i><i style="background:hsl(160 38% 56%)"></i><i style="background:hsl(45 38% 56%)"></i><i style="background:hsl(290 38% 56%)"></i><i style="background:hsl(340 38% 56%)"></i><i style="background:hsl(120 38% 56%)"></i>
+  </div>
+  <div class="stats"><span><b>{{DOCS}}</b>개 문서</span><span><b>{{TERMS}}</b>개 용어</span><span><b>{{SOURCES}}</b>개 출처</span></div>
+</body>
+</html>

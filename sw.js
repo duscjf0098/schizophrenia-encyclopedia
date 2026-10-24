@@ -1,7 +1,7 @@
 /* 조현병 백과 · 오프라인 캐시. 아래 BUILD 는 tools/build-index.cjs 가 갱신한다(바뀌어야 브라우저가 새 캐시를 설치한다).
    - 페이지 이동(navigate): 네트워크 먼저, 안 되면 저장해 둔 그 페이지, 그것도 없으면 app-shell.html 틀을 채워 만든다.
    - 그 밖의 파일: 캐시 먼저, 뒤에서 네트워크로 갱신. */
-const BUILD = '2026-10-24-221-mvlsprgt';
+const BUILD = '2026-10-24-221-mvlszkl2';
 const PRECACHE = 'data/precache.json';
 let CACHE = 'jhb-' + BUILD;
 
