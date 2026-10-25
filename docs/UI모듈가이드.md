@@ -5,7 +5,7 @@
 ## 파일 규칙
 
 - 코드: `js/ui/<이름>.js` — 즉시 실행 함수 하나. 전역은 만들지 않고, 필요하면 `JHB.ui = JHB.ui || {}; JHB.ui.<이름> = {...}` 에만 노출.
-- 스타일: `css/ui/<이름>.css` — `node tools/build-ui-css.cjs` 가 `css/ui.css` 로 이어 붙인다. 선택자는 모두 자기 모듈 접두어(`.pal-`, `.pv-`, `.mb-`, `.stk-`, `.rd-`, `.set-`, `.pol-`, `.hm-`)로 시작해 서로 겹치지 않게.
+- 스타일: `css/ui/<이름>.css` — `node tools/build-ui-css.cjs` 가 `css/ui.css` 로 이어 붙인다. 선택자는 모두 자기 모듈 접두어(`.pal-`, `.pv-`, `.mb-`, `.stk-`, `.rd-`, `.set-`, `.pol-`, `.hm-`, `.sh-`)로 시작해 서로 겹치지 않게.
 - 색·글꼴은 css/style.css 의 토큰만 쓴다: `--paper --paper-2 --paper-3 --ink --ink-2 --muted --rule --rule-2 --accent --accent-2 --accent-soft --accent-ink --mark --bad --bad-soft --warn --warn-soft --ok --ok-soft --serif --sans --fs-body --top-h --shadow-pop`. 어두운 화면은 토큰이 알아서 바뀐다.
 - 외부 라이브러리 금지. `prefers-reduced-motion: reduce` 에서는 움직임을 끈다. 키보드로 전부 쓸 수 있어야 하고(Tab·Enter·Esc), 포커스 표시는 `:focus-visible`.
 - 저장은 `JHB.app.store.get(key, fallback)` / `.set(key, val)` (localStorage 래퍼). 키는 `jhb.ui.<모듈>.<항목>`.
@@ -44,7 +44,7 @@
 
 - 상단 `.topbar` (`#btn-nav`, `.brand`, `.qs`/`#q`/`#qs-list`, `.tools`, `#btn-fs`, `#btn-theme`), 진행 막대 `#progress`
 - 왼쪽 `#sidenav`(≤1080px 서랍, `.open`), 본문 `#app`, 문서 `article.doc > .doc-main`(`.doc-head`, `.body`, `.sources`, `.see-also`, `.pager`) + `.doc-margin`(`.infobox`, `.notes`)
-- 첫 화면 `.portal` 의 섹션들은 `section[data-sec]` = `today`·`continue`·`courses`·`recent`·`index`·`terms`
+- 첫 화면 `.portal` 의 섹션들은 `section[data-sec]` = `today`·`continue`·`courses`·`recent`·`index`·`terms`(모듈이 더함: `shelf` 책꽂이, `start` 처음 온 사람, `new` 새 글)
 - 본문 소제목 `.body h2[data-key="core"|"detail"]` (core = 한 문장으로·짧은 답·나에게 의미하는 것·할 수 있는 것·주변 사람이 알아둘 것·담당 의사에게 물어볼 것·더 읽을 글)
 - 용어 버튼 `.body .term`, 출처 번호 `.body .fn a`, 콜아웃 `.callout.callout-<종류>`
 - 팝오버 `#pop`, 위기 배너 `.crisis`, 바닥 `.sitefoot`

@@ -300,6 +300,45 @@ html.pal-open, html.pal-open body { overflow: hidden; }
 @media print { .set-panel, .set-btn { display: none; } }
 
 
+/* ===== shelf.css ===== */
+/* shelf — 배너(책등형)와 같은 책꽂이. 첫 화면 책꽂이·분류 머리 책등·공용 색 막대. */
+.sh-shelf { margin: 28px 0 4px; }
+.sh-row { display: flex; align-items: flex-end; gap: 4px; padding: 0 12px; overflow-x: auto; scrollbar-width: none; }
+.sh-row::-webkit-scrollbar { display: none; }
+.sh-spine { --h: 250; flex: none; display: block; width: 28px; border-radius: 4px 4px 1px 1px; position: relative; text-decoration: none;
+  background: linear-gradient(90deg, rgba(255, 255, 255, .28) 0, rgba(255, 255, 255, 0) 30%, rgba(0, 0, 0, .08) 100%), hsl(var(--h) var(--spine-s) var(--spine-l));
+  box-shadow: inset 0 -2px 0 rgba(0, 0, 0, .12); transition: transform .18s ease, box-shadow .18s ease; }
+.sh-spine:hover, .sh-spine:focus-visible { transform: translateY(-6px); box-shadow: inset 0 -2px 0 rgba(0, 0, 0, .12), 0 10px 18px rgba(29, 35, 44, .18); }
+.sh-spine:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+.sh-label { position: absolute; top: 14px; left: 0; width: 100%; text-align: center; writing-mode: vertical-rl; text-orientation: upright;
+  font-size: 13px; font-weight: 700; letter-spacing: .04em; line-height: 28px; color: rgba(255, 255, 255, .96); white-space: nowrap; }
+.sh-spine.dk .sh-label { color: rgba(24, 26, 34, .82); }
+.sh-board { height: 6px; background: var(--rule-2); border-radius: 2px; position: relative; }
+.sh-board::after { content: ""; position: absolute; left: 0; right: 0; top: 6px; height: 14px; border-radius: 0 0 8px 8px;
+  background: linear-gradient(180deg, rgba(29, 35, 44, .10), rgba(29, 35, 44, 0)); }
+.sh-hint { margin: 22px 0 0; font-size: 13px; color: var(--muted); }
+
+/* 분류·용어 사전 제목 앞의 큰 책등 */
+.sh-big { --h: 250; display: inline-block; width: 16px; height: .92em; margin-right: 12px; border-radius: 4px 4px 1px 1px; vertical-align: -0.06em;
+  background: linear-gradient(90deg, rgba(255, 255, 255, .28) 0, rgba(255, 255, 255, 0) 30%, rgba(0, 0, 0, .08) 100%), hsl(var(--h) var(--spine-s) var(--spine-l));
+  box-shadow: inset 0 -2px 0 rgba(0, 0, 0, .12); }
+
+/* 공용 색 막대(.spine: 목차·빵부스러기·문서 행)도 책등처럼. style.css 의 .spine 을 일부러 덮어쓴다. */
+.spine { width: 5px; border-radius: 2px 2px 1px 1px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, .30) 0, rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, .10) 100%), hsl(var(--h) var(--spine-s) var(--spine-l));
+  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .15); }
+
+@media (max-width: 760px) {
+  .sh-shelf { margin-top: 22px; }
+  .sh-row { gap: 2px; padding: 0 6px; }
+  .sh-spine { width: 18px; border-radius: 3px 3px 1px 1px; }
+  .sh-label { top: 10px; font-size: 11px; line-height: 18px; letter-spacing: .02em; }
+  .sh-big { width: 12px; margin-right: 9px; }
+}
+@media (prefers-reduced-motion: reduce) { .sh-spine { transition: none; } .sh-spine:hover, .sh-spine:focus-visible { transform: none; } }
+@media print { .sh-shelf { display: none; } }
+
+
 /* ===== sticky.css ===== */
 /* css/ui/sticky.css — 따라오는 제목 줄 (상단 바 바로 아래, 문서 화면에서 제목이 지나가면 나타남) */
 .stk-bar { position: fixed; top: var(--top-h); left: 0; right: 0; z-index: 38; display: flex; align-items: stretch; min-height: 40px; background: color-mix(in srgb, var(--paper) 94%, transparent); backdrop-filter: saturate(1.4) blur(10px); border-bottom: 1px solid var(--rule); font-size: 13.5px; color: var(--ink-2); transform: translateY(-110%); opacity: 0; visibility: hidden; transition: transform .2s ease, opacity .2s ease, visibility 0s linear .2s; }

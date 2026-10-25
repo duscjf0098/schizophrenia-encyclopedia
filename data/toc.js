@@ -1,7 +1,7 @@
-/* 자동 생성: node tools/build-index.cjs (2026-10-24) — 직접 고치지 마세요 */
+/* 자동 생성: node tools/build-index.cjs (2026-10-25) — 직접 고치지 마세요 */
 window.JHB = window.JHB || {};
 JHB.toc = {
- "generated": "2026-10-24",
+ "generated": "2026-10-25",
  "sources": 944,
  "articles": [
   {
