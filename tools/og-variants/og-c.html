@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@600;700&display=swap">
+<style>
+  /* 시안 C "질문형" · 1200×630. 사람들이 실제로 치는 질문 4개를 카드로, 아래에 제목과 답 문구. */
+  html, body { margin: 0; }
+  body { width: 1200px; height: 630px; overflow: hidden; background: #fbfbf9; color: #1d232c; font-family: "Pretendard Variable", Pretendard, sans-serif; position: relative; }
+  .cards { position: absolute; left: 60px; top: 60px; width: 1080px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .card { position: relative; background: #ffffff; border: 1px solid #e3e5e2; border-radius: 16px; padding: 22px 26px 22px 30px; box-shadow: 0 1px 3px rgba(20,24,40,.05); min-height: 136px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; gap: 10px; }
+  .card::before { content: ""; position: absolute; left: 0; top: 18px; bottom: 18px; width: 5px; border-radius: 0 3px 3px 0; background: hsl(var(--h) 38% 56%); }
+  .card .tag { font-size: 17px; font-weight: 600; color: hsl(var(--h) 38% 40%); letter-spacing: 0.01em; }
+  .card .q { font-size: 30px; font-weight: 600; line-height: 1.35; letter-spacing: -0.015em; word-break: keep-all; }
+  .card .q::before { content: "Q"; font-family: "Noto Serif KR", serif; font-weight: 700; color: #4a44b0; margin-right: 10px; }
+  .answer { position: absolute; left: 60px; right: 60px; bottom: 98px; display: flex; align-items: baseline; gap: 26px; }
+  .stats { position: absolute; left: 60px; bottom: 60px; font-size: 21px; color: #6a7280; }
+  .stats b { color: #3c4450; font-weight: 600; font-variant-numeric: tabular-nums; }
+  h1 { font-family: "Noto Serif KR", serif; font-weight: 700; font-size: 92px; letter-spacing: -0.035em; line-height: 1; margin: 0; white-space: nowrap; }
+  h1 em { font-style: normal; color: #4a44b0; }
+  .answer p { margin: 0; font-size: 34px; font-weight: 600; color: #3c4450; letter-spacing: -0.01em; white-space: nowrap; }
+  .answer p b { color: #4a44b0; font-variant-numeric: tabular-nums; }
+  .tuned { position: absolute; left: 60px; width: 1080px; height: 30px; top: 364px; }
+</style>
+</head>
+<body>
+  <div class="cards">
+    <div class="card" style="--h:20"><span class="tag">양성 증상</span><span class="q">환청이 들리면 어떻게 하나요?</span></div>
+    <div class="card" style="--h:255"><span class="tag">이해하기</span><span class="q">조현병은 유전되나요?</span></div>
+    <div class="card" style="--h:340"><span class="tag">약물 치료</span><span class="q">약은 얼마나 오래 먹어야 하나요?</span></div>
+    <div class="card" style="--h:185"><span class="tag">가족과 주변</span><span class="q">가족이 진단받았어요. 뭘 해야 하죠?</span></div>
+  </div>
+  <svg class="tuned" viewBox="0 0 1080 30" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 15 H 300 C 360 15, 390 27, 440 27 S 520 15, 600 15 H 1080" stroke="#4a44b0" stroke-width="2.5" fill="none"/>
+    <circle cx="440" cy="27" r="4" fill="#4a44b0"/>
+  </svg>
+  <div class="answer">
+    <h1>조현병 백과<em>가</em></h1>
+    <p>출처 <b>944</b>개와 함께 답해요</p>
+  </div>
+  <div class="stats">증상 · 진단 · 치료 · 함께 살아가기 · 제도 · 연구 — 문서 <b>251</b>개, 용어 <b>205</b>개</div>
+</body>
+</html>

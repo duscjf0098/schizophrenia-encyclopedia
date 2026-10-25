@@ -1,0 +1,19 @@
+/* 링크 미리보기 (js/ui/preview.js) · 접두어 .pv- */
+.pv { position: fixed; z-index: 69; width: min(340px, calc(100vw - 24px)); background: var(--paper-3); color: var(--ink-2); border: 1px solid var(--rule-2); border-radius: 12px; box-shadow: var(--shadow-pop); padding: 12px 14px 12px; font-family: var(--sans); font-size: 14px; line-height: 1.6; pointer-events: auto; }
+.pv[hidden] { display: none; }
+.pv.pv-in { animation: pv-in .14s ease-out; }
+@keyframes pv-in { from { opacity: 0; transform: translateY(var(--pv-dy, 4px)); } to { opacity: 1; transform: none; } }
+.pv[data-side="below"] { --pv-dy: -4px; }
+.pv[data-side="above"] { --pv-dy: 4px; }
+@media (prefers-reduced-motion: reduce) { .pv.pv-in { animation: none !important; } }
+
+.pv-top { display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: var(--muted); margin-bottom: 4px; }
+.pv-top .spine { height: 1.1em; }
+.pv-sec { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pv-min { flex: none; }
+.pv-title { font-family: var(--serif); font-size: 16px; font-weight: 700; color: var(--ink); line-height: 1.4; }
+.pv-sum { margin: 6px 0 0; font-size: 13.5px; color: var(--ink-2); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.pv-meta { display: flex; align-items: center; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+.pv-ev { font-size: 12px; }
+.pv-read { font-size: 12px; color: var(--ok); font-weight: 600; display: inline-flex; align-items: center; gap: 4px; }
+.pv-read::before { content: "✓"; font-size: 11px; }

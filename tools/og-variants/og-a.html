@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@600;700&display=swap">
+<style>
+  /* 시안 A "책등" · 1200×630. 왼쪽에 분류 16개를 책등처럼 세우고 오른쪽에 제목. */
+  html, body { margin: 0; }
+  body { width: 1200px; height: 630px; overflow: hidden; background: #fbfbf9; color: #1d232c; font-family: "Pretendard Variable", Pretendard, sans-serif; position: relative; }
+  .shelf { position: absolute; left: 60px; bottom: 60px; display: flex; align-items: flex-end; gap: 4px; }
+  .shelf i { display: block; width: 26px; border-radius: 3px 3px 1px 1px; position: relative;
+    background: linear-gradient(90deg, rgba(255,255,255,.28) 0, rgba(255,255,255,0) 30%, rgba(0,0,0,.08) 100%), hsl(var(--h) 38% 56%);
+    box-shadow: inset 0 -2px 0 rgba(0,0,0,.12); }
+  .shelf i::after { content: attr(data-t); position: absolute; top: 16px; left: 0; width: 26px; text-align: center; writing-mode: vertical-rl; text-orientation: upright; font-size: 13.5px; font-weight: 700; letter-spacing: 0.04em; line-height: 26px; color: rgba(255,255,255,.96); white-space: nowrap; }
+  .shelf i.dk::after { color: rgba(24,26,34,.82); }
+  .board { position: absolute; left: 48px; right: 640px; bottom: 54px; height: 6px; background: #cbd0cf; border-radius: 2px; }
+  .board::after { content: ""; position: absolute; left: 0; right: 0; top: 6px; height: 14px; background: linear-gradient(180deg, rgba(29,35,44,.10), rgba(29,35,44,0)); }
+  .box { position: absolute; left: 600px; top: 72px; width: 540px; }
+  .mark { display: flex; align-items: center; gap: 14px; color: #3c4450; font-size: 24px; font-weight: 600; letter-spacing: -0.01em; }
+  .mark svg { width: 40px; height: 40px; }
+  h1 { font-family: "Noto Serif KR", serif; font-weight: 700; font-size: 112px; letter-spacing: -0.035em; line-height: 1.08; margin: 30px 0 26px; }
+  p { font-size: 27px; line-height: 1.45; color: #3c4450; margin: 0; word-break: keep-all; }
+  .stats { position: absolute; left: 600px; bottom: 62px; font-size: 21px; color: #6a7280; display: flex; gap: 22px; }
+  .stats b { font-family: "Noto Serif KR", serif; font-size: 30px; color: #1d232c; margin-right: 4px; font-variant-numeric: tabular-nums; }
+  .stats span::after { content: "·"; margin-left: 22px; color: #cbd0cf; }
+  .stats span:last-child::after { content: none; }
+</style>
+</head>
+<body>
+  <div class="shelf" aria-hidden="true">
+    <i style="--h:255;height:392px" data-t="이해하기"></i>
+    <i style="--h:20;height:350px" data-t="양성 증상"></i>
+    <i style="--h:200;height:410px" data-t="음성 증상"></i>
+    <i class="dk" style="--h:160;height:372px" data-t="인지·정서·몸"></i>
+    <i class="dk" style="--h:45;height:330px" data-t="경과와 단계"></i>
+    <i style="--h:290;height:404px" data-t="진단"></i>
+    <i style="--h:340;height:360px" data-t="약물 치료"></i>
+    <i class="dk" style="--h:120;height:386px" data-t="비약물 치료"></i>
+    <i style="--h:30;height:342px" data-t="함께 살아가기"></i>
+    <i class="dk" style="--h:185;height:398px" data-t="가족과 주변"></i>
+    <i style="--h:220;height:366px" data-t="제도와 도움"></i>
+    <i style="--h:265;height:420px" data-t="연구 최전선"></i>
+    <i style="--h:5;height:348px" data-t="잘 알려지지 않은 사실"></i>
+    <i class="dk" style="--h:100;height:380px" data-t="용어 사전"></i>
+    <i class="dk" style="--h:60;height:336px" data-t="자주 묻는 질문"></i>
+    <i style="--h:320;height:408px" data-t="역사와 문화"></i>
+  </div>
+  <div class="board" aria-hidden="true"></div>
+  <div class="box">
+    <div class="mark">
+      <svg viewBox="0 0 28 28" aria-hidden="true">
+        <g stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none">
+          <path d="M3 6h22"/><path d="M3 10.5h22"/><path d="M3 15c6 0 8 2.6 11 2.6S19 15 25 15" stroke="#4a44b0"/><path d="M3 19.5h22"/><path d="M3 24h22"/>
+        </g>
+        <circle cx="14" cy="17.6" r="1.9" fill="#4a44b0"/>
+      </svg>
+      출처와 함께 읽는 한국어 백과
+    </div>
+    <h1>조현병<br>백과</h1>
+    <p>열여섯 갈래, 증상부터 제도와 연구까지.<br>어려운 말은 풀어 쓰고 근거는 출처로 남겼어요.</p>
+  </div>
+  <div class="stats"><span><b>251</b>문서</span><span><b>205</b>용어</span><span><b>944</b>출처</span></div>
+</body>
+</html>

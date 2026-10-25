@@ -5,9 +5,12 @@ const path = require('path');
 const root = path.join(__dirname, '..');
 
 function load(file) { const win = { JHB: {} }; new Function('window', 'JHB', fs.readFileSync(path.join(root, file), 'utf8'))(win, win.JHB); return win.JHB; }
-const J = Object.assign({}, load('data/toc.js'), load('data/glossary.js'));
+const J = Object.assign({}, load('data/toc.js'), load('data/glossary.js'), load('data/sections.js'));
+const heights = [392, 350, 410, 372, 330, 404, 360, 386, 342, 398, 366, 420, 348, 380, 336, 408];
+const dark = { 45: 1, 60: 1, 100: 1, 120: 1, 160: 1, 185: 1 };
+const spines = J.sections.map(function (s, i) { return '<i' + (dark[s.hue] ? ' class="dk"' : '') + ' style="--h:' + s.hue + ';height:' + heights[i % heights.length] + 'px" data-t="' + s.title + '"></i>'; }).join(String.fromCharCode(10) + "    ");
 const html = fs.readFileSync(path.join(__dirname, 'og-template.html'), 'utf8')
-  .replace('{{DOCS}}', String(J.toc.articles.length)).replace('{{TERMS}}', String(J.glossary.length)).replace('{{SOURCES}}', String(J.toc.sources || 0));
+  .split('{{DOCS}}').join(String(J.toc.articles.length)).split('{{TERMS}}').join(String(J.glossary.length)).split('{{SOURCES}}').join(String(J.toc.sources || 0)).split('{{SPINES}}').join(spines);
 const filled = path.join(__dirname, 'og-filled.html');
 fs.writeFileSync(filled, html);
 

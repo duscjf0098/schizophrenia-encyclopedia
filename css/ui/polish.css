@@ -1,0 +1,43 @@
+/* polish: 화면 전환·자리표시·토스트·분류 색 길찾기·새 창 링크. 선택자는 .pol- 로 시작한다(토큰은 css/style.css). */
+
+/* 같은 사이트 페이지 사이 짧은 크로스페이드(지원 브라우저에서만, 움직임 줄이기면 끔) */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
+  ::view-transition-old(root), ::view-transition-new(root) { animation-duration: 180ms; animation-timing-function: ease; }
+  ::view-transition-old(pol-title), ::view-transition-new(pol-title) { animation-duration: 180ms; }
+  .pol-vt .page-title { view-transition-name: pol-title; }
+}
+
+/* 자리표시: 글 모양 회색 막대 */
+.pol-skel-text { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; padding: 0; margin: 0; }
+.pol-skel { max-width: 720px; padding: 2px 0 40px; }
+.pol-skel-line { display: block; height: 14px; border-radius: 6px; background: var(--rule); animation: pol-pulse 1.3s ease-in-out infinite; }
+.pol-skel-crumb { width: 160px; height: 11px; margin: 4px 0 24px; }
+.pol-skel-title { width: 72%; height: 34px; border-radius: 8px; margin-bottom: 22px; }
+.pol-skel-group { display: grid; gap: 11px; }
+.pol-skel-sum { height: 15px; }
+.pol-skel-sum:nth-child(1) { width: 96%; }
+.pol-skel-sum:nth-child(2) { width: 68%; }
+.pol-skel-body { margin-top: 34px; padding-top: 26px; border-top: 1px solid var(--rule); }
+.pol-skel-p { height: 13px; }
+.pol-skel-p:nth-child(1) { width: 100%; }
+.pol-skel-p:nth-child(2) { width: 93%; }
+.pol-skel-p:nth-child(3) { width: 97%; }
+.pol-skel-p:nth-child(4) { width: 58%; margin-bottom: 10px; }
+.pol-skel-p:nth-child(5) { width: 95%; }
+.pol-skel-p:nth-child(6) { width: 84%; }
+@keyframes pol-pulse { 0%, 100% { opacity: .5; } 50% { opacity: .95; } }
+
+/* 토스트: 화면 아래 가운데, 휴대폰 하단 바와 겹치지 않게 80px 위 */
+.pol-toast { position: fixed; left: 50%; bottom: calc(80px + env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 8px); z-index: 90; max-width: min(92vw, 420px); padding: 10px 16px; border-radius: 10px; background: var(--ink); color: var(--paper); font-size: 14px; font-weight: 600; line-height: 1.5; box-shadow: var(--shadow-pop); opacity: 0; visibility: hidden; pointer-events: none; transition: opacity .16s ease, transform .16s ease, visibility 0s linear .16s; text-align: center; word-break: keep-all; }
+.pol-toast.pol-toast-show { opacity: 1; visibility: visible; transform: translate(-50%, 0); transition: opacity .16s ease, transform .16s ease, visibility 0s; }
+.pol-toast-ok { box-shadow: var(--shadow-pop), inset 3px 0 0 var(--ok); }
+.pol-toast-bad { box-shadow: var(--shadow-pop), inset 3px 0 0 var(--bad); }
+
+/* 분류 색 길찾기: 상단 1px 줄은 현재 분류 색, 첫 화면·검색은 --accent */
+.pol-has-sec .topbar, html:not(.pol-has-sec) .topbar { border-bottom-color: var(--pol-sec, var(--accent)); }
+.pol-crumb-spine { display: inline-block; width: 4px; height: 1em; border-radius: 1px; margin-right: 6px; vertical-align: -0.12em; background: hsl(var(--h) var(--spine-s) var(--spine-l)); }
+.pol-crumb-sec { color: var(--ink-2); font-weight: 600; }
+
+/* 새 창으로 열리는 링크 */
+.pol-ext::after { content: "\2197"; display: inline-block; font-size: .72em; margin-left: .18em; vertical-align: .2em; opacity: .75; text-decoration: none; }

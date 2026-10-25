@@ -1,0 +1,30 @@
+/* css/ui/sticky.css — 따라오는 제목 줄 (상단 바 바로 아래, 문서 화면에서 제목이 지나가면 나타남) */
+.stk-bar { position: fixed; top: var(--top-h); left: 0; right: 0; z-index: 38; display: flex; align-items: stretch; min-height: 40px; background: color-mix(in srgb, var(--paper) 94%, transparent); backdrop-filter: saturate(1.4) blur(10px); border-bottom: 1px solid var(--rule); font-size: 13.5px; color: var(--ink-2); transform: translateY(-110%); opacity: 0; visibility: hidden; transition: transform .2s ease, opacity .2s ease, visibility 0s linear .2s; }
+.stk-bar.stk-on { transform: none; opacity: 1; visibility: visible; transition: transform .2s ease, opacity .2s ease, visibility 0s; }
+.stk-main { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; min-height: 40px; padding: 6px 12px 6px 0; text-align: left; border-radius: 0; }
+.stk-main:hover { background: color-mix(in srgb, var(--paper-2) 70%, transparent); }
+.stk-main:focus-visible { outline-offset: -2px; border-radius: 6px; }
+.stk-spine { --h: 250; flex: none; width: 4px; align-self: stretch; border-radius: 2px; background: hsl(var(--h) var(--spine-s) var(--spine-l)); }
+.stk-title { font-family: var(--serif); font-weight: 700; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 0 1 auto; min-width: 0; max-width: 42%; }
+.stk-sep { color: var(--rule-2); flex: none; }
+.stk-head { flex: 1 1 auto; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.stk-head:empty, .stk-head:empty + .stk-sep { display: none; }
+.stk-time { flex: none; color: var(--muted); font-size: 12.5px; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.stk-caret { flex: none; color: var(--muted); transition: transform .15s ease; }
+.stk-main[aria-expanded="true"] .stk-caret { transform: rotate(180deg); }
+.stk-menu { position: absolute; top: 100%; left: 0; right: 0; max-height: min(60vh, 480px); overflow: auto; margin: 0; padding: 6px; list-style: none; background: var(--paper-3); border: 1px solid var(--rule-2); border-top: 0; border-radius: 0 0 12px 12px; box-shadow: var(--shadow-pop); }
+.stk-menu[hidden] { display: none; }
+.stk-menu a { display: block; padding: 9px 12px; border-radius: 8px; color: var(--ink-2); font-size: 14px; line-height: 1.45; }
+.stk-menu a.l3 { padding-left: 26px; font-size: 13.5px; }
+.stk-menu a:hover { background: var(--paper-2); color: var(--ink); }
+.stk-menu a.on { color: var(--accent); background: var(--accent-soft); font-weight: 650; }
+.stk-menu .stk-empty { padding: 12px; color: var(--muted); font-size: 13.5px; }
+@media (max-width: 760px) {
+  .stk-bar { font-size: 13px; }
+  .stk-main { padding-right: 10px; gap: 8px; }
+  .stk-title { max-width: 36%; }
+  .stk-menu a { padding: 11px 12px; font-size: 14.5px; }
+}
+@media (max-width: 480px) { .stk-time { display: none; } }
+@media (prefers-reduced-motion: reduce) { .stk-bar, .stk-caret { transition: none !important; } }
+@media print { .stk-bar { display: none !important; } }

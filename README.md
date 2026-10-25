@@ -49,13 +49,15 @@ sources:
 글을 추가·수정한 뒤:
 
 ```
-node tools/check-content.cjs && node tools/build-index.cjs && node tools/build-links.cjs && node tools/build-pages.cjs
+node tools/check-content.cjs && node tools/build-index.cjs && node tools/build-links.cjs && node tools/build-ui-css.cjs && node tools/build-pages.cjs
 ```
 
 - `check-content.cjs`: 필수 항목, 출처·각주 범위, 금지 표현(용량 지시, 임의 중단 권유, 옛 병명, "조현병 환자", 단정적 완치), 위기 글의 109·1577-0199, 600자 미만 검사.
 - `build-index.cjs`: toc·검색 색인·프리캐시 목록 생성.
 - `build-links.cjs`: 문서 간 링크 지도(`data/links.js`, 역링크·고아 문서 통계).
 - `build-pages.cjs`: 검색엔진용 정적 페이지와 sitemap.
+- `build-ui-css.cjs`: `css/ui/*.css` 를 `css/ui.css` 하나로 이어 붙임. `build-og.cjs`: 공유 배너 `og.png`(tools/og-template.html, 책등형).
+- 화면 확장 모듈 `js/ui/*.js` + `css/ui/*.css`(앱 본체는 안 건드리고 `JHB.app` 공개 API와 `jhb:page`·`jhb:article` 이벤트로 붙음, 규칙은 `docs/UI모듈가이드.md`): palette(Ctrl+K 명령 팔레트), preview(링크 미리보기 카드), reading(요약/전체 보기·읽던 자리), settings(보기 설정 패널: 글자·폭·글꼴·움직임·테마), mobile(휴대폰 하단 바·차례/용어 시트·스와이프), sticky(따라오는 제목 줄·남은 시간), polish(화면 전환·자리표시·토스트·분류 색), home(처음 온 사람 안내·역할별 첫 화면·새로 올라온 글·홈 화면에 추가). 모두 없어도 앱은 동작한다.
 - 앱에 붙은 선택 모듈: `data/synonyms.js`+`js/synonyms.js`(일상 말 → 문서), `js/crisis.js`+`data/crisis-card.js`(위기 검색어 안내), `data/courses.js`(읽기 코스), `js/progress.js`(읽은 문서·이어 읽기, localStorage `jhb.read`), `data/links.js`(역링크). 모두 없어도 앱은 동작한다.
 
 ## 테스트

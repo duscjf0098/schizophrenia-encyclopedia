@@ -161,8 +161,11 @@
     closePop();
     app.innerHTML = '';
     nodes.forEach(function (n) { if (n) app.appendChild(n); });
-    window.scrollTo(0, 0);
+    if (!show.keepScroll) window.scrollTo(0, 0);
+    show.keepScroll = false;
     setProgress(0);
+    const w = where();
+    window.dispatchEvent(new CustomEvent('jhb:page', { detail: { kind: w.path[0] || 'home', id: w.path[1] || null, query: w.query } }));
   }
   function route() {
     const r = where(), p = r.path;
@@ -211,7 +214,7 @@
           srcCount ? el('span', null, [el('b', null, [srcCount.toLocaleString('ko-KR')]), '개 출처']) : null
         ])
       ]),
-      pick ? el('section', null, [
+      pick ? el('section', { 'data-sec': 'today' }, [
         el('h2.h-sec', null, ['오늘의 문서']),
         el('div.feature', null, [
           el('div.feature-m', null, [el('span.row-sec', null, [spine(secById[pick.section]), (secById[pick.section] || {}).title || '']), ev(pick)]),
@@ -227,7 +230,7 @@
         const c = PROG && PROG.continueReading(articles, COURSES);
         if (!c || !c.article || !c.article.slug) return null;
         const q2 = c.course ? '?course=' + c.course.id : '';
-        return el('section', null, [
+        return el('section', { 'data-sec': 'continue' }, [
           el('h2.h-sec', null, ['이어서 읽기']),
           el('div.continue', null, [
             el('span.k', null, [c.reason || '']),
@@ -236,16 +239,16 @@
           ])
         ]);
       })(),
-      COURSES.length ? el('section', null, [
+      COURSES.length ? el('section', { 'data-sec': 'courses' }, [
         el('h2.h-sec', null, ['읽기 코스', el('a.more', { href: '#/courses' }, ['전체 보기'])]),
         el('p.page-lead', { style: 'margin:-4px 0 14px' }, ['상황에 맞게 읽을 순서를 정리했어요. 어디서 시작할지 막막할 때 골라 보세요.']),
         el('div.courses', null, COURSES.slice(0, 4).map(courseCard))
       ]) : null,
-      recent.length ? el('section', null, [
+      recent.length ? el('section', { 'data-sec': 'recent' }, [
         el('h2.h-sec', null, ['최근에 읽은 문서']),
         el('ul.rows', null, recent.map(function (a) { return row(a); }))
       ]) : null,
-      el('section', null, [
+      el('section', { 'data-sec': 'index' }, [
         el('h2.h-sec', null, ['분류']),
         el('div.index', null, sections.map(function (s) {
           if (s.glossary) {
@@ -264,7 +267,7 @@
           ]);
         }))
       ]),
-      dayTerms.length ? el('section', null, [
+      dayTerms.length ? el('section', { 'data-sec': 'terms' }, [
         el('h2.h-sec', null, ['오늘의 용어', el('a.more', { href: '#/glossary' }, ['용어 사전 전체'])]),
         el('dl.terms', null, dayTerms.map(function (g) {
           const rel = (g.related || []).filter(function (r) { return bySlug[r]; })[0];
@@ -375,6 +378,7 @@
       }
 
       const body = el('div.body', { html: r.html });
+      U.qsa('h2', body).forEach(function (h) { const t = h.textContent.trim(); h.setAttribute('data-key', /한 문장으로|짧은 답|나에게 의미|할 수 있는 것|주변 사람|담당 의사에게|더 읽을 글/.test(t) ? 'core' : 'detail'); });
       const notes = el('div.notes');
       const infobox = el('section.infobox', { 'aria-label': '문서 정보' }, [
         el('div.infobox-h', null, [spine(s), '문서 정보']),
@@ -495,6 +499,7 @@
 
       if (PROG) PROG.markRead(slug);
       const recent = U.store.get('jhb.recent', []).filter(function (x) { return x !== slug; }); recent.unshift(slug); U.store.set('jhb.recent', recent.slice(0, 20));
+      window.dispatchEvent(new CustomEvent('jhb:article', { detail: { slug: slug, article: a, meta: meta, toc: r.toc, prev: prev, next: next, minutes: minutes, body: body } }));
     }).catch(function (e) {
       show([el('p.empty', null, ['문서를 불러오지 못했어요(' + e.message + '). 인터넷 연결을 확인하고 새로고침해 주세요.'])]);
     });
@@ -839,6 +844,12 @@
     show([el('h1.page-title', null, ['그런 문서가 없어요']), el('p.page-lead', null, ['주소가 바뀌었을 수 있어요. 위의 검색창에서 찾거나 ', el('a', { href: '#/', style: 'color:var(--accent);text-decoration:underline' }, ['첫 화면']), '으로 가세요.'])]);
   }
 
+  /* 화면 확장 모듈(js/ui/*.js)이 쓰는 공개 API */
+  JHB.app = {
+    BASE: BASE, L: L, go: go, where: where, articles: articles, sections: sections, bySlug: bySlug, secById: secById, glossary: glossary, courses: COURSES, progress: PROG,
+    sectionArticles: sectionArticles, isFav: isFav, toggleFav: toggleFav, favs: favs, openPop: openPop, closePop: closePop, announce: announce, effectiveTheme: effectiveTheme,
+    setNav: setNav, el: el, esc: esc, store: U.store, nav: nav, main: app, row: row, spine: spine, search: function (idx) { return loadIndex(); }
+  };
   route();
   if ('serviceWorker' in navigator && location.protocol !== 'file:') {
     window.addEventListener('load', function () { navigator.serviceWorker.register(BASE + 'sw.js').catch(function () { }); });

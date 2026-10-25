@@ -1,0 +1,61 @@
+/* 명령 팔레트 (js/ui/palette.js) · 접두어 .pal- */
+.pal-scrim { position: fixed; inset: 0; z-index: 120; background: rgba(20, 24, 40, .28); backdrop-filter: blur(1.5px); -webkit-backdrop-filter: blur(1.5px); }
+:root[data-theme="dark"] .pal-scrim { background: rgba(0, 0, 0, .5); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .pal-scrim { background: rgba(0, 0, 0, .5); } }
+.pal { position: fixed; z-index: 121; left: 50%; top: max(12px, min(12vh, 120px)); transform: translateX(-50%); width: min(640px, calc(100vw - 24px)); max-height: min(78vh, calc(100vh - 24px)); display: flex; flex-direction: column; background: var(--paper-3); color: var(--ink); border: 1px solid var(--rule-2); border-radius: 14px; box-shadow: var(--shadow-pop); font-family: var(--sans); font-size: 15px; overflow: hidden; }
+.pal[hidden], .pal-scrim[hidden] { display: none; }
+.pal.pal-in { animation: pal-in .16s ease-out; }
+.pal-in + .pal-scrim, .pal-scrim:not([hidden]) { animation: pal-fade .16s ease-out; }
+@keyframes pal-in { from { opacity: 0; transform: translateX(-50%) translateY(-6px) scale(.985); } to { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); } }
+@keyframes pal-fade { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .pal.pal-in, .pal-scrim { animation: none !important; } .pal-scrim { backdrop-filter: none; -webkit-backdrop-filter: none; } }
+
+.pal-head { display: flex; align-items: center; gap: 10px; padding: 10px 10px 10px 16px; border-bottom: 1px solid var(--rule); flex: none; }
+.pal-ico { color: var(--muted); flex: none; }
+.pal-input { flex: 1; min-width: 0; height: 40px; border: 0; background: transparent; color: var(--ink); font: inherit; font-size: 17px; padding: 0; -webkit-appearance: none; appearance: none; outline: none; }
+.pal-input::-webkit-search-cancel-button { display: none; }
+.pal-input::placeholder { color: var(--muted); }
+.pal-x { flex: none; width: 36px; height: 36px; border: 0; border-radius: 8px; background: transparent; color: var(--muted); font-size: 22px; line-height: 1; cursor: pointer; }
+.pal-x:hover { background: var(--paper-2); color: var(--ink); }
+.pal-x:focus-visible, .pal-tel:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.pal-list { flex: 1 1 auto; overflow: auto; padding: 6px; scroll-padding: 6px; }
+.pal-group { font-size: 12px; color: var(--muted); padding: 10px 10px 4px; letter-spacing: .01em; }
+.pal-group:first-child { padding-top: 6px; }
+.pal-item { display: flex; align-items: center; gap: 12px; padding: 9px 10px; border-radius: 9px; cursor: pointer; min-height: 44px; }
+.pal-item[aria-selected="true"] { background: var(--accent-soft); }
+.pal-item .spine { height: 1.25em; }
+.pal-dot { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; flex: none; border-radius: 6px; font-size: 12px; font-weight: 700; color: var(--muted); background: var(--paper-2); }
+.pal-tx { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1; }
+.pal-t { font-weight: 600; color: var(--ink); line-height: 1.35; }
+.pal-t mark { background: none; color: var(--accent); font-weight: 750; }
+.pal-s { font-size: 13px; color: var(--muted); line-height: 1.5; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pal-tail { flex: none; font-size: 12px; color: var(--muted); white-space: nowrap; }
+.pal-item.pal-all { border-top: 1px solid var(--rule); border-radius: 0 0 9px 9px; margin-top: 4px; padding-top: 12px; }
+.pal-item.pal-all .pal-t { color: var(--accent); }
+.pal-item.pal-all[aria-selected="true"] { border-top-color: transparent; border-radius: 9px; }
+.pal-empty { padding: 14px 10px 8px; font-size: 14px; color: var(--muted); }
+
+/* 위기 안내: 맨 위, 빨간 항목 */
+.pal-item.pal-crisis { background: var(--bad-soft); color: var(--bad); margin-bottom: 4px; }
+.pal-item.pal-crisis[aria-selected="true"] { box-shadow: inset 0 0 0 2px var(--bad); }
+.pal-item.pal-crisis .pal-dot { background: var(--bad); color: var(--paper-3); }
+.pal-item.pal-crisis .pal-t { color: var(--bad); }
+.pal-item.pal-crisis .pal-s { color: var(--bad); opacity: .9; white-space: normal; }
+.pal-tel { flex: none; font-size: 13px; font-weight: 700; color: var(--bad); border: 1px solid currentColor; border-radius: 999px; padding: 4px 12px; text-decoration: none; }
+.pal-tel:hover { background: var(--bad); color: var(--paper-3); }
+
+.pal-hint { flex: none; display: flex; gap: 14px; padding: 8px 16px; border-top: 1px solid var(--rule); font-size: 12px; color: var(--muted); background: var(--paper-2); }
+.pal-hint kbd { font-family: var(--sans); font-size: 11px; line-height: 18px; padding: 0 5px; border: 1px solid var(--rule-2); border-radius: 4px; background: var(--paper-3); color: var(--ink-2); }
+
+/* 팔레트가 열린 동안 뒤 화면 스크롤 막기 */
+html.pal-open, html.pal-open body { overflow: hidden; }
+
+@media (max-width: 760px) {
+  .pal { top: 12px; width: calc(100vw - 24px); max-height: calc(100dvh - 24px); border-radius: 12px; }
+  .pal-head { padding: 6px 6px 6px 12px; }
+  .pal-x { width: 44px; height: 44px; }
+  .pal-hint { display: none; }
+  .pal-tail { display: none; }
+  .pal-item { padding: 10px 10px; }
+}

@@ -1,5 +1,5 @@
 {
- "version": "2026-10-24-251-mvluaihj",
+ "version": "2026-10-24-251-mvn29cff",
  "files": [
   "./",
   "index.html",
@@ -14,6 +14,15 @@
   "js/crisis.js",
   "js/progress.js",
   "js/app.js",
+  "css/ui.css",
+  "js/ui/palette.js",
+  "js/ui/preview.js",
+  "js/ui/mobile.js",
+  "js/ui/sticky.js",
+  "js/ui/reading.js",
+  "js/ui/settings.js",
+  "js/ui/polish.js",
+  "js/ui/home.js",
   "data/sections.js",
   "data/toc.js",
   "data/glossary.js",
