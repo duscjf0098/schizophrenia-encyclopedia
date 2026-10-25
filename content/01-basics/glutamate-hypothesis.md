@@ -4,15 +4,16 @@ section: 1
 order: 8
 summary: 뇌의 주요 흥분성 신호 물질인 글루타메이트, 특히 NMDA 수용체의 기능 저하가 조현병의 음성·인지 증상까지 설명할 수 있다는 가설이에요. 케타민 연구, 자가면역 뇌염, 신약 개발의 실패와 교훈을 정리해요.
 tags: 기초, 원인, 글루타메이트, NMDA, 신경과학
-updated: 2026-10-23
+updated: 2026-10-25
 evidence: 연구
 sources:
   - Krystal JH 외 | Subanesthetic effects of the noncompetitive NMDA antagonist, ketamine, in humans (Archives of General Psychiatry) | 1994 | https://doi.org/10.1001/archpsyc.1994.03950030035004
   - Dalmau J 외 | Anti-NMDA-receptor encephalitis: case series and analysis of the effects of antibodies (Lancet Neurology) | 2008 | https://doi.org/10.1016/S1474-4422(08)70224-2
-  - Journal of Neuropsychiatry and Clinical Neurosciences | Anti-NMDA receptor encephalitis: psychiatric presentation review of 544 cases | 2018 | https://neuro.psychiatryonline.org/doi/10.1176/appi.neuropsych.18010005
+  - Sarkis RA 외 | Anti-NMDA receptor encephalitis: a review of psychiatric phenotypes and management considerations (Journal of Neuropsychiatry and Clinical Neurosciences) | 2019 | https://doi.org/10.1176/appi.neuropsych.18010005
   - Singh T 외 | Rare coding variants in ten genes confer substantial risk for schizophrenia (Nature) | 2022 | https://doi.org/10.1038/s41586-022-04556-w
   - McCutcheon RA 외 | Dopamine and glutamate in schizophrenia: biology, symptoms and treatment (World Psychiatry) | 2020 | https://doi.org/10.1002/wps.20693
-  - FlashLyte·DayLyte 연구진 | Bitopertin in negative symptoms of schizophrenia: results from the phase III FlashLyte and DayLyte studies (Biological Psychiatry) | 2017 | https://repositorio.unifesp.br/items/1677f4ca-56ca-48bb-a984-fa87943a9f34/full
+  - Bugarski-Kirola D 외 | Bitopertin in negative symptoms of schizophrenia: results from the phase III FlashLyte and DayLyte studies (Biological Psychiatry) | 2017 | https://doi.org/10.1016/j.biopsych.2016.11.014
+  - U.S. Food and Drug Administration | FDA approves drug with new mechanism of action for treatment of schizophrenia (보도자료) | 2024 | https://www.fda.gov/news-events/press-announcements/fda-approves-drug-new-mechanism-action-treatment-schizophrenia
 ---
 ## 한 문장으로
 
@@ -36,7 +37,7 @@ sources:
 
 2008년 달마우 연구진은 자기 몸의 항체가 NMDA 수용체를 공격하는 뇌염을 하나의 질환으로 정리했어요.[^2] 이 병은 젊은 여성에게 비교적 많고, 난소 기형종과 함께 오는 경우가 있어요.
 
-주목할 점은 초기 증상이에요. 발표된 544례를 모은 2018년 고찰에서 77%가 정신과적 증상으로 처음 나타났어요. 환각, 망상, 초조, 혼란 같은 증상이 먼저 오고, 그 뒤 경련, 의식 저하, 비정상 운동 같은 신경학적 증상이 따라와요.[^3] NMDA 수용체 하나가 망가지는 것만으로 조현병과 구분하기 어려운 정신병이 생긴다는 뜻이에요.
+주목할 점은 초기 증상이에요. 발표된 사례 544례를 모은 2019년 고찰에서 77%가 정신과적 증상으로 처음 나타났어요. 환각, 망상, 초조, 혼란 같은 증상이 먼저 오고, 그 뒤 경련, 의식 저하, 비정상 운동 같은 신경학적 증상이 따라와요.[^3] NMDA 수용체 하나가 망가지는 것만으로 조현병과 구분하기 어려운 정신병이 생긴다는 뜻이에요.
 
 ::: warn 감별이 중요한 이유
 이 뇌염은 면역 치료(스테로이드, 면역글로불린, 혈장 교환 등)와 종양 제거로 회복할 수 있어요. 그래서 첫 정신병 삽화에서 특히 급격한 경과, 경련, 기억 장애, 발열, 의식 변화, 비정상 운동이 함께 보이면 뇌척수액 검사와 항체 검사를 고려해요.[^2][^3] 궁금하다면 담당 의사에게 "자가면역 뇌염 감별을 했는지" 물어볼 수 있어요.
@@ -57,7 +58,7 @@ sources:
 - 음성 증상 연구는 위약 효과가 커서 차이를 보이기 어려워요.
 - NMDA 기능 저하가 모든 사람에게 같은 정도로 있는 게 아니라, 일부 하위 집단에만 두드러질 수 있어요.
 - 발병 후 오래된 시점에 글루타메이트를 조절하는 것은 너무 늦을 수 있어요.
-현재는 NMDA 수용체를 직접 건드리기보다, 글루타메이트 분비를 조절하는 다른 수용체(mGlu, 무스카린 등)를 겨냥한 약들이 연구되고 있어요.[^5]
+현재는 NMDA 수용체를 직접 건드리기보다, 글루타메이트 분비를 조절하는 다른 수용체(mGlu, 무스카린 등)를 겨냥하는 쪽으로 연구가 이어졌어요.[^5] 그중 무스카린 작용제인 자노멜린-트로스피움은 2024년 9월 미국에서 승인을 받아, 도파민 수용체를 직접 막지 않는 첫 조현병 약이 됐어요.[^7] 자세한 내용은 [신약 동향](#/a/new-drugs) 글에 있어요.
 :::
 
 ## 도파민 가설과의 관계

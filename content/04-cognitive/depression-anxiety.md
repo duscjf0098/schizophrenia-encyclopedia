@@ -4,7 +4,7 @@ section: 4
 order: 5
 summary: 조현병이 있는 사람 세 명 중 한 명이 우울증을 함께 겪고, 불안장애와 강박도 흔해요. 음성 증상과 헷갈리기 쉽지만 치료법이 달라서 구분이 중요해요.
 tags: 위기, 우울, 불안, 강박, 후정신병우울, 동반질환
-updated: 2026-10-23
+updated: 2026-10-25
 evidence: 연구
 sources:
   - Etchecopar-Etchart D 외 | Comorbid major depressive disorder in schizophrenia: a systematic review and meta-analysis (Schizophrenia Bulletin) | 2021 | https://doi.org/10.1093/schbul/sbaa153
@@ -13,6 +13,7 @@ sources:
   - Swets M 외 | The obsessive compulsive spectrum in schizophrenia, a meta-analysis and meta-regression exploring prevalence rates (Schizophrenia Research) | 2014 | https://doi.org/10.1016/j.schres.2013.10.033
   - Helfer B 외 | Efficacy and safety of antidepressants added to antipsychotics for schizophrenia: a systematic review and meta-analysis (American Journal of Psychiatry) | 2016 | https://doi.org/10.1176/appi.ajp.2016.15081035
   - Hor K, Taylor M | Suicide and schizophrenia: a systematic review of rates and risk factors (Journal of Psychopharmacology) | 2010 | https://doi.org/10.1177/1359786810385490
+  - Kim DD 외 | Clozapine-associated obsessive-compulsive symptoms and their management: a systematic review and analysis of 107 reported cases (Psychotherapy and Psychosomatics) | 2020 | https://doi.org/10.1159/000505876
 ---
 ::: crisis
 우울이 깊어져 스스로를 해칠 생각이 든다면, 자살예방상담 **109**, 정신건강위기상담 **1577-0199**로 먼저 연락하세요. 당장 위험하면 **119**나 가까운 응급실로 가세요. 자세한 내용은 [자살 위험 신호와 대처](#/a/suicide-warning-signs)에 있어요.
@@ -53,7 +54,7 @@ sources:
 
 ## 불안과 강박은 어떻게 나타나나
 
-불안은 피해망상의 결과로 올 수도 있고(감시당한다는 생각 → 밖에 나가기 두려움), 망상과 무관한 사회불안이나 공황으로 올 수도 있어요. 강박 증상은 확인하고 씻고 세는 행동으로 나타나는데, 일부는 항정신병약 치료 중에 새로 생기거나 심해지기도 해요.[^4] 강박과 망상은 구분이 필요해요. 강박은 "말이 안 되는 줄 알면서도 멈출 수 없는" 것이고, 망상은 "사실이라고 확신하는" 것이에요.
+불안은 피해망상의 결과로 올 수도 있고(감시당한다는 생각 → 밖에 나가기 두려움), 망상과 무관한 사회불안이나 공황으로 올 수도 있어요. 강박 증상은 확인하고 씻고 세는 행동으로 나타나는데, 일부는 항정신병약, 특히 클로자핀 치료 중에 새로 생기거나 심해지기도 해요. 보고된 사례 107건을 모은 2020년 체계적 고찰에서는 75건이 새로 생긴 경우, 32건이 원래 있던 강박이 심해진 경우였어요.[^7] 강박과 망상은 구분이 필요해요. 강박은 "말이 안 되는 줄 알면서도 멈출 수 없는" 것이고, 망상은 "사실이라고 확신하는" 것이에요.
 
 ## 무엇이 도움이 되나
 
@@ -71,7 +72,7 @@ sources:
 - 슬프고 불안한 것은 "조현병이니까 당연한 것"이 아니라 따로 치료할 수 있는 문제예요. 진료 때 "요즘 기분이 어떤지"를 꼭 말하세요. 의사가 먼저 묻지 않을 수도 있어요.
 - 증상이 가라앉은 뒤에 오히려 더 우울해지는 건 이상한 게 아니에요. 많은 사람이 그 시기를 지나요.[^2] 그때가 가장 조심할 때이기도 해요.[^6]
 - 우울과 음성 증상의 구분은 혼자 하기 어려워요. 슬픔, 죄책감, 죽고 싶은 생각이 있다면 우울 쪽일 가능성이 높으니 알려 주세요.
-- 강박 증상이 새로 생겼다면 약 변경 시점과 겹치는지 기억해 두었다가 의사에게 말하세요.[^4]
+- 강박 증상이 새로 생겼다면 약 변경 시점과 겹치는지 기억해 두었다가 의사에게 말하세요.[^7]
 
 ## 주변 사람이 알아둘 것
 

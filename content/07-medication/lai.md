@@ -4,7 +4,7 @@ section: 7
 order: 16
 summary: 2주에서 6개월에 한 번 맞는 항정신병약 주사예요. 먹는 약보다 재발·입원이 적다는 근거가 쌓였고, 첫 삽화에서도 권하는 흐름이에요. 종류와 간격, 장단점, "강제 아니냐"는 오해, 국내 허가·급여까지 확인된 범위에서 정리했어요.
 tags: 약물 치료, 장기지속형 주사제, LAI, 재발 예방, 팔리페리돈, 아리피프라졸
-updated: 2026-10-23
+updated: 2026-10-25
 evidence: 연구
 sources:
   - Kishimoto T 외 | Long-acting injectable versus oral antipsychotics for the maintenance treatment of schizophrenia: a systematic review and comparative meta-analysis of randomised, cohort, and pre-post studies (Lancet Psychiatry) | 2021 | https://doi.org/10.1016/S2215-0366(21)00039-0
@@ -13,7 +13,7 @@ sources:
   - Johnson & Johnson | Janssen announces U.S. FDA approval of INVEGA HAFYERA (6-month paliperidone palmitate) (보도자료) | 2021 | https://www.jnj.com/media-center/press-releases/janssen-announces-u-s-fda-approval-of-invega-hafyera-6-month-paliperidone-palmitate-first-and-only-twice-yearly-treatment-for-adults-with-schizophrenia
   - 데일리팜 | 장기지속형 조현병약 '인베가하피에라' 종병 진입 | 2023 | https://www.dailypharm.com/user/news/26287
   - 데일리팜 | 오츠카, 2개월 투여 간격 '아빌리파이아심투파이' 출시 | 2025 | https://www.dailypharm.com/user/news/3477
-  - 데일리팜 | 정신분열약 '리스페달'...1회 주사, 2주 지속 | 2003 | https://m.dailypharm.com/user/news/286218
+  - 데일리팜 | 리스페리돈 2주 지속형 주사 '리스페달 콘스타' 국내 수입허가 보도 | 2003 | https://m.dailypharm.com/user/news/286218
 ---
 ## 한 문장으로
 
@@ -27,13 +27,13 @@ sources:
 |---|---|---|
 | 팔리페리돈(paliperidone) 1개월형 | 1개월 | 3·6개월형으로 넘어가기 위한 출발점[^4][^5] |
 | 팔리페리돈 3개월형 | 3개월 | 1개월형으로 안정된 뒤 전환[^4][^5] |
-| 팔리페리돈 6개월형 | 6개월 | 미국 2021년 승인, 국내 2022년 9월 허가. 1개월형 4개월 이상 또는 3개월형 1회 이상 뒤에만 사용[^4][^5] |
+| 팔리페리돈 6개월형 | 6개월 | 미국 2021년 승인, 국내 2022년 9월 허가(급여는 2023년 5월). 허가사항과 급여 기준 모두 1개월형 4개월 이상 또는 3개월형 1사이클 이상 뒤에만 사용[^4][^5] |
 | 아리피프라졸(aripiprazole) 1개월형 | 1개월 | 2개월형의 기준 제제[^6] |
 | 아리피프라졸 2개월형 | 2개월 | 미국 2023년 4월 승인, 국내 2025년 8월 출시[^6] |
 | 리스페리돈(risperidone) 2주형 | 2주 | 2003년 국내 허가된 첫 2세대 주사제[^7] |
 | 1세대 데포 주사(할로페리돌 데카노에이트 등) | 제품마다 다름 | 오래된 제형, 추체외로 증상 위험이 상대적으로 높음 |
 
-6개월형은 "1년에 두 번"이라는 점에서 주목받았어요. 미국 승인은 702명이 참여한 12개월 비열등성 시험에 근거했는데, 6개월형의 92.5%, 3개월형의 95%가 12개월 동안 재발 없이 지냈어요.[^4] 다만 국내 급여는 1개월형으로 4개월 이상, 또는 3개월형으로 한 사이클 이상 안정된 뒤에만 적용돼요.[^5] 아리피프라졸 2개월형은 국내에서 조현병 치료와 1형 양극성장애 유지 치료의 단독요법으로 허가됐고, 미국에서는 2023년 4월에 승인됐어요.[^6]
+6개월형은 "1년에 두 번"이라는 점에서 주목받았어요. 미국 승인은 702명이 참여한 12개월 비열등성 시험에 근거했는데, 6개월형의 92.5%, 3개월형의 95%가 12개월 동안 재발 없이 지냈어요.[^4] 국내에서는 허가사항과 급여 기준 모두 1개월형으로 4개월 이상, 또는 3개월형으로 한 사이클 이상 충분히 치료받은 뒤에만 쓰도록 돼 있어요.[^5] 아리피프라졸 2개월형은 국내에서 조현병 치료와 1형 양극성장애 유지 치료의 단독요법으로 허가됐고, 미국에서는 2023년 4월에 승인됐어요.[^6]
 
 ## 재발과 입원을 줄이는 근거
 

@@ -2,9 +2,9 @@
 title: 이름의 역사: 정신분열병에서 조현병으로
 section: 1
 order: 2
-summary: 2011년 우리나라는 병명을 "조현병"으로 바꿨어요. 일본이 2002년에 먼저 바꾼 경험, 이름을 바꾼 뒤 낙인이 얼마나 달라졌는지에 대한 연구를 함께 봐요.
+summary: 2011년 우리나라 학회는 병명을 "조현병"으로 바꿨고, 법조문 속 병명은 2012년에 바뀌었어요. 일본이 2002년에 먼저 바꾼 경험, 이름을 바꾼 뒤 낙인이 얼마나 달라졌는지에 대한 연구를 함께 봐요.
 tags: 기초, 역사, 낙인, 병명
-updated: 2026-10-23
+updated: 2026-10-25
 evidence: 연구
 sources:
   - 서울대학교병원 건강TV | 166편 조현병이란? (권준수 교수) | 연도 미상 | https://www.snuh.org/health/tv/view.do?seq_no=168
@@ -13,7 +13,8 @@ sources:
   - Koike S 외 | Effect of Name Change of Schizophrenia on Mass Media Between 1985 and 2013 in Japan (Schizophrenia Bulletin) | 2016 | https://repository.dl.itc.u-tokyo.ac.jp/records/755
   - Cho JW 외 | Effects of Renaming Schizophrenia in Korea: from "Split-Mind Disorder" to "Attunement Disorder" (Psychiatry Investigation) | 2018 | https://doi.org/10.30773/pi.2018.02.18.2
   - 김현지 외 | 조현병과 옛 병명에 대한 뉴스 프레임 분석을 통해 본 사회적 인식의 변화 (한국문헌정보학회지) | 2019 | https://doi.org/10.4275/KSLIS.2019.53.4.285
-  - BMC Psychiatry | Data-mining analysis of media frame effects on social perception of schizophrenia renaming in Korea | 2023 | https://doi.org/10.1186/s12888-023-05386-4
+  - Kim IB 외 | Data-mining analysis of media frame effects on social perception of schizophrenia renaming in Korea (BMC Psychiatry) | 2023 | https://doi.org/10.1186/s12888-023-05386-4
+  - 국가법령정보센터 | 약사법 제정·개정이유 (법률 제11251호, 2012. 2. 1. 일부개정) | 2012 | https://law.go.kr/LSW/lsRvsRsnListP.do?lsId=001783&chrClsCd=010102&lsRvsGubun=all
 ---
 ## 한 문장으로
 
@@ -27,7 +28,7 @@ sources:
 
 서울대병원 권준수 교수의 설명에 따르면, 보호자 모임 '아름다운 동행'의 약 5,000명이 국회와 학회에 병명을 바꿔 달라고 청원했어요. 당시 학회 이사장이던 권 교수가 병명개정위원회를 만들었고, 국어학자 김진영 교수가 서산대사의 『선가귀감』에 나오는 "조현긴완(調絃緊緩)"이라는 표현을 찾아냈어요. 현악기의 줄을 고른다는 뜻인데, 긴완을 빼고 "조현"만 쓰기로 했어요.[^1]
 
-법적 절차는 약사법 개정으로 이뤄졌어요. 2011년 6월 2일 신상진 의원이 법조문 속 병명을 바꾸는 약사법 개정안을 국회에 냈어요. 처음 제안된 이름은 "조현증"이었고, 신경정신의학계가 부정적 인식과 편견을 줄이려고 개정을 추진해 왔다는 배경이 함께 보도됐어요.[^2] 최종 이름은 "조현병"으로 정해졌고, 2011년에 법적 병명이 바뀌었어요.[^1] 학회 이름도 대한조현병학회로 바뀌었어요.
+법적 절차는 약사법 개정으로 이뤄졌어요. 2011년 6월 2일 신상진 의원이 법조문 속 병명을 바꾸는 약사법 개정안을 국회에 냈어요. 처음 제안된 이름은 "조현증"이었고, 신경정신의학계가 부정적 인식과 편견을 줄이려고 개정을 추진해 왔다는 배경이 함께 보도됐어요.[^2] 최종 이름은 "조현병"으로 정해졌고, 대한신경정신의학회는 2011년부터 새 이름을 썼어요.[^1][^7] 법조문 속 병명을 바꾼 개정 약사법(법률 제11251호)은 2012년 2월 1일에 공포·시행됐어요.[^8] 학회 이름도 대한조현병학회로 바뀌었어요.
 
 ::: fact 왜 "증"이 아니라 "병"인가
 처음 발의안은 "조현증"이었어요.[^2] 그러나 최종적으로는 "조현병"이 채택됐어요. 조현병이 일시적 증상 묶음이 아니라 치료가 필요한 질병이라는 점을 분명히 하려는 뜻이 담겨 있다고 설명돼요.

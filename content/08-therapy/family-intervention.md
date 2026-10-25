@@ -4,7 +4,7 @@ section: 8
 order: 2
 summary: 가족이 병을 알고 대화 방식을 바꾸면 재발이 줄어요. 코크란 리뷰에서 가족 개입은 재발 위험을 거의 반으로 줄였고(RR 0.55), NICE는 10회 이상을 권해요. 표출 정서가 무엇인지, 프로그램에서 무엇을 배우는지, 한국에서 어디서 받는지 정리했어요.
 tags: 비약물 치료, 가족, 가족 교육, 표출 정서, 재발 예방
-updated: 2026-10-23
+updated: 2026-10-25
 evidence: 가이드라인
 sources:
   - NICE | Psychosis and schizophrenia in adults: prevention and management (CG178) | 2014 | https://www.nice.org.uk/guidance/cg178
@@ -12,7 +12,7 @@ sources:
   - Butzlaff RL, Hooley JM | Expressed emotion and psychiatric relapse: a meta-analysis (Archives of General Psychiatry) | 1998 | https://doi.org/10.1001/archpsyc.55.6.547
   - 국립정신건강센터 | 국가정신건강정보포털 · 질환별 정보 · 조현병 | 2026 | https://www.mentalhealth.go.kr/portal/disease/diseaseDetail.do?dissId=26
   - 금천구 | 정신건강복지센터 사업 안내 | 2026 | https://www.geumcheon.go.kr/health/contents.do?key=1391
-  - 이투데이 | 정신장애인가족협회·정신의료기관협회, 조현병 환자 교육 프로그램 '마음의 줄넘기' 실시 | 2019 | https://www.etoday.co.kr/news/view/1768231
+  - 이투데이 | 정신장애인가족협회·정신의료기관협회의 조현병 교육 프로그램 '마음의 줄넘기' 실시 보도 | 2019 | https://www.etoday.co.kr/news/view/1768231
 ---
 ## 한 문장으로
 

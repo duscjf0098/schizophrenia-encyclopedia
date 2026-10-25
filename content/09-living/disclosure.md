@@ -4,14 +4,14 @@ section: 9
 order: 14
 summary: 조현병을 말할지 말지는 정답이 없는 선택이에요. 숨기는 데도, 말하는 데도 대가가 있어요. 득실을 따져 보는 법, 동료가 이끄는 Honest Open Proud 프로그램의 근거, 상대별 고려점과 말하는 문장 예시를 정리했어요.
 tags: 생활, 공개, 낙인, 직장, 관계, 권리
-updated: 2026-10-23
+updated: 2026-10-25
 evidence: 연구
 sources:
   - Brohan E 외 | Systematic review of beliefs, behaviours and influencing factors associated with disclosure of a mental health problem in the workplace (BMC Psychiatry) | 2012 | https://doi.org/10.1186/1471-244X-12-11
   - Rüsch N 외 | Efficacy of Coming Out Proud to reduce stigma's impact among people with mental illness: pilot randomised controlled trial (British Journal of Psychiatry) | 2014 | https://doi.org/10.1192/bjp.bp.113.135772
   - Mulfinger N 외 | Honest, Open, Proud for adolescents with mental illness: pilot randomized controlled trial (Journal of Child Psychology and Psychiatry) | 2018 | https://doi.org/10.1111/jcpp.12853
   - Klein T 외 | Does the peer-led Honest, Open, Proud program reduce stigma's impact for everyone? An individual participant data meta-regression analysis (Social Psychiatry and Psychiatric Epidemiology) | 2023 | https://doi.org/10.1007/s00127-023-02491-3
-  - 네플라(현행 조문) | 정신건강증진 및 정신질환자 복지서비스 지원에 관한 법률 제69조(권익보호)·제71조(비밀누설의 금지), 2026.10.8. 시행본 | 2026 | https://www.nepla.ai/law/정신보건법
+  - CaseNote(현행 조문) | 정신건강증진 및 정신질환자 복지서비스 지원에 관한 법률 제69조(권익보호)·제71조(비밀누설의 금지) (2026.10.8. 시행) | 2026 | https://casenote.kr/법령/정신건강증진_및_정신질환자_복지서비스_지원에_관한_법률
 ---
 ## 한 문장으로
 

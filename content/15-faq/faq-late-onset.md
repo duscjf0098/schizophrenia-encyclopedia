@@ -4,11 +4,11 @@ section: 15
 order: 18
 summary: 대부분 10대 후반~30대 초반에 시작하지만, 40세 이후 처음 생기는 "후기 발병"도 있어요. 특히 여성은 40대 중후반에 두 번째 발병 시기가 보고돼요. 나이 들어 처음 생긴 환청·망상은 치매 같은 다른 원인을 꼭 검사해야 해요.
 tags: FAQ, 발병 연령, 후기 발병, 노인, 치매, 감별
-updated: 2026-10-23
+updated: 2026-10-25
 evidence: 연구
 sources:
   - Solmi M 외 | Age at onset of mental disorders worldwide: large-scale meta-analysis of 192 epidemiological studies (Molecular Psychiatry) | 2022 | https://doi.org/10.1038/s41380-021-01161-7
-  - Häfner H | From onset and prodromal stage to a life-long course of schizophrenia and its symptom dimensions (World Journal of Psychiatry) | 2015 | https://doi.org/10.5498/wjp.v5.i2.167
+  - Häfner H | What is schizophrenia? 25 years of research into schizophrenia - the Age Beginning Course Study (World Journal of Psychiatry) | 2015 | https://doi.org/10.5498/wjp.v5.i2.167
   - Howard R 외 | Late-onset schizophrenia and very-late-onset schizophrenia-like psychosis: an international consensus (American Journal of Psychiatry) | 2000 | https://doi.org/10.1176/appi.ajp.157.2.172
   - Devanand DP, Jeste DV 외 | Overview of late-onset psychoses (International Psychogeriatrics) | 2024 | https://doi.org/10.1017/S1041610223000157
 ---

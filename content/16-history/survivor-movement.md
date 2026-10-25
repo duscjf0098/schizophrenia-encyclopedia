@@ -4,10 +4,10 @@ section: 16
 order: 7
 summary: "우리 없이 우리에 관한 것은 없다." 정신장애가 있는 당사자들은 치료의 대상에서 정책의 주체로 나섰어요. 회복 모델의 등장, 목소리 듣기 운동, 유엔 장애인권리협약, 그리고 한국 당사자 운동의 확인된 흐름을 정리했어요.
 tags: 역사, 당사자 운동, 회복, 동료 지원, 장애인권리협약, 인권
-updated: 2026-10-23
+updated: 2026-10-25
 evidence: 연구
 sources:
-  - Charlton JI | Nothing About Us Without Us: Disability Oppression and Empowerment (University of California Press) | 1998 | https://abuseincare.org.nz/assets/Evidence-library/Part-2/Charlton-JI-Nothing-about-us-without-us-Disability-oppression-and-empowerment-University-of-California-Press-1998.pdf
+  - Charlton JI | Nothing About Us Without Us: Disability Oppression and Empowerment (University of California Press, 1998년 초판; 출판사 2000년 문고판 안내 페이지) | 1998 | https://www.ucpress.edu/books/nothing-about-us-without-us/paper
   - Deegan PE | Recovery: The lived experience of rehabilitation (Psychosocial Rehabilitation Journal) | 1988 | https://doi.org/10.1037/h0099565
   - Anthony WA | Recovery from mental illness: The guiding vision of the mental health service system in the 1990s (Psychosocial Rehabilitation Journal) | 1993 | https://doi.org/10.1037/h0095655
   - Leamy M 외 | Conceptual framework for personal recovery in mental health: systematic review and narrative synthesis (British Journal of Psychiatry) | 2011 | https://doi.org/10.1192/bjp.bp.110.083733

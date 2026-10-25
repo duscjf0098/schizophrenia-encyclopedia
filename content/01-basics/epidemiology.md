@@ -12,7 +12,7 @@ sources:
   - McGrath J 외 | A systematic review of the incidence of schizophrenia (BMC Medicine) | 2004 | https://doi.org/10.1186/1741-7015-2-13
   - Solmi M 외 | Incidence, prevalence, and global burden of schizophrenia – data, with critical appraisal, from the Global Burden of Disease (GBD) 2019 (Molecular Psychiatry) | 2023 | https://doi.org/10.1038/s41380-023-02138-4
   - Solmi M 외 | Age at onset of mental disorders worldwide: large-scale meta-analysis of 192 epidemiological studies (Molecular Psychiatry) | 2022 | https://doi.org/10.1038/s41380-021-01161-7
-  - Häfner H | From onset and prodromal stage to a life-long course of schizophrenia and its symptom dimensions (World Journal of Psychiatry) | 2015 | https://doi.org/10.5498/wjp.v5.i2.167
+  - Häfner H | What is schizophrenia? 25 years of research into schizophrenia - the Age Beginning Course Study (World Journal of Psychiatry) | 2015 | https://doi.org/10.5498/wjp.v5.i2.167
   - 보건복지부·삼성서울병원(뉴시스 보도) | 2016년도 정신질환실태 역학조사 결과 | 2017 | https://www.newsis.com/view/NISX20170412_0014826050
 ---
 ## 한 문장으로

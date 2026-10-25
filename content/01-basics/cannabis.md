@@ -4,15 +4,15 @@ section: 1
 order: 12
 summary: 대마, 특히 THC 함량이 높은 대마를 자주 쓰면 정신병 위험이 몇 배로 높아져요. 용량-반응 관계, 청소년기의 취약성, 유전과의 상호작용, "원인인가 결과인가" 논쟁까지 근거를 따라가요.
 tags: 기초, 원인, 대마, THC, 물질 사용, 청소년
-updated: 2026-10-23
+updated: 2026-10-25
 evidence: 연구
 sources:
   - Di Forti M 외 | The contribution of cannabis use to variation in the incidence of psychotic disorder across Europe (EU-GEI): a multicentre case-control study (Lancet Psychiatry) | 2019 | https://doi.org/10.1016/S2215-0366(19)30048-3
   - Marconi A 외 | Meta-analysis of the association between the level of cannabis use and risk of psychosis (Schizophrenia Bulletin) | 2016 | https://doi.org/10.1093/schbul/sbw003
   - Zammit S 외 | Self reported cannabis use as a risk factor for schizophrenia in Swedish conscripts of 1969: historical cohort study (BMJ) | 2002 | https://doi.org/10.1136/bmj.325.7374.1199
-  - Hjorthøj C 외 | Association between cannabis use disorder and schizophrenia stronger in young males than in females (Psychological Medicine) | 2023 | https://doi.org/10.1017/S0033291723000454
+  - Hjorthøj C 외 | Association between cannabis use disorder and schizophrenia stronger in young males than in females (Psychological Medicine) | 2023 | https://doi.org/10.1017/S0033291723000880
   - Vaucher J 외 | Cannabis use and risk of schizophrenia: a Mendelian randomization study (Molecular Psychiatry) | 2018 | https://pmc.ncbi.nlm.nih.gov/articles/PMC6386176/
-  - Gage SH 외 | Assessing causality in associations between cannabis use and schizophrenia risk: a two-sample Mendelian randomization study (Psychological Medicine) | 2017 | https://researchportal.bath.ac.uk/en/publications/assessing-causality-in-associations-between-cannabis-use-and-schi/
+  - Gage SH 외 | Assessing causality in associations between cannabis use and schizophrenia risk: a two-sample Mendelian randomization study (Psychological Medicine) | 2017 | https://doi.org/10.1017/S0033291716003172
   - WHO | Schizophrenia (Fact sheet) | 2026 | https://www.who.int/news-room/fact-sheets/detail/schizophrenia
 ---
 ## 한 문장으로
@@ -39,7 +39,7 @@ EU-GEI 연구진은 고역가 대마가 없어지면 첫 정신병 삽화의 몇
 
 뇌는 20대 초반까지 발달해요. 이 시기에 대마가 뇌의 내인성 칸나비노이드 체계를 흔들면 영향이 더 클 수 있어요. 덴마크의 전국 등록 자료로 690만 명을 분석한 2023년 연구에서, 대마 사용 장애와 조현병의 관련은 남성(2.42배)이 여성(2.02배)보다 강했고, 16~20세에서는 남성 3.84배, 여성 1.81배로 차이가 더 컸어요. 연구진은 2021년 기준 16~49세 남성의 조현병 중 약 15%, 21~30세 남성에서는 최대 30%가 대마 사용 장애를 피했다면 예방될 수 있었다고 추정했어요.[^4]
 
-같은 연구에서 대마 사용 장애의 기여 비율은 지난 20년 사이 3~4배 늘었어요. 연구진은 THC 함량의 증가를 주요 원인으로 지목했어요.[^4]
+같은 연구에서 조현병 발병 가운데 대마 사용 장애에 돌릴 수 있는 비율은 1972년부터 2021년까지 해마다 꾸준히 늘었어요(연평균 남성 4.8%, 여성 3.2% 증가).[^4] 연구진은 대마 사용과 THC 함량이 늘어난 흐름과 맞물린 결과로 봐요.[^4]
 
 ## 원인인가, 결과인가
 

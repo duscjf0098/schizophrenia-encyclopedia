@@ -4,7 +4,7 @@ section: 7
 order: 27
 summary: 2024년 9월 미국에서 승인된 자노멜린-트로스피움(코벤피)은 70년 만에 도파민 수용체를 직접 막지 않는 첫 조현병 약이에요. 그 기전과 EMERGENT 시험 결과, 그리고 2023~2025년에 실패한 에모라클리딘·울로타론트·이클레페르틴·롤루페리돈까지, 기대와 주의를 함께 정리했어요.
 tags: 약물 치료, 신약, 무스카린, KarXT, 코벤피, 파이프라인
-updated: 2026-10-23
+updated: 2026-10-25
 evidence: 연구
 sources:
   - U.S. Food and Drug Administration | FDA approves drug with new mechanism of action for treatment of schizophrenia (보도자료) | 2024 | https://www.fda.gov/news-events/press-announcements/fda-approves-drug-new-mechanism-action-treatment-schizophrenia
@@ -14,6 +14,7 @@ sources:
   - Otsuka Pharmaceutical, Sumitomo Pharma | Sumitomo Pharma and Otsuka announce topline results from phase 3 DIAMOND 1 and DIAMOND 2 clinical studies evaluating ulotaront in schizophrenia (보도자료) | 2023 | https://otsuka-us.com/news/sumitomo-pharma-and-otsuka-announce-topline-results-phase-3-diamond-1-and-diamond-2-clinical
   - Keefe RSE 외 | Iclepertin for cognitive impairment associated with schizophrenia: the CONNEX programme (three phase 3 randomised trials) (Lancet Psychiatry) | 2025 | https://doi.org/10.1016/s2215-0366(25)00296-2
   - Minerva Neurosciences | Minerva Neurosciences receives Complete Response Letter from FDA for New Drug Application for roluperidone (보도자료) | 2024 | https://www.biospace.com/minerva-neurosciences-receives-complete-response-letter-from-fda-for-new-drug-application-for-roluperidone-for-the-treatment-of-negative-symptoms-in-patients-with-schizophrenia
+  - Bristol Myers Squibb | Bristol Myers Squibb announces topline results from phase 3 ARISE trial evaluating Cobenfy (xanomeline and trospium chloride) as an adjunctive treatment to atypical antipsychotics in adults with schizophrenia (보도자료) | 2025 | https://news.bms.com/news/details/2025/Bristol-Myers-Squibb-Announces-Topline-Results-from-Phase-3-ARISE-Trial-Evaluating-Cobenfy-xanomeline-and-trospium-chloride-as-an-Adjunctive-Treatment-to-Atypical-Antipsychotics-in-Adults-with-Schizophrenia/default.aspx
 ---
 ## 한 문장으로
 
@@ -35,7 +36,7 @@ EMERGENT-2(미국 22개 입원 기관, 252명, 5주)에서 PANSS 총점은 약 �
 
 효과 크기 0.6은 기존 항정신병약의 위약 대비 효과와 비슷한 수준이에요. "더 센 약"이 아니라 "다른 길로 비슷한 효과를 내는 약"이에요. 핵심 차이는 부작용이에요. 체중·대사·운동 부작용이 적은 대신 소화기 부작용이 있어요. EMERGENT-2에서 변비 21%(위약 10%), 소화불량 19%(8%), 메스꺼움 19%(6%), 구토 14%(1%), 혈압 상승 10%(1%)였어요.[^2] FDA는 요저류, 심박수 증가, 위 운동 저하, 간 손상 가능성을 경고하고, 간·신장 기능이 나쁜 사람과 요저류·녹내장이 있는 사람에게는 쓰지 않도록 했어요.[^1]
 
-**주의할 점.** 5주 시험이에요. 장기 재발 예방 효과, 치료저항성에서의 효과, 기존 약과 비교한 직접 시험은 아직 충분하지 않아요. 실제 생활에서의 사용 편의와 장기 안전성도 앞으로 자료가 쌓여야 해요. 국내 허가와 도입 일정은 2026년 10월 현재 확인된 공식 자료가 없어서 여기서는 다루지 않아요.
+**주의할 점.** 5주 시험이에요. 장기 재발 예방 효과, 치료저항성에서의 효과, 기존 약과 비교한 직접 시험은 아직 충분하지 않아요. 2025년 4월에는 기존 비정형 항정신병약에 코벤피를 더하는 보조요법 3상(ARISE, 6주)이 PANSS 총점에서 위약 대비 2.0점 차이에 그쳐 주요 목표를 달성하지 못했어요(p=0.11).[^8] 실제 생활에서의 사용 편의와 장기 안전성도 앞으로 자료가 쌓여야 해요. 국내 허가와 도입 일정은 2026년 10월 현재 확인된 공식 자료가 없어서 여기서는 다루지 않아요.
 
 ## 실패한 약들: 같은 길, 다른 결과
 
@@ -53,7 +54,7 @@ EMERGENT-2(미국 22개 입원 기관, 252명, 5주)에서 PANSS 총점은 약 �
 
 | 약 | 기전 | 겨냥 | 상태(2026년 10월) |
 |---|---|---|---|
-| 자노멜린-트로스피움 | M1/M4 무스카린 작용제 | 양성·음성 증상 | 미국 승인(2024.9)[^1] |
+| 자노멜린-트로스피움 | M1/M4 무스카린 작용제 | 양성·음성 증상 | 미국 승인(2024.9)[^1], 보조요법 3상은 실패(2025.4)[^8] |
 | 에모라클리딘 | M4 양성 알로스테릭 조절제 | 양성 증상 | 2상 실패(2024.11)[^4] |
 | 울로타론트 | TAAR1 작용제 | 양성 증상 | 3상 실패(2023.7)[^5] |
 | 이클레페르틴 | 글리신 수송체 억제제 | 인지 | 3상 실패(2025)[^6] |

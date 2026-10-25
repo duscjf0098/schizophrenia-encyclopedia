@@ -4,7 +4,7 @@ section: 5
 order: 10
 summary: 18세 전에 시작되는 조기 발병 조현병은 드물지만, 성인기 발병보다 진단이 늦어지고 경과가 무거운 경향이 있어요. 사춘기 변화와 어떻게 구분하는지, 학교와 가족은 무엇을 할 수 있는지, 청소년 약물 치료의 승인 현황과 예후 연구를 정리했어요.
 tags: 경과, 청소년, 조기 발병, 극조기 발병, 학교, 가족, 예후
-updated: 2026-10-24
+updated: 2026-10-25
 evidence: 연구
 sources:
   - Driver DI, Gogtay N, Rapoport JL | Childhood onset schizophrenia and early onset schizophrenia spectrum disorders (Child and Adolescent Psychiatric Clinics of North America) | 2013 | https://doi.org/10.1016/j.chc.2013.04.001
@@ -12,7 +12,7 @@ sources:
   - Clemmensen L, Vernal DL, Steinhausen HC | A systematic review of the long-term outcome of early onset schizophrenia (BMC Psychiatry) | 2012 | https://doi.org/10.1186/1471-244X-12-150
   - Krause M 외 | Efficacy, acceptability, and tolerability of antipsychotics in children and adolescents with schizophrenia: a network meta-analysis (European Neuropsychopharmacology) | 2018 | https://doi.org/10.1016/j.euroneuro.2018.03.008
   - Solmi M 외 | Age at onset of mental disorders worldwide: large-scale meta-analysis of 192 epidemiological studies (Molecular Psychiatry) | 2022 | https://doi.org/10.1038/s41380-021-01161-7
-  - Psychiatric News | Risperidone approved to treat schizophrenia in children (American Psychiatric Association) | 2007 | https://psychnews.psychiatryonline.org/doi/10.1176/pn.42.18.0001
+  - FDA (Drugs@FDA) | Risperdal (risperidone) prescribing information, supplements 46·47 (13~17세 조현병 적응증 추가, 2007-08-22 승인) | 2007 | https://www.accessdata.fda.gov/drugsatfda_docs/label/2007/020272s46s47,20588s36s37,21444s20s21lbl.pdf
   - Pharmacy Times | FDA approves Latuda for adolescent schizophrenia | 2017 | https://pharmacytimes.com/view/fda-approves-latuda-for-adolescent-schizophrenia
 ---
 ## 한 문장으로
@@ -59,7 +59,7 @@ sources:
 
 약물 치료는 청소년에게도 치료의 중심이에요. 28개 무작위 대조 시험, 3,003명(평균 14.4세)을 모은 2018년 네트워크 메타분석에서 거의 모든 항정신병약이 위약보다 효과가 있었고(지프라시돈은 예외), 클로자핀이 가장 효과적이었어요. 체중 증가는 클로자핀·쿠에티아핀·올란자핀에서 가장 컸고, 루라시돈·지프라시돈·몰린돈은 체중 면에서 유리했어요.[^4] 청소년은 성인보다 체중 증가와 대사 부작용에 더 취약한 경향이 있어서, 약 선택에서 부작용의 비중이 커요([대사 부작용](#/a/metabolic-side-effects)).
 
-승인 현황을 보면, 미국 FDA는 2007년 리스페리돈(risperidone)을 13~17세 조현병에 처음 승인했고,[^6] 이후 여러 약이 같은 연령대에 승인됐으며, 2017년에는 루라시돈(lurasidone)이 13~17세에 승인됐어요.[^7] 국내 허가 범위(연령, 적응증)는 약마다 다르고 바뀔 수 있어서, 식약처 의약품안전나라에서 확인하거나 담당 의사에게 물어보세요. 어떤 약을 어떤 용량으로 쓸지는 개인별 결정이라 이 글에서는 다루지 않아요. 약의 기본은 [항정신병약의 기초](#/a/antipsychotic-basics)에 있어요.
+승인 현황을 보면, 미국 FDA는 2007년 리스페리돈(risperidone)의 적응증에 13~17세 조현병을 추가했고,[^6] 이후 여러 약이 같은 연령대에 승인됐으며, 2017년에는 루라시돈(lurasidone)이 13~17세에 승인됐어요.[^7] 국내 허가 범위(연령, 적응증)는 약마다 다르고 바뀔 수 있어서, 식약처 의약품안전나라에서 확인하거나 담당 의사에게 물어보세요. 어떤 약을 어떤 용량으로 쓸지는 개인별 결정이라 이 글에서는 다루지 않아요. 약의 기본은 [항정신병약의 기초](#/a/antipsychotic-basics)에 있어요.
 
 ## 가족 개입
 

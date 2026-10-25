@@ -2,9 +2,9 @@
 title: 추체외로 증상과 지연성 운동장애
 section: 7
 order: 18
-summary: 항정신병약이 일으키는 운동 부작용 네 가지, 즉 급성 근긴장이상·파킨슨증·정좌불능·지연성 운동장애를 각각 정의·시기·빈도로 정리했어요. 지연성 운동장애의 연간 발생률(1세대 6.5%, 2세대 2.6%), AIMS 검사, 2017년 승인된 VMAT2 억제제까지 담았어요.
+summary: 항정신병약이 일으키는 운동 부작용 네 가지, 즉 급성 근긴장이상·파킨슨증·정좌불능·지연성 운동장애를 각각 정의·시기·빈도로 정리했어요. 지연성 운동장애의 연간 발생률(1세대 6.5%, 2세대 2.6%), AIMS 검사, 2017년 미국에서 승인되고 2021년 국내에도 허가된 VMAT2 억제제까지 담았어요.
 tags: 약물 치료, 부작용, 추체외로 증상, 지연성 운동장애, 정좌불능, 근긴장이상, 위기
-updated: 2026-10-23
+updated: 2026-10-25
 evidence: 연구
 sources:
   - Carbon M 외 | Tardive dyskinesia risk with first- and second-generation antipsychotics in comparative randomized controlled trials: a meta-analysis (World Psychiatry) | 2018 | https://doi.org/10.1002/wps.20579
@@ -13,6 +13,7 @@ sources:
   - Teva Pharmaceutical Industries | Teva announces FDA approval of AUSTEDO (deutetrabenazine) tablets for the treatment of tardive dyskinesia in adults (보도자료) | 2017 | https://www.tevapharm.com/news-and-media/latest-news/teva-announces-fda-approval-of-austedo-deutetrabenazine-tablets-for-the-treatment-of-tardive-dyskinesi/
   - Lima AR 외 | Central action beta-blockers versus placebo for neuroleptic-induced acute akathisia (Cochrane Database of Systematic Reviews) | 2004 | https://doi.org/10.1002/14651858.CD001946.pub2
   - Joshi YB 외 | Anticholinergic medication burden-associated cognitive impairment in schizophrenia (American Journal of Psychiatry) | 2021 | https://doi.org/10.1176/appi.ajp.2020.20081212
+  - 데일리팜 | 약정원, 12월 1주차 의약품 허가·식별 등록 현황 공개 (디스발캡슐40mg 허가) | 2021 | https://m.dailypharm.com/user/news/44891
 ---
 ## 한 문장으로
 
@@ -51,7 +52,7 @@ sources:
 2. **용량과 약의 조정.** 의사가 용량을 낮추거나 운동 부작용이 적은 약으로 바꾸는 것을 검토해요. 스스로 줄이는 건 재발 위험 때문에 권하지 않아요([약 바꾸기·줄이기](#/a/switching-reducing-stopping)).
 3. **항콜린제.** 급성 근긴장이상과 파킨슨증에 효과가 있어요. 다만 입마름·변비·기억력 저하 같은 부작용이 있고, 장기간 쓰면 인지에 부담을 줘요. 조현병 당사자 1,120명을 분석한 2021년 연구에서 항콜린 부담 점수가 높을수록 모든 인지 영역 점수가 낮았어요.[^6] 그래서 "일단 항콜린제를 계속"보다 "필요한 기간만"이 원칙이에요.
 4. **정좌불능.** 항콜린제는 잘 듣지 않아요. 베타차단제가 흔히 쓰이지만, 코크란 리뷰는 3개 시험 51명뿐이라 권고할 근거가 부족하다고 결론 냈어요.[^5] 용량 조정이나 약 교체가 먼저 검토돼요.
-5. **지연성 운동장애의 약.** 2017년 미국 식품의약국(FDA)은 발베나진(valbenazine)을 지연성 운동장애의 첫 치료제로 승인했어요.[^3] 같은 해 듀테트라베나진(deutetrabenazine)도 승인됐어요.[^4] 둘 다 VMAT2 억제제로, 신경 말단에 저장되는 도파민 양을 줄여 이상 운동을 완화해요. 국내 허가 여부는 확인된 공식 자료가 없어 여기서는 다루지 않아요.
+5. **지연성 운동장애의 약.** 2017년 미국 식품의약국(FDA)은 발베나진(valbenazine)을 지연성 운동장애의 첫 치료제로 승인했어요.[^3] 같은 해 듀테트라베나진(deutetrabenazine)도 승인됐어요.[^4] 둘 다 VMAT2 억제제로, 신경 말단에 저장되는 도파민 양을 줄여 이상 운동을 완화해요. 발베나진은 국내에서도 2021년 11월 성인의 지연성 운동장애 치료제로 허가됐어요(디스발캡슐, 미쓰비시다나베파마코리아).[^7] 급여 여부와 처방 가능 여부는 담당 의사에게 확인하세요.
 
 ::: warn 바로 연락할 신호
 - 목이 뒤로 젖혀지거나 턱이 굳어 말하기·삼키기가 어려울 때

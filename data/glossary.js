@@ -32,7 +32,7 @@ JHB.glossary = [
   { term: '납굴증', en: 'waxy flexibility', def: '긴장증 징후의 하나. 팔다리를 움직이면 밀랍처럼 가볍고 고른 저항이 느껴짐.', related: ['catatonia'] },
   { term: '무의욕', en: 'avolition', def: '목표를 향해 움직이기 시작하고 이어 가는 힘이 줄어드는 음성 증상. "하기 싫다"보다 "하고 싶은데 시작이 안 된다"에 가까움.', related: ['avolition', 'negative-self-help'] },
   { term: '무쾌감', en: 'anhedonia', def: '즐거움을 느끼는 힘이 줄어드는 음성 증상. 조현병에서는 막상 할 때보다 미리 기대하는 즐거움이 주로 줄어듦.', related: ['anhedonia'] },
-  { term: '무언증', en: 'alogia', def: '말의 양이 줄고 내용이 빈약해지는 음성 증상. 말을 안 하는 것이 아니라 말이 잘 나오지 않는 상태. 알로기아라고도 함.', related: ['alogia', 'thought-disorder'] },
+  { term: '무언증', en: 'alogia', def: '말의 양이 줄고 내용이 빈약해지는 음성 증상. 말을 안 하는 것이 아니라 말이 잘 나오지 않는 상태. 알로기아라고도 하며, 말을 아예 하지 않는 함구증(mutism)과는 다름.', related: ['alogia', 'thought-disorder'] },
   { term: '정서 둔마', en: 'blunted affect', def: '감정이 표정·목소리·몸짓으로 드러나는 정도가 줄어드는 음성 증상. 안에서 느끼는 감정은 보존된 경우가 많음.', related: ['blunted-affect'] },
   { term: '비사회성', en: 'asociality', def: '사람과 어울리고 관계를 맺으려는 마음 자체가 줄어드는 음성 증상. 불안이나 의심 때문에 피하는 것과 다름.', related: ['asociality', 'loneliness-relationships'] },
   { term: '일차·이차 음성 증상', en: 'primary and secondary negative symptoms', def: '병 자체에서 나오는 음성 증상이 일차, 약 부작용·우울·망상·환경 때문에 생긴 것이 이차. 이차는 원인을 다루면 좋아지는 경우가 많음.', related: ['primary-secondary-negative', 'negative-treatment-difficulty'] },
@@ -65,7 +65,7 @@ JHB.glossary = [
   { term: '회복', en: 'recovery', def: '증상과 기능이 기준을 넘어 유지되는 임상적 회복과, 증상이 있어도 의미 있는 삶을 살아가는 개인적 회복을 함께 가리킴.', related: ['recovery', 'recovery-commonalities'] },
 
   /* ───────── 약·부작용 ───────── */
-  { term: '항정신병약', en: 'antipsychotic', def: '뇌의 도파민 D2 수용체를 일정 비율 막아 환각·망상의 힘을 빼는 약. 1950년대 클로르프로마진에서 시작됐고 1세대와 2세대로 나눔.', related: ['antipsychotic-basics', 'first-generation', 'second-generation'] },
+  { term: '항정신병약', en: 'antipsychotic', def: '환각·망상의 힘을 빼는 약. 대부분은 뇌의 도파민 D2 수용체를 일정 비율 막는 방식이며, 1950년대 클로르프로마진에서 시작됐고 1세대와 2세대로 나눔.', related: ['antipsychotic-basics', 'first-generation', 'second-generation'] },
   { term: '1세대 항정신병약', en: 'first-generation antipsychotics', def: '1950년대에 나온 첫 세대 약. 도파민 D2 수용체를 강하게 막고, 추체외로 증상이 2세대보다 많음.', related: ['first-generation'] },
   { term: '2세대 항정신병약', en: 'second-generation (atypical) antipsychotics', def: '"비정형"이라고도 부르는 약들. 대체로 추체외로 증상이 적고 대사 부작용이 많지만, 약마다 성질이 크게 달라 한 집단으로 보기 어려움.', related: ['second-generation'] },
   { term: '부분 작용제', en: 'partial agonist', def: 'D2 수용체를 막기만 하지 않고 약하게 자극도 하는 약. 아리피프라졸·브렉스피프라졸·카리프라진이 여기에 속함.', related: ['aripiprazole', 'brexpiprazole', 'cariprazine'] },

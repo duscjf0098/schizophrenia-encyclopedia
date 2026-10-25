@@ -4,14 +4,14 @@ section: 16
 order: 6
 summary: 1960~70년대 랭, 사스, 쿠퍼, 푸코, 바살리아는 정신의학이 사람을 가두고 이름 붙이는 방식을 근본부터 비판했어요. 유명한 로젠한 실험과 그 신뢰성을 뒤흔든 2019년 조사, 그리고 이 운동이 남긴 것과 한계를 공정하게 정리했어요.
 tags: 역사, 반정신의학, 로젠한 실험, 인권, 진단
-updated: 2026-10-23
+updated: 2026-10-25
 evidence: 연구
 sources:
   - Rissmiller DJ, Rissmiller JH | Evolution of the antipsychiatry movement into mental health consumerism (Psychiatric Services) | 2006 | https://doi.org/10.1176/ps.2006.57.6.863
   - Ralley OJD | The Rise of Anti-psychiatry: A Historical Review (Priory Lodge Education) | 2012 | https://priory.com/history_of_medicine/Anti-Psychiatry.htm
   - Szasz TS | The myth of mental illness (American Psychologist) | 1960 | https://doi.org/10.1037/h0046535
   - Rosenhan DL | On being sane in insane places (Science) | 1973 | https://doi.org/10.1126/science.179.4070.250
-  - Abbott A | Double deception in the asylum? (Nature, 『The Great Pretender』 서평) | 2019 | https://doi.org/10.1038/d41586-019-03268-y
+  - Abbott A | On the troubling trail of psychiatry's pseudopatients stunt (Nature, 『The Great Pretender』 서평; 인쇄판 제목 Double deception in the asylum?) | 2019 | https://doi.org/10.1038/d41586-019-03268-y
   - Scull A | Rosenhan revisited: successful scientific fraud (History of Psychiatry) | 2023 | https://doi.org/10.1177/0957154X221150878
 ---
 ## 한 문장으로

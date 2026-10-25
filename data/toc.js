@@ -2,7 +2,7 @@
 window.JHB = window.JHB || {};
 JHB.toc = {
  "generated": "2026-10-25",
- "sources": 944,
+ "sources": 952,
  "articles": [
   {
    "slug": "what-is-schizophrenia",
@@ -14,7 +14,7 @@ JHB.toc = {
     "정의",
     "유병률"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "가이드라인",
    "minutes": 2,
    "order": 1
@@ -23,14 +23,14 @@ JHB.toc = {
    "slug": "name-history",
    "section": "1",
    "title": "이름의 역사: 정신분열병에서 조현병으로",
-   "summary": "2011년 우리나라는 병명을 \"조현병\"으로 바꿨어요. 일본이 2002년에 먼저 바꾼 경험, 이름을 바꾼 뒤 낙인이 얼마나 달라졌는지에 대한 연구를 함께 봐요.",
+   "summary": "2011년 우리나라 학회는 병명을 \"조현병\"으로 바꿨고, 법조문 속 병명은 2012년에 바뀌었어요. 일본이 2002년에 먼저 바꾼 경험, 이름을 바꾼 뒤 낙인이 얼마나 달라졌는지에 대한 연구를 함께 봐요.",
    "tags": [
     "기초",
     "역사",
     "낙인",
     "병명"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "연구",
    "minutes": 4,
    "order": 2
@@ -114,7 +114,7 @@ JHB.toc = {
     "신경과학",
     "항정신병약"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "연구",
    "minutes": 4,
    "order": 7
@@ -131,9 +131,9 @@ JHB.toc = {
     "NMDA",
     "신경과학"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "연구",
-   "minutes": 4,
+   "minutes": 5,
    "order": 8
   },
   {
@@ -202,7 +202,7 @@ JHB.toc = {
     "물질 사용",
     "청소년"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "연구",
    "minutes": 5,
    "order": 12
@@ -238,7 +238,7 @@ JHB.toc = {
     "회백질",
     "백질"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "연구",
    "minutes": 4,
    "order": 14
@@ -319,7 +319,7 @@ JHB.toc = {
     "환각",
     "환청"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "연구",
    "minutes": 3,
    "order": 3
@@ -383,7 +383,7 @@ JHB.toc = {
     "총론",
     "기전"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "연구",
    "minutes": 6,
    "order": 7
@@ -415,7 +415,7 @@ JHB.toc = {
     "관계망상",
     "관계사고"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "연구",
    "minutes": 5,
    "order": 9
@@ -568,7 +568,7 @@ JHB.toc = {
     "응급",
     "위기"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "가이드라인",
    "minutes": 5,
    "order": 18
@@ -637,7 +637,7 @@ JHB.toc = {
     "치료 반응",
     "치료저항성"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "연구",
    "minutes": 6,
    "order": 22
@@ -653,7 +653,7 @@ JHB.toc = {
     "무의욕",
     "정서둔마"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "연구",
    "minutes": 6,
    "order": 1
@@ -701,7 +701,7 @@ JHB.toc = {
     "말",
     "표현"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "연구",
    "minutes": 6,
    "order": 4
@@ -785,7 +785,7 @@ JHB.toc = {
     "BNSS",
     "CAINS"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "연구",
    "minutes": 6,
    "order": 9
@@ -803,7 +803,7 @@ JHB.toc = {
     "선조체",
     "전전두엽"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "연구",
    "minutes": 6,
    "order": 10
@@ -820,7 +820,7 @@ JHB.toc = {
     "임상시험",
     "메타분석"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "연구",
    "minutes": 6,
    "order": 11
@@ -838,7 +838,7 @@ JHB.toc = {
     "신약",
     "rTMS"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "연구",
    "minutes": 6,
    "order": 12
@@ -869,9 +869,10 @@ JHB.toc = {
     "음성",
     "우울",
     "감별",
-    "항우울제"
+    "항우울제",
+    "위기"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "연구",
    "minutes": 6,
    "order": 14
@@ -956,7 +957,7 @@ JHB.toc = {
     "가족",
     "LEAP"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "연구",
    "minutes": 4,
    "order": 4
@@ -974,7 +975,7 @@ JHB.toc = {
     "후정신병우울",
     "동반질환"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "연구",
    "minutes": 4,
    "order": 5
@@ -1007,7 +1008,7 @@ JHB.toc = {
     "우울",
     "안전계획"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "연구",
    "minutes": 2,
    "order": 7
@@ -1042,7 +1043,7 @@ JHB.toc = {
     "흡연",
     "위기"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "연구",
    "minutes": 5,
    "order": 9
@@ -1063,7 +1064,7 @@ JHB.toc = {
     "비확전",
     "위기"
    ],
-   "updated": "2026-10-24",
+   "updated": "2026-10-25",
    "evidence": "연구",
    "minutes": 5,
    "order": 10
@@ -1115,7 +1116,7 @@ JHB.toc = {
     "가족",
     "위기"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "연구",
    "minutes": 5,
    "order": 3
@@ -1133,7 +1134,7 @@ JHB.toc = {
     "유지치료",
     "재활"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "연구",
    "minutes": 5,
    "order": 4
@@ -1245,7 +1246,7 @@ JHB.toc = {
     "가족",
     "예후"
    ],
-   "updated": "2026-10-24",
+   "updated": "2026-10-25",
    "evidence": "연구",
    "minutes": 5,
    "order": 10
@@ -1299,7 +1300,7 @@ JHB.toc = {
     "KCD",
     "진단 코드"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "가이드라인",
    "minutes": 3,
    "order": 2
@@ -1316,7 +1317,7 @@ JHB.toc = {
     "뇌 영상",
     "심리검사"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "가이드라인",
    "minutes": 4,
    "order": 3
@@ -1333,7 +1334,7 @@ JHB.toc = {
     "조증",
     "정신병적 양상"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "연구",
    "minutes": 3,
    "order": 4
@@ -1350,7 +1351,7 @@ JHB.toc = {
     "기분 삽화",
     "진단 변경"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "연구",
    "minutes": 3,
    "order": 5
@@ -1367,7 +1368,7 @@ JHB.toc = {
     "색정망상",
     "질투망상"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "연구",
    "minutes": 3,
    "order": 6
@@ -1385,7 +1386,7 @@ JHB.toc = {
     "산후 정신병",
     "위기"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "연구",
    "minutes": 3,
    "order": 7
@@ -1454,7 +1455,7 @@ JHB.toc = {
     "진단 안정성",
     "세컨드 오피니언"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "연구",
    "minutes": 4,
    "order": 11
@@ -1472,7 +1473,7 @@ JHB.toc = {
     "뇌전증",
     "검사 체크리스트"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "연구",
    "minutes": 4,
    "order": 12
@@ -1642,7 +1643,7 @@ JHB.toc = {
     "대사 부작용",
     "정좌불능"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "연구",
    "minutes": 3,
    "order": 10
@@ -1710,7 +1711,7 @@ JHB.toc = {
     "추체외로 증상",
     "급성 초조"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "연구",
    "minutes": 5,
    "order": 14
@@ -1728,7 +1729,7 @@ JHB.toc = {
     "혈액검사",
     "위기"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "연구",
    "minutes": 5,
    "order": 15
@@ -1746,7 +1747,7 @@ JHB.toc = {
     "팔리페리돈",
     "아리피프라졸"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "연구",
    "minutes": 4,
    "order": 16
@@ -1764,7 +1765,7 @@ JHB.toc = {
     "프로락틴",
     "추체외로"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "연구",
    "minutes": 4,
    "order": 17
@@ -1773,7 +1774,7 @@ JHB.toc = {
    "slug": "eps",
    "section": "7",
    "title": "추체외로 증상과 지연성 운동장애",
-   "summary": "항정신병약이 일으키는 운동 부작용 네 가지, 즉 급성 근긴장이상·파킨슨증·정좌불능·지연성 운동장애를 각각 정의·시기·빈도로 정리했어요. 지연성 운동장애의 연간 발생률(1세대 6.5%, 2세대 2.6%), AIMS 검사, 2017년 승인된 VMAT2 억제제까지 담았어요.",
+   "summary": "항정신병약이 일으키는 운동 부작용 네 가지, 즉 급성 근긴장이상·파킨슨증·정좌불능·지연성 운동장애를 각각 정의·시기·빈도로 정리했어요. 지연성 운동장애의 연간 발생률(1세대 6.5%, 2세대 2.6%), AIMS 검사, 2017년 미국에서 승인되고 2021년 국내에도 허가된 VMAT2 억제제까지 담았어요.",
    "tags": [
     "약물 치료",
     "부작용",
@@ -1783,7 +1784,7 @@ JHB.toc = {
     "근긴장이상",
     "위기"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "연구",
    "minutes": 5,
    "order": 18
@@ -1873,7 +1874,7 @@ JHB.toc = {
     "교체",
     "위기"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "연구",
    "minutes": 6,
    "order": 23
@@ -1891,7 +1892,7 @@ JHB.toc = {
     "도파민",
     "TRRIP"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "연구",
    "minutes": 5,
    "order": 24
@@ -1946,7 +1947,7 @@ JHB.toc = {
     "코벤피",
     "파이프라인"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "연구",
    "minutes": 5,
    "order": 27
@@ -2001,7 +2002,7 @@ JHB.toc = {
     "실신",
     "클로자핀"
    ],
-   "updated": "2026-10-24",
+   "updated": "2026-10-25",
    "evidence": "연구",
    "minutes": 5,
    "order": 30
@@ -2078,7 +2079,7 @@ JHB.toc = {
     "망상",
     "심리치료"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "가이드라인",
    "minutes": 4,
    "order": 1
@@ -2095,7 +2096,7 @@ JHB.toc = {
     "표출 정서",
     "재발 예방"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "가이드라인",
    "minutes": 3,
    "order": 2
@@ -2273,7 +2274,7 @@ JHB.toc = {
     "퇴원 계획",
     "위기"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "가이드라인",
    "minutes": 5,
    "order": 12
@@ -2291,7 +2292,7 @@ JHB.toc = {
     "지역사회",
     "위기 대응"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "연구",
    "minutes": 4,
    "order": 13
@@ -2313,7 +2314,7 @@ JHB.toc = {
     "권리",
     "정신건강복지법"
    ],
-   "updated": "2026-10-24",
+   "updated": "2026-10-25",
    "evidence": "가이드라인",
    "minutes": 7,
    "order": 14
@@ -2440,7 +2441,7 @@ JHB.toc = {
     "정당한편의",
     "장애인차별금지법"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "연구",
    "minutes": 4,
    "order": 6
@@ -2584,7 +2585,7 @@ JHB.toc = {
     "관계",
     "권리"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "연구",
    "minutes": 4,
    "order": 14
@@ -2735,7 +2736,7 @@ JHB.toc = {
     "재발",
     "위기"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "연구",
    "minutes": 4,
    "order": 3
@@ -2752,7 +2753,7 @@ JHB.toc = {
     "응급입원",
     "가족"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "가이드라인",
    "minutes": 4,
    "order": 4
@@ -2844,7 +2845,7 @@ JHB.toc = {
     "성년후견",
     "형제자매"
    ],
-   "updated": "2026-10-24",
+   "updated": "2026-10-25",
    "evidence": "가이드라인",
    "minutes": 5,
    "order": 9
@@ -2862,9 +2863,9 @@ JHB.toc = {
     "입원",
     "차별 금지"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "가이드라인",
-   "minutes": 4,
+   "minutes": 5,
    "order": 1
   },
   {
@@ -2899,7 +2900,7 @@ JHB.toc = {
     "본인부담",
     "국민건강보험공단"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "가이드라인",
    "minutes": 3,
    "order": 3
@@ -2935,7 +2936,7 @@ JHB.toc = {
     "1577-0199",
     "퇴원"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "가이드라인",
    "minutes": 3,
    "order": 5
@@ -2973,7 +2974,7 @@ JHB.toc = {
     "근로지원인",
     "IPS"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "가이드라인",
    "minutes": 3,
    "order": 7
@@ -3048,7 +3049,7 @@ JHB.toc = {
     "상담전화",
     "응급"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "가이드라인",
    "minutes": 3,
    "order": 11
@@ -3067,7 +3068,7 @@ JHB.toc = {
     "NAMI",
     "Hearing Voices"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "경험",
    "minutes": 3,
    "order": 12
@@ -3126,7 +3127,7 @@ JHB.toc = {
     "가정법원",
     "의사결정 지원"
    ],
-   "updated": "2026-10-24",
+   "updated": "2026-10-25",
    "evidence": "가이드라인",
    "minutes": 5,
    "order": 15
@@ -3276,7 +3277,7 @@ JHB.toc = {
     "위약 반응",
     "장기지속형 주사제"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "연구",
    "minutes": 5,
    "order": 6
@@ -3442,7 +3443,7 @@ JHB.toc = {
     "감각 게이팅",
     "멘델 무작위 분석"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "초기연구",
    "minutes": 3,
    "order": 4
@@ -3545,7 +3546,7 @@ JHB.toc = {
     "편견",
     "유전"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "연구",
    "minutes": 3,
    "order": 10
@@ -3596,7 +3597,7 @@ JHB.toc = {
     "후성유전",
     "환경"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "연구",
    "minutes": 3,
    "order": 13
@@ -3687,7 +3688,7 @@ JHB.toc = {
     "뇌 비대칭",
     "언어"
    ],
-   "updated": "2026-10-24",
+   "updated": "2026-10-25",
    "evidence": "연구",
    "minutes": 4,
    "order": 18
@@ -4005,7 +4006,7 @@ JHB.toc = {
     "치매",
     "감별"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "연구",
    "minutes": 1,
    "order": 18
@@ -4350,7 +4351,7 @@ JHB.toc = {
     "클로자핀",
     "항정신병약"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "연구",
    "minutes": 4,
    "order": 3
@@ -4388,9 +4389,9 @@ JHB.toc = {
     "장기입원",
     "인권"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "연구",
-   "minutes": 3,
+   "minutes": 4,
    "order": 5
   },
   {
@@ -4405,7 +4406,7 @@ JHB.toc = {
     "인권",
     "진단"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "연구",
    "minutes": 4,
    "order": 6
@@ -4423,7 +4424,7 @@ JHB.toc = {
     "장애인권리협약",
     "인권"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-10-25",
    "evidence": "연구",
    "minutes": 3,
    "order": 7

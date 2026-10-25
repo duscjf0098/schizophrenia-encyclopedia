@@ -4,7 +4,7 @@ section: 6
 order: 7
 summary: 같은 정신병 증상이라도 1개월 미만이면 단기 정신병적 장애, 1~6개월이면 조현양상장애, 6개월을 넘기면 조현병이에요. 기간으로 나뉜 이름이라 시간이 지나면 바뀌기도 하고, 상당수는 완전히 회복해요.
 tags: 진단, 감별, 단기 정신병적 장애, 조현양상장애, 산후 정신병, 위기
-updated: 2026-10-23
+updated: 2026-10-25
 evidence: 연구
 sources:
   - American Psychiatric Association | What is Schizophrenia? | 2024 | https://www.psychiatry.org/patients-families/schizophrenia/what-is-schizophrenia
@@ -34,7 +34,7 @@ ICD-11은 비슷한 상태를 "급성 일과성 정신병적 장애"라고 부�
 
 ## 얼마나 많이 조현병으로 넘어가나
 
-첫 삽화 정신병 환자 1만 4천여 명을 모은 2016년 메타분석의 결과예요.[^2]
+첫 삽화 정신병이 있는 사람 1만 4천여 명을 모은 2016년 메타분석의 결과예요.[^2]
 
 | 처음 진단 | 평균 4.5년 뒤 진단 유지율 | 조현병으로 바뀐 비율 |
 |---|---|---|

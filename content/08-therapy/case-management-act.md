@@ -4,13 +4,13 @@ section: 8
 order: 13
 summary: 병원 밖에서 치료와 생활을 이어 주는 체계예요. ACT는 소규모 팀이 집으로 찾아가는 모델로, 코크란 리뷰에서 입원 일수를 줄이고 치료 이탈을 줄였어요. 한국에서는 정신건강복지센터의 사례관리가 그 역할을 해요. 등록·방문·위기 대응, 이용하는 법, 기대할 수 있는 것을 정리했어요.
 tags: 비약물 치료, 사례관리, ACT, 정신건강복지센터, 지역사회, 위기 대응
-updated: 2026-10-23
+updated: 2026-10-25
 evidence: 연구
 sources:
   - Dieterich M 외 | Intensive case management for severe mental illness (Cochrane Database of Systematic Reviews) | 2017 | https://doi.org/10.1002/14651858.CD007906.pub3
   - 국립정신건강센터 | 국가정신건강정보포털 · 질환별 정보 · 조현병 | 2026 | https://www.mentalhealth.go.kr/portal/disease/diseaseDetail.do?dissId=26
   - 금천구 | 정신건강복지센터 사업 안내 | 2026 | https://www.geumcheon.go.kr/health/contents.do?key=1391
-  - CaseNote(현행 조문) | 정신건강증진 및 정신질환자 복지서비스 지원에 관한 법률 (법률 제21525호, 2026.10.8. 시행) 제15조·제27조·제52조 | 2026 | https://casenote.kr/법령/정신건강증진_및_정신질환자_복지서비스_지원에_관한_법률
+  - nepla.ai(현행 조문) | 정신건강증진 및 정신질환자 복지서비스 지원에 관한 법률 (법률 제21525호, 2026.10.8. 시행) 제15조·제27조·제52조 | 2026 | https://www.nepla.ai/law/정신보건법
 ---
 ## 한 문장으로
 

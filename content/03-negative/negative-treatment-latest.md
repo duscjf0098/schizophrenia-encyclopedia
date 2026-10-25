@@ -4,7 +4,7 @@ section: 3
 order: 12
 summary: 카리프라진·아미설프리드 같은 약, 운동·인지행동치료·사회기술 훈련, rTMS, 그리고 롤루페리돈·이클레페르틴 같은 신약의 2024~2025년 결과까지 근거를 정리했어요. 효과는 대부분 중간 이하지만, 합치면 달라져요.
 tags: 음성, 치료, 카리프라진, 운동, 신약, rTMS
-updated: 2026-10-23
+updated: 2026-10-25
 evidence: 연구
 sources:
   - Németh G 외 | Cariprazine versus risperidone monotherapy for treatment of predominant negative symptoms in patients with schizophrenia: a randomised, double-blind, controlled trial (Lancet) | 2017 | https://doi.org/10.1016/s0140-6736(17)30060-0
@@ -14,6 +14,7 @@ sources:
   - Davidson M 외 | Efficacy and safety of roluperidone for the treatment of negative symptoms of schizophrenia (Schizophrenia Bulletin) | 2022 | https://doi.org/10.1093/schbul/sbac013
   - Minerva Neurosciences | Minerva Neurosciences receives Complete Response Letter from FDA for New Drug Application for roluperidone (보도자료) | 2024 | https://www.biospace.com/minerva-neurosciences-receives-complete-response-letter-from-fda-for-new-drug-application-for-roluperidone-for-the-treatment-of-negative-symptoms-in-patients-with-schizophrenia
   - Keefe RSE 외 | Iclepertin for cognitive impairment associated with schizophrenia: the CONNEX programme (three phase 3 randomised trials) (Lancet Psychiatry) | 2025 | https://doi.org/10.1016/s2215-0366(25)00296-2
+  - Minerva Neurosciences | Minerva Neurosciences announces first patient screened in global phase 3 confirmatory trial of roluperidone for the treatment of negative symptoms of schizophrenia (보도자료, 2026-03-31) | 2026 | https://minervaneurosciences.com/?p=766
 ---
 ## 한 문장으로
 
@@ -55,7 +56,7 @@ sources:
 
 ## 신약: 2024~2025년의 결과
 
-**롤루페리돈(roluperidone).** 도파민이 아니라 세로토닌 5-HT2A, 시그마2, 알파1 수용체를 막는 약으로, 항정신병약 없이 단독으로 음성 증상을 겨냥했어요. 2022년 발표된 3상 시험(513명, 12주)에서 고용량군의 PANSS 음성 요인 점수가 위약보다 더 내려갔지만, 주된 분석에서는 통계적 유의성에 약간 못 미쳤고(p=0.064) 보조 분석에서만 유의했어요. 기능 척도에서는 두 분석 모두 유의하게 좋아졌어요.[^5] 2024년 2월 미국 식품의약국(FDA)은 승인을 보류하는 보완 요구 서한을 보냈어요. 한 시험이 주요 목표를 달성했지만 그것만으로는 효과의 충분한 증거가 되지 않는다며, 추가 시험 하나 이상, 항정신병약과 함께 쓸 때의 자료, 변화가 임상적으로 의미 있다는 자료, 더 긴 안전성 자료를 요구했어요.[^6] 2026년 10월 현재 승인되지 않았어요.
+**롤루페리돈(roluperidone).** 도파민이 아니라 세로토닌 5-HT2A, 시그마2, 알파1 수용체를 막는 약으로, 항정신병약 없이 단독으로 음성 증상을 겨냥했어요. 2022년 발표된 3상 시험(513명, 12주)에서 고용량군의 PANSS 음성 요인 점수가 위약보다 더 내려갔지만, 주된 분석에서는 통계적 유의성에 약간 못 미쳤고(p=0.064) 보조 분석에서만 유의했어요. 기능 척도에서는 두 분석 모두 유의하게 좋아졌어요.[^5] 2024년 2월 미국 식품의약국(FDA)은 승인을 보류하는 보완 요구 서한을 보냈어요. 한 시험이 주요 목표를 달성했지만 그것만으로는 효과의 충분한 증거가 되지 않는다며, 추가 시험 하나 이상, 항정신병약과 함께 쓸 때의 자료, 변화가 임상적으로 의미 있다는 자료, 더 긴 안전성 자료를 요구했어요.[^6] 회사는 FDA와 협의를 거쳐 2026년 3월 약 380명을 모집하는 확증 3상 시험을 시작했고, 주요 결과는 2027년 하반기에 나올 예정이에요. 2026년 10월 현재 롤루페리돈은 승인되지 않았고, 음성 증상을 적응증으로 승인된 약은 미국에 아직 없어요.[^8]
 
 **이클레페르틴(iclepertin).** 글루타메이트 가설에 기반한 글리신 수송체 억제제예요. 음성 증상이 아니라 인지 장애를 겨냥했지만, 음성 증상과 인지가 같은 뿌리를 가질 수 있어 주목받았어요. 2025년 란셋 사이키아트리에 실린 CONNEX 3상 프로그램(3개 시험, 1,835명, 26주)에서 인지 종합 점수의 차이가 없었어요(차이 0.127, p=0.63). 약은 잘 견뎌졌지만 효과는 없었고, 연구진은 이 결과가 조현병 신약 개발의 어려움을 보여 준다고 결론지었어요.[^7]
 

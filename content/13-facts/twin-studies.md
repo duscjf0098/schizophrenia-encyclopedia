@@ -4,12 +4,12 @@ section: 13
 order: 13
 summary: 유전자가 같은 네 쌍둥이 자매는 모두 조현병을 앓았지만 경과는 서로 달랐어요. 한 명만 병을 앓은 일란성 쌍둥이 연구는 뇌의 차이, 후성유전, 그리고 "드러나지 않은 소인"을 보여 줬어요. 유전은 중요하지만 운명은 아니에요.
 tags: 잘 알려지지 않은 사실, 유전, 쌍둥이, 후성유전, 환경
-updated: 2026-10-23
+updated: 2026-10-25
 evidence: 연구
 sources:
   - Segal NL | Genain quadruplets: variations on the schizophrenic syndrome (Twin Research) | 2001 | https://doi.org/10.1375/1369052012065
   - Mirsky AF 외 | A 39-year followup of the Genain quadruplets (Schizophrenia Bulletin) | 2000 | https://doi.org/10.1093/oxfordjournals.schbul.a033487
-  - Torrey EF, Bowler AE, Taylor EH, Gottesman II | Schizophrenia and Manic-Depressive Disorder: The Biological Roots of Mental Illness as Revealed by the Landmark Study of Identical Twins (Basic Books) | 1994 | https://www.hachettebookgroup.com/titles/e-fuller-torrey-md/schizophrenia-and-manic-depressive-disorder/9780465072859/
+  - Torrey EF, Bowler AE, Taylor EH, Gottesman II | Schizophrenia and Manic-Depressive Disorder: The Biological Roots of Mental Illness as Revealed by the Landmark Study of Identical Twins (Basic Books, 문고판) | 1995 | https://www.hachettebookgroup.com/titles/e-fuller-torrey-md/schizophrenia-and-manic-depressive-disorder/9780465072859/
   - Suddath RL 외 | Anatomical abnormalities in the brains of monozygotic twins discordant for schizophrenia (New England Journal of Medicine) | 1990 | https://doi.org/10.1056/NEJM199003223221201
   - Gottesman II, Bertelsen A | Confirming unexpressed genotypes for schizophrenia: risks in the offspring of Fischer's Danish identical and fraternal discordant twins (Archives of General Psychiatry) | 1989 | https://doi.org/10.1001/archpsyc.1989.01810100009002
   - Dempster EL 외 | Disease-associated epigenetic changes in monozygotic twins discordant for schizophrenia and bipolar disorder (Human Molecular Genetics) | 2011 | https://doi.org/10.1093/hmg/ddr416
@@ -34,7 +34,7 @@ sources:
 
 ## 한 명만 앓은 일란성 쌍둥이
 
-토리 연구진은 한 명만 조현병이나 양극성장애를 앓는 일란성 쌍둥이를 모아 연구하고, 그 결과를 1994년 책으로 정리했어요. 이들은 쌍둥이 사이의 차이를 두 병이 뇌의 생물학적 질환이라는 근거로 제시했어요.[^3]
+토리 연구진은 한 명만 조현병이나 양극성장애를 앓는 일란성 쌍둥이를 모아 연구하고, 그 결과를 책으로 정리했어요. 이들은 쌍둥이 사이의 차이를 두 병이 뇌의 생물학적 질환이라는 근거로 제시했어요.[^3]
 
 **뇌의 차이(1990년).** 토리가 참여한 MRI 연구에서 15쌍 가운데 12쌍은 영상만 보고도 누가 조현병인지 알아볼 수 있었어요. 조현병이 있는 쪽은 15명 중 14명이 왼쪽 해마가 더 작았고, 14명이 왼쪽 측뇌실이 더 컸어요.[^4] 유전자가 같아도 뇌의 발달은 달라질 수 있다는 뜻이에요.
 

@@ -4,7 +4,7 @@ section: 10
 order: 3
 summary: 환청, 망상, 의심, 불면, 고립이 심해질 때 가족이 할 수 있는 말과 행동을 증상별로 정리했어요. 안전한 집 환경, 의료진에게 연락할 시점, 본인 동의 없이 정보를 주고받을 때의 한계, 그리고 가족 자신을 지키는 법도 담았어요.
 tags: 가족, 급성기, 환청, 망상, 불면, 재발, 위기
-updated: 2026-10-23
+updated: 2026-10-25
 evidence: 연구
 sources:
   - Gleeson JF 외 | Systematic review of early warning signs of relapse and behavioural antecedents of symptom worsening in people living with schizophrenia spectrum disorders (Clinical Psychology Review) | 2024 | https://doi.org/10.1016/j.cpr.2023.102357
@@ -12,7 +12,7 @@ sources:
   - Butzlaff RL, Hooley JM | Expressed emotion and psychiatric relapse: a meta-analysis (Archives of General Psychiatry) | 1998 | https://doi.org/10.1001/archpsyc.55.6.547
   - NICE | Psychosis and schizophrenia in adults: prevention and management (CG178), 1.1.4 Support for carers | 2014(2026.9.4. 최종 갱신) | https://www.nice.org.uk/guidance/cg178/chapter/Recommendations
   - 서울대학교병원 | 의무기록 사본 발급 안내(의료법 제21조, 같은 법 시행규칙 제13조의3) | 2026 확인 | https://www.snuh.org/content/C004006006.do
-  - 네플라(현행 조문) | 정신건강증진 및 정신질환자 복지서비스 지원에 관한 법률 제71조(비밀누설의 금지), 2026.10.8. 시행본 | 2026 | https://www.nepla.ai/law/정신보건법
+  - CaseNote(현행 조문) | 정신건강증진 및 정신질환자 복지서비스 지원에 관한 법률 제71조(비밀누설의 금지) (2026.10.8. 시행) | 2026 | https://casenote.kr/법령/정신건강증진_및_정신질환자_복지서비스_지원에_관한_법률
 ---
 ::: crisis
 당사자가 죽고 싶다고 하거나, 자신이나 다른 사람을 해칠 것 같다면 이 글보다 연락이 먼저예요. 자살예방상담 **109**, 정신건강위기상담 **1577-0199**는 24시간 받아요. 당장 위험하면 **119** 또는 **112**에 전화하세요. 자세한 순서는 [응급 상황 대처](#/a/emergency-response)에 있어요.

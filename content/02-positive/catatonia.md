@@ -4,7 +4,7 @@ section: 2
 order: 18
 summary: 몸이 굳어 움직이지 않거나, 반대로 목적 없이 격하게 움직이는 증상 묶음이에요. 조현병뿐 아니라 우울증·조증·뇌 질환에서도 생기고, 벤조디아제핀과 전기경련치료에 반응이 좋아요. 열이 나고 맥박이 빨라지면 응급이에요.
 tags: 양성, 긴장증, 카타토니아, 응급, 위기
-updated: 2026-10-23
+updated: 2026-10-25
 evidence: 가이드라인
 sources:
   - Rogers JP 외 | Evidence-based consensus guidelines for the management of catatonia: recommendations from the British Association for Psychopharmacology (Journal of Psychopharmacology) | 2023 | https://doi.org/10.1177/02698811231158232
@@ -22,7 +22,7 @@ sources:
 
 ## 어떤 모습인가
 
-DSM-5-TR과 ICD-11은 아래 12가지 가운데 3가지 이상이 뚜렷할 때 긴장증으로 진단해요.[^1][^8]
+DSM-5-TR은 아래 12가지 가운데 3가지 이상이 뚜렷할 때 긴장증으로 진단하고, ICD-11도 증상 수를 정해 두지는 않지만 비슷한 징후 목록을 써요.[^1][^8]
 
 | 징후 | 뜻 |
 |---|---|

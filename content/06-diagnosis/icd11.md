@@ -4,7 +4,7 @@ section: 6
 order: 2
 summary: 세계보건기구의 국제질병분류 11판은 2022년부터 쓰여요. 조현병 코드는 6A20이 됐고, 아형 대신 증상·경과 지정자를 붙여요. 우리나라 KCD는 아직 ICD-10 기반이라 F20 코드를 써요.
 tags: 진단, ICD-11, ICD-10, KCD, 진단 코드
-updated: 2026-10-23
+updated: 2026-10-25
 evidence: 가이드라인
 sources:
   - WHO | ICD-11 for Mortality and Morbidity Statistics · 6A20 Schizophrenia | 2025 | https://icd.who.int/browse/2025-01/mms/en
@@ -13,6 +13,7 @@ sources:
   - Gaebel W 외 | Classification and diagnosis of schizophrenia or other primary psychotic disorders: changes from ICD-10 to ICD-11 and implementation in clinical practice (Psychiatria Danubina) | 2020 | https://doi.org/10.24869/psyd.2020.320
   - Tandon R 외 | Definition and description of schizophrenia in the DSM-5 (Schizophrenia Research) | 2013 | https://doi.org/10.1016/j.schres.2013.05.028
   - 아이뉴스24 | '뜨거운 감자' 게임 질병코드…2025년 10월 'KCD-10 초안'에 쏠리는 시선 | 2024 | https://www.inews24.com/view/1743291
+  - 국가데이터처(옛 통계청) | 제9차 한국표준질병·사인분류 개정고시(2025-07-01 고시, 2026-01-01 시행) | 2025 | https://mods.go.kr/board.es?mid=a10301010000&bid=246&act=view&list_no=437418
 ---
 ## 한 문장으로
 
@@ -20,7 +21,7 @@ ICD는 세계보건기구(WHO)가 만드는 국제질병분류예요. 11판(ICD-
 
 ## 우리나라 진단서에는 왜 F20이 적혀 있나
 
-한국은 통계청이 고시하는 한국표준질병·사인분류(KCD)를 써요. 현행 KCD는 ICD-10을 토대로 만들어졌기 때문에 조현병은 여전히 F20 계열 코드예요.[^6] 통계청은 ICD-11을 반영한 다음 개정판 작업에 착수했고, 2027년 시범 고시를 거쳐 2031년부터 시행하는 일정이 보도됐어요.[^6] 그래서 당분간 진료실 서류에는 F20이, 국제 논문과 WHO 자료에는 6A20이 함께 보일 거예요. 두 코드는 같은 병을 가리켜요.
+한국은 국가데이터처(옛 통계청)가 고시하는 한국표준질병·사인분류(KCD)를 써요. 2025년 7월 고시되어 2026년 1월부터 시행 중인 제9차 개정판(KCD-9)도 기존 ICD-10 체계를 유지했기 때문에 조현병은 여전히 F20 계열 코드예요.[^7] ICD-11을 반영한 다음 개정판은 2024년 보도 기준으로 2027년 시범 고시, 2030년 최종 개정, 2031년 시행 일정이었어요.[^6] 이 일정은 바뀔 수 있으니, 최신 상황은 국가데이터처 통계분류포털에서 확인하세요. 그래서 당분간 진료실 서류에는 F20이, 국제 논문과 WHO 자료에는 6A20이 함께 보일 거예요. 두 코드는 같은 병을 가리켜요.
 
 ## ICD-10에서 ICD-11로, 무엇이 달라졌나
 

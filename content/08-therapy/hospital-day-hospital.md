@@ -4,11 +4,11 @@ section: 8
 order: 12
 summary: 입원이 필요한 때, 정신건강복지법의 다섯 가지 입원(자의·동의·보호·행정·응급), 입원 중 일어나는 일, 퇴원 계획, 그리고 낮에만 병원에 다니는 낮병원·주간재활의 개념과 근거를 정리했어요. 입원을 겪은 당사자의 관점도 담았어요.
 tags: 비약물 치료, 입원, 낮병원, 정신건강복지법, 퇴원 계획, 위기
-updated: 2026-10-23
+updated: 2026-10-25
 evidence: 가이드라인
 sources:
   - 국립정신건강센터 | 국가정신건강정보포털 · 질환별 정보 · 조현병 | 2026 | https://www.mentalhealth.go.kr/portal/disease/diseaseDetail.do?dissId=26
-  - CaseNote(현행 조문) | 정신건강증진 및 정신질환자 복지서비스 지원에 관한 법률 (법률 제21525호, 2026.10.8. 시행) 제41~45조·제50조·제52조 | 2026 | https://casenote.kr/법령/정신건강증진_및_정신질환자_복지서비스_지원에_관한_법률
+  - nepla.ai(현행 조문) | 정신건강증진 및 정신질환자 복지서비스 지원에 관한 법률 (법률 제21525호, 2026.10.8. 시행) 제41~45조·제50조·제52조 | 2026 | https://www.nepla.ai/law/정신보건법
   - Marshall M 외 | Day hospital versus admission for acute psychiatric disorders (Cochrane Database of Systematic Reviews) | 2011 | https://doi.org/10.1002/14651858.CD004026.pub2
   - 메디컬데일리 | 정신질환자 낮병동 관리료 시범사업 2020년 1월 시행 (보건복지부) | 2019 | https://www.medicaldaily.co.kr/news/9727
 ---

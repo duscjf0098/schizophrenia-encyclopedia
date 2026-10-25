@@ -4,7 +4,7 @@ section: 4
 order: 4
 summary: 병식은 "내가 병이 있다"는 자각이에요. 조현병이 있는 사람의 절반 이상이 병식이 낮고, 이것이 치료 중단과 재발로 이어져요. 반대로 병식이 생기면 우울해지기도 해서, 다루는 방법이 중요해요.
 tags: 인지, 병식, 치료순응, 가족, LEAP
-updated: 2026-10-23
+updated: 2026-10-25
 evidence: 연구
 sources:
   - Amador XF 외 | Awareness of illness in schizophrenia and schizoaffective and mood disorders (Archives of General Psychiatry) | 1994 | https://doi.org/10.1001/archpsyc.1994.03950100074007
@@ -13,7 +13,7 @@ sources:
   - Belvederi Murri M 외 | Is good insight associated with depression among patients with schizophrenia? Systematic review and meta-analysis (Schizophrenia Research) | 2015 | https://doi.org/10.1016/j.schres.2015.01.003
   - Lysaker PH 외 | Insight in schizophrenia spectrum disorders: relationship with behavior, mood and perceived quality of life, underlying causes and emerging treatments (World Psychiatry) | 2018 | https://doi.org/10.1002/wps.20508
   - Pijnenborg GH 외 | Changes in insight during treatment for psychotic disorders: a meta-analysis (Schizophrenia Research) | 2013 | https://doi.org/10.1016/j.schres.2012.11.018
-  - Amador XF (LEAP Institute) | I Am Not Sick, I Don't Need Help! 20th anniversary edition (Vida Press) | 2020 | https://leapinstitute.org/
+  - LEAP Institute (Amador XF) | LEAP(Listen-Empathize-Agree-Partner) 소개 페이지 | 2026 | https://leapinstitute.org/
 ---
 ## 한 문장으로
 

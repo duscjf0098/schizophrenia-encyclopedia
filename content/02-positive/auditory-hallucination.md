@@ -4,18 +4,18 @@ section: 2
 order: 3
 summary: 실제 소리가 없는데 목소리나 소리가 들리는 경험이에요. 조현병에서 가장 흔한 환각이고, 내용과 느낌은 사람마다, 문화마다 달라요.
 tags: 양성, 환각, 환청
-updated: 2026-10-23
+updated: 2026-10-25
 evidence: 연구
 sources:
   - NIMH | Schizophrenia | 2024 | https://www.nimh.nih.gov/health/topics/schizophrenia
   - Luhrmann TM 외 | Differences in voice-hearing experiences of people with psychosis in the USA, India and Ghana (British Journal of Psychiatry) | 2015 | https://doi.org/10.1192/bjp.bp.113.139048
   - NICE | Psychosis and schizophrenia in adults: prevention and management (CG178) | 2014 | https://www.nice.org.uk/guidance/cg178
   - Craig TKJ 외 | AVATAR therapy for auditory verbal hallucinations in people with psychosis (Lancet Psychiatry) | 2018 | https://doi.org/10.1016/S2215-0366(17)30427-3
-  - 국립정신건강센터 | 국가정신건강정보포털 · 조현병 | 2023 | https://www.mentalhealth.go.kr
+  - Lim A 외 | Prevalence and classification of hallucinations in multiple sensory modalities in schizophrenia spectrum disorders (Schizophrenia Research) | 2016 | https://doi.org/10.1016/j.schres.2016.06.010
 ---
 ## 어떤 경험인가
 
-환청은 밖에서 나는 소리가 없는데도 소리가 들리는 경험이에요. 대부분은 사람 목소리예요. 귀로 듣는 것처럼 또렷할 수도 있고, 머릿속에서 울리는 것 같을 수도 있어요. 조현병이 있는 사람의 60~80%가 환청을 경험한다고 보고돼요.[^1][^5] 환청이 있다고 해서 모두 조현병인 건 아니에요. 수면 부족, 애도, 물질 사용, 다른 질환에서도 나타나고, 평생 한 번쯤 목소리를 듣는 사람은 일반 인구에서도 드물지 않아요.
+환청은 밖에서 나는 소리가 없는데도 소리가 들리는 경험이에요. 대부분은 사람 목소리예요. 귀로 듣는 것처럼 또렷할 수도 있고, 머릿속에서 울리는 것 같을 수도 있어요. 조현병 스펙트럼 장애가 있는 사람의 60~80%가 환청을 경험한다고 보고돼요.[^5] 환청이 있다고 해서 모두 조현병인 건 아니에요. 수면 부족, 애도, 물질 사용, 다른 질환에서도 나타나고, 평생 한 번쯤 목소리를 듣는 사람은 일반 인구에서도 드물지 않아요.
 
 ## 자주 나타나는 형태
 

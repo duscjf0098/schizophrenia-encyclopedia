@@ -4,14 +4,14 @@ section: 10
 order: 4
 summary: 자해·자살·타해 위험이 보일 때 가족이 무엇을, 어떤 순서로 해야 하는지 정리했어요. 109·1577-0199·119·112를 언제 쓰는지, 응급입원과 행정입원의 법적 요건, 경찰 동행, 응급실에서 할 말, 위기 뒤에 할 일까지 담았어요.
 tags: 위기, 응급, 자살, 응급입원, 가족
-updated: 2026-10-23
+updated: 2026-10-25
 evidence: 가이드라인
 sources:
   - 쿠키뉴스(보건복지부 발표) | 마음 힘들 땐 긴급번호 '109'…자살예방 상담전화 통합 운영 | 2024 | https://www.kukinews.com/article/view/kuk202401020145
   - 서울특별시 복지 누리집 | 정신건강 위기상담 전화(1577-0199) | 2026 | https://news.seoul.go.kr/welfare/archives/561837
   - NIMH | Warning Signs of Suicide | 2025 | https://www.nimh.nih.gov/health/publications/warning-signs-of-suicide
   - Hor K, Taylor M | Suicide and schizophrenia: a systematic review of rates and risk factors (Journal of Psychopharmacology) | 2010 | https://doi.org/10.1177/1359786810385490
-  - 네플라(현행 조문) | 정신건강증진 및 정신질환자 복지서비스 지원에 관한 법률 제44조(특별자치시장·시장·군수·구청장에 의한 입원)·제50조(응급입원), 2026.10.8. 시행본 | 2026 | https://www.nepla.ai/law/정신보건법
+  - CaseNote(현행 조문) | 정신건강증진 및 정신질환자 복지서비스 지원에 관한 법률 제44조(특별자치시장·시장·군수·구청장에 의한 입원)·제50조(응급입원) (2026.10.8. 시행) | 2026 | https://casenote.kr/법령/정신건강증진_및_정신질환자_복지서비스_지원에_관한_법률
   - Dazzi T 외 | Does asking about suicide and related behaviours induce suicidal ideation? What is the evidence? (Psychological Medicine) | 2014 | https://doi.org/10.1017/S0033291714001299
   - Chung DT 외 | Suicide rates after discharge from psychiatric facilities: a systematic review and meta-analysis (JAMA Psychiatry) | 2017 | https://doi.org/10.1001/jamapsychiatry.2017.1044
 ---

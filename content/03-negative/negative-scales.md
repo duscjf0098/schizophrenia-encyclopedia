@@ -4,13 +4,13 @@ section: 3
 order: 9
 summary: SANS·PANSS 같은 오래된 척도와 BNSS·CAINS 같은 2세대 척도, 당사자가 직접 답하는 SNS가 있어요. 2세대 척도는 겉으로 보이는 것뿐 아니라 "안에서 느끼는 동기·즐거움"을 묻는다는 점이 달라요.
 tags: 음성, 척도, 평가, SANS, PANSS, BNSS, CAINS
-updated: 2026-10-23
+updated: 2026-10-25
 evidence: 연구
 sources:
   - Andreasen NC | Negative symptoms in schizophrenia: definition and reliability (Archives of General Psychiatry) | 1982 | https://doi.org/10.1001/archpsyc.1982.04290070020005
   - Kay SR 외 | The Positive and Negative Syndrome Scale (PANSS) for schizophrenia (Schizophrenia Bulletin) | 1987 | https://doi.org/10.1093/schbul/13.2.261
   - Kirkpatrick B 외 | The Brief Negative Symptom Scale: psychometric properties (Schizophrenia Bulletin) | 2011 | https://doi.org/10.1093/schbul/sbq059
-  - Kring AM 외 | The Clinical Assessment Interview for Negative Symptoms (CAINS): final development and validation (American Journal of Psychiatry) | 2013 | https://doi.org/10.1176/appi.ajp.2012.12101329
+  - Kring AM 외 | The Clinical Assessment Interview for Negative Symptoms (CAINS): final development and validation (American Journal of Psychiatry) | 2013 | https://doi.org/10.1176/appi.ajp.2012.12010109
   - Dollfus S 외 | Self-Evaluation of Negative Symptoms: a novel tool to assess negative symptoms (Schizophrenia Bulletin) | 2016 | https://doi.org/10.1093/schbul/sbv161
   - Galderisi S 외 | EPA guidance on assessment of negative symptoms in schizophrenia (European Psychiatry) | 2021 | https://doi.org/10.1192/j.eurpsy.2021.11
   - Marder SR, Galderisi S | The current conceptualization of negative symptoms in schizophrenia (World Psychiatry) | 2017 | https://doi.org/10.1002/wps.20385

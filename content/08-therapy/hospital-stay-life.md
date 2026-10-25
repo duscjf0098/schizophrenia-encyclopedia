@@ -4,10 +4,10 @@ section: 8
 order: 14
 summary: 정신건강의학과 병동의 하루 일과, 병원마다 다른 병동 규칙(휴대폰·면회), 준비물, 보호병동과 개방병동, 치료진의 역할, 퇴원 계획 회의, 그리고 입원 중에도 지켜지는 권리를 현행 정신건강복지법 조문과 함께 정리했어요.
 tags: 비약물 치료, 입원, 병동, 보호병동, 개방병동, 준비물, 면회, 휴대폰, 권리, 정신건강복지법
-updated: 2026-10-24
+updated: 2026-10-25
 evidence: 가이드라인
 sources:
-  - CaseNote(현행 조문) | 정신건강증진 및 정신질환자 복지서비스 지원에 관한 법률 (법률 제21525호, 2026.10.8. 시행) 제30조·제41조·제52조·제69조·제72~76조 | 2026 | https://casenote.kr/법령/정신건강증진_및_정신질환자_복지서비스_지원에_관한_법률
+  - nepla.ai(현행 조문) | 정신건강증진 및 정신질환자 복지서비스 지원에 관한 법률 (법률 제21525호, 2026.10.8. 시행) 제30조·제41조·제52조·제69조·제72~76조 | 2026 | https://www.nepla.ai/law/정신보건법
   - 국가인권위원회 결정(세계일보 보도) | 폐쇄병동 환자 휴대전화 소지 금지한 병원…인권위 "인권침해" | 2025 | https://www.segye.com/newsView/20250704509902
   - Staniszewska S 외 | Experiences of in-patient mental health services: systematic review (British Journal of Psychiatry) | 2019 | https://doi.org/10.1192/bjp.2019.22
   - 국립정신건강센터 | 국가정신건강정보포털 · 질환별 정보 · 조현병 | 2026 | https://www.mentalhealth.go.kr/portal/disease/diseaseDetail.do?dissId=26

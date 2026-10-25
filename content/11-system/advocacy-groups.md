@@ -4,7 +4,7 @@ section: 11
 order: 12
 summary: 혼자가 아니라는 걸 확인할 수 있는 당사자·가족 단체를 모았어요. 국가정신건강정보포털에 오른 한국 단체와 공식 누리집이 확인된 자립생활센터, 해외 대표 단체(NAMI, Mind, Hearing Voices Network)를 한 줄씩 소개하고, 나에게 맞는 모임을 고르는 법을 정리했어요.
 tags: 제도, 당사자 단체, 가족 단체, 동료지원, 자조 모임, NAMI, Hearing Voices
-updated: 2026-10-23
+updated: 2026-10-25
 evidence: 경험
 sources:
   - 국립정신건강센터 | 국가정신건강정보포털 · 관련 단체 안내 | 2026 | https://www.mentalhealth.go.kr/portal/rndrPage.do?jsp=portal%2Frndr%2FrelatedOrganInfo&path=%2Fportal%2FrelatedOrganInfo%2F
@@ -13,6 +13,7 @@ sources:
   - Mind | About Mind | 2026 | https://www.mind.org.uk/about-us/
   - National Hearing Voices Network | Hearing Voices Network (England) 누리집 | 2026 | https://www.hearing-voices.org/
   - CaseNote(현행 조문) | 정신건강증진 및 정신질환자 복지서비스 지원에 관한 법률 제69조의2·제78조 (2026.10.8. 시행) | 2026 | https://casenote.kr/법령/정신건강증진_및_정신질환자_복지서비스_지원에_관한_법률
+  - 한국정신장애연대(KAMI) | 누리집 (온라인 자조모임·동료지원가 활동 안내) | 2026 | http://www.kami.ne.kr
 ---
 ## 한 문장으로
 
@@ -25,7 +26,7 @@ sources:
 | 단체 | 한 줄 소개 | 누리집 |
 |---|---|---|
 | 사단법인 대한정신장애인가족협회 | 정신장애인 가족들이 모인 사단법인 | [kfamd.or.kr](http://www.kfamd.or.kr) |
-| 한국정신장애연대(KAMI) | 정신장애 관련 연대 단체 | [kami.ne.kr](http://www.kami.ne.kr) |
+| 한국조현병회복협회(심지회) | 조현병 당사자와 가족의 회복 모임. 누리집은 다음 카페예요 | [cafe.daum.net/kyky116](http://cafe.daum.net/kyky116) |
 | 사단법인 정신장애와 인권 파도손 | 정신장애와 인권을 내건 사단법인 | [padoson.org](http://www.padoson.org) |
 
 포털 목록과 별도로 누리집을 확인한 단체도 있어요.
@@ -33,6 +34,7 @@ sources:
 | 단체 | 한 줄 소개 | 누리집 |
 |---|---|---|
 | 한국정신장애인자립생활센터 | 당사자 자립생활 단체. 매드프라이드 서울, 동료지원가 집담회, 당사자 야학 등을 열어 왔어요[^2] | [kmdpcil.com](http://www.kmdpcil.com) |
+| 한국정신장애연대(KAMI) | 정신장애 당사자 연대 단체. 온라인 자조모임, 동료지원가 활동 소식을 누리집에 올려요[^7] | [kami.ne.kr](http://www.kami.ne.kr) |
 
 단체의 활동과 연락처는 자주 바뀌어요. 방문 전에 누리집에서 최근 소식을 확인하세요. 지역의 가족 모임과 자조 모임은 관할 [정신건강복지센터](#/a/mental-health-center)가 가장 잘 알아요.
 

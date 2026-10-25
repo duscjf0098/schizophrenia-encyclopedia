@@ -4,7 +4,7 @@ section: 12
 order: 6
 summary: 코벤피 이후 무스카린 계열은 "성공 하나, 실패 둘, 기대 하나"로 갈렸어요. TAAR1 실패가 남긴 교훈, 음성·인지 증상 약이 계속 실패하는 이유, 위약 반응이 커져 시험 자체가 어려워진 문제, 그리고 2026년 승인된 새 장기지속형 주사까지 큰 흐름을 정리해요.
 tags: 연구 최전선, 신약, 임상시험, 무스카린, TAAR1, 위약 반응, 장기지속형 주사제
-updated: 2026-10-23
+updated: 2026-10-25
 evidence: 연구
 sources:
   - Coyle JT, Paul SM | Novel drug treatments for schizophrenia (Nature Reviews Drug Discovery) | 2026 | https://doi.org/10.1038/s41573-025-01335-w
@@ -14,6 +14,7 @@ sources:
   - Smith KA 외 | Triangulating evidence from the GALENOS living systematic review on trace amine-associated receptor 1 (TAAR1) agonists in psychosis (British Journal of Psychiatry) | 2025 | https://doi.org/10.1192/bjp.2024.237
   - Leucht S 외 | Sixty years of placebo-controlled antipsychotic drug trials in acute schizophrenia: systematic review, Bayesian meta-analysis, and meta-regression of efficacy predictors (American Journal of Psychiatry) | 2017 | https://doi.org/10.1176/appi.ajp.2017.16121358
   - HCPLive | FDA approves monthly subcutaneous olanzapine for schizophrenia | 2026 | https://www.hcplive.com/view/fda-approves-monthly-subcutaneous-olanzapine-schizophrenia
+  - DailyMed(미국 국립의학도서관) | ZYPREXA RELPREVV (olanzapine pamoate) 미국 처방정보, 5.2 ZYPREXA RELPREVV REMS (2026년 5월 개정) | 2026 | https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=11544cba-64a9-49cb-8d74-da228053b252
 ---
 ## 한 문장으로
 
@@ -64,7 +65,7 @@ TAAR1은 도파민 수용체를 막지 않고 도파민 신경의 활동을 조�
 
 ## 장기지속형 제형의 혁신
 
-새 성분만 혁신이 아니에요. 같은 약을 더 쓰기 쉽게 만드는 것도 큰 변화예요. 기존 장기지속형 올란자핀 주사는 미국에서 위험관리 프로그램에 따라 지정된 기관에서 맞고 3시간 동안 관찰받아야 했어요.[^7]
+새 성분만 혁신이 아니에요. 같은 약을 더 쓰기 쉽게 만드는 것도 큰 변화예요. 기존 장기지속형 올란자핀 주사(자이프렉사 렐프레브)는 미국에서 위험관리 프로그램(REMS)에 따라 지정된 기관에서 맞고 최소 3시간 동안 관찰받아야 해요.[^8]
 
 2026년 10월 미국 식품의약국(FDA)은 한 달에 한 번 피하에 맞는 올란자핀 주사(Weltruza)를 승인했어요.[^7] 675명이 참여한 3상 시험을 근거로 했고, 처음 시작할 때 몰아서 주는 용량, 먹는 약 병행, 주사 후 관찰이 필요 없다고 발표됐어요.[^7] 다만 올란자핀 자체의 체중 증가·졸림 같은 부작용은 그대로예요.[^7] 국내 도입 여부는 확인된 공식 자료가 없어요. 주사제 전반은 [장기지속형 주사제](#/a/lai) 글을 보세요.
 

@@ -4,12 +4,12 @@ section: 13
 order: 4
 summary: 조현병이 있는 사람의 흡연율이 높은 이유로 "니코틴으로 스스로 증상을 달랜다"는 자가치료 가설이 오래 거론됐어요. 일부 실험 근거가 있지만, 흡연이 오히려 조현병 위험을 높인다는 유전 연구가 나오면서 그림이 복잡해졌어요.
 tags: 잘 알려지지 않은 사실, 흡연, 니코틴, 감각 게이팅, 멘델 무작위 분석
-updated: 2026-10-23
+updated: 2026-10-25
 evidence: 초기연구
 sources:
   - de Leon J, Diaz FJ | A meta-analysis of worldwide studies demonstrates an association between schizophrenia and tobacco smoking behaviors (Schizophrenia Research) | 2005 | https://doi.org/10.1016/j.schres.2005.02.010
   - Adler LE 외 | Normalization of auditory physiology by cigarette smoking in schizophrenic patients (American Journal of Psychiatry) | 1993 | https://doi.org/10.1176/ajp.150.12.1856
-  - Freedman R 외 | Linking of a neurophysiological deficit in schizophrenia to a chromosome 15 locus (PNAS) | 1997 | https://doi.org/10.1073/pnas.94.2.587
+  - Freedman R 외 | Linkage of a neurophysiological deficit in schizophrenia to a chromosome 15 locus (PNAS) | 1997 | https://doi.org/10.1073/pnas.94.2.587
   - Gurillo P 외 | Does tobacco use cause psychosis? Systematic review and meta-analysis (Lancet Psychiatry) | 2015 | https://doi.org/10.1016/S2215-0366(15)00152-2
   - Wootton RE 외 | Evidence for causal effects of lifetime smoking on risk for depression and schizophrenia: a Mendelian randomisation study (Psychological Medicine) | 2020 | https://doi.org/10.1017/S0033291719002678
 ---

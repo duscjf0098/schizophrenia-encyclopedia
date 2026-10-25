@@ -4,13 +4,14 @@ section: 4
 order: 7
 summary: 조현병이 있는 사람은 특히 발병 초기와 퇴원 직후에 자살 위험이 높아져요. 신호를 알고 미리 계획을 세우면 위험을 줄일 수 있어요.
 tags: 위기, 자살, 우울, 안전계획
-updated: 2026-10-23
+updated: 2026-10-25
 evidence: 연구
 sources:
   - Hor K, Taylor M | Suicide and schizophrenia: a systematic review of rates and risk factors (Journal of Psychopharmacology) | 2010 | https://doi.org/10.1177/1359786810385490
   - 한국생명존중희망재단 | 자살예방상담전화 109 안내 | 2024 | https://www.kfsp.or.kr
   - Meltzer HY 외 | Clozapine treatment for suicidality in schizophrenia (InterSePT, Archives of General Psychiatry) | 2003 | https://doi.org/10.1001/archpsyc.60.1.82
   - NIMH | Warning Signs of Suicide | 2024 | https://www.nimh.nih.gov/health/publications/warning-signs-of-suicide
+  - NIMH | 5 Action Steps to Help Someone Having Thoughts of Suicide (OM 24-4315) | 2024 | https://www.nimh.nih.gov/health/publications/5-action-steps-for-helping-someone-in-emotional-pain
 ---
 ::: crisis
 지금 스스로를 해칠 생각이 든다면, 이 글을 끝까지 읽기 전에 먼저 연락하세요. 자살예방상담 **109**, 정신건강위기상담 **1577-0199**는 24시간 받아요. 당장 위험하면 **119**나 가까운 응급실로 가세요.
@@ -64,9 +65,9 @@ sources:
 **약과 치료를 이어가기.** 치료를 중단한 시기에 위험이 높아져요.[^1] 약이 맞지 않거나 부작용이 힘들면 끊지 말고 담당 의사와 조정하세요.
 
 ::: research
-클로자핀은 자살 행동을 줄이는 효과가 확인된 약이에요. 2003년 국제 연구(InterSePT)에서 자살 위험이 높은 조현병·조현정동장애 환자 980명을 2년간 추적했을 때, 클로자핀을 쓴 쪽이 올란자핀을 쓴 쪽보다 자살 시도와 입원이 유의하게 적었어요.[^3] 약 선택은 담당 의사와 하는 결정이지만, 자살 위험이 반복되는 경우 선택지 가운데 하나라는 점은 알아둘 만해요.
+클로자핀은 자살 행동을 줄이는 효과가 확인된 약이에요. 2003년 국제 연구(InterSePT)에서 자살 위험이 높은 조현병·조현정동장애가 있는 사람 980명을 2년간 추적했을 때, 클로자핀을 쓴 쪽이 올란자핀을 쓴 쪽보다 자살 시도와 입원이 유의하게 적었어요.[^3] 약 선택은 담당 의사와 하는 결정이지만, 자살 위험이 반복되는 경우 선택지 가운데 하나라는 점은 알아둘 만해요.
 :::
 
 ## 가족과 주변 사람에게
 
-"혹시 죽고 싶은 생각이 들어?"라고 직접 묻는 것이 위험을 높이지 않아요. 오히려 말할 기회를 열어 줘요.[^4] 묻고 나서 판단하거나 설득하려 하기보다, 들어 주고 함께 109나 1577-0199에 전화하거나 병원에 동행하세요. 위험한 물건(약 더미, 날카로운 것)을 당사자와 상의해 치우는 것도 효과가 확인된 방법이에요. 퇴원 직후 몇 주는 특히 자주 연락하고 만나 주세요.
+"혹시 죽고 싶은 생각이 들어?"라고 직접 묻는 것이 자살 행동이나 생각을 늘리지 않는다는 것이 연구로 확인돼 있어요. 오히려 말할 기회를 열어 줘요.[^5] 묻고 나서 판단하거나 설득하려 하기보다, 들어 주고 함께 109나 1577-0199에 전화하거나 병원에 동행하세요. 위험한 물건(약 더미, 날카로운 것)을 당사자와 상의해 치우는 것도 효과가 확인된 방법이에요. 퇴원 직후 몇 주는 특히 자주 연락하고 만나 주세요.

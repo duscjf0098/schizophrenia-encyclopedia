@@ -4,14 +4,14 @@ section: 3
 order: 4
 summary: 말의 양이 줄고 내용이 빈약해지는 증상이에요. 말이 뒤죽박죽되는 사고 장애와는 다른 것이고, 단어를 꺼내 오는 속도와 관련이 있어요. 대화 방식을 조금 바꾸면 훨씬 편해져요.
 tags: 음성, 무언증, 말, 표현
-updated: 2026-10-23
+updated: 2026-10-25
 evidence: 연구
 sources:
   - Kirkpatrick B 외 | The NIMH-MATRICS consensus statement on negative symptoms (Schizophrenia Bulletin) | 2006 | https://doi.org/10.1093/schbul/sbj053
   - Marder SR, Galderisi S | The current conceptualization of negative symptoms in schizophrenia (World Psychiatry) | 2017 | https://doi.org/10.1002/wps.20385
   - Docherty AR 외 | Alogia and formal thought disorder: differential patterns of verbal fluency task performance (Journal of Psychiatric Research) | 2011 | https://doi.org/10.1016/j.jpsychires.2011.04.004
   - Strauss GP 외 | Deconstructing negative symptoms of schizophrenia: avolition-apathy and diminished expression clusters predict clinical presentation and functional outcome (Journal of Psychiatric Research) | 2013 | https://doi.org/10.1016/j.jpsychires.2013.01.015
-  - Kring AM 외 | The Clinical Assessment Interview for Negative Symptoms (CAINS): final development and validation (American Journal of Psychiatry) | 2013 | https://doi.org/10.1176/appi.ajp.2012.12101329
+  - Kring AM 외 | The Clinical Assessment Interview for Negative Symptoms (CAINS): final development and validation (American Journal of Psychiatry) | 2013 | https://doi.org/10.1176/appi.ajp.2012.12010109
   - Krynicki CR 외 | The relationship between negative symptoms and depression in schizophrenia: a systematic review (Acta Psychiatrica Scandinavica) | 2018 | https://doi.org/10.1111/acps.12873
   - Correll CU, Schooler NR | Negative symptoms in schizophrenia: a review and clinical guide for recognition, assessment, and treatment (Neuropsychiatric Disease and Treatment) | 2020 | https://doi.org/10.2147/ndt.s225643
 ---

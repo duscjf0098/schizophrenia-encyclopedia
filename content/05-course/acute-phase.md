@@ -4,14 +4,14 @@ section: 5
 order: 3
 summary: 급성기는 환청·망상·혼란이 가장 심한 시기예요. 안전을 지키고, 약이 듣기 시작하는 첫 2주를 지나고, 당사자의 권리를 지키는 것이 이 시기의 핵심이에요. 한국의 입원 제도도 일반 수준에서 정리했어요.
 tags: 경과, 급성기, 입원, 정신건강복지법, 가족, 위기
-updated: 2026-10-23
+updated: 2026-10-25
 evidence: 연구
 sources:
   - Agid O 외 | Delayed-onset hypothesis of antipsychotic action: a hypothesis tested and rejected (Archives of General Psychiatry) | 2003 | https://doi.org/10.1001/archpsyc.60.12.1228
   - Samara MT 외 | Early improvement as a predictor of later response to antipsychotics in schizophrenia: a diagnostic test review (American Journal of Psychiatry) | 2015 | https://doi.org/10.1176/appi.ajp.2015.14101329
   - Leucht S 외 | Sixty years of placebo-controlled antipsychotic drug trials in acute schizophrenia: systematic review, Bayesian meta-analysis, and meta-regression of efficacy predictors (American Journal of Psychiatry) | 2017 | https://doi.org/10.1176/appi.ajp.2017.16121358
   - Keepers GA 외 | The American Psychiatric Association Practice Guideline for the Treatment of Patients With Schizophrenia (American Journal of Psychiatry) | 2020 | https://doi.org/10.1176/appi.ajp.2020.177901
-  - 국가법령정보센터 | 정신건강증진 및 정신질환자 복지서비스 지원에 관한 법률(정신건강복지법) | 2024 | https://www.law.go.kr/법령/정신건강증진및정신질환자복지서비스지원에관한법률
+  - 국가법령정보센터 | 정신건강증진 및 정신질환자 복지서비스 지원에 관한 법률(정신건강복지법, 법률 제21525호, 2026.10.8. 시행) | 2026 | https://www.law.go.kr/법령/정신건강증진및정신질환자복지서비스지원에관한법률
   - 국립정신건강센터 | 국가정신건강정보포털 질환별 정보: 조현병 | 2026 | https://www.mentalhealth.go.kr/portal/disease/diseaseDetail.do?dissId=26
 ---
 ::: crisis
