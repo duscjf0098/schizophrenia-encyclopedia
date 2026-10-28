@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://duscjf0098.github.io/schizophrenia-encyclopedia/sitemap.xml
