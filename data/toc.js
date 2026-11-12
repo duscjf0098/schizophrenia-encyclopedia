@@ -1,7 +1,7 @@
-/* 자동 생성: node tools/build-index.cjs (2026-10-25) — 직접 고치지 마세요 */
+/* 자동 생성: node tools/build-index.cjs (2026-11-12) — 직접 고치지 마세요 */
 window.JHB = window.JHB || {};
 JHB.toc = {
- "generated": "2026-10-25",
+ "generated": "2026-11-12",
  "sources": 952,
  "articles": [
   {
@@ -2825,7 +2825,7 @@ JHB.toc = {
     "관계",
     "친밀감"
    ],
-   "updated": "2026-10-24",
+   "updated": "2026-11-12",
    "evidence": "연구",
    "minutes": 5,
    "order": 8
@@ -4278,7 +4278,7 @@ JHB.toc = {
     "지원주거",
     "정신재활시설"
    ],
-   "updated": "2026-10-24",
+   "updated": "2026-11-12",
    "evidence": "가이드라인",
    "minutes": 2,
    "order": 33
