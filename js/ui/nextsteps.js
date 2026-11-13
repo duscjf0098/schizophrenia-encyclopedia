@@ -6,13 +6,21 @@
        3) 본문이 링크한 글(가족·주변 사람이면 10·11 분류 글을 앞에)
        4) 같은 묶음(data/kb/groups.json 이 있으면)의 다음 글, 없으면 같은 분류의 다음 글(끝이면 앞으로 돌아감)
      ?course= 로 들어왔으면 그 코스의 다음 글은 코어의 코스 안내(.course-nav)가 보여 주니 여기서는 빼요(같은 링크 두 번 방지).
-     본문 끝 "더 읽을 글"에 이미 있는 글(o.seen)은 뒤로 미뤄요(바로 위 목록과 같은 글이 이어지지 않게). 자리가 남을 때만 써요.
-     위기 글 뒤에 위기 글만 이어지면 마지막 자리를 회복·도움 글로 바꿔요. 실제로 있는 글만, 자기 자신·중복 없이.
+     본문 끝 "더 읽을 글"에 이미 있는 글(o.seen)은 같은 층(손 지정 / 자동 규칙) 안에서 뒤로 미뤄요(바로 위 목록과 같은 글이
+     이어지지 않게). 손 지정은 "더 읽을 글"과 겹쳐도 자동 규칙보다 앞이에요(손으로 정한 뜻이 본문 링크에 밀리지 않게).
+     폭력·응급이 주제인 글(HEAVY)은 그런 글이 아닌 글 끝에서 자동 규칙으로는 맨 앞에 두지 않아요. 자동 규칙의 다른 후보
+     (묶음·분류 순서 포함, "더 읽을 글"에 없는 것) 뒤에 두고, 한 편까지만 써요. 손 지정은 그대로예요.
+     낙인을 다루는 글 끝에서는 범죄·재판 글(CRIME)도 자동 규칙으로는 맨 앞에 두지 않아요.
+     세 편이 모두 위기·응급 태그 글이면 마지막 자리를 위기·응급 아닌 글(위기·응급 글 끝에서는 회복·도움 글 먼저)로 바꿔요.
+     실제로 있는 글만, 자기 자신·중복 없이.
    - 15분류(자주 묻는 질문) 글은 다음 걸음에 넣지 않고 아래 "이 주제의 자주 묻는 질문"(최대 4개)으로:
-     이 글을 링크한 질문 글(JHB.app.links.in ∩ 15) → 손 지정·본문 링크에 든 질문 글. 위기 글에서는 입원 질문을 뒤로 보내요.
-     질문 아래에는 그 글 요약의 첫 문장(답의 첫 문장)을 붙여 질문만 홀로 보이지 않게 해요.
+     이 글을 링크한 질문 글(JHB.app.links.in ∩ 15) → 손 지정·본문 링크에 든 질문 글. 위기 글에서는 입원 질문을 뒤로 보내요
+     (입원을 다루는 위기 글도 같아요). 폭력·응급 글이 아닌 글 끝에서는 폭력·분노 질문을 맨 앞에 두지 않아요.
+     질문 아래에는 그 글 요약의 첫 문장에 균형·단서 문장(다만·하지만…, 의사와 함께, 혼자 끊지 않기)을 더한 답 줄을 붙여요
+     (answerOf: 질문만 홀로 보이지 않게, 그리고 잘린 첫 문장이 "안 먹어도 된다"처럼 읽히지 않게).
    - 코어가 그리는 "이 문서를 가리키는 문서"(.backlinks)는 지우지 않고 접힌 <details> 로 감싸 글 끝을 짧게 해요.
-   - 고르기 함수는 node 에서도 불러 시험해요(tests/nextsteps.test.cjs): module.exports = { pick, courseFor, normRole, firstSentence, ROLES, HELP }.
+   - 고르기 함수는 node 에서도 불러 시험해요(tests/nextsteps.test.cjs):
+     module.exports = { pick, courseFor, normRole, firstSentence, answerOf, quiet, isAlarm, isHeavy, ROLES, HELP, HEAVY, CRIME }.
    공개: JHB.ui.nextsteps = { pick, refresh, role } */
 (function (root) {
   'use strict';
@@ -21,10 +29,28 @@
   const FAQ_SEC = '15';
   const CARE_SECS = ['10', '11'];
   const MAX_STEPS = 3, MAX_FAQ = 4;
-  /* 위기 글 뒤에 섞는 회복·도움 글(위기 태그가 없는 것만 씀) */
+  /* 위기·응급 글 뒤에 섞는 회복·도움 글(위기·응급 태그가 없는 것만 씀) */
   const HELP = ['recovery', 'mental-health-center', 'peer-support', 'lived-experience-lessons', 'recovery-commonalities'];
-  /* 위기 글 끝에서 뒤로 보내는 질문(입원 걱정이 먼저 보여 연락을 망설이지 않게) */
+  /* 폭력·응급이 글의 주제인 글. "위기" 태그는 자살·자해를 한 소절이라도 다루면 붙어서(42편) 환청·약 글에도 있으니,
+     앞세우지 않을 글은 태그가 아니라 이 목록으로 정해요. 새 글이 이런 주제면 여기에 더해요(tests/nextsteps.test.cjs 가 slug 를 검사) */
+  const HEAVY = [
+    'suicide-warning-signs', 'crisis-hotlines', 'emergency-response', 'psychiatric-emergency-system', 'suicide-bereavement',
+    'family-violence-safety', 'anger-irritability',
+    'neuroleptic-malignant-syndrome', 'heart-and-antipsychotics', 'polydipsia-hyponatremia', 'heat-and-medication'
+  ];
+  /* 폭력·응급 글이 아닌 글 끝에서 위기·응급 태그 카드의 요약을 감추는 말(제목만 보여요).
+     상담 전화 이름 "자살예방…"과 "자살이 아니라"처럼 부정하는 말은 감추지 않아요 */
+  const QUIET_RE = /자살(?!예방|이 아니라)|자해|타해|폭력|흉기|위협/;
+  /* 위기 글 끝에서 뒤로 보내는 질문(입원 걱정이 먼저 보여 연락을 망설이지 않게). 입원을 다루는 위기 글(급성기 등)에서도 같아요 */
   const ADMIT_TAGS = ['강제입원', '입원'];
+  /* 폭력·응급 글이 아닌 글 끝에서 관련 질문 맨 앞에 두지 않는 질문(증상 글과 "위험"을 먼저 짝짓지 않게) */
+  const FAQ_BACK_TAGS = ['폭력', '분노'];
+  /* 낙인을 다루는 글 끝에서 자동 규칙으로는 맨 앞에 두지 않는 글(낙인을 바로잡는 글 뒤에 범죄·재판 글을 먼저 권하지 않게) */
+  const CRIME = ['justice-system'];
+  /* 질문 아래 답 줄: 첫 문장에 더해, 균형을 잡는 문장("다만·하지만…"으로 시작)과
+     의사와 함께·혼자 끊지 않기·공식 창구 확인 같은 단서가 든 문장은 떨어뜨리지 않아요(한계선 L4) */
+  const TURN_RE = /^(다만|하지만|그러나|오히려|대신|그래도)/;
+  const KEEP_RE = /의사|혼자|스스로|해마다|공식 창구/;
   /* 역할에 맞는 코스(data/courses.js 의 who) */
   const COURSE_WHO = { self: ['당사자'], family: ['가족'], near: ['가족'] };
   const own = Object.prototype.hasOwnProperty;
@@ -34,6 +60,13 @@
   function listOf(map, k) { return has(map, k) && Array.isArray(map[k]) ? map[k] : []; }
   function indexBy(articles) { const by = {}; articles.forEach(function (a) { if (a && typeof a.slug === 'string') by[a.slug] = a; }); return by; }
   function tagged(a, t) { return !!a && Array.isArray(a.tags) && a.tags.indexOf(t) >= 0; }
+  /* 위기·응급 태그 글(태그 기준, 넓음) */
+  function isAlarm(a) { return tagged(a, '위기') || tagged(a, '응급'); }
+  /* 폭력·응급이 주제인 글(HEAVY 목록, 좁음) */
+  function isHeavy(a) { return !!a && HEAVY.indexOf(a.slug) >= 0; }
+  /* 카드의 요약을 감출지: 지금 글이 폭력·응급 글이 아니고, 카드가 위기·응급 태그 글이며 요약에 자살·자해·폭력 같은 말이 있으면.
+     위기·응급 태그가 없는 글(피해망상, 미디어 속 조현병 등)의 요약은 감추지 않아요 */
+  function quiet(card, cur) { return !!card && isAlarm(card) && !isHeavy(cur) && QUIET_RE.test(String(card.summary || '')); }
   function isFaq(a) { return !!a && String(a.section) === FAQ_SEC; }
   function stepsOf(c) { return c && Array.isArray(c.steps) ? c.steps : []; }
   function inCourse(c, slug) { return stepsOf(c).some(function (st) { return st && st.slug === slug; }); }
@@ -49,6 +82,25 @@
       if (out.length >= 6) break;
     }
     return out || s;
+  }
+  /* 요약을 문장으로(마침표·물음표·느낌표 뒤 공백이나 끝까지, 남은 꼬리도 한 문장) */
+  function sentences(t) {
+    const s = String(t || '').trim();
+    const re = /[\s\S]+?[.!?](?=\s|$)/g;
+    const out = [];
+    let m, end = 0;
+    while ((m = re.exec(s))) { out.push(m[0].trim()); end = re.lastIndex; }
+    if (s.slice(end).trim()) out.push(s.slice(end).trim());
+    return out;
+  }
+  /* 질문 아래 답 줄: 첫 문장(firstSentence) + 그 뒤의 균형·단서 문장(TURN_RE·KEEP_RE). 순서는 요약 그대로 */
+  function answerOf(t) {
+    const first = firstSentence(t);
+    if (!first) return '';
+    const ss = sentences(t);
+    const out = [first];
+    for (let i = sentences(first).length; i < ss.length; i++) if (TURN_RE.test(ss[i]) || KEEP_RE.test(ss[i])) out.push(ss[i]);
+    return out.join(' ');
   }
 
   /* 이 글이 든 코스: ?course= 가 맞으면 그것(explicit), 아니면 역할에 맞는 코스 → 코스 순서. 읽은 정도로 고르지 않아요 */
@@ -140,31 +192,63 @@
     around(grp || sectionList(cur, articles), slug).forEach(function (s) {
       if (exists(s) && !isFaq(by[s])) cand(s, grp ? 'group' : 'section');
     });
-    /* 고르기: "더 읽을 글"에 없는 후보를 먼저, 자리가 남으면 그 목록에 있는 후보로 */
-    stable(cands, function (c) { return seen[c.slug] ? 1 : 0; }).forEach(function (c) {
-      if (used[c.slug] || res.steps.length >= MAX_STEPS) return;
+    /* 고르기 순서(같은 열쇠면 원래 순서):
+       손 지정(더 읽을 글에 없는 것 → 있는 것) → 자동 규칙(더 읽을 글에 없는 것 → 있는 것).
+       지금 글이 폭력·응급 글이 아니면 자동 규칙의 폭력·응급 글(HEAVY)은 같은 칸(더 읽을 글에 있나 없나)의 다른 후보 뒤로 */
+    const curHeavy = isHeavy(cur);
+    const curStigma = tagged(cur, '낙인');
+    function heavyAuto(c) { return !curHeavy && c.from !== 'hand' && isHeavy(by[c.slug]); }
+    /* 낙인을 다루는 글 끝의 범죄·재판 글(CRIME)도 자동 규칙에서는 같은 칸의 다른 후보 뒤로(맨 앞에 두지 않음) */
+    function crimeAuto(c) { return curStigma && !curHeavy && c.from !== 'hand' && CRIME.indexOf(c.slug) >= 0; }
+    function backAuto(c) { return heavyAuto(c) || crimeAuto(c); }
+    const order = stable(cands, function (c) {
+      if (c.from === 'hand') return seen[c.slug] ? 1 : 0;
+      /* 범죄·재판 글은 다른 후보 뒤, 폭력·응급 글보다는 앞 */
+      return 2 + (seen[c.slug] ? 2 : 0) + (heavyAuto(c) ? 1 : crimeAuto(c) ? 0.5 : 0);
+    });
+    function take(c) {
       used[c.slug] = true;
       const it = { slug: c.slug, from: c.from };
       if (c.extra) Object.keys(c.extra).forEach(function (k) { it[k] = c.extra[k]; });
       res.steps.push(it);
+    }
+    /* 맨 앞 자리는 자동 규칙의 폭력·응급 글이 아닌 후보(더 읽을 글에 있는 것이라도)로.
+       그다음부터 자동 규칙의 폭력·응급 글은 한 편까지만, 자리가 남으면(다른 후보가 없으면) 그때 더 써요 */
+    const lead = order.filter(function (c) { return !backAuto(c); })[0];
+    if (lead) take(lead);
+    let heavyTaken = 0;
+    const later = [];
+    order.forEach(function (c) {
+      if (used[c.slug] || res.steps.length >= MAX_STEPS) return;
+      if (heavyAuto(c) && heavyTaken >= 1) { later.push(c); return; }
+      if (heavyAuto(c)) heavyTaken++;
+      take(c);
     });
-    /* 위기 글 뒤에 위기 글만 이어지지 않게 회복·도움 글을 섞음 */
-    if (tagged(cur, '위기') && res.steps.length && res.steps.every(function (st) { return tagged(by[st.slug], '위기'); })) {
-      const h = HELP.filter(function (s) { return exists(s) && !used[s] && !tagged(by[s], '위기') && !isFaq(by[s]); })[0];
+    later.forEach(function (c) { if (!used[c.slug] && res.steps.length < MAX_STEPS) take(c); });
+    /* 세 편(또는 고른 전부)이 위기·응급 글이면 마지막 자리를 바꿔요.
+       위기·응급 글 끝에서는 회복·도움 글(HELP)을 먼저, 그 밖의 글 끝에서는 남은 후보 가운데 위기·응급 아닌 글을 먼저 */
+    if (res.steps.length && res.steps.every(function (st) { return isAlarm(by[st.slug]); })) {
+      const helps = HELP.filter(function (s) { return exists(s) && s !== slug && !used[s] && !isAlarm(by[s]) && !isFaq(by[s]); })
+        .map(function (s) { return { slug: s, from: 'help' }; });
+      const rest = order.filter(function (c) { return !used[c.slug] && !isAlarm(by[c.slug]); })
+        .map(function (c) { const it = { slug: c.slug, from: c.from }; if (c.extra) Object.keys(c.extra).forEach(function (k) { it[k] = c.extra[k]; }); return it; });
+      const h = (isAlarm(cur) ? helps.concat(rest) : rest.concat(helps))[0];
       if (h) {
-        const it = { slug: h, from: 'help' };
-        if (res.steps.length < MAX_STEPS) res.steps.push(it); else res.steps[res.steps.length - 1] = it;
+        used[h.slug] = true;
+        if (res.steps.length < MAX_STEPS) res.steps.push(h); else res.steps[res.steps.length - 1] = h;
       }
     }
     /* 관련 질문: 이 글을 링크한 질문 글 → 손 지정·본문 링크의 질문 글.
-       위기 글이면 입원 질문을 맨 뒤로, "더 읽을 글"에 이미 있는 질문은 그 앞(뒤쪽)으로 */
+       폭력·응급 글이 아닌 글이면 폭력·분노 질문(FAQ_BACK_TAGS)을 다른 질문 뒤로,
+       위기 글이면(입원을 다루는 위기 글도) 입원 질문을 맨 뒤로, "더 읽을 글"에 이미 있는 질문은 같은 칸의 뒤쪽으로 */
     const faqIn = listOf(links.in, slug).filter(function (s) { return exists(s) && isFaq(by[s]); });
     const crisis = tagged(cur, '위기');
     const uniq = [], fs = {};
     faqIn.concat(faqMore).forEach(function (s) { if (s !== slug && !fs[s]) { fs[s] = true; uniq.push(s); } });
     stable(uniq, function (s) {
       const admit = crisis && ADMIT_TAGS.some(function (t) { return tagged(by[s], t); });
-      return (admit ? 2 : 0) + (seen[s] ? 1 : 0);
+      const back = !curHeavy && FAQ_BACK_TAGS.some(function (t) { return tagged(by[s], t); });
+      return (admit ? 4 : back ? 2 : 0) + (seen[s] ? 1 : 0);
     }).forEach(function (s) { if (res.faqs.length < MAX_FAQ) res.faqs.push(s); });
     return res;
   }
@@ -182,7 +266,8 @@
     return res;
   }
 
-  const core = { ROLES: ROLES.slice(), HELP: HELP.slice(), normRole: normRole, courseFor: courseFor, firstSentence: firstSentence, pick: pick };
+  const core = { ROLES: ROLES.slice(), HELP: HELP.slice(), HEAVY: HEAVY.slice(), CRIME: CRIME.slice(), normRole: normRole, courseFor: courseFor,
+    firstSentence: firstSentence, answerOf: answerOf, quiet: quiet, isAlarm: isAlarm, isHeavy: isHeavy, pick: pick };
   if (typeof module !== 'undefined' && module.exports) { module.exports = core; return; }
 
   /* ---------- 브라우저 ---------- */
@@ -198,7 +283,16 @@
     return (A.pages || []).some(function (p) { return p && Array.isArray(p.data) && p.data.indexOf('groups') >= 0; });
   }
 
-  function role() { return normRole(A.store.get(ROLE_KEY, null)); }
+  /* 첫 화면과 같은 역할: 첫 화면 모듈(JHB.ui.home.role)이 있으면 그 값(기록 쉼 중에는 이 탭에서 고른 역할이 먼저),
+     없으면 코어 homeRole 과 같은 순서로 직접 읽어요. 이 모듈은 역할을 저장하지 않아요 */
+  function role() {
+    const H = root.JHB.ui && root.JHB.ui.home;
+    if (H && typeof H.role === 'function') { try { return normRole(H.role()); } catch (e) { } }
+    if (A.privacy && typeof A.privacy.paused === 'function' && A.privacy.paused()) {
+      try { const raw = sessionStorage.getItem(ROLE_KEY); const v = raw == null ? null : normRole(JSON.parse(raw)); if (v) return v; } catch (e) { }
+    }
+    return normRole(A.store.get(ROLE_KEY, null));
+  }
   /* 자료를 끝까지 기다리는 프라미스(못 받으면 null) */
   function load(name) {
     if (typeof A.loadData !== 'function') return Promise.resolve(null);
@@ -251,9 +345,8 @@
     const c = st.course ? courseById(st.course) : null;
     const meta = [s.title || ''];
     if (c) meta.push('‘' + c.title + '’ 코스의 다음 글');
-    /* 위기 글이 아닌 글 끝에서는 위기 글의 요약(자해·자살·타해 같은 말)을 늘어놓지 않고 제목만 보여요 */
-    const quiet = tagged(a, '위기') && !tagged(A.bySlug[curSlug], '위기');
-    const sum = a.summary && !quiet ? a.summary : '';
+    /* 폭력·응급 글이 아닌 글 끝에서는 자살·자해·폭력 같은 말이 든 요약을 늘어놓지 않고 제목만 보여요 */
+    const sum = a.summary && !quiet(a, A.bySlug[curSlug]) ? a.summary : '';
     const ids = { t: 'ns-t-' + i, s: 'ns-s-' + i, m: 'ns-m-' + i };
     return el('li', null, [el('a.ns-a', { href: link('#/a/' + st.slug), 'aria-labelledby': ids.t, 'aria-describedby': (sum ? ids.s + ' ' : '') + ids.m }, [
       A.spine(s),
@@ -292,7 +385,7 @@
       el('h2.ns-h', { id: 'ns-fh', tabindex: '-1' }, ['이 주제의 자주 묻는 질문']),
       el('ul.ns-qs', null, faqs.map(function (s, i) {
         const a = A.bySlug[s];
-        const ans = firstSentence(a.summary);
+        const ans = answerOf(a.summary);
         const tid = 'ns-qt-' + i, aid = 'ns-qa-' + i;
         return el('li', null, [el('a.ns-q', { href: link('#/a/' + s), 'aria-labelledby': tid, 'aria-describedby': ans ? aid : null }, [
           el('span.ns-qm', { 'aria-hidden': 'true' }, ['Q']),
