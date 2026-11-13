@@ -4,8 +4,9 @@
    - uiCss()          css/ui.css 내용(css/ui/*.css 이름순으로 이어 붙임)
    - pageDecls()      data/pages/<id>.json 특집 화면 선언 읽기·검사·정리
    - pagesJs(pages)   data/pages.js 내용
+   - resolveLastmod(decl)  사이트맵 날짜(선언의 "lastmod": "kb:<자료>:<날짜 항목>" → 그 자료의 가장 최근 날짜, 없으면 updated)
    - kbFiles()        data/kb/*.json 목록, kbCheck() JSON 검사
-   - uiScriptsHtml(base), topLinksHtml(pages, base), applyShellMarkers(html, base, pages)  shell 조각 */
+   - uiScriptsHtml(base), topLinksHtml(pages, base), footLinksHtml(pages, base), applyShellMarkers(html, base, pages)  shell 조각 */
 const fs = require('fs');
 const path = require('path');
 
@@ -17,8 +18,12 @@ const RESERVED = ['a', 's', 'fav', 'glossary', 'about', 'courses', 'course', 'ra
 const GROUPS = ['안내', '지식', '도구', '기록'];
 const NAV_PLACES = ['top', 'side', 'home', 'palette'];
 const NOTICE_KINDS = ['general', 'crisis', 'emergency', 'device', 'dated'];
-const KNOWN_KEYS = ['id', 'title', 'label', 'summary', 'lead', 'group', 'order', 'nav', 'keywords', 'data', 'robots', 'crisisLine', 'notice', 'updated'];
+const KNOWN_KEYS = ['id', 'title', 'label', 'summary', 'lead', 'group', 'order', 'nav', 'keywords', 'data', 'robots', 'crisisLine', 'notice', 'updated', 'lastmod'];
 const SUMMARY_MAX = 155;
+/* 사이트맵 날짜를 자료에서 읽는 명시 항목: "lastmod": "kb:<data/kb 이름>:<날짜 항목 이름>" (예: "kb:changes:date").
+   빌드는 선언에 이렇게 적힌 화면만 자료를 읽어요(자료 모양으로 짐작하지 않음). */
+const LASTMOD_RE = /^kb:([a-z0-9][a-z0-9-]*):([A-Za-z_][A-Za-z0-9_]*)$/;
+const DAY_RE = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/;
 /* crisisLine:false(위기 줄 빼기)를 허락받은 화면 id. 위기 안내는 빠지지 않는 게 원칙이라(plan-final 4-4) 총괄만 이 목록에 더해요. 지금은 없음. */
 const CRISIS_LINE_OFF_OK = [];
 
@@ -87,6 +92,15 @@ function validateDecl(d, fileId, opts) {
     else if (d.notice.indexOf('dated') >= 0 && !d.updated) bad('notice 에 "dated" 를 쓰려면 updated 가 있어야 해요');
   }
   if (d.updated != null && (typeof d.updated !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(d.updated))) bad('updated 는 YYYY-MM-DD 꼴이어야 해요');
+  if (d.lastmod != null) {
+    const lm = typeof d.lastmod === 'string' ? LASTMOD_RE.exec(d.lastmod) : null;
+    if (!lm) bad('lastmod 는 "kb:<data/kb 이름>:<날짜 항목>" 꼴이어야 해요(예: "kb:changes:date"). 날짜를 직접 적을 때는 updated 를 써요');
+    else if (opts && opts.root) {
+      const r = kbLastmod(lm[1], lm[2], { root: opts.root });
+      if (r.error) bad('lastmod: ' + r.error);
+      else if (!r.date) warnings.push(where + ': lastmod 가 가리키는 data/kb/' + lm[1] + '.json 에 "' + lm[2] + '" 날짜(YYYY-MM-DD)가 하나도 없어요(사이트맵에는 updated 를 써요)');
+    }
+  }
   Object.keys(d).forEach(function (k) { if (KNOWN_KEYS.indexOf(k) < 0) warnings.push(where + ': 모르는 항목 "' + k + '" (무시해요)'); });
   return { errors: errors, warnings: warnings };
 }
@@ -112,6 +126,7 @@ function normalizeDecl(d, opts) {
     crisisLine: d.crisisLine !== false || raw.indexOf('crisis') >= 0,
     notice: notice,
     updated: d.updated || '',
+    lastmod: typeof d.lastmod === 'string' ? d.lastmod : '',
     hasJs: fs.existsSync(path.join(root, 'js', 'pages', d.id + '.js')),
     hasCss: fs.existsSync(path.join(root, 'css', 'pages', d.id + '.css'))
   };
@@ -146,6 +161,34 @@ function pageDecls(opts) {
 function pagesJs(pages) {
   return '/* 자동 생성: node tools/build-kb.cjs 가 data/pages/*.json 으로 만든다 — 직접 고치지 마세요 */\n' +
     'window.JHB = window.JHB || {};\nJHB.pages = ' + JSON.stringify(pages || [], null, 1).replace(/</g, '\\u003c') + ';\n';
+}
+
+/* ---------- 사이트맵 날짜 ---------- */
+/* data/kb/<name>.json(배열)에서 각 항목의 field 값 가운데 가장 최근 YYYY-MM-DD.
+   돌려주는 값: { date: 'YYYY-MM-DD' | '' } 또는 { error } (파일 없음·JSON 오류·배열 아님) */
+function kbLastmod(name, field, opts) {
+  const rel = 'data/kb/' + name + '.json';
+  const file = path.join(rootOf(opts), 'data', 'kb', name + '.json');
+  if (!fs.existsSync(file)) return { error: rel + ' 이 없어요' };
+  let v;
+  try { v = JSON.parse(stripBom(fs.readFileSync(file, 'utf8'))); }
+  catch (e) { return { error: rel + ' 을 JSON 으로 읽을 수 없어요(' + e.message + ')' }; }
+  if (!Array.isArray(v)) return { error: rel + ' 은 항목 배열이어야 해요(가장 최근 "' + field + '" 를 찾아요)' };
+  let max = '';
+  v.forEach(function (x) {
+    const d = x && typeof x === 'object' ? x[field] : null;
+    if (typeof d === 'string' && DAY_RE.test(d) && d > max) max = d;
+  });
+  return { date: max };
+}
+/* 정리된 선언(normalizeDecl)의 사이트맵 날짜: lastmod 가 가리키는 자료의 가장 최근 날짜 → 없으면 updated → 없으면 ''(빌드가 오늘로) */
+function resolveLastmod(decl, opts) {
+  const lm = decl && typeof decl.lastmod === 'string' ? LASTMOD_RE.exec(decl.lastmod) : null;
+  if (lm) {
+    const r = kbLastmod(lm[1], lm[2], opts);
+    if (r.date) return r.date;
+  }
+  return (decl && decl.updated) || '';
 }
 
 /* ---------- 지식 데이터 ---------- */
@@ -187,17 +230,28 @@ function topLinksHtml(pages, base) {
   if (!has.me) links.push('<a href="' + base + 'fav/" class="tool-link" data-r="fav" rel="nofollow">저장한 문서</a>');
   return '\n      ' + links.join('\n      ') + '\n      ';
 }
-/* 이미 만들어진 HTML 의 <!--ui:start-->…<!--ui:end--> 와 <!--top:start-->…<!--top:end--> 사이를 지금 파일 기준으로 바꾼다(개발 서버용) */
+/* 바닥글 링크 줄: "이 백과에 대해" 옆에, 고침 기록 화면(changes)이 등록돼 있을 때만 "고침 기록" */
+function footLinksHtml(pages, base) {
+  const ch = (pages || []).filter(function (p) { return p && p.id === 'changes'; })[0];
+  const links = ['<a href="' + base + 'about/">이 백과에 대해</a>'];
+  if (ch) links.push('<a href="' + base + 'changes/">' + escAttr(ch.label || ch.title || '고침 기록') + '</a>');
+  return links.join(' · ');
+}
+/* 이미 만들어진 HTML 의 <!--ui:start-->…<!--ui:end-->, <!--top:start-->…<!--top:end-->, <!--foot:start-->…<!--foot:end--> 사이를
+   지금 파일 기준으로 바꾼다(개발 서버용. 표식이 없는 옛 HTML 은 그 부분만 그대로) */
 function applyShellMarkers(html, base, pages, opts) {
   return String(html)
     .replace(/<!--ui:start-->[\s\S]*?<!--ui:end-->/, function () { return '<!--ui:start-->' + uiScriptsHtml(base, opts) + '<!--ui:end-->'; })
-    .replace(/<!--top:start-->[\s\S]*?<!--top:end-->/, function () { return '<!--top:start-->' + topLinksHtml(pages, base) + '<!--top:end-->'; });
+    .replace(/<!--top:start-->[\s\S]*?<!--top:end-->/, function () { return '<!--top:start-->' + topLinksHtml(pages, base) + '<!--top:end-->'; })
+    .replace(/<!--foot:start-->[\s\S]*?<!--foot:end-->/, function () { return '<!--foot:start-->' + footLinksHtml(pages, base) + '<!--foot:end-->'; });
 }
 
 module.exports = {
   ROOT: ROOT, ID_RE: ID_RE, RESERVED: RESERVED, GROUPS: GROUPS, NAV_PLACES: NAV_PLACES, NOTICE_KINDS: NOTICE_KINDS, SUMMARY_MAX: SUMMARY_MAX, CRISIS_LINE_OFF_OK: CRISIS_LINE_OFF_OK,
+  LASTMOD_RE: LASTMOD_RE,
   uiOrder: uiOrder, uiModules: uiModules, uiCss: uiCss, uiCssFiles: uiCssFiles,
   validateDecl: validateDecl, normalizeDecl: normalizeDecl, sortPages: sortPages, pageDecls: pageDecls, pagesJs: pagesJs,
+  kbLastmod: kbLastmod, resolveLastmod: resolveLastmod,
   kbFiles: kbFiles, kbCheck: kbCheck, pageAssetFiles: pageAssetFiles,
-  stripBom: stripBom, uiScriptsHtml: uiScriptsHtml, topLinksHtml: topLinksHtml, applyShellMarkers: applyShellMarkers
+  stripBom: stripBom, uiScriptsHtml: uiScriptsHtml, topLinksHtml: topLinksHtml, footLinksHtml: footLinksHtml, applyShellMarkers: applyShellMarkers
 };

@@ -15,8 +15,12 @@
     if (n.matches('a[href^="#/"]')) n.setAttribute('href', L(n.getAttribute('href')));
     U.qsa('a[href^="#/"]', n).forEach(function (a) { a.setAttribute('href', L(a.getAttribute('href'))); });
   }
-  /* 이미 열린 페이지에서 옛 해시 주소(#/…)로 바뀌면 새 주소로 옮긴다 */
-  window.addEventListener('hashchange', function () { if (location.hash.indexOf('#/') === 0) location.replace(L(location.hash)); });
+  /* 이미 열린 페이지에서 옛 해시 주소(#/…)로 바뀌면 새 주소로 옮긴다.
+     같은 화면 안의 id(#h-3 등)로 바뀌면 접힌 소절을 펴고 그 자리로(주소창·뒤로 가기·다른 모듈의 링크) */
+  window.addEventListener('hashchange', function () {
+    if (location.hash.indexOf('#/') === 0) { location.replace(L(location.hash)); return; }
+    scrollToHash();
+  });
   new MutationObserver(function (muts) { muts.forEach(function (m) { m.addedNodes.forEach(fixLinks); }); }).observe(document.body, { childList: true, subtree: true });
   const app = U.qs('#app');
   const nav = U.qs('#sidenav');
@@ -29,10 +33,18 @@
   const cache = {};
   let searchIndex = null;
   /* 선택 모듈: 파일이 없어도 앱은 동작한다 */
-  const PROG = (JHB.progress && JHB.progress.create) ? JHB.progress.create(U.store) : null;
-  const COURSES = JHB.courses || [];
+  const PRG = JHB.progress || {};
+  const PROG = PRG.create ? PRG.create(U.store) : null;
+  const COURSES = (Array.isArray(JHB.courses) ? JHB.courses : []).filter(function (c) { return c && typeof c.id === 'string' && Array.isArray(c.steps); });
   const LINKS = JHB.links || null;
-  const courseById = {}; COURSES.forEach(function (c) { courseById[c.id] = c; });
+  /* 원형이 없는 색인: ?course=__proto__·toString 같은 이름으로 엉뚱한 값을 집지 않게(js/progress.js 의 courseMap·getCourse) */
+  const courseById = Object.create(null); COURSES.forEach(function (c) { courseById[c.id] = c; });
+  function getCourse(id) {
+    if (PRG.getCourse) return PRG.getCourse(courseById, id);
+    return typeof id === 'string' && Object.prototype.hasOwnProperty.call(courseById, id) ? courseById[id] : null;
+  }
+  function whoText(who) { return PRG.whoText ? PRG.whoText(who) : (who ? who + '에게' : ''); }
+  function isSensitive(a) { return PRG.isSensitive ? PRG.isSensitive(a) : (a.tags || []).some(function (t) { return t === '위기' || t === '응급'; }); }
   /* 특집 화면 선언(data/pages.js). 없어도 앱은 동작한다 */
   const PAGES = Array.isArray(JHB.pages) ? JHB.pages.filter(function (d) { return d && typeof d.id === 'string'; }) : [];
   const pageById = {}; PAGES.forEach(function (d) { pageById[d.id] = d; });
@@ -87,34 +99,51 @@
   }
   function copyKind(k) { return { id: k.id, label: k.label, keys: k.keys.slice(), session: k.session.slice() }; }
   /* 'all' 글자일 때만 전부 지운다. 인자를 빠뜨리면(undefined·null·빈 값) 아무것도 지우지 않는다.
-     'all' 은 jhb.privacy.* 설정도 지우지만 기록 쉼(paused)은 남긴다: "전부 지우기"를 눌렀는데
-     아무 안내 없이 기록이 다시 시작되면 사용자가 기대한 것과 반대라서(0A 뒤 점검). 최근 검색 저장(recentq)은 꺼진다(기본값) */
-  function privClear(ids) {
-    const all = ids === 'all';
-    if (!all && (ids == null || ids === '' || (Array.isArray(ids) && !ids.length))) return [];
-    const want = all ? null : (Array.isArray(ids) ? ids : [ids]);
-    const done = [];
-    privKinds.forEach(function (k) {
-      if (want && want.indexOf(k.id) < 0) return;
-      k.keys.forEach(function (key) { U.store.remove(key); });
-      k.session.forEach(ssRemove);
-      done.push(k.id);
-    });
-    if (all) {
-      const keepPaused = U.store.get(PRIV_PREFIX + 'paused', false) === true;
-      lsKeys().forEach(function (key) { if (key.indexOf(PRIV_PREFIX) === 0) U.store.remove(key); });
-      if (keepPaused) U.store.set(PRIV_PREFIX + 'paused', true);
+     'all' 은 jhb.privacy.* 설정도 지우지만(등록되지 않은 것 포함) 기록 쉼(paused)은 남긴다: "전부 지우기"를 눌렀는데
+     아무 안내 없이 기록이 다시 시작되면 사용자가 기대한 것과 반대라서(0A 뒤 점검). 최근 검색 저장(recentq)은 꺼진다(기본값).
+     opts.keep: 남길 종류 id 목록(예: clear('all', { keep: ['settings'] }) = 보기 설정만 남기고 전부). 남기는 종류의 키는 지우지 않는다.
+     계획은 js/progress.js 의 planClear(테스트 tests/core.test.cjs).
+     jhb:privacy detail: keep 이 없으면 예전 그대로 { action:'clear', ids: 'all' | [지운 id] },
+     keep 이 있으면 ids 는 실제로 지운 id 배열이고 all: true, keep: [...] 가 붙는다(남긴 종류를 'all' 로 오해하지 않게) */
+  function privClear(ids, opts) {
+    if (ids !== 'all' && (ids == null || ids === '' || (Array.isArray(ids) && !ids.length))) return [];
+    const keep = opts && opts.keep != null ? (Array.isArray(opts.keep) ? opts.keep : [opts.keep]).filter(function (x) { return typeof x === 'string'; }) : [];
+    const paused = U.store.get(PRIV_PREFIX + 'paused', false) === true;
+    let plan;
+    if (PRG.planClear) plan = PRG.planClear(privKinds, ids, { keep: keep, paused: paused, lsKeys: ids === 'all' ? lsKeys() : [] });
+    else {
+      /* progress.js 를 못 받았을 때: 등록된 종류만(남길 종류는 빼고) */
+      const want = ids === 'all' ? null : (Array.isArray(ids) ? ids : [ids]);
+      plan = { all: ids === 'all', done: [], ls: [], ss: [] };
+      privKinds.forEach(function (k) { if (keep.indexOf(k.id) >= 0 || (want && want.indexOf(k.id) < 0)) return; plan.done.push(k.id); plan.ls = plan.ls.concat(k.keys); plan.ss = plan.ss.concat(k.session); });
     }
+    const all = plan.all;
+    plan.ls.forEach(function (key) { U.store.remove(key); });
+    plan.ss.forEach(ssRemove);
+    const done = plan.done;
     /* 최근 검색을 지우면 이 탭의 찾기 화면 기록(history.state {q, s, at})도 되살리지 않게 지운 시각을 남긴다.
        다른 기록 항목의 state 는 웹 API 로 지울 수 없어서, 찾기 화면이 이 시각보다 오래된 state 를 버린다(js/pages/search.js) */
     if (all || done.indexOf('recentq') >= 0) { try { sessionStorage.setItem(Q_CLEARED_KEY, String(Date.now())); } catch (e) { } }
-    window.dispatchEvent(new CustomEvent('jhb:privacy', { detail: { action: 'clear', ids: all ? 'all' : done } }));
+    const detail = { action: 'clear', ids: all && !keep.length ? 'all' : done };
+    if (all && keep.length) { detail.all = true; detail.keep = keep.slice(); }
+    window.dispatchEvent(new CustomEvent('jhb:privacy', { detail: detail }));
     return done;
+  }
+  /* 기록 쉼을 서비스 워커에 알린다(쉼이면 연 페이지를 캐시에 새로 넣지 않음, sw.js). 워커가 아직 없으면 준비된 뒤에 */
+  function tellWorker(paused) {
+    try {
+      const sw = navigator.serviceWorker;
+      if (!sw || location.protocol === 'file:') return;
+      const msg = { jhb: 'privacy', paused: !!paused };
+      if (sw.controller) sw.controller.postMessage(msg);
+      if (sw.ready) sw.ready.then(function (reg) { if (reg && reg.active && reg.active !== sw.controller) reg.active.postMessage(msg); }).catch(function () { });
+    } catch (e) { }
   }
   const privacy = {
     paused: function () { return U.store.get(PRIV_PREFIX + 'paused', false) === true; },
     setPaused: function (b) {
       if (b) U.store.set(PRIV_PREFIX + 'paused', true); else U.store.remove(PRIV_PREFIX + 'paused');
+      tellWorker(!!b);
       window.dispatchEvent(new CustomEvent('jhb:privacy', { detail: { action: 'paused', value: !!b } }));
     },
     /* 최근 검색 저장은 기본 꺼짐. 끄면 저장해 둔 최근 검색도 지운다 */
@@ -134,14 +163,15 @@
     },
     clear: privClear
   };
+  /* 읽은 글(read)에는 들어간 읽기 코스 기록(jhb.course)도 함께 든다(코스 진도·이어서 읽기의 바탕이라서) */
   [
-    { id: 'read', label: '읽은 글', keys: ['jhb.read'] },
+    { id: 'read', label: '읽은 글', keys: ['jhb.read', 'jhb.course'] },
     { id: 'recent', label: '최근 읽은 글', keys: ['jhb.recent'] },
     { id: 'pos', label: '읽던 자리', keys: ['jhb.ui.reading.pos'] },
     { id: 'recentq', label: '최근 검색', keys: ['jhb.ui.palette.recentq'], session: ['jhb.q'] },
     { id: 'fav', label: '저장한 글', keys: ['jhb.fav'] },
     { id: 'role', label: '역할', keys: ['jhb.ui.home.role'] },
-    { id: 'settings', label: '보기 설정', keys: ['jhb.theme', 'jhb.fs', 'jhb.ui.settings', 'jhb.ui.reading.mode', 'jhb.ui.home.installHidden'] }
+    { id: 'settings', label: '보기 설정', keys: ['jhb.theme', 'jhb.fs', 'jhb.ui.settings', 'jhb.ui.reading.mode', 'jhb.ui.home.installHidden', 'jhb.ui.home.recentHidden'] }
   ].forEach(privRegister);
   function reducedMotion() {
     return document.documentElement.getAttribute('data-motion') === 'reduce' || !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
@@ -274,7 +304,8 @@
     closePop();
     app.innerHTML = '';
     (nodes || []).forEach(function (n) { if (n) app.appendChild(n); });
-    if (!show.keepScroll) window.scrollTo(0, 0);
+    /* 주소의 조각(about/#privacy, a/<slug>/#h-3)이 화면 안의 id 를 가리키면 맨 위 대신 그 자리로 */
+    if (!show.keepScroll && !scrollToHash()) window.scrollTo(0, 0);
     show.keepScroll = false;
     setProgress(0);
     if (opts && opts.silent) return;
@@ -285,6 +316,32 @@
     window.dispatchEvent(new CustomEvent('jhb:page', { detail: detail }));
   }
   function hasPage(id) { return Object.prototype.hasOwnProperty.call(pageById, id); }
+  /* 주소 조각이 가리키는 #app 안의 요소(없으면 null). 옛 해시 주소('#/…')는 아님 */
+  function hashTarget() {
+    const id = P.fragmentId ? P.fragmentId(location.hash) : null;
+    if (!id) return null;
+    const n = document.getElementById(id);
+    return n && app.contains(n) ? n : null;
+  }
+  /* 그 자리로 옮긴다. 요약 보기로 접힌 소절이면 먼저 펴고(reading 모듈이 있을 때), 상단 바·따라오는 제목 줄 높이는
+     html 의 scroll-padding-top(상단 바, sticky 모듈이 제목 줄만큼 더함)이 반영한다. 옮겼으면 true.
+     숨은 요소(hidden 탭 패널 등, 편 뒤에도 상자가 없음)면 옮기지 않고 false(show() 가 맨 위로).
+     옮긴 뒤 포커스도 그 자리로(Tab 이 문서 맨 위가 아니라 그 소절에서 시작하게). 이미 그 안에 포커스가 있으면 그대로 */
+  function scrollToHash() {
+    const n = hashTarget();
+    if (!n) return false;
+    const R = JHB.ui && JHB.ui.reading;
+    if (R && typeof R.reveal === 'function') { try { R.reveal(n.id); } catch (e) { } }
+    if (!n.getClientRects().length) return false;
+    n.scrollIntoView({ block: 'start' });
+    if (!n.contains(document.activeElement)) {
+      /* 대상 자체에(제목 안쪽으로 옮기면 페이지를 불러올 때 브라우저의 조각 처리가 포커스를 다시 빼앗음).
+         소절을 감싼 section(about/#privacy)의 테두리는 style.css 가 지움 */
+      if (n.tabIndex < 0 && !n.hasAttribute('tabindex')) n.setAttribute('tabindex', '-1');
+      try { n.focus({ preventScroll: true }); } catch (e) { }
+    }
+    return true;
+  }
   function route() {
     const r = where(), p = r.path;
     setNav(false);
@@ -441,7 +498,8 @@
     if (canRender || !mount) {
       mount = el('div.fp-body', { 'data-page': d.id });
       if (!canRender && page && typeof page.staticHtml === 'function') {
-        try { mount.innerHTML = String(page.staticHtml({ data: data, esc: esc, articles: bySlug, sections: sections, page: d }) || ''); }
+        /* 정적 HTML(tools/build-pages.cjs)과 같은 문맥: 용어 사전(glossary)·읽기 코스(courses)도 넘긴다 */
+        try { mount.innerHTML = String(page.staticHtml({ data: data, esc: esc, articles: bySlug, sections: sections, glossary: glossary, courses: COURSES, page: d }) || ''); }
         catch (e) { problem = 'code'; errMsg = e && e.message; setTimeout(function () { throw e; }); }
       }
     }
@@ -531,7 +589,11 @@
       return String(a.section) !== '15' && t.indexOf('위기') < 0 && t.indexOf('응급') < 0;
     });
     const pick = todayPool.length ? todayPool[U.dayIndex(todayPool.length)] : null;
-    const recent = U.store.get('jhb.recent', []).map(function (s) { return bySlug[s]; }).filter(Boolean).slice(0, 5);
+    /* 최근에 읽은 문서: 위기·응급 글은 첫 화면 목록에서 뺀다(같은 기기를 쓰는 사람이 첫 화면에서 제목을 보지 않게).
+       기록(jhb.recent)은 그대로라 내 서재 목록에는 있다 */
+    const recentSlugs = U.store.get('jhb.recent', []);
+    const recent = PRG.visibleRecent ? PRG.visibleRecent(recentSlugs, bySlug, 5)
+      : (Array.isArray(recentSlugs) ? recentSlugs : []).map(function (s) { return Object.prototype.hasOwnProperty.call(bySlug, s) ? bySlug[s] : null; }).filter(function (a) { return a && !isSensitive(a); }).slice(0, 5);
     const srcCount = (JHB.toc && JHB.toc.sources) || null;
     const dayTerms = [];
     if (glossary.length) { const start = U.dayIndex(glossary.length); for (let i = 0; i < 6; i++) dayTerms.push(glossary[(start + i * 23) % glossary.length]); }
@@ -558,7 +620,9 @@
         ])
       ]) : null,
       (function () {
-        const c = PROG && PROG.continueReading(articles, COURSES);
+        /* 들어간 적 있는 코스(코스 화면·?course=)만 코스 이름·진도를 붙인다. 아니면 "읽던 글의 다음 문서"로만.
+           위기·응급 글은 제안하지 않고, 기준 글이면 제목을 내지 않는다(첫 화면에 제목이 뜨지 않게, 읽은 기록으로 꼬리표를 붙이지 않게) */
+        const c = PROG && (PROG.enteredCourses ? PROG.continueReading(articles, COURSES, { entered: PROG.enteredCourses(), hideTags: PRG.SENSITIVE_TAGS }) : PROG.continueReading(articles, COURSES));
         if (!c || !c.article || !c.article.slug) return null;
         const q2 = c.course ? '?course=' + c.course.id : '';
         return el('section', { 'data-sec': 'continue' }, [
@@ -694,7 +758,8 @@
         .map(function (x) { return { a: x, n: (x.tags || []).filter(function (t) { return tags.indexOf(t) >= 0; }).length }; })
         .sort(function (p, q) { return q.n - p.n; }).slice(0, 6).map(function (x) { return x.a; });
       const minutes = meta.minutes || md.readingMinutes(doc.body);
-      const metaText = md.docMetaText(minutes, meta.updated);
+      /* 근거·읽는 시간·고친 날·출처 확인일(frontmatter reviewed): 정적 페이지의 p.doc-meta-s 와 같은 함수 */
+      const metaText = md.docMetaText(minutes, meta.updated, meta.reviewed);
       const points = md.pointList(meta.points);
       const isCrisis = tags.indexOf('위기') >= 0, isEmergency = tags.indexOf('응급') >= 0;
       /* 확장 자리: 모듈이 JHB.app.mount(이름, 노드, 순서)로 끼운다. 비어 있으면 css 에서 숨김 */
@@ -750,6 +815,7 @@
               meta.summary ? el('p.doc-summary', null, [meta.summary]) : null,
               /* 정적 페이지의 p.doc-meta-s 와 같은 글자(js/md.js 의 docMetaText) */
               el('div.doc-meta-m', null, [ev(meta), el('span', null, [metaText.minutes]), metaText.updated ? el('span', null, [metaText.updated]) : null,
+                metaText.reviewed ? el('span.doc-reviewed', null, [metaText.reviewed]) : null,
                 el('span.acts', null, [favBtn(), shareBtn()])])
             ]),
             isCrisis ? fromHtml(md.crisisHtml()) : null,
@@ -858,7 +924,13 @@
         if (PROG) PROG.markRead(slug);
         const recent = U.store.get('jhb.recent', []).filter(function (x) { return x !== slug; }); recent.unshift(slug); U.store.set('jhb.recent', recent.slice(0, 20));
       }
+      /* ?course= 로 그 코스의 글을 열었으면 "들어간 코스"로 남긴다(이어서 읽기가 코스 이름을 붙이는 조건) */
+      const wantedCourse = getCourse(where().query.course);
+      if (wantedCourse && wantedCourse.steps.some(function (st) { return st.slug === slug; })) enterCourse(wantedCourse.id);
       window.dispatchEvent(new CustomEvent('jhb:article', { detail: { slug: slug, article: a, meta: meta, toc: r.toc, prev: prev, next: next, minutes: minutes, body: body, points: points.length ? points.slice() : null } }));
+      /* 소절 주소(a/<slug>/#h-3)로 들어왔으면 모듈이 다 붙은 뒤(요약 보기 접기·제목 줄 여백) 그 소절을 펴고 그 자리로.
+         show() 가 한 번 옮겼어도 접기 뒤 자리가 바뀌므로 다시 맞춘다(같은 작업 안이라 화면에 두 번 튀지 않음) */
+      scrollToHash();
     }).catch(function (e) {
       show([el('p.empty', null, ['문서를 불러오지 못했어요(' + e.message + '). 인터넷 연결을 확인하고 새로고침해 주세요.'])]);
     });
@@ -1040,10 +1112,17 @@
   }
 
   /* ---------- 읽기 코스 ---------- */
+  /* 코스에 "들어갔다"는 기록: 코스 화면을 열었거나 ?course= 로 그 코스의 글을 열었을 때. 기록 쉼이면 남기지 않는다 */
+  function enterCourse(id) {
+    if (!PROG || privacy.paused() || !PROG.markCourse || !getCourse(id)) return false;
+    return PROG.markCourse(id);
+  }
+  /* 코스 카드(첫 화면·코스 목록). JHB.app.courseCard 로도 공개(첫 화면 모듈이 같은 마크업을 쓰게) */
   function courseCard(c) {
+    if (!c || !Array.isArray(c.steps)) return null;
     const p = courseProgress(c);
     return el('a.course', { href: '#/course/' + c.id }, [
-      el('div.who', null, [c.who === '모두' ? '당사자와 가족에게' : c.who + '에게']),
+      el('div.who', null, [whoText(c.who)]),
       el('h3', null, [c.title]),
       el('p', null, [c.intro]),
       bar(p.pct, [el('span', null, [p.read ? p.read + ' / ' + p.total + ' 읽음' : '문서 ' + p.total + '개']), el('span', null, [p.pct ? p.pct + '%' : ''])])
@@ -1060,15 +1139,16 @@
     ]);
   }
   function coursePage(id) {
-    const c = courseById[id];
+    const c = getCourse(id);
     if (!c) return notFound();
+    enterCourse(c.id);
     setTitle(c.title);
     drawNav(null, null, null);
     const p = courseProgress(c);
     const next = p.next && bySlug[p.next.slug];
     show([
       el('nav.crumb', { 'aria-label': '위치' }, [el('a', { href: '#/' }, ['첫 화면']), el('span.sep', null, ['/']), el('a', { href: '#/courses' }, ['읽기 코스'])]),
-      el('p', { style: 'font-size:13px;color:var(--muted)' }, [c.who === '모두' ? '당사자와 가족에게' : c.who + '에게']),
+      el('p', { style: 'font-size:13px;color:var(--muted)' }, [whoText(c.who)]),
       el('h1.page-title', null, [c.title]),
       el('p.page-lead', null, [c.intro]),
       el('div', { style: 'max-width:420px;margin-top:14px' }, [bar(p.pct, [el('span', null, [p.read + ' / ' + p.total + ' 읽음']), el('span', null, [p.pct + '%'])])]),
@@ -1082,9 +1162,13 @@
   function courseNav(slug) {
     if (!COURSES.length) return null;
     const wanted = where().query.course;
-    let c = wanted && courseById[wanted];
+    let c = getCourse(wanted);
     if (!c || !c.steps.some(function (st) { return st.slug === slug; })) {
-      const cands = COURSES.filter(function (x) { return x.steps.some(function (st) { return st.slug === slug; }); });
+      /* ?course= 가 없으면 들어간 적 있는 코스만 짐작한다(읽은 글만으로 코스 이름을 붙이지 않게, 첫 화면 이어서 읽기와 같은 기준) */
+      const entered = PROG && PROG.enteredCourses ? PROG.enteredCourses() : null;
+      const cands = COURSES.filter(function (x) {
+        return x.steps.some(function (st) { return st.slug === slug; }) && (!entered || Object.prototype.hasOwnProperty.call(entered, x.id));
+      });
       if (!cands.length) return null;
       cands.sort(function (x, y) { return courseProgress(y).pct - courseProgress(x).pct; });
       c = cands[0];
@@ -1118,6 +1202,8 @@
   JHB.app = {
     BASE: BASE, L: L, go: go, where: where, articles: articles, sections: sections, bySlug: bySlug, secById: secById, glossary: glossary, courses: COURSES, progress: PROG,
     sectionArticles: sectionArticles, isFav: isFav, toggleFav: toggleFav, favs: favs, openPop: openPop, closePop: closePop, announce: announce, effectiveTheme: effectiveTheme,
+    /* K1: 코스 카드(첫 화면 모듈이 같은 마크업을 쓰게) */
+    courseCard: courseCard,
     setNav: setNav, el: el, esc: esc, store: U.store, nav: nav, main: app, row: row, spine: spine, search: function () { return loadIndex(); },
     /* 0B: 검색어를 주소에 싣지 않고 찾기 화면으로 */
     goSearch: goSearch,
@@ -1131,6 +1217,9 @@
   route();
   if ('serviceWorker' in navigator && location.protocol !== 'file:') {
     window.addEventListener('load', function () { navigator.serviceWorker.register(BASE + 'sw.js').catch(function () { }); });
+    /* 기록 쉼 상태를 워커에 맞춰 둔다(다른 탭에서 바꿨거나 워커 저장소가 비었을 수 있어서, 페이지를 열 때마다) */
+    tellWorker(privacy.paused());
+    window.addEventListener('storage', function (e) { if (e.key === PRIV_PREFIX + 'paused' || e.key === null) tellWorker(privacy.paused()); });
     /* 새 서비스 워커가 이 페이지를 넘겨받으면(새 판 설치) jhb:update 를 알리고, 토스트가 있으면 한 줄 안내.
        처음 설치(원래 제어하던 워커가 없음)는 새 판이 아니므로 알리지 않는다 */
     let hadController = !!navigator.serviceWorker.controller, updateSaid = false;

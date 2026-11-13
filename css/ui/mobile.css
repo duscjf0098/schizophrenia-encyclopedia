@@ -36,6 +36,8 @@
   .mb-hint.on { opacity: .92; transform: translate(0, -50%); }
 }
 @media (max-width: 760px) and (hover: hover) { .mb-btn:hover { background: var(--paper-2); } }
+/* 하단 바가 있는 동안 Tab 포커스·소절 이동이 바(높이 약 64px) 밑에 가리지 않게 아래 여백을 둬요(:has 를 모르는 브라우저는 이 규칙만 빠져요) */
+@media (max-width: 760px) { html:has(> body.mb-has-bar) { scroll-padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px)); } }
 @media (prefers-reduced-motion: reduce) { .mb-bar, .mb-sheet, .mb-hint { transition: none !important; animation: none !important; } }
 :root[data-motion="reduce"] .mb-bar, :root[data-motion="reduce"] .mb-sheet, :root[data-motion="reduce"] .mb-hint { transition: none !important; animation: none !important; }
 @media print { .mb-bar, .mb-scrim, .mb-sheet, .mb-hint { display: none !important; } body.mb-has-bar { padding-bottom: 0 !important; } }

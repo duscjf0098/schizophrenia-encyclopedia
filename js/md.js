@@ -66,17 +66,32 @@
   /* ---- 본문 전화번호 → tel: 링크 ----
      1) 1577-0199 꼴(15xx~18xx-xxxx)은 굵게가 아니어도. 건너뛰는 것:
         앞 글자가 숫자·영문·-./ (DOI·주소 속 숫자), 뒤가 숫자·-·"년", 바로 앞 낱말이 ISSN·ISBN,
-        두 번째 묶음이 첫 묶음보다 큰 1500~1999(연도 범위 "1650-1750 사이")
-     2) 굵게 싼 짧은 번호: 109·112·119·129 같은 세 자리 공공 번호와 13xx 네 자리. 뒤에 명·조·년 같은 단위가 붙으면 건너뜀
+        연도 범위: 두 번째 묶음이 첫 묶음보다 큰 1500~2099 이면서 문맥이 범위일 때만 —
+        뒤에 사이·까지·년대·세기("1800-2000 사이"), 앞에 년·~, 또는 괄호 속 생몰·시기 "(1820-1899)"(두 해 차이 110 이하, 바로 뒤 ')',
+        번호 앞 12자 안에 전화·상담·문의·번호·대표·안내·연락·콜센터가 없을 때. "상담(1588-1600)"은 번호).
+        그래서 1588-1600·1544-1700 같은 대표번호는 링크가 돼요. 굵게 싼 번호(**1588-1600**)는 늘 링크
+     2) 굵게 싼 짧은 번호: 109·112·119·129 같은 세 자리 공공 번호와 13xx 네 자리. 뒤에 명·조·년·mg·kg·% 같은 단위가 붙으면 건너뜀
+        (주·점은 붙여 쓴 것만: "**120**점", "**12**주". "**109** 주 7일"처럼 띄우면 번호로 둠)
      이미 링크(<a>…</a>)나 코드(<code>…</code>) 안이면 건드리지 않는다. 옛 사파리 때문에 lookbehind 는 쓰지 않는다. */
   const TEL_LONG = /(^|[^\w\-./])(1[5-8]\d{2}-\d{4})(?![\d-]|\s*년)/g;
-  const TEL_SHORT = /<strong>(109|110|112|114|117|118|119|120|122|125|127|128|129|131|132|182|13\d{2})<\/strong>(?!\s*(?:명|개|년|조|항|호|세|살|%|번째|만|천|억|원|회|건|곳|일|시간|분|위|차|쪽))/g;
+  const TEL_UNITS = '명|개|년|조|항|호|세|살|%|％|번째|만|천|억|원|회|건|곳|일|시간|분|위|차|쪽|밀리|킬로|센티|그램|칼로리|mg|㎎|mcg|μg|µg|㎍|kg|㎏|g(?![A-Za-z])|ml|mL|㎖|cc|cm|㎝|mm|kcal|bpm';
+  const TEL_SHORT = new RegExp('<strong>(109|110|112|114|117|118|119|120|122|125|127|128|129|131|132|182|13\\d{2})<\\/strong>(?!\\s*(?:' + TEL_UNITS + ')|주|점)', 'g');
   const TEL_NOT_AFTER = /(?:e?ISSN|ISBN(?:-1[03])?)[\s:：]*$/i;
+  const RANGE_AFTER = /^\s*(?:사이|까지|년대|세기)/;
+  const RANGE_BEFORE = /(?:년|~|～|〜|∼)\s*$/;
+  /* 괄호 속 생몰·시기 규칙을 쓰지 않는 전화 문맥: 번호 앞 12자 안(태그 뺀 글자)에 이 낱말이 있으면 "상담(1588-1600)"처럼 번호로 본다 */
+  const TEL_CONTEXT = /(?:전화|상담|문의|번호|대표|안내|연락|콜센터|ARS|☎|☏)/i;
   function telA(n) { return '<a href="tel:' + n + '">' + n + '</a>'; }
   function longTel(m, pre, n, off, str) {
-    if (TEL_NOT_AFTER.test(str.slice(0, off + pre.length))) return m;
+    const at = off + pre.length;
+    const before = str.slice(0, at), after = str.slice(at + n.length);
+    if (TEL_NOT_AFTER.test(before)) return m;
+    const bold = /<strong>$/.test(before) && /^<\/strong>/.test(after);
     const a = Number(n.slice(0, 4)), b = Number(n.slice(5));
-    if (b >= 1500 && b <= 1999 && b > a) return m;
+    if (!bold && b >= 1500 && b <= 2099 && b > a) {
+      if (RANGE_AFTER.test(after) || RANGE_BEFORE.test(before)) return m;
+      if (/^\)/.test(after) && b - a <= 110 && !TEL_CONTEXT.test(before.replace(/<[^>]*>/g, '').slice(-12))) return m;
+    }
     return pre + telA(n);
   }
   function telLinks(html) {
@@ -196,8 +211,12 @@
 
   /* ---- 고정 안내: 앱(js/app.js)과 정적 페이지(tools/build-pages.cjs)가 같은 문구를 쓴다 ---- */
   const DISCLAIMER = '일반적인 정보예요. 사람마다 상황이 달라서 진단과 치료는 담당 의사와 상의하는 게 안전해요. 약은 스스로 늘리거나 줄이거나 끊지 말고 먼저 상의하세요. 이 글은 AI가 초안을 쓰고 출처를 확인했으며, 전문가 감수는 받지 않았어요.';
+  /* 문자 상담 한 줄: 한국생명존중희망재단 마들랜 공식 안내(https://www.madeullan.or.kr/consult/guide, 2026-11-14 확인)
+     "문자(109), 카카오톡, 앱을 통해 전 국민 대상 24시간 자살예방SNS상담" — content/11-system/crisis-hotlines.md 와 같은 뜻.
+     109 를 tel: 로 잇지 않는다(누르면 전화가 걸려서 문자 안내와 어긋남) */
+  const SMS_LINE = '전화가 어렵다면 109로 문자를 보낼 수 있어요.';
   function crisisHtml() {
-    return '<div class="crisis" role="note"><strong>지금 많이 힘들다면</strong> 혼자 견디지 않아도 돼요. 자살예방상담 ' + telA('109') + ', 정신건강위기상담 ' + telA('1577-0199') + '는 24시간 받아요. 당장 위험하면 ' + telA('119') + '에 전화하세요.</div>';
+    return '<div class="crisis" role="note"><strong>지금 많이 힘들다면</strong> 혼자 견디지 않아도 돼요. 자살예방상담 ' + telA('109') + ', 정신건강위기상담 ' + telA('1577-0199') + '는 24시간 받아요. ' + SMS_LINE + ' 당장 위험하면 ' + telA('119') + '에 전화하세요.</div>';
   }
   function emergencyHtml() {
     return '<div class="emergency" role="note"><strong>몸의 응급 신호가 보이면</strong> ' + telA('119') + '에 전화하거나 응급실로 가세요. 약 때문인지 헷갈려도 먼저 연락하는 게 안전해요.</div>';
@@ -223,10 +242,18 @@
     const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(s || ''));
     return m ? m[1] + '.' + m[2] + '.' + m[3] : '';
   }
-  /* 문서 머리 한 줄(근거 칩·읽는 시간·고친 날). 앱의 .doc-meta-m(휴대폰 머리 줄)과 정적 페이지의 p.doc-meta-s 가 같은 글자를 쓴다 */
-  function docMetaText(minutes, updated) {
-    const d = dotDate(updated);
-    return { minutes: '약 ' + (Number(minutes) || 1) + '분', updated: d ? d + ' 고침' : '' };
+  /* 실제 있는 날짜인 YYYY-MM-DD 만(출처 확인일은 형식이 틀리면 보이지 않게. js/ui/trust.js 의 reviewedOf 와 같은 기준) */
+  function realDay(s) {
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(typeof s === 'string' ? s.trim() : '');
+    if (!m) return '';
+    const d = new Date(Date.UTC(+m[1], +m[2] - 1, +m[3]));
+    return d.getUTCFullYear() === +m[1] && d.getUTCMonth() === +m[2] - 1 && d.getUTCDate() === +m[3] ? m[1] + '.' + m[2] + '.' + m[3] : '';
+  }
+  /* 문서 머리 한 줄(근거 칩·읽는 시간·고친 날·출처 확인일). 앱의 .doc-meta-m(휴대폰 머리 줄)과 정적 페이지의 p.doc-meta-s 가 같은 글자를 쓴다.
+     reviewed(frontmatter 의 출처 확인일 YYYY-MM-DD)가 있으면 "출처 확인 YYYY.MM.DD"(없거나 형식이 틀리면 빈 글자) */
+  function docMetaText(minutes, updated, reviewed) {
+    const d = dotDate(updated), r = realDay(reviewed);
+    return { minutes: '약 ' + (Number(minutes) || 1) + '분', updated: d ? d + ' 고침' : '', reviewed: r ? '출처 확인 ' + r : '' };
   }
   /* 근거 칩: 앱의 ev() 와 같은 마크업. info = JHB.EVIDENCE[key] ({label, desc}) */
   function evChipHtml(key, info) {
@@ -234,15 +261,16 @@
     info = info || {};
     return '<span class="ev ev-' + esc(key) + '"' + (info.desc ? ' title="' + esc(info.desc) + '"' : '') + '>' + esc(info.label || key) + '</span>';
   }
-  /* o = { evidence: 키, ev: {label, desc}, minutes, updated } */
+  /* o = { evidence: 키, ev: {label, desc}, minutes, updated, reviewed } */
   function docMetaHtml(o) {
     o = o || {};
-    const t = docMetaText(o.minutes, o.updated);
-    return '<p class="doc-meta-s">' + evChipHtml(o.evidence, o.ev) + '<span>' + esc(t.minutes) + '</span>' + (t.updated ? '<span>' + esc(t.updated) + '</span>' : '') + '</p>';
+    const t = docMetaText(o.minutes, o.updated, o.reviewed);
+    return '<p class="doc-meta-s">' + evChipHtml(o.evidence, o.ev) + '<span>' + esc(t.minutes) + '</span>' + (t.updated ? '<span>' + esc(t.updated) + '</span>' : '') +
+      (t.reviewed ? '<span class="doc-reviewed">' + esc(t.reviewed) + '</span>' : '') + '</p>';
   }
   const NOTICE = {
     general: function () { return '일반적인 정보예요. 사람마다 상황이 달라서 진단과 치료는 담당 의사와 상의하는 게 안전해요. 이 백과의 내용은 AI가 공개 자료로 초안을 쓰고 출처를 확인해 만들었으며, 전문가 감수는 받지 않았어요.'; },
-    crisis: function () { return '힘든 생각이 들면 자살예방상담 ' + telA('109') + ', 정신건강위기상담 ' + telA('1577-0199') + '에 24시간 전화할 수 있어요. 당장 위험하면 ' + telA('119') + '에 전화하세요.'; },
+    crisis: function () { return '힘든 생각이 들면 자살예방상담 ' + telA('109') + ', 정신건강위기상담 ' + telA('1577-0199') + '에 24시간 전화할 수 있어요. ' + SMS_LINE + ' 당장 위험하면 ' + telA('119') + '에 전화하세요.'; },
     emergency: function () { return '<strong>몸의 응급 신호가 보이면</strong> ' + telA('119') + '에 전화하거나 응급실로 가세요. 약 때문인지 헷갈려도 먼저 연락하는 게 안전해요.'; },
     device: function () { return '이 기기의 브라우저에만 저장돼요. 어디로도 보내지 않아요. 같은 기기를 쓰는 사람이 볼 수 있어요.'; },
     dated: function (arg) { const d = fmtDay(arg); return d ? d + '에 확인한 내용이에요. 그 뒤에 바뀌었을 수 있어요.' : ''; }

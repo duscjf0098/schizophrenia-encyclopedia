@@ -51,6 +51,24 @@
   /* 첫 그리기 전에 바로 적용(깜빡임 줄이기). 테마와 s/l 글자 크기는 shell 의 인라인 스크립트가 이미 넣었다 */
   applyAll();
 
+  /* 기기 안 기록 지우기(JHB.app.privacy.clear)로 보기 설정 키가 지워지면 기억해 둔 값도 기본값으로 되돌리고 다시 적용한다.
+     (되돌리지 않으면 지운 뒤에도 옛 보기가 남고, 다음 set() 때 옛 값이 다시 저장된다.) 저장은 하지 않는다(지운 키를 되살리지 않게).
+     ids 가 'all'(keep 에 settings 가 없을 때)이거나 'settings' 를 담고 있을 때만 */
+  const DEFAULTS = { theme: 'auto', fs: 'm', width: 'normal', font: 'sans', motion: 'normal' };
+  let syncUi = null;
+  function settingsCleared(d) {
+    if (!d || d.action !== 'clear') return false;
+    if (d.ids === 'all') return !(Array.isArray(d.keep) && d.keep.indexOf('settings') >= 0);
+    return Array.isArray(d.ids) && d.ids.indexOf('settings') >= 0;
+  }
+  window.addEventListener('jhb:privacy', function (e) {
+    if (!settingsCleared(e && e.detail)) return;
+    S = Object.assign({}, DEFAULTS);
+    applyAll();
+    if (syncUi) syncUi();
+    window.dispatchEvent(new Event('jhb:layout'));
+  });
+
   /* ---------- 앱이 준비된 뒤: 버튼과 패널 ---------- */
   function ready() {
     if (!window.JHB || !JHB.app) return;
@@ -119,7 +137,7 @@
 
     const reset = el('button.set-reset', { type: 'button' }, ['기본으로 되돌리기']);
     reset.addEventListener('click', function () {
-      S = { theme: 'auto', fs: 'm', width: 'normal', font: 'sans', motion: 'normal' };
+      S = Object.assign({}, DEFAULTS);
       applyAll(); persist(); sync(); A.announce('보기 설정을 기본으로 되돌렸어요');
       window.dispatchEvent(new Event('jhb:layout'));
     });
@@ -155,6 +173,7 @@
       motionSw.querySelector('.set-switch-t').textContent = on ? '켬' : '끔';
     }
     sync();
+    syncUi = sync;
 
     /* 열기·닫기 */
     let lastFocus = null;

@@ -2,14 +2,18 @@
    옛 해시 주소(#/a/slug)를 실제 경로(a/slug/)로 바꾸고, 페이지 깊이에 맞는 상대 기준(../../)을 붙인다.
    브라우저(window.JHB.paths)와 node(module.exports) 양쪽에서 쓴다. */
 (function (root) {
+  /* '#/about#privacy' 처럼 뒤에 조각(#id)이 붙으면 경로 뒤로 옮긴다: 'about/#privacy', '#/a/x?course=y#h-3' → 'a/x/?course=y#h-3' */
   function hashToPath(h) {
     const s = String(h == null ? '' : h);
     if (s.indexOf('#/') !== 0) return null;
-    const rest = s.slice(2);
+    let rest = s.slice(2);
+    const fi = rest.indexOf('#');
+    const frag = fi >= 0 ? rest.slice(fi) : '';
+    if (fi >= 0) rest = rest.slice(0, fi);
     const qi = rest.indexOf('?');
     const path = (qi >= 0 ? rest.slice(0, qi) : rest).split('/').filter(Boolean).join('/');
     const query = qi >= 0 ? rest.slice(qi) : '';
-    return (path ? path + '/' : '') + query;
+    return (path ? path + '/' : '') + query + (frag.length > 1 ? frag : '');
   }
   function baseFor(route) {
     const n = String(route || '').split('/').filter(Boolean).length;
@@ -19,7 +23,19 @@
   function link(h, base) {
     const p = hashToPath(h);
     if (p == null) return h;
-    return (base || '') + p || './';
+    if (!p) return base || './';
+    /* 첫 화면에 쿼리·조각만 붙은 주소('#/#x')는 지금 페이지가 아니라 첫 화면을 가리키게 */
+    if (!base && /^[?#]/.test(p)) return './' + p;
+    return (base || '') + p;
+  }
+  /* 주소의 조각이 화면 안 요소 id 를 가리키면 그 id('#privacy' → 'privacy', '#h-3' → 'h-3').
+     옛 해시 주소('#/…')·빈 조각은 null. % 인코딩은 풀고, 깨졌으면 글자 그대로 */
+  function fragmentId(hash) {
+    const s = String(hash == null ? '' : hash);
+    if (s.charAt(0) !== '#' || s.length < 2 || s.charAt(1) === '/') return null;
+    let id = s.slice(1);
+    try { id = decodeURIComponent(id); } catch (e) { }
+    return id || null;
   }
   function rewriteHtml(html, base) {
     return String(html).replace(/href="(#\/[^"]*)"/g, function (_, h) { return 'href="' + link(h, base) + '"'; });
@@ -60,7 +76,7 @@
     });
     return out;
   }
-  const api = { hashToPath: hashToPath, baseFor: baseFor, link: link, rewriteHtml: rewriteHtml, parseQuery: parseQuery };
+  const api = { hashToPath: hashToPath, baseFor: baseFor, link: link, rewriteHtml: rewriteHtml, parseQuery: parseQuery, fragmentId: fragmentId };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else { root.JHB = root.JHB || {}; root.JHB.paths = api; }
 })(typeof window !== 'undefined' ? window : this);

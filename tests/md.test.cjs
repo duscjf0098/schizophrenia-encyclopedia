@@ -149,9 +149,78 @@ test('전화번호 링크: ISSN·ISBN 뒤 번호와 연도 범위는 건너뛰�
 });
 
 test('문서 머리 한 줄: 정적 p.doc-meta-s 와 앱 .doc-meta-m 이 같은 글자', function () {
-  eq(md.docMetaText(3, '2026-10-25'), { minutes: '약 3분', updated: '2026.10.25 고침' });
-  eq(md.docMetaText('4', ''), { minutes: '약 4분', updated: '' });
+  eq(md.docMetaText(3, '2026-10-25'), { minutes: '약 3분', updated: '2026.10.25 고침', reviewed: '' });
+  eq(md.docMetaText('4', ''), { minutes: '약 4분', updated: '', reviewed: '' });
   eq(md.docMetaHtml({ evidence: '연구', ev: { label: '연구', desc: '설명 "따옴표"' }, minutes: 3, updated: '2026-10-25' }),
     '<p class="doc-meta-s"><span class="ev ev-연구" title="설명 &quot;따옴표&quot;">연구</span><span>약 3분</span><span>2026.10.25 고침</span></p>');
   eq(md.docMetaHtml({ minutes: 2 }), '<p class="doc-meta-s"><span>약 2분</span></p>');
+});
+
+/* ---------- K1 코어 정리 ---------- */
+test('출처 확인일: reviewed(YYYY-MM-DD)가 있으면 "출처 확인 YYYY.MM.DD"를 덧붙이고, 없거나 틀린 날짜면 지금과 같다', function () {
+  eq(md.docMetaText(3, '2026-10-25', '2026-11-12'), { minutes: '약 3분', updated: '2026.10.25 고침', reviewed: '출처 확인 2026.11.12' });
+  eq(md.docMetaText(3, '', ' 2026-11-12 ').reviewed, '출처 확인 2026.11.12');
+  ['2026-02-30', '2026-13-01', '2026.11.12', '11/12', '', null, undefined, 20261112].forEach(function (v) {
+    eq(md.docMetaText(3, '2026-10-25', v).reviewed, '', String(v));
+  });
+  eq(md.docMetaHtml({ evidence: '연구', ev: { label: '연구' }, minutes: 3, updated: '2026-10-25', reviewed: '2026-11-12' }),
+    '<p class="doc-meta-s"><span class="ev ev-연구">연구</span><span>약 3분</span><span>2026.10.25 고침</span><span class="doc-reviewed">출처 확인 2026.11.12</span></p>');
+  eq(md.docMetaHtml({ minutes: 2, reviewed: 'x' }), '<p class="doc-meta-s"><span>약 2분</span></p>');
+});
+
+test('전화번호 링크: 연도 범위는 문맥(뒤 사이·까지·년대·세기, 앞 년·~, 괄호 속 생몰)으로만 판단', function () {
+  /* 범위: 링크 아님 */
+  not(md.render('1800-2000 사이에 쓰인 기록').html, 'tel:');
+  not(md.render('1650-1750 사이').html, 'tel:');
+  not(md.render('1600-1700까지 이어진 전통').html, 'tel:');
+  not(md.render('1850-1900 년대 정신의학').html, 'tel:');
+  not(md.render('1500-1600 세기').html, 'tel:');
+  not(md.render('1900년~1800-1950').html, 'tel:');
+  not(md.render('기간 ~1800-1900').html, 'tel:');
+  not(md.render('(1820-1899)').html, 'tel:');
+  not(md.render('에밀 크레펠린(Emil Kraepelin, 1856-1926)은').html, 'tel:');
+  not(md.render('1990-2017년 자료').html, 'tel:');
+  /* 실제 대표번호: 링크 */
+  has(md.render('대표번호 1588-1600으로 물어보세요').html, '<a href="tel:1588-1600">1588-1600</a>');
+  has(md.render('상담 1544-1700').html, '<a href="tel:1544-1700">1544-1700</a>');
+  has(md.render('센터(문의 1577-1701, 평일 오전 9시)').html, '<a href="tel:1577-1701">1577-1701</a>');
+  has(md.render('콜센터(1577-1800)').html, '<a href="tel:1577-1800">1577-1800</a>', '괄호 속이어도 두 해 차이가 110 이 넘으면 번호');
+  has(md.render('**1588-1600** 사이에').html, '<a href="tel:1588-1600">1588-1600</a>', '굵게 싼 번호는 늘 번호');
+  /* 범위 문맥이어도 연도 모양이 아니면 번호 */
+  has(md.render('1577-0199까지 연락하세요').html, '<a href="tel:1577-0199">1577-0199</a>');
+  /* ISSN·DOI 는 그대로 건너뜀 */
+  not(md.render('ISSN 1588-1600').html, 'tel:');
+  not(md.render('doi:10.1/x.1600-0447').html, 'tel:');
+});
+
+test('전화번호 링크: 괄호 속 범위 규칙은 바로 앞에 전화 문맥(상담·전화·문의·번호·대표·안내·연락·콜센터)이 있으면 쓰지 않음', function () {
+  has(md.render('상담(1588-1600)').html, '<a href="tel:1588-1600">1588-1600</a>');
+  has(md.render('대표번호 (1544-1600)').html, '<a href="tel:1544-1600">1544-1600</a>');
+  has(md.render('안내 전화(1577-1600)로').html, '<a href="tel:1577-1600">1577-1600</a>');
+  has(md.render('(상담 1588-1600)').html, '<a href="tel:1588-1600">1588-1600</a>');
+  has(md.render('**상담**(1588-1600)').html, '<a href="tel:1588-1600">1588-1600</a>', '굵게 싼 문맥 낱말도');
+  /* 생몰·시기는 그대로 범위 */
+  not(md.render('(1820-1899)').html, 'tel:');
+  not(md.render('크레펠린(1856-1926)').html, 'tel:');
+  not(md.render('에밀 크레펠린(Emil Kraepelin, 1856-1926)은').html, 'tel:');
+  not(md.render('상담 기법을 처음 정리한 크레펠린(1856-1926)').html, 'tel:', '문맥 낱말이 멀리(12자 밖) 있으면 보지 않음');
+});
+
+test('전화번호 링크: 굵게 싼 짧은 번호 뒤에 단위(mg·㎎·밀리·점·개월·주·kg·cm·%)가 오면 링크 아님', function () {
+  ['**125** mg', '**125**mg', '**120** ㎎', '**120**밀리그램', '**120**점', '**112**개월', '**12**주', '**119**주', '**120** kg', '**120**cm', '**119**%', '**120** g', '**120** mmHg', '**120** kcal', '**112** ml']
+    .forEach(function (s) { not(md.render(s + ' 정도').html, 'tel:', s); });
+  /* 띄어 쓴 '주'·'점'은 단위로 보지 않음(번호로 둠), 조사·문장 부호도 번호 */
+  ['**109** 주 7일 24시간', '**119**에 전화', '**112**(경찰)', '**109**, **119**', '**129**는', '**1388**은', '**119** go'].forEach(function (s) { has(md.render(s).html, 'tel:', s); });
+});
+
+test('위기 안내: 문자 109 한 줄이 배너·공용 고지에 같은 글자로 들어가고 번호 세 개는 그대로', function () {
+  const line = '전화가 어렵다면 109로 문자를 보낼 수 있어요.';
+  [md.crisisHtml(), md.noticeHtml('crisis')].forEach(function (h) {
+    has(h, line);
+    ['109', '1577-0199', '119'].forEach(function (n) { has(h, '<a href="tel:' + n + '">' + n + '</a>'); });
+    eq((h.match(/href="tel:/g) || []).length, 3, '전화 링크는 세 개(문자 안내의 109 는 전화 링크가 아님)');
+    not(h, 'sms:');
+  });
+  has(md.crisisHtml(), '<strong>지금 많이 힘들다면</strong>');
+  ok(md.noticeHtml('crisis').indexOf(line) < md.noticeHtml('crisis').indexOf('당장 위험하면'), '119 줄이 맨 끝');
 });

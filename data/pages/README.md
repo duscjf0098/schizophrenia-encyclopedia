@@ -36,7 +36,9 @@
 | `robots` | `index`(기본, 사이트맵) · `noindex`(기기 안 기록 화면) |
 | `crisisLine` | 기본 true(109·1577-0199·119 줄). false 는 검사 오류(총괄이 `tools/lib/assets.cjs` 의 `CRISIS_LINE_OFF_OK` 에 넣은 id 만 예외) |
 | `notice` | `general`(늘 붙음) · `device` · `emergency` · `dated`(updated 필요) · `crisis`(위기 줄은 crisisLine 으로 한 번만 붙어요) |
-| `updated` | `YYYY-MM-DD` |
+| `updated` | `YYYY-MM-DD`. 사이트맵 날짜(아래 `lastmod` 가 없을 때), `dated` 고지 |
+| `lastmod` | 사이트맵 날짜를 자료에서 읽을 때만: `"kb:<data/kb 이름>:<날짜 항목>"`. 예: 고침 기록 `"lastmod": "kb:changes:date"` → `data/kb/changes.json` 항목들의 `date` 가운데 가장 최근. 그 자료는 항목 배열이어야 해요(파일이 없거나 배열이 아니면 검사 오류, 날짜가 하나도 없으면 경고하고 `updated`) |
 
+- 사이트맵 날짜 순서: `lastmod` 가 가리키는 자료의 가장 최근 날짜 → `updated` → 빌드한 날. `robots: "noindex"` 화면은 사이트맵에 넣지 않아요.
 - 검사: `node tools/build-kb.cjs` (어기면 종료 코드 1). 빌드 없이 보기: `node serve.cjs` 후 `http://localhost:5174/<id>/`.
 - `data/pages.js` 는 이 폴더로 **자동 생성**되는 파일이라 손으로 고치지 않아요.

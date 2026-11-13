@@ -3,7 +3,7 @@
       첫 소절은 늘 core(앱이 data-key 를 달고, 여기서도 한 번 더 지킨다). '위기'·'응급' 태그 글은 요약 모드를 무시하고
       늘 전체를 보인다(스위치 없음, 요약 모드일 때만 "이 글은 늘 전체를 보여 줘요" 한 줄).
    2) 읽던 자리 — 문서를 떠날 때 스크롤 비율을 'jhb.ui.reading.pos' 에 저장하고, 7일 안에 다시 열면 그 자리로 돌아간다.
-      기록 쉼(JHB.app.privacy.paused())이면 저장하지 않는다.
+      기록 쉼(JHB.app.privacy.paused())이면 저장하지 않는다. 주소에 소절 조각(a/<slug>/#h-3)이 있으면 되돌리지 않는다(앱이 그 소절로 옮김).
    3) JHB.ui.reading.reveal(id) — 그 id 의 소절(또는 소절 안 요소)이 접혀 있으면 펼친다(다른 모듈의 차례 이동용).
    앱 본체는 고치지 않고 jhb:page / jhb:article 이벤트로만 붙는다. */
 (function () {
@@ -191,13 +191,25 @@
     setTimeout(function () { if (resumeEl) resumeEl.classList.add('rd-show'); }, 10);
     setTimeout(hideResume, 9000);
   }
+  /* 주소의 조각(#h-3, #sources 처럼)이 문서 화면 안의 요소를 가리키면 true.
+     그때는 앱(js/app.js)이 그 자리로 옮기니, 읽던 자리로 되돌리지 않고 "읽던 자리로 돌아왔어요" 알림도 띄우지 않는다 */
+  function hashInDoc() {
+    const h = String(location.hash || '');
+    if (h.length < 2 || h.charAt(1) === '/') return false;
+    let id = h.slice(1);
+    try { id = decodeURIComponent(id); } catch (e) { }
+    const n = id && document.getElementById(id);
+    const main = A.main || document.getElementById('app');
+    return !!(n && main && main.contains(n));
+  }
   function restorePos(slug) {
+    if (hashInDoc()) return;
     const rec = allPos()[slug];
     if (!rec || typeof rec.y !== 'number' || rec.y < MIN_Y) return;
     if (!rec.at || Date.now() - rec.at > MAX_AGE) return;
     /* 다른 모듈의 스크롤 처리(show() 의 scrollTo(0,0) 등)가 끝난 뒤에 */
     requestAnimationFrame(function () { requestAnimationFrame(function () {
-      if (curSlug !== slug) return;
+      if (curSlug !== slug || hashInDoc()) return;
       const d = document.documentElement;
       const max = d.scrollHeight - window.innerHeight;
       if (max < 200) return;
