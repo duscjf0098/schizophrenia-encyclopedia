@@ -63,12 +63,33 @@ test('내 서재: 코스 진행은 시작한 코스만, 진행 중(많이 읽은
   eq(L.courseRows(null, { a1: 1 }), []);
 });
 
+test('내 서재: "시작한 코스"는 실제로 들어간 코스만(코스 화면·?course= 기록), 읽은 글이 겹친다고 세지 않는다', function () {
+  const C = [
+    { id: 'c1', title: '하나', steps: [{ slug: 'a1' }, { slug: 'a2' }, { slug: 'a3' }] },
+    { id: 'c2', title: '둘', steps: [{ slug: 'a1' }, { slug: 'a2' }] },
+    { id: 'c3', title: '셋', steps: [{ slug: 'a3' }, { slug: 'zz' }] }
+  ];
+  /* 위기 글(a3) 하나만 읽은 사람: 들어간 코스가 없으면 0개(예전에는 a3 가 든 코스 둘이 "시작한 코스"로 셌어요) */
+  eq(L.courseRows(C, { a3: 1 }, {}), []);
+  eq(L.courseRows(C, { a3: 1 }, []), []);
+  /* 들어간 코스만, 아직 읽은 글이 없어도 들어간 코스는 보여요(0 / N) */
+  const rows = L.courseRows(C, { a1: 1, a3: 2 }, { c2: 5, c3: 9 });
+  eq(rows.map(function (r) { return [r.id, r.read, r.total, r.done]; }), [['c2', 1, 2, false], ['c3', 1, 2, false]]);
+  eq(L.courseRows(C, {}, { c1: 1 }).map(function (r) { return [r.id, r.read, r.pct]; }), [['c1', 0, 0]]);
+  /* 배열로 줘도 같고, 원형 이름·없는 코스 id 는 무시 */
+  eq(L.courseRows(C, { a1: 1 }, ['c1', 'toString', 'nope']).map(function (r) { return r.id; }), ['c1']);
+  const proto = Object.create(null); proto.c1 = 1;
+  eq(L.courseRows(C, { a1: 1 }, proto).map(function (r) { return r.id; }), ['c1'], '원형 없는 객체(progress.enteredCourses 의 모양)');
+  /* entered 를 주지 않으면(진도 기록 API 가 없는 옛 판) 예전처럼 읽은 글 기준 */
+  eq(L.courseRows(C, { a3: 1 }).map(function (r) { return r.id; }), ['c3', 'c1']);
+});
+
 test('내 서재: 확인을 묻는 종류는 직접 모은 것(저장한 글·다른 모듈이 등록한 것), 흔적은 바로 지움', function () {
   ['read', 'recent', 'pos', 'recentq', 'role', 'settings'].forEach(function (id) { ok(!L.needsConfirm(id), id + ' 는 바로 지워요'); });
   ['fav', 'ask', 'plan', 'something-new'].forEach(function (id) { ok(L.needsConfirm(id), id + ' 는 확인을 물어요'); });
 });
 
-test('내 서재: 전부 지우기 계획 — 보기 설정을 지우면 privacy.clear(\'all\'), 남기면 settings 만 빼고', function () {
+test('내 서재: 전부 지우기 계획 — 늘 privacy.clear(\'all\'), 보기 설정을 남기면 keep: [\'settings\']', function () {
   const kinds = [
     { id: 'read', keys: ['jhb.read'], session: [] },
     { id: 'recentq', keys: ['jhb.ui.palette.recentq'], session: ['jhb.q'] },
@@ -78,17 +99,26 @@ test('내 서재: 전부 지우기 계획 — 보기 설정을 지우면 privacy
   ];
   const ls = ['jhb.read', 'jhb.fav', 'jhb.theme', 'jhb.ui.settings', 'jhb.privacy.paused', 'jhb.privacy.recentq', 'jhb.ui.unregistered.x', 'other.app', 'jhbx'];
   const ss = ['jhb.q', 'jhb.q.cleared', 'jhb.ui.ask.session', 'jhb.ui.loose', 'zzz'];
-  const all = L.planClearAll({ kinds: kinds, lsKeys: ls, ssKeys: ss, keepSettings: false, recentq: true });
+  const all = L.planClearAll({ kinds: kinds, lsKeys: ls, ssKeys: ss, keepSettings: false });
   eq(all.ids, 'all');
+  eq(all.keep, []);
   eq(all.extraLs, ['jhb.ui.unregistered.x'], '등록 안 된 jhb.* 만 따로(jhb.privacy.* 는 API 가 다룸)');
   eq(all.extraSs, ['jhb.ui.loose'], 'jhb.q.cleared 는 남김(찾기 화면이 옛 검색어를 되살리지 않게)');
-  eq(all.offRecentq, false, "'all' 이 최근 검색 저장을 끄므로 따로 끄지 않음");
-  const keep = L.planClearAll({ kinds: kinds, lsKeys: ls, ssKeys: ss, keepSettings: true, recentq: true });
-  eq(keep.ids, ['read', 'recentq', 'fav', 'ask']);
+  /* 보기 설정을 남겨도 'all' + keep: 등록되지 않은 jhb.privacy.* 까지 API 가 지우고 최근 검색 저장도 API 가 꺼요(따로 끄는 길 없음) */
+  const keep = L.planClearAll({ kinds: kinds, lsKeys: ls, ssKeys: ss, keepSettings: true });
+  eq(keep.ids, 'all');
+  eq(keep.keep, ['settings']);
   eq(keep.extraLs, ['jhb.ui.unregistered.x'], '보기 설정 키는 등록돼 있어 남아요');
-  eq(keep.offRecentq, true);
-  eq(L.planClearAll({ kinds: kinds, lsKeys: [], ssKeys: [], keepSettings: true, recentq: false }).offRecentq, false);
+  ok(!('offRecentq' in keep), '옛 대체 길(offRecentq) 없음');
   eq(L.planClearAll({}).ids, 'all');
+  eq(L.planClearAll({}).keep, []);
+});
+
+test('내 서재: 전부 지우기는 코어 API 한 번(privacy.clear(\'all\', { keep }))으로, 옛 대체 길(setRecentq·resetView)은 없다', function () {
+  const src = fs.readFileSync(path.join(ROOT, 'js/pages/me.js'), 'utf8');
+  has(src, "P.clear(plan.ids, { keep: plan.keep })");
+  not(src, 'offRecentq');
+  not(src, 'resetView');
 });
 
 test('내 서재: 지울 것 미리 보기는 기록이 있는 종류만, 보기 설정은 고를 때만', function () {
@@ -146,6 +176,15 @@ test('내 서재: 알아둘 것·최근 검색 안내는 지나친 안심 없이
   has(L.RECENTQ_ON, '같은 기기를 쓰는 사람');
 });
 
+test('내 서재: 알아둘 것의 오프라인 저장 줄은 지금 동작대로(기록 쉼이면 새로 연 화면은 저장하지 않음)', function () {
+  const line = L.KNOW.filter(function (t) { return t.indexOf('오프라인') >= 0; })[0];
+  ok(line, '오프라인 저장 줄');
+  not(line, '켜도 저장돼요');
+  has(line, '"기록 남기지 않기"를 켜면 그 뒤에 새로 연 화면은 저장하지 않아요');
+  has(line, '이미 저장된 화면은');
+  has(line, '지울 때 함께 지워요');
+});
+
 test('내 서재: 을/를 은 받침에 맞게', function () {
   eq(L.obj('읽은 글'), '읽은 글을');
   eq(L.obj('읽던 자리'), '읽던 자리를');
@@ -161,7 +200,7 @@ test('내 서재: 을/를 은 받침에 맞게', function () {
 test('내 서재: 정적 HTML 은 소개와 자바스크립트 안내·소개 링크, 사용자 기록은 없음', function () {
   const html = page.staticHtml({ data: {}, esc: md.esc, articles: {}, sections: [], page: { id: 'me' } });
   has(html, '자바스크립트가 필요해요');
-  has(html, 'href="#/about"');
+  has(html, 'href="#/about#privacy"', '소개의 "기록과 개인정보" 소절로 바로');
   has(html, '<noscript>');
   not(html, 'localStorage');
   not(html, '<script');
@@ -173,7 +212,13 @@ test('소개: "기록과 개인정보"의 지우는 방법이 내 서재를 가�
   const box = {}; box.window = box;
   require('vm').runInNewContext(src, box);
   const html = box.JHB.aboutHtml;
-  const sec = html.split('<h2>기록과 개인정보</h2>')[1].split('<h2>')[0];
+  /* 소절은 id="privacy" 로 찾는다(id 가 감싼 section 에 있든 h2 에 있든). 제목 글자·h2 속성이 바뀌어도 깨지지 않게 */
+  const at = html.indexOf('id="privacy"');
+  ok(at >= 0, '소개에 id="privacy" 소절이 있어요(내 서재·about/#privacy 링크가 가리킴)');
+  const from = html.slice(at);
+  const hEnd = from.indexOf('</h2>');
+  ok(hEnd >= 0 && /기록과 개인정보/.test(from.slice(0, hEnd)), 'id="privacy" 바로 뒤 제목이 "기록과 개인정보"');
+  const sec = from.slice(hEnd + 5).split(/<h2[\s>]/)[0];
   has(sec, 'href="#/me"');
   has(sec, '내 서재');
   /* 그 밖의 소절은 그대로 */

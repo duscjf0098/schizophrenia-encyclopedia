@@ -6,7 +6,8 @@
    - 리다이렉트된 응답(끝에 / 가 없는 주소의 301 등)은 캐시에 넣지 않는다(꺼낼 때 브라우저가 거부할 수 있어서).
    - 기록 쉼(jhb.privacy.paused): 페이지(js/app.js)가 postMessage({ jhb: 'privacy', paused }) 로 알려 준다.
      쉼이면 새 캐시 항목을 만들지 않는다(연 글의 HTML 이 쌓이지 않게). 이미 있는 항목의 갱신과 프리캐시·오프라인 동작은 그대로.
-     워커가 다시 떠도 알 수 있게 그 값을 'jhb.state' 캐시(판이 바뀌어도 activate 가 지우지 않는 이름)에 둔다. */
+     워커가 다시 떠도 알 수 있게 그 값('1' 쉼 · '0' 쉼 아님)을 'jhb.state' 캐시(판이 바뀌어도 activate 가 지우지 않는 이름)에 둔다.
+     알림을 받은 뒤 그 값을 읽지 못하면(상태 캐시가 사라진 직후 등) 페이지가 다시 알려 줄 때까지 새 항목을 만들지 않는다(보수적 기본값, isPaused). */
 const BUILD = '2026-11-13-284-mwfbinwv';
 const PRECACHE = 'data/precache.json';
 let CACHE = 'jhb-' + BUILD;
@@ -14,18 +15,31 @@ const STATE_CACHE = 'jhb.state';
 const STATE_KEY = '__jhb-state/paused';
 let pausedNow = null; /* null = 아직 모름(STATE_CACHE 에서 읽음) */
 
+/* 쉼 상태는 '1'(쉼)·'0'(쉼 아님) 둘 다 남기고, 알림을 받았다는 표시(KNOWN_KEY)를 이 판의 캐시에도 남긴다.
+   - 상태 기록이 있으면 그 값.
+   - 상태 기록이 없는데 표시는 있으면 = 알림을 받은 뒤 상태 캐시만 사라졌음(사라진 직후) → "모름".
+   - 상태를 읽다가 실패하거나 값이 깨졌어도 "모름".
+   모르는 동안은 쉼처럼 새 항목을 만들지 않는다(보수적 기본값). pausedNow 는 null 로 두어, 페이지가 다시 알려 주면(message) 그때 정해진다.
+   한 번도 알림을 받지 않은 워커(처음 설치 직후, 표시도 없음)는 예전처럼 쉼 아님으로 본다(페이지가 열리자마자 알려 줌, js/app.js tellWorker) */
+const KNOWN_KEY = '__jhb-state/known';
 function isPaused() {
   if (pausedNow !== null) return Promise.resolve(pausedNow);
   return caches.match(STATE_KEY, { cacheName: STATE_CACHE }).then(function (hit) {
-    if (pausedNow === null) pausedNow = !!hit;
-    return pausedNow;
-  }).catch(function () { return false; });
+    if (!hit) return caches.match(KNOWN_KEY, { cacheName: CACHE }).then(function (k) { return !!k; });
+    return Promise.resolve(typeof hit.text === 'function' ? hit.text() : '1').then(function (t) {
+      const v = String(t).trim();
+      if (v !== '0' && v !== '1') return true;
+      if (pausedNow === null) pausedNow = v === '1';
+      return pausedNow;
+    });
+  }).catch(function () { return true; });
 }
 function setPausedState(v) {
   pausedNow = !!v;
-  return caches.open(STATE_CACHE).then(function (c) {
-    return v ? c.put(STATE_KEY, new Response('1')) : c.delete(STATE_KEY);
-  }).catch(function () { });
+  return Promise.all([
+    caches.open(STATE_CACHE).then(function (c) { return c.put(STATE_KEY, new Response(v ? '1' : '0')); }),
+    caches.open(CACHE).then(function (c) { return c.put(KNOWN_KEY, new Response('1')); })
+  ]).catch(function () { });
 }
 /* 넣어도 되는 응답: 정상(2xx)이고 리다이렉트를 거치지 않은 것 */
 function cacheable(res) { return !!(res && res.ok && !res.redirected); }

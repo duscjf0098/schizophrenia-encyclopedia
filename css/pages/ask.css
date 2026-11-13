@@ -97,12 +97,7 @@
 /* ---------- 인쇄: 화면 대신 종이(.pg-ask-sheet)만 ---------- */
 .pg-ask-sheet { display: none; }
 @media print {
-  /* 어두운 화면에서 인쇄해도 흰 종이에 먹색 글자(css/style.css 의 밝은 토큰 값) */
-  :root:has(.fp-body[data-page="ask"]) {
-    --paper: #ffffff; --paper-2: #ffffff; --paper-3: #ffffff; --ink: #1d232c; --ink-2: #3c4450; --muted: #6a7280;
-    --rule: #cfd3d1; --rule-2: #9aa1a6; --accent: #4a44b0; --accent-soft: #ffffff;
-  }
-  body:has(.fp-body[data-page="ask"]) { background: #ffffff; }
+  /* 어두운 화면에서 인쇄해도 흰 종이에 먹색 글자: 인쇄 모듈(css/ui/print.css)이 밝은 토큰과 흰 바탕을 전역으로 정해요 */
   #app:has(> .fp-body[data-page="ask"]) > .crumb,
   #app:has(> .fp-body[data-page="ask"]) > .page-title,
   #app:has(> .fp-body[data-page="ask"]) > .page-lead,

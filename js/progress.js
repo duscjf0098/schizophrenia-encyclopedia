@@ -3,7 +3,8 @@
    저장 키 'jhb.read'(값 { slug: timestamp }), 'jhb.course'(들어간 읽기 코스, 값 { 코스id: timestamp }).
    문서는 data/toc.js 형식 { slug, section, order, title, tags }, 코스는 { id, title, who, steps: [{slug}] }.
    그 밖에 앱(js/app.js)이 쓰는 순수 함수: 코스 찾기(courseMap·getCourse), 코스 대상 문구(whoText),
-   첫 화면 최근 목록 고르기(visibleRecent), 기기 안 기록 지우기 계획(planClear). 테스트는 tests/progress.test.cjs·tests/core.test.cjs */
+   첫 화면 최근 목록 고르기(visibleRecent), 기기 안 기록 지우기 계획(planClear), 첫 화면 순서(isReturning·homeOrder).
+   테스트는 tests/progress.test.cjs·tests/core.test.cjs */
 (function (root) {
   const KEY = 'jhb.read';
   const COURSE_KEY = 'jhb.course';
@@ -103,7 +104,9 @@
          주지 않으면 예전처럼 모든 코스가 후보.
        - hideTags: "읽던 글의 다음 문서" 규칙에서 이 태그가 붙은 글은 제안하지 않고, 기준 글이면 그 제목을 이유 문구에 내지 않아요
          (첫 화면에 제목이 뜨지 않게). 기준으로는 써요: 위기 태그가 일상 글(환청·클로자핀 등)에도 붙어 있어서,
-         빼면 그런 글을 읽은 사람에게 이어서 읽기가 사라지거나 다른 섹션으로 밀려요. */
+         빼면 그런 글을 읽은 사람에게 이어서 읽기가 사라지거나 다른 섹션으로 밀려요.
+         "코스 이어 읽기"에서는 다음 단계가 이 태그 글이면 { kind:'course', course, article: null, hidden: true, read, total, reason }
+         (제목 없이 코스 화면으로 보내라는 뜻, K3). */
     function continueReading(articles, courses, opts) {
       const list = articles || [];
       if (!count()) return null;
@@ -125,6 +128,25 @@
       });
       if (best) {
         const art = bySlug[bestP.next.slug] || { slug: bestP.next.slug, title: bestP.next.title || bestP.next.slug };
+        /* 들어간 코스의 다음 단계가 숨길 글(위기·응급)이면 그 글을 결과에 싣지 않는다(제목·slug 모두).
+           다음 일반 단계로 건너뛰지 않고 코스 화면으로 보내요: 코스 순서(안전 글 포함)는 지키고, 첫 화면에 제목만 뜨지 않게.
+           hidden·read·total 은 더한 필드(article 은 null) */
+        if (hide && hide(art)) {
+          /* 남은(안 읽은) 단계가 모두 숨길 글이면 "다음 글은…" 대신 안 연 글이 몇 개 남았다고만(K3 검수: 뒤 단계를 다 읽어도
+             같은 문구에 머물러 카드가 멈춘 것처럼 보이던 것). onlyHidden 은 더한 필드 */
+          const left = bestP.total - bestP.read;
+          const onlyHidden = best.steps.every(function (st) {
+            if (!st || isRead(st.slug)) return true;
+            const a = bySlug[st.slug] || { slug: st.slug };
+            return hide(a);
+          });
+          return {
+            kind: 'course', course: best, article: null, hidden: true, onlyHidden: onlyHidden, read: bestP.read, total: bestP.total,
+            reason: '코스 ' + bestP.read + '/' + bestP.total + '. ' + (onlyHidden
+              ? '코스에 아직 안 연 글이 ' + left + '개 있어요. 코스 화면에서 볼 수 있어요.'
+              : '다음 글은 코스 화면에서 이어 봐요.')
+          };
+        }
         return {
           kind: 'course', course: best, article: art,
           reason: '"' + best.title + '" 코스 ' + bestP.read + '/' + bestP.total + '. 다음 문서예요.'
@@ -230,10 +252,28 @@
     return { all: all, done: done, ls: ls, ss: ss };
   }
 
+  /* ---------- 첫 화면 순서(js/app.js home) ----------
+     다시 온 사람: 역할을 골랐거나(네 갈래 중 하나) 읽은 기록·최근 기록이 있음. js/ui/home.js 의 startState 가 'first' 가 아닌 것과 같은 기준
+     (역할 목록도 home 모듈과 같아야 해요, tests/core.test.cjs 가 맞대요). o = { role, readCount, recentCount } */
+  const HOME_ROLES = ['self', 'family', 'near', 'curious'];
+  function isReturning(o) {
+    o = o || {};
+    if (typeof o.role === 'string' && HOME_ROLES.indexOf(o.role) >= 0) return true;
+    return Number(o.readCount) > 0 || Number(o.recentCount) > 0;
+  }
+  /* 첫 화면 묶음(section[data-sec]) 순서. 다시 온 사람은 이어서 읽기·읽기 코스가 오늘의 문서보다 앞:
+     home 모듈의 rearrange(이어서 읽기·코스를 오늘의 문서 앞으로, 최근 목록을 분류 앞으로)를 거친 결과와 같아서,
+     처음 그릴 때부터 이 순서면 모듈이 다시 옮겨도 자리가 바뀌지 않는다(첫 화면이 밀리는 일을 줄임) */
+  function homeOrder(returning) {
+    return returning ? ['continue', 'courses', 'today', 'recent', 'index', 'terms'] : ['today', 'continue', 'courses', 'recent', 'index', 'terms'];
+  }
+
   const api = {
     KEY: KEY, COURSE_KEY: COURSE_KEY, SENSITIVE_TAGS: SENSITIVE_TAGS, create: create,
     isSensitive: isSensitive, courseMap: courseMap, getCourse: getCourse, whoText: whoText,
-    visibleRecent: visibleRecent, planClear: planClear
+    visibleRecent: visibleRecent, planClear: planClear,
+    /* K3: 첫 화면 순서 */
+    HOME_ROLES: HOME_ROLES, isReturning: isReturning, homeOrder: homeOrder
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else { root.JHB = root.JHB || {}; root.JHB.progress = api; }

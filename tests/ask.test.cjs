@@ -423,3 +423,38 @@ test('staticHtml: 자바스크립트가 필요하다는 안내, 입력 양식 �
   ok(seen.length >= 5, 'esc 사용');
   page.SUGGEST.forEach(function (s) { has(html, 'href="#/a/' + s + '"'); });
 });
+
+/* ---------- 저장 위치 안내 문구(정직한 한계, docs/UI모듈가이드.md 6장) ----------
+   sessionStorage 는 "탭을 닫으면 사라진다"고 말하지 않아요. 브라우저의 "닫은 탭 다시 열기"·세션 복원으로 그 탭이 돌아오면 함께 돌아와요 */
+test('글 화면 안내 줄(barText): 이 탭에만 있을 때는 "닫은 탭 다시 열기"로 돌아올 수 있다고, 사라진다고 하지 않음', function () {
+  const t = core.barText({ keep: false, items: [q('x', 'A')], held: 0, paused: false });
+  has(t, '이 탭에만 있어요');
+  has(t, '닫은 탭 다시 열기');
+  not(t, '사라');
+});
+
+test('글 화면 안내 줄(barText): 다른 탭에서 기기 저장을 켰어도 이 탭에만 있는 질문 수를 말해요(report-D P2)', function () {
+  /* 다른 탭에서 켬 → 이 탭의 세션 질문은 아직 기기에 없음(held). 예전 줄은 "이 기기에 저장 중"만 */
+  const t = core.barText({ keep: true, items: [q('x', 'A'), q('x', 'B'), q('y', 'C')], held: 2, paused: false });
+  has(t, '이 기기에 저장 중');
+  has(t, '2개는 아직 이 탭에만 있어요');
+  eq(core.barText({ keep: true, items: [q('x', 'A')], held: 0, paused: false }), '이 기기에 저장 중');
+  /* 기록 쉼 중: 새로 담는 질문은 이 탭에만, 이미 그런 질문이 있으면 그 수 */
+  const p0 = core.barText({ keep: true, items: [q('x', 'A')], held: 0, paused: true });
+  has(p0, '"기록 남기지 않기"'); has(p0, '이 탭에만'); not(p0, '개는');
+  has(core.barText({ keep: true, items: [q('x', 'A'), q('x', 'B')], held: 1, paused: true }), '지금 1개');
+  /* 이상한 값에도 글자를 돌려줘요 */
+  eq(typeof core.barText(null), 'string');
+  has(core.barText({}), '이 탭에만 있어요');
+});
+
+test('질문 바구니 문구: 두 파일 어디에도 "탭을 닫으면 사라져요"류의 지나친 안심이 없다', function () {
+  ['js/ui/ask.js', 'js/pages/ask.js'].forEach(function (f) {
+    const src = read(f);
+    not(src, '사라져요', f);
+    not(src, '사라짐', f);
+    not(src, '닫을 때까지만', f);
+  });
+  /* 화면 맨 위 줄(이 탭에만 있을 때)도 같은 사실을 말해요 */
+  has(read('js/pages/ask.js'), '닫은 탭 다시 열기');
+});

@@ -76,7 +76,15 @@
     });
     return out;
   }
-  const api = { hashToPath: hashToPath, baseFor: baseFor, link: link, rewriteHtml: rewriteHtml, parseQuery: parseQuery, fragmentId: fragmentId };
+  /* 분류 화면의 글 순서(한 곳): 그 분류의 글만, order 오름차순(없거나 0 이면 999로 맨 뒤) → 제목 가나다.
+     앱(js/app.js sectionArticles → 분류 화면·왼쪽 목차·첫 화면 분류 목록·문서 앞뒤)과 빌드(정적 s/<id>/·첫 화면)가 같은 규칙을 쓰게.
+     받은 배열은 바꾸지 않아요. 분류 id 는 글자·숫자 모두(String 으로 맞대요). 테스트는 tests/core.test.cjs(K3-7) */
+  function sectionArticles(articles, id) {
+    const sid = String(id);
+    return (Array.isArray(articles) ? articles : []).filter(function (a) { return a && String(a.section) === sid; })
+      .sort(function (a, b) { return (a.order || 999) - (b.order || 999) || String(a.title || '').localeCompare(String(b.title || ''), 'ko'); });
+  }
+  const api = { hashToPath: hashToPath, baseFor: baseFor, link: link, rewriteHtml: rewriteHtml, parseQuery: parseQuery, fragmentId: fragmentId, sectionArticles: sectionArticles };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else { root.JHB = root.JHB || {}; root.JHB.paths = api; }
 })(typeof window !== 'undefined' ? window : this);

@@ -163,11 +163,12 @@
       if (off) sw.setAttribute('aria-disabled', 'true'); else sw.removeAttribute('aria-disabled');
       var heldNote = st.keep && pausedNow;
       where.hidden = st.keep && !heldNote && !st.held;
-      where.textContent = !st.keep ? '담은 질문은 이 탭에만 있어요. 탭을 닫으면 사라져요.'
-        : heldNote ? '"기록 남기지 않기"가 켜져 있어 새로 담는 질문은 이 기기에 쓰지 않고 이 탭에만 둬요' + (st.held ? '(지금 ' + st.held + '개). 탭을 닫으면 그 질문은 사라져요.' : '. 이미 이 기기에 저장한 질문은 그대로예요.')
+      /* 이 탭(sessionStorage)에만 있을 때 "탭을 닫으면 사라진다"고 하지 않아요(브라우저의 "닫은 탭 다시 열기"로 그 탭과 함께 돌아와요) */
+      where.textContent = !st.keep ? '담은 질문은 이 기기에 저장하지 않고 이 탭에만 있어요. 브라우저의 "닫은 탭 다시 열기"로 이 탭과 함께 돌아올 수 있어요.'
+        : heldNote ? '"기록 남기지 않기"가 켜져 있어 새로 담는 질문은 이 기기에 쓰지 않고 이 탭에만 둬요' + (st.held ? '(지금 ' + st.held + '개).' : '. 이미 이 기기에 저장한 질문은 그대로예요.')
         : '이 탭에서 담은 질문 ' + st.held + '개는 아직 이 탭에만 있어요. 바구니를 한 번 고치면 이 기기에 함께 저장돼요.';
       swDesc.textContent = off ? '"기록 남기지 않기"가 켜져 있어 이 기기에 기억할 수 없어요. 이 탭에서만 담아 둬요.'
-        : st.keep ? '끄면 이 기기에서 지우고, 이 탭을 닫을 때까지만 남겨요.' : '켜면 탭을 닫아도 이 기기에 남아요. 같은 기기를 쓰는 사람이 볼 수 있어요.';
+        : st.keep ? '끄면 이 기기에서 지우고 이 탭에만 남겨요.' : '켜면 탭을 닫아도 이 기기에 남아요. 같은 기기를 쓰는 사람이 볼 수 있어요.';
     }
     function actBtn(act, id, text, label, describedby, disabled) {
       return el('button.pg-ask-btn', { type: 'button', 'data-act': act, 'data-id': id, 'aria-label': label || null, 'aria-describedby': describedby || null, disabled: disabled || null, title: label || null }, text);
@@ -340,7 +341,7 @@
       apply(r);
       if (r.lost) say('이 기기에서 지웠어요. 브라우저 저장 공간을 쓸 수 없어 이 탭에도 옮겨 두지 못했어요.');
       else if (r.failed) say(FAIL + '이 기기에 기억하지 못했어요. 이 탭에서만 담아 둬요.');
-      else say(on ? '이 기기에 기억하기를 켰어요. 탭을 닫아도 남아요.' + (deviceText ? ' ' + deviceText : '') : '이 기기에서 지웠어요. 이 탭을 닫으면 사라져요.');
+      else say(on ? '이 기기에 기억하기를 켰어요. 탭을 닫아도 남아요.' + (deviceText ? ' ' + deviceText : '') : '이 기기에서 지웠어요. 이제 이 탭에만 있어요.');
     }
     function onSubmit(e) {
       e.preventDefault();

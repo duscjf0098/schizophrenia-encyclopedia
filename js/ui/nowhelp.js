@@ -8,7 +8,7 @@
    - 열린 동안 뒤 화면은 inert + 스크롤 잠금. 휴대폰 뒤로 가기는 시트만 닫아요(history 항목 하나, 주소는 그대로).
    - 가운데·Ctrl·Shift·Alt·Meta 클릭, 자바스크립트가 없으면 원래 링크(위기 상담 전화 글)대로 가요.
    - 연 기록을 저장하지 않아요(저장소를 쓰지 않음).
-   - 글 주소에 #h-N(소절)이 붙어 오거나 같은 문서 안에서 #h-N 으로 바뀌면 그 소절을 펴고(reveal) 그 자리로 옮겨요.
+   - "전화가 어렵다면"은 a/crisis-hotlines/#h-N 주소로 가요. 소절을 펴고 옮기는 일은 코어가 해요(이 모듈에는 그 처리가 없어요).
    공개: JHB.ui.nowhelp = { open(from?), close(), isOpen() }
    node: module.exports = 순수 함수(tests/nowhelp.test.cjs) */
 (function (root) {
@@ -367,42 +367,8 @@
     btn.addEventListener('touchstart', warm, { once: true, passive: true });
   }
 
-  /* ---------- 글 주소의 #소절 ----------
-     a/<slug>/#h-N 으로 들어오면 브라우저가 정적 본문의 소절로 갔다가 앱이 다시 그리며 맨 위로 돌아가요.
-     그래서 다 그린 뒤 그 소절을 펴고(reveal) 그 자리로 옮겨요.
-     읽던 자리 복원(reading.js, rAF 두 번 뒤)이 이 이동을 덮어쓰지 않게 그 뒤에 한 번 더 맞추고, '읽던 자리' 알림은 닫아요. */
-  function bodyOf(n) { return n && n.closest ? n.closest('#app .body') : null; }
-  function goSection(id, bodyEl) {
-    const n = document.getElementById(id);
-    if (!n || !(bodyEl ? bodyEl.contains(n) : bodyOf(n))) return false;
-    if (JHB.ui && JHB.ui.reading && JHB.ui.reading.reveal) JHB.ui.reading.reveal(id);
-    n.scrollIntoView({ block: 'start' });
-    return n;
-  }
-  window.addEventListener('jhb:article', function (e) {
-    const id = sectionHash(location.hash), bodyEl = e.detail && e.detail.body;
-    if (!id || !bodyEl) return;
-    const n0 = document.getElementById(id);
-    if (!n0 || !bodyEl.contains(n0)) return;
-    if (JHB.ui && JHB.ui.reading && JHB.ui.reading.reveal) JHB.ui.reading.reveal(id);
-    requestAnimationFrame(function () {
-      n0.scrollIntoView({ block: 'start' });
-      const want = n0.getBoundingClientRect().top;
-      requestAnimationFrame(function () { requestAnimationFrame(function () { setTimeout(function () {
-        if (sectionHash(location.hash) !== id || !document.contains(n0)) return;
-        const rs = document.querySelector('.rd-resume .rd-resume-x');
-        if (rs) rs.click();
-        if (Math.abs(n0.getBoundingClientRect().top - want) > 8) n0.scrollIntoView({ block: 'start' });
-      }, 0); }); });
-    });
-  });
-  /* 같은 문서 안에서 주소의 #h-N 만 바뀔 때(주소창·뒤로 가기·시트 링크): jhb:article 이 다시 오지 않아서 여기서 편다 */
-  window.addEventListener('hashchange', function () {
-    const id = sectionHash(location.hash);
-    if (!id) return;
-    const n = goSection(id);
-    if (n) requestAnimationFrame(function () { n.scrollIntoView({ block: 'start' }); });
-  });
+  /* 글 주소의 #소절(a/<slug>/#h-N, 같은 문서 안의 #h-N 바뀜)은 코어가 펴고 옮겨요(js/app.js 의 scrollToHash,
+     reading 모듈은 해시가 있으면 읽던 자리를 되살리지 않음). 이 모듈은 "전화가 어렵다면" 링크에 그 주소를 달기만 해요 */
 
   JHB.ui = JHB.ui || {};
   JHB.ui.nowhelp = { open: function (from) { return open(from || document.activeElement); }, close: function () { close(true); }, isOpen: function () { return isOpen; } };

@@ -53,9 +53,11 @@
   function bar(pct, label) { return el('div', null, [el('div.bar', { role: 'progressbar', 'aria-valuenow': pct, 'aria-valuemin': 0, 'aria-valuemax': 100 }, [el('i', { style: 'width:' + pct + '%' })]), label ? el('div.bar-label', null, label) : null]); }
   let pageCleanup = [];
 
+  /* 분류의 글(순서대로). 정렬 규칙은 js/paths.js 의 sectionArticles 한 곳(빌드와 같은 규칙).
+     배포 직후 옛 캐시의 paths.js 라 그 함수가 없으면 목록 순서(목차가 이미 분류·순서대로)만 지킨다 */
   function sectionArticles(id) {
-    return articles.filter(function (a) { return a.section === id; })
-      .sort(function (a, b) { return (a.order || 999) - (b.order || 999) || a.title.localeCompare(b.title, 'ko'); });
+    if (P.sectionArticles) return P.sectionArticles(articles, id);
+    return articles.filter(function (a) { return String(a.section) === String(id); });
   }
   function spine(s) { return el('span.spine', { style: '--h:' + ((s && s.hue) || 250), 'aria-hidden': 'true' }); }
   function ev(a) { return a.evidence ? el('span.ev', { class: 'ev-' + a.evidence, title: (JHB.EVIDENCE[a.evidence] || {}).desc || '' }, [(JHB.EVIDENCE[a.evidence] || {}).label || a.evidence]) : null; }
@@ -280,12 +282,20 @@
     for (let n = h.nextElementSibling; n && n.tagName !== 'H2'; n = n.nextElementSibling) html += n.outerHTML;
     return JHB.crisis.hasContact(html);
   }
+  /* 차례(왼쪽 목차·본문 차례)·출처 수 링크: 소절 주소(scrollToHash)와 같은 길로 옮긴다.
+     요약 보기로 접힌 소절이면 먼저 펴고(reading 모듈이 있을 때), 옮긴 뒤 포커스도 그 제목으로(Tab 이 그 소절에서 이어지게).
+     "읽던 자리로 돌아왔어요" 알림은 reading 모듈이 이 클릭을 보고 감춘다(hashchange 가 없어서) */
   function jumpTo(id) {
     return function (e) {
       e.preventDefault();
+      const R = JHB.ui && JHB.ui.reading;
+      if (R && typeof R.reveal === 'function') { try { R.reveal(id); } catch (err) { } }
       const n = document.getElementById(id);
-      if (n) n.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
       setNav(false);
+      if (!n) return;
+      n.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+      if (n.tabIndex < 0 && !n.hasAttribute('tabindex')) n.setAttribute('tabindex', '-1');
+      try { n.focus({ preventScroll: true }); } catch (err) { }
     };
   }
 
@@ -597,7 +607,85 @@
     const srcCount = (JHB.toc && JHB.toc.sources) || null;
     const dayTerms = [];
     if (glossary.length) { const start = U.dayIndex(glossary.length); for (let i = 0; i < 6; i++) dayTerms.push(glossary[(start + i * 23) % glossary.length]); }
-    show([el('div.portal', null, [
+    /* 다시 온 사람(역할을 골랐거나 읽은 기록이 있음)은 처음 그릴 때부터 이어서 읽기·코스를 오늘의 문서 앞에(js/progress.js homeOrder).
+       home 모듈(js/ui/home.js rearrange)이 나중에 옮기는 결과와 같아서, 그린 뒤 묶음이 자리를 바꾸며 화면이 밀리지 않는다 */
+    const returning = PRG.isReturning ? PRG.isReturning({ role: homeRole(), readCount: PROG ? PROG.count() : 0, recentCount: Array.isArray(recentSlugs) ? recentSlugs.length : 0 }) : false;
+    const order = PRG.homeOrder ? PRG.homeOrder(returning) : ['today', 'continue', 'courses', 'recent', 'index', 'terms'];
+    const secs = {};
+    secs.today = pick ? el('section', { 'data-sec': 'today' }, [
+      el('h2.h-sec', null, ['오늘의 문서']),
+      el('div.feature', null, [
+        el('div.feature-m', null, [el('span.row-sec', null, [spine(secById[pick.section]), (secById[pick.section] || {}).title || '']), ev(pick)]),
+        el('h3.feature-t', null, [el('a', { href: '#/a/' + pick.slug }, [pick.title])]),
+        el('p.feature-s', null, [pick.summary || '']),
+        el('div.feature-actions', null, [
+          el('a.btn', { href: '#/a/' + pick.slug }, ['읽기']),
+          el('a.btn', { href: '#/random' }, ['아무 문서나 열기'])
+        ])
+      ])
+    ]) : null;
+    secs['continue'] = (function () {
+      /* 들어간 적 있는 코스(코스 화면·?course=)만 코스 이름·진도를 붙인다. 아니면 "읽던 글의 다음 문서"로만.
+         위기·응급 글은 제안하지 않고, 기준 글이면 제목을 내지 않는다(첫 화면에 제목이 뜨지 않게, 읽은 기록으로 꼬리표를 붙이지 않게).
+         들어간 코스의 다음 단계가 위기·응급 글이면(c.hidden) 그 글의 제목 없이 코스 화면으로 보낸다(코스 순서는 건너뛰지 않음) */
+      const c = PROG && (PROG.enteredCourses ? PROG.continueReading(articles, COURSES, { entered: PROG.enteredCourses(), hideTags: PRG.SENSITIVE_TAGS }) : PROG.continueReading(articles, COURSES));
+      if (!c) return null;
+      let title, href, go;
+      if (c.hidden && c.course) {
+        href = '#/course/' + c.course.id; title = c.course.title; go = '코스 이어 보기';
+      } else if (c.article && c.article.slug) {
+        href = '#/a/' + c.article.slug + (c.course ? '?course=' + c.course.id : ''); title = c.article.title; go = '계속 읽기';
+      } else return null;
+      return el('section', { 'data-sec': 'continue' }, [
+        el('h2.h-sec', null, ['이어서 읽기']),
+        el('div.continue', null, [
+          el('span.k', null, [c.reason || '']),
+          el('h3', null, [el('a', { href: href }, [title])]),
+          el('a.btn', { href: href }, [go])
+        ])
+      ]);
+    })();
+    secs.courses = COURSES.length ? el('section', { 'data-sec': 'courses' }, [
+      el('h2.h-sec', null, ['읽기 코스', el('a.more', { href: '#/courses' }, ['전체 보기'])]),
+      el('p.page-lead', { style: 'margin:-4px 0 14px' }, ['상황에 맞게 읽을 순서를 정리했어요. 어디서 시작할지 막막할 때 골라 보세요.']),
+      el('div.courses', null, COURSES.slice(0, 4).map(courseCard))
+    ]) : null;
+    secs.recent = recent.length ? el('section', { 'data-sec': 'recent' }, [
+      el('h2.h-sec', null, ['최근에 읽은 문서']),
+      el('ul.rows', null, recent.map(function (a) { return row(a); }))
+    ]) : null;
+    secs.index = el('section', { 'data-sec': 'index' }, [
+      el('h2.h-sec', null, ['분류']),
+      el('div.index', null, sections.map(function (s) {
+        if (s.glossary) {
+          return el('div.index-sec', null, [
+            el('h3', null, [spine(s), el('a', { href: '#/glossary' }, [s.title]), el('span.n', null, [glossary.length + '개'])]),
+            el('p', null, [s.desc])
+          ]);
+        }
+        const list = sectionArticles(s.id);
+        const shown = list.slice(0, 5);
+        return el('div.index-sec', null, [
+          el('h3', null, [spine(s), el('a', { href: '#/s/' + s.id }, [s.title]), el('span.n', null, [list.length + '개'])]),
+          el('p', null, [s.desc]),
+          el('ul', null, shown.map(function (a) { return el('li', null, [el('a', { href: '#/a/' + a.slug }, [a.title])]); })
+            .concat(list.length > shown.length ? [el('li.rest', null, [el('a', { href: '#/s/' + s.id }, ['외 ' + (list.length - shown.length) + '개'])])] : []))
+        ]);
+      }))
+    ]);
+    secs.terms = dayTerms.length ? el('section', { 'data-sec': 'terms' }, [
+      el('h2.h-sec', null, ['오늘의 용어', el('a.more', { href: '#/glossary' }, ['용어 사전 전체'])]),
+      el('dl.terms', null, dayTerms.map(function (g) {
+        const rel = (g.related || []).filter(function (r) { return bySlug[r]; })[0];
+        return el('div', null, [el('dt', null, [rel ? el('a', { href: '#/a/' + rel }, [g.term]) : g.term]), el('dd', null, [g.def])]);
+      }))
+    ]) : null;
+    /* "기록 가리기"(jhb.ui.home.recentHidden, home 모듈의 단추)가 켜져 있으면 처음 그릴 때부터 가린다.
+       home 모듈이 붙기 전 한 프레임 동안 최근 목록 제목·이어서 읽기가 보이던 것(K3 검수). 모듈(enhanceRecent)과 같은 조건(최근 목록이 있을 때)·
+       같은 표시(목록 hidden, 첫 화면 .hm-veil → css/ui/home.css 가 이어서 읽기·코스 진도·읽음 표시를 가림)라 모듈이 다시 적용해도 그대로 */
+    const veil = !!secs.recent && U.store.get('jhb.ui.home.recentHidden', false) === true;
+    if (veil) secs.recent.querySelector('ul.rows').hidden = true;
+    const portal = el('div.portal', veil ? { class: 'hm-veil' } : null, [
       el('header.portal-head', null, [
         el('h1.portal-title', null, ['조현병 백과']),
         el('p.portal-sub', null, ['증상과 진단, 약과 치료, 일상과 제도, 최신 연구까지. 조현병에 관해 궁금한 것을 출처와 함께 찾아볼 수 있어요. 어려운 말에는 밑줄이 있고, 누르면 뜻이 나와요.']),
@@ -606,71 +694,29 @@
           el('span', null, [el('b', null, [String(glossary.length)]), '개 용어']),
           srcCount ? el('span', null, [el('b', null, [srcCount.toLocaleString('ko-KR')]), '개 출처']) : null
         ])
-      ]),
-      pick ? el('section', { 'data-sec': 'today' }, [
-        el('h2.h-sec', null, ['오늘의 문서']),
-        el('div.feature', null, [
-          el('div.feature-m', null, [el('span.row-sec', null, [spine(secById[pick.section]), (secById[pick.section] || {}).title || '']), ev(pick)]),
-          el('h3.feature-t', null, [el('a', { href: '#/a/' + pick.slug }, [pick.title])]),
-          el('p.feature-s', null, [pick.summary || '']),
-          el('div.feature-actions', null, [
-            el('a.btn', { href: '#/a/' + pick.slug }, ['읽기']),
-            el('a.btn', { href: '#/random' }, ['아무 문서나 열기'])
-          ])
-        ])
-      ]) : null,
-      (function () {
-        /* 들어간 적 있는 코스(코스 화면·?course=)만 코스 이름·진도를 붙인다. 아니면 "읽던 글의 다음 문서"로만.
-           위기·응급 글은 제안하지 않고, 기준 글이면 제목을 내지 않는다(첫 화면에 제목이 뜨지 않게, 읽은 기록으로 꼬리표를 붙이지 않게) */
-        const c = PROG && (PROG.enteredCourses ? PROG.continueReading(articles, COURSES, { entered: PROG.enteredCourses(), hideTags: PRG.SENSITIVE_TAGS }) : PROG.continueReading(articles, COURSES));
-        if (!c || !c.article || !c.article.slug) return null;
-        const q2 = c.course ? '?course=' + c.course.id : '';
-        return el('section', { 'data-sec': 'continue' }, [
-          el('h2.h-sec', null, ['이어서 읽기']),
-          el('div.continue', null, [
-            el('span.k', null, [c.reason || '']),
-            el('h3', null, [el('a', { href: '#/a/' + c.article.slug + q2 }, [c.article.title])]),
-            el('a.btn', { href: '#/a/' + c.article.slug + q2 }, ['계속 읽기'])
-          ])
-        ]);
-      })(),
-      COURSES.length ? el('section', { 'data-sec': 'courses' }, [
-        el('h2.h-sec', null, ['읽기 코스', el('a.more', { href: '#/courses' }, ['전체 보기'])]),
-        el('p.page-lead', { style: 'margin:-4px 0 14px' }, ['상황에 맞게 읽을 순서를 정리했어요. 어디서 시작할지 막막할 때 골라 보세요.']),
-        el('div.courses', null, COURSES.slice(0, 4).map(courseCard))
-      ]) : null,
-      recent.length ? el('section', { 'data-sec': 'recent' }, [
-        el('h2.h-sec', null, ['최근에 읽은 문서']),
-        el('ul.rows', null, recent.map(function (a) { return row(a); }))
-      ]) : null,
-      el('section', { 'data-sec': 'index' }, [
-        el('h2.h-sec', null, ['분류']),
-        el('div.index', null, sections.map(function (s) {
-          if (s.glossary) {
-            return el('div.index-sec', null, [
-              el('h3', null, [spine(s), el('a', { href: '#/glossary' }, [s.title]), el('span.n', null, [glossary.length + '개'])]),
-              el('p', null, [s.desc])
-            ]);
-          }
-          const list = sectionArticles(s.id);
-          const shown = list.slice(0, 5);
-          return el('div.index-sec', null, [
-            el('h3', null, [spine(s), el('a', { href: '#/s/' + s.id }, [s.title]), el('span.n', null, [list.length + '개'])]),
-            el('p', null, [s.desc]),
-            el('ul', null, shown.map(function (a) { return el('li', null, [el('a', { href: '#/a/' + a.slug }, [a.title])]); })
-              .concat(list.length > shown.length ? [el('li.rest', null, [el('a', { href: '#/s/' + s.id }, ['외 ' + (list.length - shown.length) + '개'])])] : []))
-          ]);
-        }))
-      ]),
-      dayTerms.length ? el('section', { 'data-sec': 'terms' }, [
-        el('h2.h-sec', null, ['오늘의 용어', el('a.more', { href: '#/glossary' }, ['용어 사전 전체'])]),
-        el('dl.terms', null, dayTerms.map(function (g) {
-          const rel = (g.related || []).filter(function (r) { return bySlug[r]; })[0];
-          return el('div', null, [el('dt', null, [rel ? el('a', { href: '#/a/' + rel }, [g.term]) : g.term]), el('dd', null, [g.def])]);
-        }))
-      ]) : null,
+      ])
+    ].concat(order.map(function (k) { return secs[k] || null; }), [
       el('p.portal-note', null, ['이 백과의 글은 AI가 공개 자료를 바탕으로 초안을 쓰고 출처를 확인해 만들었어요. 전문가 감수는 받지 않았어요. 진단과 치료는 담당 의사와 상의하세요.'])
-    ])]);
+    ]));
+    show([portal]);
+    /* home 모듈이 없으면(불러오지 못함) "기록 보이기" 단추도 없으니 가림을 푼다. 모듈은 이 파일 뒤의 일반 스크립트라 문서를 다 읽은 뒤 확인 */
+    if (veil) {
+      const unveil = function () {
+        if (JHB.ui && JHB.ui.home) return;
+        portal.classList.remove('hm-veil');
+        const l = portal.querySelector('[data-sec="recent"] ul.rows'); if (l) l.hidden = false;
+      };
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', unveil, { once: true }); else unveil();
+    }
+  }
+  /* 첫 화면 역할(js/ui/home.js 와 같은 자리): 이 기기의 jhb.ui.home.role, 기록 쉼이면 이 탭(sessionStorage)에 고른 역할이 먼저 */
+  const HOME_ROLE_KEY = 'jhb.ui.home.role';
+  function homeRole() {
+    const ok = function (v) { return typeof v === 'string' && (!PRG.HOME_ROLES || PRG.HOME_ROLES.indexOf(v) >= 0) ? v : null; };
+    if (privacy.paused()) {
+      try { const raw = sessionStorage.getItem(HOME_ROLE_KEY); const v = raw == null ? null : ok(JSON.parse(raw)); if (v) return v; } catch (e) { }
+    }
+    return ok(U.store.get(HOME_ROLE_KEY, null));
   }
 
   /* ---------- 분류 ---------- */

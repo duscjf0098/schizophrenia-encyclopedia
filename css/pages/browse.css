@@ -97,8 +97,7 @@
   .pg-browse-az, .pg-browse-ab, .pg-browse-az a, .pg-browse-ab a { scroll-margin-top: calc(var(--pgb-bar, 57px) + 8px); }
   .pg-browse-az { contain-intrinsic-size: auto calc(var(--n, 10) * 41.8px + 41px); }
   .pg-browse-ab { contain-intrinsic-size: auto calc(var(--n, 10) * 87px + 35px); }
-  /* 키보드로 내려갈 때 포커스가 하단 바(약 63px) 밑에 숨지 않게 */
-  .pg-browse-part a, .pg-browse-tab { scroll-margin-bottom: 72px; }
+  /* 포커스가 하단 바 밑에 숨지 않게 하는 아래 여백은 mobile.css 의 전역 scroll-padding-bottom 이 맡아요 */
   .pg-browse-az ul { columns: auto; }
   .pg-browse-az li a { padding: 7px 0; }
   .pg-browse-ab dl { grid-template-columns: minmax(0, 1fr); }

@@ -180,17 +180,6 @@
   }
 
   /* ---------- 자료 모으기 ---------- */
-  /* 용어 사전: 브라우저는 JHB.app.glossary. node(build-pages 의 staticHtml 문맥에는 용어 사전이 없음)에서는 data/glossary.js 를 직접 읽는다 */
-  function nodeGlossary() {
-    if (typeof require !== 'function' || typeof __dirname !== 'string') return [];
-    try {
-      const fs = require('fs'), path = require('path');
-      const src = fs.readFileSync(path.join(__dirname, '..', '..', 'data', 'glossary.js'), 'utf8');
-      const win = { JHB: {} };
-      new Function('window', 'JHB', src)(win, win.JHB);
-      return Array.isArray(win.JHB.glossary) ? win.JHB.glossary : [];
-    } catch (e) { return []; }
-  }
   /* 묶음 자료: 선언 data 로 받지 않는다(받지 못하면 화면 전체가 실패하므로). node(build-pages)는 data/kb/groups.json 을 직접 읽고,
      브라우저는 render 에서 JHB.app.loadData('groups') 로 받아 지도만 다시 짠다 */
   function nodeGroups() {
@@ -206,11 +195,13 @@
     if (ctx && ctx.data && Array.isArray(ctx.data.groups)) return ctx.data.groups;
     return nodeGroups();
   }
+  /* 용어 사전: 문맥의 ctx.glossary(빌드 staticCtx·앱 drawFeature 가 넘김). 브라우저에서 문맥에 없을 때만
+     render 문맥의 앱(ctx.app.glossary)이나 전역 JHB.glossary 로 대비해요. node 에서 파일을 직접 읽지 않아요 */
   function glossaryOf(ctx) {
     if (ctx && Array.isArray(ctx.glossary)) return ctx.glossary;
     if (ctx && ctx.app && Array.isArray(ctx.app.glossary)) return ctx.app.glossary;
     if (typeof window !== 'undefined' && window.JHB && Array.isArray(window.JHB.glossary)) return window.JHB.glossary;
-    return nodeGlossary();
+    return [];
   }
   function model(src) {
     const bySlug = src.articles || {};

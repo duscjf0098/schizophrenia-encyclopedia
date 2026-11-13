@@ -5,6 +5,7 @@
    싣는 순서: css/style.css 다음에 css/ui.css(모듈 css 를 이름순으로 이어 붙임)가 실려요. 그래서 style.css 의 @media print 는 이 파일이 이기지만,
    ui.css 안에서는 이름이 뒤인 모듈(reading·settings·shelf·sticky·trust …)이 같은 특이도면 이겨요. 그런 곳은 특이도를 높여 둬요.
    특집 화면(길잡이·질문 바구니·종이 양식)의 인쇄 모양은 각 화면 css 가 맡고, 여기 규칙(색 강제·크롬 숨김)을 함께 써요.
+   밝은 색 강제는 아래 토큰 한 곳에서만 해요(질문 바구니처럼 따로 hex 를 두지 않아도 어두운 화면 인쇄가 흰 종이에 먹색 글자).
    인쇄 토큰은 특이도 (0,2,1) 로 정해요. style.css 의 어두운 화면 선택자(0,2,0)는 이기고, 특집 화면이
    :root:has(.fp-body[data-page="…"])(0,3,0) 처럼 더 구체적인 선택자로 자기 인쇄 토큰을 정하면 그쪽이 이겨요(!important 를 쓰지 않아요).
    모듈이 문서 자리에 끼운 상자: 인쇄에서 after-body·end·margin 자리는 숨기고 lead 자리는 남겨요.
@@ -41,6 +42,11 @@
     --warn-soft: #fdf3e2;
     --ok: #1a6634;
     --ok-soft: #e8f5ec;
+    /* 위기 안내 전용(css/style.css 의 --calm 계열, 차분한 청록빛 남색). 인쇄 값은 여기 한 곳에서 정해요(대비는 tests/core.test.cjs 의 K3-3 이 재요).
+       세 값 모두 밝은 화면 값(style.css :root)과 같아요. 다른 -soft 토큰처럼 바탕은 밝은 값을 그대로 써요 */
+    --calm: #1d5c78;
+    --calm-soft: #e8f1f4;
+    --calm-ink: #ffffff;
     --spine-s: 38%;
     --spine-l: 56%;
     --shadow-pop: none;
@@ -84,7 +90,8 @@
   .prt-tel { flex: 1 1 100%; margin-top: 2px; color: var(--ink); font-weight: 650; }
   .prt-foot { display: block !important; margin-top: 10px; break-inside: avoid; }
 
-  /* 바닥 고지(일반 정보·AI 초안·감수 없음·109·1577-0199): style.css 는 숨기지만 인쇄물에도 남겨요(자바스크립트가 없어도).
+  /* 바닥 고지(일반 정보·AI 초안·감수 없음·109·1577-0199·119·문자 109): style.css 의 인쇄 규칙은 바닥글을 숨기지 않고,
+     이 파일이 화면 종류에 따라 정해요. 기본은 인쇄물에도 남겨요(자바스크립트가 없어도).
      문서 꼬리가 있는 문서 화면과 고지 줄(.fp-notices)이 있는 특집 화면에서는 같은 고지를 겹쳐 싣지 않아요. */
   html body > footer.sitefoot { display: block !important; margin-top: 18px; border-top: 1px solid var(--rule-2); background: none !important; break-inside: avoid; }
   html body > footer.sitefoot .sitefoot-inner { max-width: none; padding: 10px 0 0; font-size: 9.5pt; }

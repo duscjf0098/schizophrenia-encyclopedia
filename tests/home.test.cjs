@@ -158,16 +158,25 @@ test('home: 새 탭·새 창으로 연 클릭은 역할 고르기가 아니에�
   eq(H.isPlainClick(null), false);
 });
 
-test('home: 최근 목록에서 접을 위기·응급 글 가리기', function () {
-  eq(H.slugOfHref('#/a/suicide-warning-signs'), 'suicide-warning-signs');
-  eq(H.slugOfHref('a/crisis-hotlines/'), 'crisis-hotlines');
-  eq(H.slugOfHref('../a/clozapine/?course=x'), 'clozapine');
-  eq(H.slugOfHref('/course/near-first/'), '');
-  eq(H.slugOfHref('#/s/10'), '');
-  eq(H.slugOfHref(null), '');
+test('home: 위기·응급 글 가리기 기준(새로 올라온 글에서 빼는 기준, 오늘의 문서와 같음)', function () {
   eq(H.isSensitive({ tags: ['위기'] }), true);
   eq(H.isSensitive({ tags: ['응급', '약'] }), true);
   eq(H.isSensitive({ tags: ['가족'] }), false);
   eq(H.isSensitive({}), false);
   eq(H.isSensitive(null), false);
+});
+
+/* 코어가 맡게 된 일의 임시 처리는 지웠어요: 코스 카드는 JHB.app.courseCard, 첫 화면 최근 목록의 위기·응급 글은
+   코어가 빼고(js/progress.js visibleRecent), 가린 최근 목록 키(jhb.ui.home.recentHidden)는 코어 settings 의 기본 키 */
+test('home.js: 코어가 맡은 일의 복사본·빈 등록이 없다(코스 카드·위기 글 접기·recentHidden 등록)', function () {
+  const src = require('fs').readFileSync(require('path').join(__dirname, '..', 'js', 'ui', 'home.js'), 'utf8');
+  has(src, 'A.courseCard(c)', '데려오는 코스 카드는 코어 courseCard');
+  not(src, '당사자와 가족에게', '코어 whoText 와 다른 옛 문구');
+  not(src, 'foldSensitive');
+  not(src, 'hm-sens');
+  not(src, "'home-view'");
+  ok(!/register\(\{[^}]*K_RECENT_HIDE/.test(src), 'recentHidden 을 다시 등록하지 않음');
+  /* 기록 쉼 중 이 탭에서만 고른 역할(sessionStorage)은 코어 기본 종류에 없어서 모듈이 더해요 */
+  has(src, 'session: r.session.concat([K_ROLE])');
+  eq(typeof H.slugOfHref, 'undefined', '쓰는 곳이 없어진 slugOfHref 는 내보내지 않음');
 });

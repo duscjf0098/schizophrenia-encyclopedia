@@ -56,7 +56,7 @@ if (process.env.JHB_CORE_SW === '1') {
         const res = { ok: true, url: u, redirected: !!net.redirected[u], clone: function () { return { ok: true, url: u, copy: true }; } };
         return Promise.resolve(res);
       },
-      Response: function (body) { this.body = body; }
+      Response: function (body) { this.body = body; this.text = function () { return Promise.resolve(String(body)); }; }
     };
     sandbox.Response.error = function () { return { error: true }; };
     vm.runInNewContext(read('sw.js'), sandbox);
@@ -81,11 +81,23 @@ if (process.env.JHB_CORE_SW === '1') {
   }
   const BUILD = /const BUILD = '([^']*)';/.exec(read('sw.js'))[1];
   const CACHE = 'jhb-' + BUILD;
-  function ours() { return store.has(CACHE) ? Array.from(store.get(CACHE).keys()).sort() : []; }
+  /* 이 판 캐시의 항목(워커가 알림을 받았다는 표시 __jhb-state/known 은 빼고) */
+  function ours() { return store.has(CACHE) ? Array.from(store.get(CACHE).keys()).filter(function (k) { return k.indexOf('__jhb-state/') < 0; }).sort() : []; }
+  function known() { return store.has(CACHE) && store.get(CACHE).has('__jhb-state/known'); }
   const R = {};
   store.set(CACHE, new Map([['https://x.test/site/css/style.css', { ok: true, body: 'old' }]]));
   let w = boot();
-  w.navigate('https://x.test/site/a/one/').then(function () {
+  /* 한 번도 알림을 받지 않은 워커(처음 설치 직후)는 예전처럼 저장 */
+  w.navigate('https://x.test/site/a/zero/').then(function () {
+    R.fresh = ours();
+    R.knownFresh = known();
+    /* 페이지는 열릴 때마다 쉼 상태를 알려 준다(js/app.js tellWorker) */
+    return w.message({ jhb: 'privacy', paused: false });
+  }).then(function () {
+    R.knownAfterMsg = known();
+    store.get(CACHE).delete('https://x.test/site/a/zero/');
+    return w.navigate('https://x.test/site/a/one/');
+  }).then(function () {
     R.before = ours();
     return w.message({ jhb: 'privacy', paused: true });
   }).then(function () {
@@ -129,6 +141,33 @@ if (process.env.JHB_CORE_SW === '1') {
     return w.navigate('https://x.test/site/a/seven/');
   }).then(function () {
     R.after = ours();
+    R.stateValueOff = store.has('jhb.state') ? Array.from(store.get('jhb.state').values()).map(function (v) { return v.body; }) : [];
+    /* K3-6: 쉼 중에 상태 캐시(jhb.state)만 사라지고 워커가 다시 뜨면, 상태를 모르는 동안의 이동은 넣지 않는다 */
+    return w.message({ jhb: 'privacy', paused: true });
+  }).then(function () {
+    store.delete('jhb.state');
+    w = boot();
+    return w.navigate('https://x.test/site/a/eight/');
+  }).then(function () {
+    return w.get('https://x.test/site/content/09-living/unknown-state.md');
+  }).then(function () {
+    R.unknown = ours();
+    /* 페이지가 다시 알려 주면(쉼 끔) 그 뒤로는 다시 저장 */
+    return w.message({ jhb: 'privacy', paused: false });
+  }).then(function () {
+    return w.navigate('https://x.test/site/a/nine/');
+  }).then(function () {
+    /* "쉼 아님"도 기억해 두어서 워커가 다시 떠도 바로 저장 */
+    w = boot();
+    return w.navigate('https://x.test/site/a/ten/');
+  }).then(function () {
+    R.afterKnown = ours();
+    /* 상태 캐시를 읽다가 실패해도 넣지 않는다 */
+    store.delete('jhb.state');
+    w = boot();
+    return w.navigate('https://x.test/site/a/eleven/');
+  }).then(function () {
+    R.afterLost = ours();
   }).catch(function (e) { R.error = String(e && e.stack || e); }).then(function () {
     process.stdout.write(JSON.stringify(R));
   });
@@ -261,9 +300,25 @@ test('서비스 워커: 기록 쉼이면 새 페이지·새 파일을 캐시에 
   ok(r.styleRefreshed, '이미 있는 항목은 갱신');
   eq(r.afterRestart, r.paused, '워커가 다시 떠도 쉼을 기억');
   ok(r.offlineHit, '오프라인에서 이미 저장된 글은 열림');
-  eq(r.stateAfterOff, [], '쉼을 끄면 기억을 지움');
+  eq(r.stateAfterOff.length, 1, '쉼을 끄면 "쉼 아님"을 기억(지우지 않음: 없으면 모르는 상태)');
+  eq(r.stateValueOff, ['0'], '쉼 아님 = 0');
   ok(r.after.indexOf('https://x.test/site/a/five/') >= 0 && r.after.indexOf('https://x.test/site/a/seven/') >= 0, '쉼을 끈 뒤에는 다시 저장');
   ok(r.after.indexOf('https://x.test/site/a/six') < 0 && r.after.indexOf('https://x.test/site/data/moved.json') < 0, '리다이렉트 응답은 넣지 않음');
+});
+
+test('K3-6 서비스 워커: 쉼 상태를 읽지 못하면(상태 캐시가 사라진 직후) 그 이동은 캐시에 넣지 않고, 페이지가 알려 준 뒤부터 다시 저장', function () {
+  const out = cp.execFileSync(process.execPath, [__filename], { encoding: 'utf8', timeout: 20000, env: Object.assign({}, process.env, { JHB_CORE_SW: '1' }) });
+  const r = JSON.parse(out);
+  ok(!r.error, r.error);
+  ok(r.unknown.indexOf('https://x.test/site/a/eight/') < 0, '상태를 모르는 동안 연 글(eight)은 넣지 않음');
+  ok(r.unknown.indexOf('https://x.test/site/content/09-living/unknown-state.md') < 0, '상태를 모르는 동안 새 파일도 넣지 않음');
+  ok(r.afterKnown.indexOf('https://x.test/site/a/nine/') >= 0, '페이지가 쉼 아님을 알린 뒤에는 저장');
+  ok(r.afterKnown.indexOf('https://x.test/site/a/ten/') >= 0, '쉼 아님을 기억해서 워커가 다시 떠도 저장');
+  ok(r.afterLost.indexOf('https://x.test/site/a/eleven/') < 0, '쉼이 아니었어도 상태 캐시가 사라진 직후 한 번은 넣지 않음');
+  ok(r.fresh.indexOf('https://x.test/site/a/zero/') >= 0 && r.knownFresh === false, '한 번도 알림을 받지 않은 워커(처음 설치)는 예전처럼 저장(tests/sw-harness.cjs 의 가정)');
+  ok(r.knownAfterMsg === true, '알림을 받으면 그 판 캐시에 표시를 남김');
+  const sw = read('sw.js');
+  ok(/^const BUILD = '[^']*';$/m.test(sw), 'BUILD 줄 형식 그대로');
 });
 
 test('sw.js: BUILD 줄 형식 그대로, 쉼 메시지 이름이 app.js 와 같음', function () {
@@ -332,16 +387,74 @@ test('이어서 읽기: 코스 화면이나 ?course= 로 들어간 코스면 코
   ok(p.markCourse('first-diagnosis', 5));
   ok(!p.markCourse('', 6) && !p.markCourse(null, 6), '빈 id 는 남기지 않음');
   eq(s.get('jhb.course'), { 'first-diagnosis': 5 });
-  p.markRead('what', 1);
+  p.markRead('what', 1); p.markRead('warn', 2);
   const r = p.continueReading(ARTS, CRS, { entered: p.enteredCourses(), hideTags: PR.SENSITIVE_TAGS });
-  eq(r.kind, 'course'); eq(r.course.id, 'first-diagnosis'); eq(r.article.slug, 'warn', '들어간 코스 안에서는 순서대로(위기 글도)');
-  has(r.reason, '"처음 진단받았어요" 코스 1/4');
+  eq(r.kind, 'course'); eq(r.course.id, 'first-diagnosis'); eq(r.article.slug, 'dx', '들어간 코스 안에서는 순서대로');
+  has(r.reason, '"처음 진단받았어요" 코스 2/4');
+  ok(!r.hidden, '다음 단계가 일반 글이면 숨기지 않음');
   /* 배열로 줘도 같음, 깨진 코스는 건너뜀 */
   eq(p.continueReading(ARTS, CRS.concat([{ id: 'bad', title: 'x', steps: null }]), { entered: ['first-diagnosis'] }).course.id, 'first-diagnosis');
   /* 깨진 저장값 */
   s.set('jhb.course', ['first-diagnosis']);
   eq(Object.keys(p.enteredCourses()), []);
   eq(Object.getPrototypeOf(p.enteredCourses()), null);
+});
+
+test('K3-1 이어서 읽기: 들어간 코스의 다음 단계가 위기·응급 글이면 그 제목을 내지 않고 코스 화면으로(순서는 건너뛰지 않음)', function () {
+  const s = fakeStore(), p = PR.create(s);
+  p.markCourse('first-diagnosis', 5);
+  p.markRead('what', 1);
+  const r = p.continueReading(ARTS, CRS, { entered: p.enteredCourses(), hideTags: PR.SENSITIVE_TAGS });
+  eq(r.kind, 'course'); eq(r.course.id, 'first-diagnosis');
+  eq(r.hidden, true, '숨긴 다음 단계 표시');
+  eq(r.article, null, '위기 글(warn)은 결과에 싣지 않음');
+  eq([r.read, r.total], [1, 4]);
+  /* 코스 정보(course: 코스 자료 그대로)를 뺀 나머지 = 첫 화면이 그리는 것 */
+  const all = JSON.stringify(Object.assign({}, r, { course: null }));
+  not(all, '자살 위험 신호', '결과 어디에도 위기 글 제목이 없음');
+  not(all, 'warn', '위기 글 slug 도 없음');
+  has(r.reason, '코스 1/4');
+  has(r.reason, '코스 화면에서');
+  /* 응급 글도 같음 */
+  const s2 = fakeStore(), p2 = PR.create(s2);
+  const CR2 = [{ id: 'body', title: '몸', who: '모두', steps: [{ slug: 'life' }, { slug: 'nms' }, { slug: 'fam' }] }];
+  p2.markCourse('body', 1); p2.markRead('life', 1);
+  const r2 = p2.continueReading(ARTS, CR2, { entered: p2.enteredCourses(), hideTags: PR.SENSITIVE_TAGS });
+  eq(r2.hidden, true); eq(r2.article, null); not(JSON.stringify(r2), '악성 증후군');
+  /* 그 위기 글을 읽은 뒤에는 다음 일반 글을 제목과 함께 */
+  p.markRead('warn', 2);
+  const r3 = p.continueReading(ARTS, CRS, { entered: p.enteredCourses(), hideTags: PR.SENSITIVE_TAGS });
+  eq(r3.article.slug, 'dx'); ok(!r3.hidden);
+  /* hideTags 를 주지 않은 예전 호출은 그대로(위기 글도 다음 글로) */
+  const s4 = fakeStore(), p4 = PR.create(s4);
+  p4.markCourse('first-diagnosis', 5); p4.markRead('what', 1);
+  eq(p4.continueReading(ARTS, CRS, { entered: p4.enteredCourses() }).article.slug, 'warn');
+});
+
+test('K3 검수: 숨긴 위기 단계만 남았으면(뒤 일반 단계를 다 읽음) "코스 화면에서 이어 봐요" 대신 안 연 글이 남았다고 알림(제목은 여전히 없음)', function () {
+  const s = fakeStore(), p = PR.create(s);
+  p.markCourse('first-diagnosis', 5);
+  ['what', 'dx', 'life'].forEach(function (x, i) { p.markRead(x, i + 1); });
+  const r = p.continueReading(ARTS, CRS, { entered: p.enteredCourses(), hideTags: PR.SENSITIVE_TAGS });
+  eq(r.kind, 'course'); eq(r.hidden, true); eq(r.article, null);
+  eq([r.read, r.total], [3, 4]);
+  eq(r.onlyHidden, true, '남은 단계가 모두 숨긴 글');
+  has(r.reason, '코스 3/4');
+  has(r.reason, '아직 안 연 글이 1개');
+  not(r.reason, '다음 글은');
+  not(JSON.stringify(Object.assign({}, r, { course: null })), '자살 위험 신호');
+  /* 숨긴 단계 뒤에 일반 단계가 남아 있으면 예전 문구 그대로 */
+  const s2 = fakeStore(), p2 = PR.create(s2);
+  p2.markCourse('first-diagnosis', 5); p2.markRead('what', 1);
+  const r2 = p2.continueReading(ARTS, CRS, { entered: p2.enteredCourses(), hideTags: PR.SENSITIVE_TAGS });
+  ok(!r2.onlyHidden); has(r2.reason, '다음 글은 코스 화면에서 이어 봐요');
+});
+
+test('K3-1 app.js: 숨긴 코스 단계는 제목 없이 코스 화면 링크로 그린다', function () {
+  const src = read('js/app.js');
+  const home = src.split('function home()')[1].split('\n  function section(')[0];
+  ok(/c\.hidden/.test(home), '숨김 갈래를 따로 그림');
+  ok(/'#\/course\/' \+ c\.course\.id/.test(home), '코스 화면으로 가는 링크');
 });
 
 test('app.js: 첫 화면 이어서 읽기는 들어간 코스와 위기·응급 숨김을 넘기고, 코스 화면·?course= 로 연 글은 기록 쉼이 아닐 때만 남긴다', function () {
@@ -466,4 +579,209 @@ test('소개(data/about.js): "기록과 개인정보" 소절에 id="privacy", �
   has(sec, '켜기 전에 저장된 화면은 남아요');
   has(html, 'href="#/me"');
   not(html, '탭을 닫으면 사라져요');
+});
+
+/* ================= K3 코어 뒤처리 ================= */
+
+/* ---------- K3-2 소개: 질문 바구니의 탭 저장, 꼭 알아둘 것의 전화 링크·문자 109 ---------- */
+test('K3-2 소개: 질문 바구니는 켜지 않아도 이 탭에 남고 "닫은 탭 다시 열기"로 돌아올 수 있다고 사실대로', function () {
+  const sb = {}; sb.window = sb;
+  vm.runInNewContext(read('data/about.js'), sb);
+  const html = sb.JHB.aboutHtml;
+  const sec = html.split('<section id="privacy">')[1].split('</section>')[0];
+  const items = sec.split('<li>').slice(1).map(function (x) { return x.split('</li>')[0]; });
+  const askItem = items.filter(function (x) { return x.indexOf('이 탭이 열려 있는 동안') >= 0; })[0];
+  ok(askItem, '"이 탭이 열려 있는 동안" 줄이 있음');
+  has(askItem, '진료 질문 바구니');
+  const tabItem = items.filter(function (x) { return x.indexOf('닫은 탭 다시 열기') >= 0; })[0];
+  ok(tabItem, '"닫은 탭 다시 열기" 줄');
+  has(tabItem, '진료 질문 바구니', '탭 기록이 돌아오는 예에 질문 바구니도');
+  has(tabItem, '찾기 화면에서 찾은 말');
+  /* 글꼴 줄은 이번에 건드리지 않음(마무리 단계에서 글꼴과 함께) */
+  has(sec, '<li>글꼴은 지금 외부 서비스(jsDelivr, Google Fonts)에서 받아요. 그래서 글을 열 때 이 서비스들에도 접속해요.</li>');
+});
+
+test('K3-2 소개 "꼭 알아둘 것": 1577-0199·109·119 는 전화 링크, 문자 109 한 줄은 공용 위기 고지와 같은 글자', function () {
+  const sb = {}; sb.window = sb;
+  vm.runInNewContext(read('data/about.js'), sb);
+  const html = sb.JHB.aboutHtml;
+  const part = html.split('<h2>꼭 알아둘 것</h2>')[1].split('<h2>')[0];
+  ['109', '1577-0199', '119'].forEach(function (n) { has(part, '<a href="tel:' + n + '">' + n + '</a>', n); });
+  /* md.noticeHtml('crisis') 의 문자 안내 문장을 그대로 */
+  const crisis = md.noticeHtml('crisis').replace(/<[^>]+>/g, '');
+  const sms = /전화가 어렵다면[^.]*\./.exec(crisis)[0];
+  has(part, sms);
+  /* 문자 안내의 109 는 전화 링크가 아님(공용 고지와 같음) */
+  eq((part.match(/href="tel:/g) || []).length, 3);
+});
+
+/* ---------- K3-3 위기 안내의 색: 차분한 전용 토큰, 대비 ---------- */
+function hexRgb(h) { h = h.replace('#', ''); if (h.length === 3) h = h.split('').map(function (c) { return c + c; }).join(''); return [0, 2, 4].map(function (i) { return parseInt(h.slice(i, i + 2), 16); }); }
+function lum(h) { return hexRgb(h).map(function (v) { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }).reduce(function (s, v, i) { return s + v * [0.2126, 0.7152, 0.0722][i]; }, 0); }
+function contrast(a, b) { const x = lum(a), y = lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); }
+function tokensIn(block) { const t = {}; (block.match(/--[a-z0-9-]+:\s*#[0-9a-fA-F]{3,6}/g) || []).forEach(function (d) { const m = /(--[a-z0-9-]+):\s*(#[0-9a-fA-F]{3,6})/.exec(d); t[m[1]] = m[2]; }); return t; }
+function cssThemes() {
+  const css = read('css/style.css');
+  const light = tokensIn(/^:root \{([^}]*)\}/m.exec(css)[1]);
+  const darkMedia = tokensIn(/@media \(prefers-color-scheme: dark\) \{\s*:root:not\(\[data-theme="light"\]\) \{([^}]*)\}/.exec(css)[1]);
+  const darkAttr = tokensIn(/^:root\[data-theme="dark"\] \{([^}]*)\}/m.exec(css)[1]);
+  /* 인쇄: 어두운 화면에서 바뀌는 토큰은 css/ui/print.css 가 모두 밝은 값으로 정해요(--calm 계열 포함, tests/print.test.cjs 가 지킴) */
+  const pm = /html:root:not\(\[data-print-tokens="own"\]\) \{([^}]*)\}/.exec(read('css/ui/print.css'));
+  return { light: light, darkMedia: darkMedia, darkAttr: darkAttr, print: pm ? Object.assign({}, light, tokensIn(pm[1])) : null };
+}
+function hueOf(h) {
+  const c = hexRgb(h).map(function (v) { return v / 255; });
+  const max = Math.max.apply(null, c), min = Math.min.apply(null, c), d = max - min;
+  if (!d) return null;
+  let x = max === c[0] ? ((c[1] - c[2]) / d) % 6 : max === c[1] ? (c[2] - c[0]) / d + 2 : (c[0] - c[1]) / d + 4;
+  x *= 60; return x < 0 ? x + 360 : x;
+}
+
+test('K3-3 위기 안내 전용 토큰(--calm·--calm-soft·--calm-ink): 밝은·어두운(두 곳 같은 값)·인쇄에 모두 있고 남색·청록 계열', function () {
+  const T = cssThemes();
+  ['--calm', '--calm-soft', '--calm-ink'].forEach(function (k) {
+    ok(T.light[k], '밝은 ' + k); ok(T.darkMedia[k], '어두운(운영체제) ' + k); ok(T.darkAttr[k], '어두운(직접 고름) ' + k);
+    eq(T.darkMedia[k], T.darkAttr[k], k + ' 어두운 값 두 곳이 같음');
+    ok(T.print && T.print[k], '인쇄 ' + k);
+  });
+  /* 색상(hue)이 청록~남색 범위(170~250도): 붉은색·주황(0~60, 330~360) 아님 */
+  [['밝은', T.light], ['어두운', T.darkAttr], ['인쇄', T.print]].forEach(function (x) {
+    ['--calm', '--calm-soft'].forEach(function (k) { const h = hueOf(x[1][k]); ok(h != null && h >= 170 && h <= 250, x[0] + ' ' + k + ' hue ' + h); });
+  });
+});
+
+test('K3-3 위기 안내 대비: 글자 4.5:1 이상, 전화 버튼 경계 3:1 이상(밝은·어두운·인쇄)', function () {
+  const T = cssThemes();
+  [['밝은', T.light], ['어두운', T.darkAttr], ['인쇄', T.print]].forEach(function (x) {
+    const n = x[0], t = x[1];
+    [
+      ['제목 글자 --calm / --calm-soft', t['--calm'], t['--calm-soft'], 4.5],
+      ['본문 글자 --ink / --calm-soft', t['--ink'], t['--calm-soft'], 4.5],
+      ['전화 버튼 글자 --calm-ink / --calm', t['--calm-ink'], t['--calm'], 4.5],
+      ['전화 버튼 경계 --calm / --calm-soft', t['--calm'], t['--calm-soft'], 3],
+      ['띠 --calm / --paper', t['--calm'], t['--paper'], 3],
+      ['카드 안 다른 버튼 글자 --ink / --paper-3', t['--ink'], t['--paper-3'], 4.5]
+    ].forEach(function (p) { const c = contrast(p[1], p[2]); ok(c >= p[3], n + ' ' + p[0] + ' = ' + c.toFixed(2)); });
+  });
+});
+
+test('K3-3 .crisis·.crisis-card(.tel 포함)·.callout-crisis 는 --calm 토큰, --bad 는 style.css 의 규칙에서 쓰지 않음(오류 표시용으로 남김)', function () {
+  const css = read('css/style.css');
+  const rules = css.split('\n').filter(function (l) { return /^\.(crisis|crisis-card|callout-crisis)\b/.test(l.trim()); });
+  ok(rules.length >= 6, '규칙 수 ' + rules.length);
+  rules.forEach(function (l) { not(l, '--bad', l.slice(0, 60)); });
+  ok(/\.crisis \{[^}]*var\(--calm-soft\)[^}]*var\(--calm\)/.test(css), '.crisis 배경·띠');
+  ok(/\.crisis-card \.acts a\.tel \{[^}]*background: var\(--calm\);[^}]*color: var\(--calm-ink\)/.test(css), '.tel 버튼');
+  /* 응급 줄(노랑 계열)은 그대로 */
+  ok(/\.emergency \{[^}]*var\(--warn-soft\)[^}]*var\(--warn\)/.test(css), '.emergency 는 --warn 그대로');
+  eq(css.split('\n').filter(function (l) { return /var\(--bad/.test(l); }), [], 'style.css 안에서 --bad 를 쓰는 규칙');
+  ok(/--bad: #/.test(css), '--bad 토큰 자체는 남김(오류 표시)');
+});
+
+/* ---------- K3-4 reading.js: 같은 문서 안 #h-N 으로 옮기면 읽던 자리 알림을 감춤 ---------- */
+test('K3-4 reading.js: hashchange 가 문서 안 id 를 가리키면 hideResume()', function () {
+  const rd = read('js/ui/reading.js');
+  ok(/addEventListener\('hashchange', function \(\) \{\s*if \(hashInDoc\(\)\) hideResume\(\);/.test(rd), 'hashchange → hideResume');
+});
+test('K3 검수: 차례(왼쪽 목차·본문 차례·따라오는 제목 줄)처럼 hashchange 없이 옮기는 문서 안 링크를 눌러도 읽던 자리 알림을 감춤', function () {
+  const rd = read('js/ui/reading.js');
+  ok(/function idInDoc\(/.test(rd), '문서 안 id 판정을 한 곳에서(hashInDoc 와 같은 규칙)');
+  ok(/function hashInDoc\(\) \{[\s\S]*?return idInDoc\(/.test(rd), 'hashInDoc 는 idInDoc 을 씀');
+  ok(/closest\('a\[href\^="#"\]:not\(\[href\^="#\/"\]\)'\)[\s\S]{0,200}idInDoc\([\s\S]{0,80}hideResume\(\)/.test(rd), '문서 안 # 링크 클릭 → hideResume');
+  /* 앱의 차례 이동(jumpTo)도 소절 주소와 같은 길: 접힌 소절 펴기·포커스 옮기기 */
+  const app = read('js/app.js');
+  const jt = app.split('function jumpTo(id) {')[1].split('\n  }\n')[0];
+  ok(/R\.reveal\(/.test(jt), '요약 보기로 접힌 소절을 먼저 편다');
+  ok(/setAttribute\('tabindex', '-1'\)/.test(jt) && /focus\(\{ preventScroll: true \}\)/.test(jt), '대상으로 포커스');
+});
+
+/* ---------- K3-7 분류 글 정렬을 한 곳에서(js/paths.js sectionArticles) ---------- */
+test('K3-7 paths.sectionArticles: 그 분류 글만, order → 제목 가나다, order 없으면 맨 뒤(999), 받은 배열은 그대로', function () {
+  const L = [
+    { slug: 'c', section: '2', order: 2, title: '다' },
+    { slug: 'x', section: '1', title: '나중' },
+    { slug: 'b', section: '2', order: 1, title: '나' },
+    { slug: 'a', section: '2', order: 1, title: '가' },
+    { slug: 'z', section: '2', title: '하' },
+    { slug: 'y', section: '2', order: 0, title: '라' }
+  ];
+  const copy = JSON.stringify(L);
+  eq(P.sectionArticles(L, '2').map(function (a) { return a.slug; }), ['a', 'b', 'c', 'y', 'z'], 'order 0 은 없음과 같이 999(앱 규칙 그대로)');
+  eq(P.sectionArticles(L, 2).map(function (a) { return a.slug; }), ['a', 'b', 'c', 'y', 'z'], '숫자 id 도');
+  eq(P.sectionArticles(L, '9'), []);
+  eq(P.sectionArticles(null, '1'), []);
+  eq(JSON.stringify(L), copy, '받은 배열을 바꾸지 않음');
+});
+
+test('K3-7 실제 목차: 앱(paths.sectionArticles)과 빌드(tools/build-pages.cjs)의 분류 글 순서가 모든 분류에서 같다', function () {
+  const sb = {}; sb.window = sb;
+  vm.runInNewContext(read('data/sections.js') + '\n' + read('data/toc.js'), sb);
+  const B = require('../tools/build-pages.cjs');
+  const arts = sb.JHB.toc.articles;
+  let n = 0;
+  sb.JHB.sections.forEach(function (s) {
+    const a = P.sectionArticles(arts, s.id).map(function (x) { return x.slug; });
+    const b = B.sectionArticles(s.id).map(function (x) { return x.slug; });
+    eq(a, b, '분류 ' + s.id); n += a.length;
+  });
+  ok(n > 200, '글 수 ' + n);
+});
+
+test('K3-7 app.js: 분류 글 정렬은 JHB.paths.sectionArticles 한 곳(앱 안에 정렬 규칙 사본 없음)', function () {
+  const src = read('js/app.js');
+  const fn = src.split('function sectionArticles(id)')[1].split('\n  }\n')[0];
+  has(fn, 'P.sectionArticles(articles, id)');
+  not(fn, 'localeCompare', '정렬 규칙 사본');
+});
+
+/* ---------- K3-8 첫 화면 순서: 다시 온 사람은 처음부터 이어서 읽기·코스가 오늘의 문서보다 앞 ---------- */
+test('K3-8 progress.isReturning: home 모듈의 startState 가 first 가 아닌 것과 같은 기준', function () {
+  const H = require('../js/ui/home.js');
+  eq(PR.HOME_ROLES, H.ROLES, '역할 목록이 home 모듈과 같음');
+  [
+    {}, { role: 'family' }, { role: 'self' }, { role: 'near' }, { role: 'curious' }, { role: 'admin' }, { role: '__proto__' }, { role: 7 },
+    { readCount: 1 }, { recentCount: 2 }, { readCount: 0, recentCount: 0 }, { role: null, readCount: '3' }, { readCount: NaN }, { role: 'x', recentCount: 1 }
+  ].forEach(function (o) { eq(PR.isReturning(o), H.startState(o) !== 'first', JSON.stringify(o)); });
+  eq(PR.isReturning(), false);
+});
+
+test('K3-8 progress.homeOrder: 다시 온 사람은 이어서 읽기·코스·오늘의 문서 순(home 모듈 rearrange 와 같은 결과), 처음 온 사람은 예전 그대로', function () {
+  eq(PR.homeOrder(false), ['today', 'continue', 'courses', 'recent', 'index', 'terms']);
+  eq(PR.homeOrder(true), ['continue', 'courses', 'today', 'recent', 'index', 'terms']);
+  /* js/ui/home.js rearrange 의 insertBefore 세 번을 배열로 흉내: 새 순서에 다시 적용해도 같음 */
+  function rearrange(list) {
+    const l = list.slice();
+    function before(x, y) { const i = l.indexOf(x); if (i < 0 || l.indexOf(y) < 0) return; l.splice(i, 1); l.splice(l.indexOf(y), 0, x); }
+    if (l.indexOf('today') >= 0) { before('continue', 'today'); before('courses', 'today'); }
+    before('recent', 'index');
+    return l;
+  }
+  eq(rearrange(PR.homeOrder(true)), PR.homeOrder(true), '다시 옮겨도 같음');
+  eq(rearrange(PR.homeOrder(false)), PR.homeOrder(true), '예전 순서에서 옮긴 결과 = 새 첫 그리기 순서');
+  ['continue', 'courses', 'today', 'recent'].forEach(function (k) {
+    const less = PR.homeOrder(true).filter(function (x) { return x !== k; });
+    eq(rearrange(less), less, k + ' 묶음이 없을 때도 같음');
+  });
+});
+
+test('K3 검수: "기록 가리기"가 켜져 있으면 코어가 첫 화면을 처음 그릴 때부터 가린다(home 모듈이 가리기 전 한 프레임도 제목이 보이지 않게)', function () {
+  const src = read('js/app.js');
+  const home = src.split('function home()')[1].split('\n  function section(')[0];
+  ok(/U\.store\.get\('jhb\.ui\.home\.recentHidden', false\) === true/.test(home), '가리기 설정을 읽음');
+  /* home 모듈(enhanceRecent)과 같은 조건·같은 표시: 최근 목록이 있을 때만, 목록 hidden + 첫 화면 .hm-veil */
+  ok(/const veil = !!secs\.recent && /.test(home), '최근 목록이 있을 때만(모듈이 가리는 조건과 같음)');
+  ok(/querySelector\('ul\.rows'\)\.hidden = true/.test(home), '최근 목록 hidden');
+  ok(/el\('div\.portal', veil \? \{ class: 'hm-veil' \} : null/.test(home), '첫 화면에 .hm-veil(이어서 읽기·코스 진도를 home.css 가 가림)');
+  ok(/if \(JHB\.ui && JHB\.ui\.home\) return;\s*portal\.classList\.remove\('hm-veil'\)/.test(home), 'home 모듈이 없으면 되돌림(되돌릴 단추가 없어서)');
+  /* home.css 가 .hm-veil 로 이어서 읽기 본문을 가리는 규칙이 그대로 있어야 함 */
+  ok(/\.hm-veil \[data-sec="continue"\] \.continue \{ display: none; \}/.test(read('css/ui/home.css')), 'home.css 의 가림 규칙');
+});
+
+test('K3-8 app.js: 첫 화면은 isReturning·homeOrder 로 처음부터 그 순서로 그린다(역할: 이 기기, 기록 쉼이면 이 탭의 역할도)', function () {
+  const src = read('js/app.js');
+  const home = src.split('function home()')[1].split('\n  function section(')[0];
+  has(home, 'homeOrder(');
+  has(home, 'isReturning');
+  ok(/'jhb\.ui\.home\.role'/.test(src), '역할 키를 읽음');
+  ok(/sessionStorage\.getItem\(HOME_ROLE_KEY\)/.test(src), '기록 쉼 중 이 탭의 역할');
 });

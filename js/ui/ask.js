@@ -2,7 +2,8 @@
    1) 글 본문의 '## 담당 의사에게 물어볼 것' 목록 항목마다 "담기" 버튼(aria-pressed). 누르면 바구니에 넣고 빼요.
       질문 글자는 글에 있는 그대로 담아요(공백만 정리. 지시형으로 바꾸지 않음). jhb:article 에서 붙이고(요약 보기·정적 본문 살리기 뒤에도
       같은 선택자: .body 안의 h2 와 그 소절의 목록), 모듈이 늦게 실려도 이미 그려진 글에 한 번 붙여요.
-   2) 저장: 기본은 sessionStorage 'jhb.ui.ask.session'(탭을 닫으면 사라짐). 사용자가 ask/ 화면에서 "이 기기에 기억하기"를 켜야
+   2) 저장: 기본은 sessionStorage 'jhb.ui.ask.session'(이 탭에만. 브라우저의 "닫은 탭 다시 열기"로 그 탭과 함께 돌아올 수 있어요).
+      사용자가 ask/ 화면에서 "이 기기에 기억하기"를 켜야
       localStorage 'jhb.ui.ask.keep'(true)·'jhb.ui.ask.items' 에 남아요. 기록 쉼(privacy.paused)이면 기기 저장을 켤 수 없고,
       이미 켜져 있으면 새로 담는 질문은 기기에 쓰지 않고 이 탭에만 둬요(빼기·순서는 기기에도 반영). 읽기(state)는 저장소를 고치지 않아요.
       내 서재가 지울 수 있게 privacy.register({ id: 'ask', … }).
@@ -170,12 +171,23 @@
     env.local.remove(KEYS.keep); env.local.remove(KEYS.items); env.session.remove(KEYS.session);
     return { keep: false, items: [] };
   }
+  /* 글 화면 안내 줄의 저장 위치(st = state(): { keep, paused, held }).
+     이 탭(sessionStorage)에만 있을 때 "탭을 닫으면 사라진다"고 하지 않아요: 브라우저의 "닫은 탭 다시 열기"로 그 탭과 함께 돌아와요.
+     기기 저장 중이어도 이 탭에만 있는 질문(held: 다른 탭에서 켰거나 기록 쉼 중에 담음)이 있으면 그 수를 말해요 */
+  function barText(st) {
+    st = st || {};
+    var held = Number(st.held) > 0 ? Math.floor(Number(st.held)) : 0;
+    if (!st.keep) return '이 탭에만 있어요. 브라우저의 닫은 탭 다시 열기로 돌아올 수 있어요';
+    if (st.paused) return '이 기기에 저장 중 · "기록 남기지 않기"가 켜져 있어 새로 담는 질문은 이 탭에만 둬요' + (held ? '(지금 ' + held + '개)' : '');
+    if (held) return '이 기기에 저장 중 · 이 탭에서 담은 ' + held + '개는 아직 이 탭에만 있어요';
+    return '이 기기에 저장 중';
+  }
 
   var core = {
     KEYS: KEYS, MAX_ITEMS: MAX_ITEMS, MAX_LEN: MAX_LEN, HEADING: HEADING,
     norm: norm, isAskHeading: isAskHeading, makeItem: makeItem, groupKey: groupKey, has: has, groups: groups, tidy: tidy,
     sanitize: sanitize, add: add, remove: remove, moveItem: moveItem, moveGroup: moveGroup,
-    load: load, save: save, setKeep: setKeep, clearAll: clearAll, heldCount: heldCount
+    load: load, save: save, setKeep: setKeep, clearAll: clearAll, heldCount: heldCount, barText: barText
   };
   if (typeof module !== 'undefined' && module.exports) { module.exports = core; return; }
 
@@ -283,16 +295,11 @@
     btn.setAttribute('aria-label', '담기: ' + btn.getAttribute('data-ask-q'));
   }
   function bars() { return U.qsa('.ask-bar', A.main); }
-  function whereText(st) {
-    if (!st.keep) return '이 탭을 닫으면 사라져요';
-    if (st.paused) return '이 기기에 저장 중 · "기록 남기지 않기"가 켜져 있어 새로 담는 질문은 이 탭에만 둬요';
-    return '이 기기에 저장 중';
-  }
   function paintBar(bar, st) {
     var n = st.items.length;
     bar.hidden = !n;
     bar.querySelector('.ask-bar-n').textContent = '진료 질문 ' + n + '개를 담았어요';
-    bar.querySelector('.ask-bar-where').textContent = whereText(st);
+    bar.querySelector('.ask-bar-where').textContent = barText(st);
   }
   function makeBar() {
     return el('p.ask-bar', { hidden: true }, [

@@ -9,7 +9,7 @@
      인쇄에서는 두 입구 대신 위기 고지(109·1577-0199·119) 한 줄을 찍는다
    - 살펴보기: JHB.app.pages 가운데 nav 에 "home" 이 있는 화면을 카드로(없으면 만들지 않음)
    - 다시 온 사람: 이어서 읽기·읽기 코스를 위로, 역할에 맞는 코스를 앞에(보이지 않던 코스도 데려옴),
-     최근 읽은 문서는 분류 바로 위로. 위기·응급 글은 최근 목록에서 제목을 접어 둔다.
+     최근 읽은 문서는 분류 바로 위로(위기·응급 글은 코어가 첫 화면 최근 목록에 넣지 않음).
      "기록 가리기"(jhb.ui.home.recentHidden)를 켜면 최근 목록·이어서 읽기·코스 진행·역할 이름을 함께 가린다.
      기록 쉼이면 "기록을 남기지 않는 중이에요" 한 줄
    - 새로 올라온 글: 가장 최근 updated 날짜의 글(최대 6편, 위기·응급 글 빼고). 모두 같은 날이면 만들지 않는다
@@ -75,11 +75,6 @@
     const m = /course\/([a-z0-9-]+)\/?(?:[?#].*)?$/.exec(String(href || ''));
     return m ? m[1] : '';
   }
-  /* 글 링크에서 slug 뽑기(#/a/slug, a/slug/, ../a/slug/?x) */
-  function slugOfHref(href) {
-    const m = /(?:^|[\/#])a\/([a-z0-9-]+)\/?(?:[?#].*)?$/.exec(String(href || ''));
-    return m ? m[1] : '';
-  }
   function hasTag(a, t) { return !!a && Array.isArray(a.tags) && a.tags.indexOf(t) >= 0; }
   /* 위기·응급 글: 맥락 없이 첫 화면에 제목이 뜨지 않게 하는 기준(오늘의 문서와 같음) */
   function isSensitive(a) { return hasTag(a, '위기') || hasTag(a, '응급'); }
@@ -121,7 +116,7 @@
   const core = {
     ROLES: ROLES.slice(), ROLE_TEXT: ROLE_TEXT, normRole: normRole, roleName: roleName, roleAs: roleAs, roleDest: roleDest,
     beforeDxSlug: beforeDxSlug, startState: startState, roleCourses: roleCourses, planCourses: planCourses, courseIdOf: courseIdOf,
-    slugOfHref: slugOfHref, isSensitive: isSensitive, isPlainClick: isPlainClick,
+    isSensitive: isSensitive, isPlainClick: isPlainClick,
     pickNew: pickNew, homePages: homePages, recoverySlug: recoverySlug, installHiddenAt: installHiddenAt
   };
   if (typeof module !== 'undefined' && module.exports) { module.exports = core; return; }
@@ -138,18 +133,12 @@
     article: function (slug) { return !!(A.bySlug && own(A.bySlug, slug)); }
   };
 
-  /* 기록 종류 등록
-     - 가린 최근 목록 상태는 보기 설정의 하나로 내 서재에서 함께 지워지게 한다(같은 종류에 키만 더함)
-     - 기록 쉼 중에 고른 역할은 sessionStorage 의 같은 이름 키에 둔다: 역할 종류의 session 에 더해 함께 지워지게 */
+  /* 기록 종류 등록: 기록 쉼 중에 고른 역할은 sessionStorage 의 같은 이름 키에 둔다. 역할 종류의 session 에 더해 함께 지워지게.
+     (가린 최근 목록 상태 jhb.ui.home.recentHidden 은 코어의 보기 설정(settings) 기본 키라 따로 등록하지 않아요) */
   (function registerKeys() {
     const P = A.privacy;
     if (!P || typeof P.register !== 'function') return;
-    const kinds = P.kinds || [];
-    const pick = function (id) { return kinds.filter(function (k) { return k.id === id; })[0]; };
-    const s = pick('settings');
-    if (s) { if (s.keys.indexOf(K_RECENT_HIDE) < 0) P.register({ id: s.id, label: s.label, keys: s.keys.concat([K_RECENT_HIDE]), session: s.session }); }
-    else P.register({ id: 'home-view', label: '첫 화면 보기', keys: [K_RECENT_HIDE] });
-    const r = pick('role');
+    const r = (P.kinds || []).filter(function (k) { return k.id === 'role'; })[0];
     if (r) { if (r.session.indexOf(K_ROLE) < 0) P.register({ id: r.id, label: r.label, keys: r.keys, session: r.session.concat([K_ROLE]) }); }
     else P.register({ id: 'role', label: '역할', keys: [K_ROLE], session: [K_ROLE] });
   })();
@@ -346,12 +335,14 @@
   }
 
   /* ---------- 다시 온 사람: 재배치 ---------- */
-  /* app.js 의 courseCard 와 같은 마크업(첫 4장 밖에 있던 역할 코스를 데려올 때) */
+  /* 첫 4장 밖에 있던 역할 코스를 데려올 때의 카드: 코어 JHB.app.courseCard(첫 화면·코스 목록과 같은 마크업·문구).
+     코어에 없을 때(옛 판)만 같은 모양을 여기서 만든다 */
   function courseCard(c) {
     if (!c) return null;
+    if (typeof A.courseCard === 'function') return A.courseCard(c);
     const p = (A.progress && A.progress.courseProgress) ? A.progress.courseProgress(c) : { read: 0, total: (c.steps || []).length, pct: 0 };
     return el('a.course', { href: A.L('#/course/' + c.id) }, [
-      el('div.who', null, [c.who === '모두' ? '당사자와 가족에게' : c.who + '에게']),
+      el('div.who', null, [c.who ? c.who + '에게' : '']),
       el('h3', null, [c.title]),
       el('p', null, [c.intro]),
       el('div', null, [
@@ -389,7 +380,7 @@
     arrangeCourses(courses);
   }
 
-  /* ---------- 최근에 읽은 문서: 위기·응급 글 접기, 기록 가리기, 기록 쉼 안내 ---------- */
+  /* ---------- 최근에 읽은 문서: 기록 가리기, 기록 쉼 안내 ---------- */
   function pausedLine() {
     const me = A.pageById && A.pageById.me;
     return el('p.hm-paused', null, [
@@ -408,24 +399,6 @@
     const at = portal.querySelector('[data-sec="new"]') || sec(portal, 'index');
     if (at) portal.insertBefore(box, at); else portal.appendChild(box);
   }
-  /* 위기·응급 글은 최근 목록에서 제목을 접어 둔다(같은 기기를 쓰는 사람에게 첫 화면에서 바로 보이지 않게) */
-  function foldSensitive(list) {
-    const rows = U.qsa('li.row', list).filter(function (li) {
-      const a = li.querySelector('a[href]');
-      const s = a && slugOfHref(a.getAttribute('href'));
-      return !!(s && A.bySlug && own(A.bySlug, s) && isSensitive(A.bySlug[s]));
-    });
-    if (!rows.length) return;
-    rows.forEach(function (li) { li.hidden = true; });
-    const open = el('button.hm-sens-btn', { type: 'button' }, ['펼치기']);
-    const li = el('li.hm-sens', null, [el('span', null, ['힘들 때 보는 글 ' + rows.length + '편은 제목을 접어 두었어요.']), open]);
-    open.addEventListener('click', function () {
-      rows.forEach(function (r) { r.hidden = false; });
-      li.remove();
-      const f = rows[0].querySelector('a[href]'); if (f) f.focus();
-    });
-    list.appendChild(li);
-  }
   /* 기록 가리기 적용 함수(최근 묶음이 있을 때만). jhb:privacy 로 보기 설정을 지우면 다시 부른다 */
   let applyVeil = null;
   function setVeil(portal, on) {
@@ -440,7 +413,7 @@
     const h = recent && recent.querySelector('.h-sec'), list = recent && recent.querySelector('ul.rows');
     if (!h || !list) return;
     list.id = 'hm-recent-list';
-    foldSensitive(list);
+    /* 위기·응급 글은 코어가 첫 화면 최근 목록에 아예 넣지 않아요(js/progress.js 의 visibleRecent) */
     /* 버튼은 제목(h2) 밖에: 제목 이름이 "최근에 읽은 문서"로 남게 */
     const head = el('div.hm-recent-head');
     h.parentNode.insertBefore(head, h);
@@ -585,7 +558,7 @@
         setVeil(portal, false);
       }
       /* 보기 설정을 지우면 가린 기록도 다시 보인다 */
-      if ((hit('settings') || hit('home-view')) && applyVeil) applyVeil(store.get(K_RECENT_HIDE, false) === true);
+      if (hit('settings') && applyVeil) applyVeil(store.get(K_RECENT_HIDE, false) === true);
       if (hit('role') || hit('recent') || hit('read')) redrawRole(false);
       if (hit('role')) arrangeCourses(sec(portal, 'courses'));
     } else if (d.action === 'paused') {

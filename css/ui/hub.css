@@ -40,8 +40,7 @@
   .hb-first .hb-s { display: none; }
   .hb-first a { gap: 0 12px; padding: 8px 0; align-items: center; }
   .hb-first a::before { grid-row: auto; margin-top: 0; }
-  /* 키보드로 내려갈 때 포커스가 하단 바(약 63px) 밑에 숨지 않게 */
-  .hb a { scroll-margin-bottom: 72px; }
+  /* 키보드 포커스가 하단 바 밑에 숨지 않게 하는 여백은 mobile.css 가 html 에 전역으로 줘요(scroll-padding-bottom) */
   .hb-group { margin-top: 24px; }
   .hb-gh { font-size: 18px; }
   /* 행 간소화: 제목 줄 오른쪽에 근거·읽음, 요약은 한 줄 */

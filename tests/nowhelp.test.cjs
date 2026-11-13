@@ -150,6 +150,18 @@ test('sectionHash: 글 소절 해시(#h-N)만 id 로', function () {
   eq(NH.sectionHash(null), null);
 });
 
+/* 소절 주소(a/<slug>/#h-N) 펴기·옮기기는 코어(js/app.js 의 scrollToHash: show·문서 그린 뒤·hashchange)와
+   reading 모듈(해시가 있으면 읽던 자리 복원 안 함)이 맡아요. 시트는 주소만 바꾸고, 모듈끼리 실행 순서에 기대는 임시 처리를 두지 않아요 */
+test('nowhelp.js: 소절 이동 임시 처리(jhb:article·hashchange 리스너, 읽던 자리 알림 대신 닫기)가 없다', function () {
+  const src = fs.readFileSync(path.join(ROOT, 'js', 'ui', 'nowhelp.js'), 'utf8');
+  not(src, "addEventListener('jhb:article'");
+  not(src, "addEventListener('hashchange'");
+  not(src, 'rd-resume');
+  not(src, 'scrollIntoView');
+  /* 시트의 "전화가 어렵다면"은 그 소절 주소(#h-N)로 가는 링크로 남아요 */
+  has(src, "altHref()");
+});
+
 test('generalItems: 특집 화면이 없으면 찾기 · 분류 · 저장한 문서', function () {
   const it = MB.generalItems({}, '');
   eq(it.map(function (x) { return x.id; }), ['search', 'nav', 'fav']);

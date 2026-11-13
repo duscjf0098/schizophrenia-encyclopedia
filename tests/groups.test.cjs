@@ -249,7 +249,7 @@ test('browse.buildMap: 분류 순서대로, 아직 없는 새 글은 건너뛰�
 });
 
 test('browse.staticHtml: 세 부분과 건너뛰기, 모든 글 링크가 지도·가나다에 한 번씩, 없는 글은 링크 없음', function () {
-  const html = browse.staticHtml({ data: { groups: groups }, esc: esc, articles: bySlug, sections: sections, page: { id: 'browse' } });
+  const html = browse.staticHtml({ data: { groups: groups }, esc: esc, articles: bySlug, sections: sections, glossary: glossary, page: { id: 'browse' } });
   has(html, 'id="browse-map"');
   has(html, 'id="browse-az"');
   has(html, 'id="browse-abbr"');
@@ -270,7 +270,7 @@ test('browse.staticHtml: 세 부분과 건너뛰기, 모든 글 링크가 지도
 });
 
 test('browse.staticHtml: id 는 모두 서로 다르고, 건너뛰기·aria-labelledby 가 가리키는 id 가 있다', function () {
-  const html = browse.staticHtml({ data: { groups: groups }, esc: esc, articles: bySlug, sections: sections, page: { id: 'browse' } });
+  const html = browse.staticHtml({ data: { groups: groups }, esc: esc, articles: bySlug, sections: sections, glossary: glossary, page: { id: 'browse' } });
   const ids = (html.match(/ id="([^"]+)"/g) || []).map(function (s) { return s.slice(5, -1); });
   const seen = {}, dup = [];
   ids.forEach(function (i) { if (seen[i]) dup.push(i); seen[i] = true; });
@@ -321,20 +321,20 @@ test('browse.buildMap: 묶음은 hub.arrange 와 같은 규칙(한 곳에서만 
 });
 
 test('browse.staticHtml: ctx.data 에 groups 가 없어도 node 에서 groups.json 을 읽어 소묶음을 넣는다', function () {
-  const html = browse.staticHtml({ data: {}, esc: esc, articles: bySlug, sections: sections, page: { id: 'browse' } });
-  const withData = browse.staticHtml({ data: { groups: groups }, esc: esc, articles: bySlug, sections: sections, page: { id: 'browse' } });
+  const html = browse.staticHtml({ data: {}, esc: esc, articles: bySlug, sections: sections, glossary: glossary, page: { id: 'browse' } });
+  const withData = browse.staticHtml({ data: { groups: groups }, esc: esc, articles: bySlug, sections: sections, glossary: glossary, page: { id: 'browse' } });
   eq(html, withData);
   has(html, '<h4>' + esc(groups[0].groups[0].title) + '</h4>');
 });
 
 test('browse.staticHtml: 묶음 자료가 빈 배열이면 분류마다 평평한 목록(모든 글은 그대로)', function () {
-  const html = browse.staticHtml({ data: { groups: [] }, esc: esc, articles: bySlug, sections: sections, page: { id: 'browse' } });
+  const html = browse.staticHtml({ data: { groups: [] }, esc: esc, articles: bySlug, sections: sections, glossary: glossary, page: { id: 'browse' } });
   not(html, '<h4>');
   toc.articles.forEach(function (a) { has(html, 'href="#/a/' + a.slug + '"'); });
 });
 
 test('browse.staticHtml: 영문·약어 항목의 글을 줄이면 "외 N편" 링크로 그 용어 풀이에 간다', function () {
-  const html = browse.staticHtml({ data: { groups: groups }, esc: esc, articles: bySlug, sections: sections, page: { id: 'browse' } });
+  const html = browse.staticHtml({ data: { groups: groups }, esc: esc, articles: bySlug, sections: sections, glossary: glossary, page: { id: 'browse' } });
   const ab = L.buildAbbr(glossary, bySlug);
   let cut = 0;
   ab.forEach(function (g) {
@@ -351,7 +351,7 @@ test('browse.staticHtml: 영문·약어 항목의 글을 줄이면 "외 N편" �
 });
 
 test('browse.staticHtml: 가나다·영문 묶음마다 높이 어림용 --n(항목 수)', function () {
-  const html = browse.staticHtml({ data: { groups: groups }, esc: esc, articles: bySlug, sections: sections, page: { id: 'browse' } });
+  const html = browse.staticHtml({ data: { groups: groups }, esc: esc, articles: bySlug, sections: sections, glossary: glossary, page: { id: 'browse' } });
   const az = L.buildAz(bySlug, sections);
   az.forEach(function (g) { has(html, '<section class="pg-browse-az" id="' + g.id + '" style="--n:' + g.items.length + '"'); });
   const ab = L.buildAbbr(glossary, bySlug);

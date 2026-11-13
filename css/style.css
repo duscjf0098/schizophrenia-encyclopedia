@@ -19,6 +19,9 @@
   --bad: #b42318; --bad-soft: #fdeceb;
   --warn: #a15c07; --warn-soft: #fdf3e2;
   --ok: #1f7a3d; --ok-soft: #e8f5ec;
+  /* 위기 안내 전용(문서 머리 위기 배너 .crisis, 찾기 위기 카드 .crisis-card, 위기 콜아웃): 겁주지 않는 차분한 청록빛 남색.
+     --calm 글자·띠·전화 버튼, --calm-soft 바탕, --calm-ink 전화 버튼 글자. --bad(빨강)는 오류 표시에만 써요 */
+  --calm: #1d5c78; --calm-soft: #e8f1f4; --calm-ink: #ffffff;
   --spine-s: 38%; --spine-l: 56%;
   --serif: "Noto Serif KR", "Nanum Myeongjo", "AppleMyungjo", "Batang", serif;
   --sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", sans-serif;
@@ -33,6 +36,7 @@
     --paper: #15171c; --paper-2: #1a1d23; --paper-3: #1f2229; --ink: #e7e9ec; --ink-2: #c5cad1; --muted: #9097a2;
     --rule: #2a2e36; --rule-2: #3a3f49; --accent: #aaa5f6; --accent-2: #c6c2fa; --accent-soft: #26244a; --accent-ink: #15171c; --mark: #5a4f12;
     --bad: #ff8d84; --bad-soft: #3a1d1b; --warn: #f2b56b; --warn-soft: #382a14; --ok: #7fd497; --ok-soft: #18301f;
+    --calm: #8ccbd8; --calm-soft: #172a31; --calm-ink: #0f1a1e;
     --spine-s: 32%; --spine-l: 62%; --shadow-pop: 0 10px 30px rgba(0, 0, 0, .5);
   }
 }
@@ -40,6 +44,7 @@
   --paper: #15171c; --paper-2: #1a1d23; --paper-3: #1f2229; --ink: #e7e9ec; --ink-2: #c5cad1; --muted: #9097a2;
   --rule: #2a2e36; --rule-2: #3a3f49; --accent: #aaa5f6; --accent-2: #c6c2fa; --accent-soft: #26244a; --accent-ink: #15171c; --mark: #5a4f12;
   --bad: #ff8d84; --bad-soft: #3a1d1b; --warn: #f2b56b; --warn-soft: #382a14; --ok: #7fd497; --ok-soft: #18301f;
+  --calm: #8ccbd8; --calm-soft: #172a31; --calm-ink: #0f1a1e;
   --spine-s: 32%; --spine-l: 62%; --shadow-pop: 0 10px 30px rgba(0, 0, 0, .5);
 }
 
@@ -191,8 +196,9 @@ main { min-width: 0; padding: 28px 0 64px; outline: none; }
 .note.hot { border-left-color: var(--accent); background: linear-gradient(90deg, var(--accent-soft), transparent 80%); }
 
 /* 본문 */
-.crisis { background: var(--bad-soft); border-left: 3px solid var(--bad); border-radius: 0 10px 10px 0; padding: 14px 16px; margin: 18px 0 4px; font-size: 15px; line-height: 1.65; }
-.crisis strong { color: var(--bad); }
+/* 문서 머리 위기 배너(위기 태그 글): 차분한 --calm 계열(경고색 아님) */
+.crisis { background: var(--calm-soft); border-left: 3px solid var(--calm); border-radius: 0 10px 10px 0; padding: 14px 16px; margin: 18px 0 4px; font-size: 15px; line-height: 1.65; }
+.crisis strong { color: var(--calm); }
 .crisis a { font-weight: 800; text-decoration: underline; }
 .toc-m { display: none; }
 .body { font-size: var(--fs-body); line-height: 1.8; }
@@ -222,7 +228,7 @@ main { min-width: 0; padding: 28px 0 64px; outline: none; }
 .callout p:first-of-type { margin-top: 0; } .callout p:last-child { margin-bottom: 0; }
 .callout-tip { border-left-color: var(--ok); } .callout-tip .callout-title { color: var(--ok); }
 .callout-warn { border-left-color: var(--warn); background: var(--warn-soft); } .callout-warn .callout-title { color: var(--warn); }
-.callout-crisis { border-left-color: var(--bad); background: var(--bad-soft); } .callout-crisis .callout-title { color: var(--bad); }
+.callout-crisis { border-left-color: var(--calm); background: var(--calm-soft); } .callout-crisis .callout-title { color: var(--calm); }
 .callout-note { border-left-color: var(--rule-2); } .callout-note .callout-title { color: var(--muted); }
 .callout-exp { border-left-style: dashed; border-left-color: var(--muted); } .callout-exp .callout-title { color: var(--ink-2); }
 .sources { margin-top: 40px; font-size: 13.5px; color: var(--ink-2); }
@@ -353,12 +359,13 @@ main { min-width: 0; padding: 28px 0 64px; outline: none; }
 }
 
 /* ---------- 위기 안내 카드 (검색) ---------- */
-.crisis-card { border: 1px solid color-mix(in srgb, var(--bad) 45%, transparent); background: var(--bad-soft); border-radius: 12px; padding: 16px 18px; margin: 14px 0 18px; }
-.crisis-card h2 { font-family: var(--serif); font-size: 19px; font-weight: 700; color: var(--bad); margin-bottom: 6px; }
+/* 자살·자해 말(high): 차분한 --calm 계열. 전화 버튼은 꽉 찬 --calm 버튼(바탕과 대비 3:1 이상), 누르는 높이 44px */
+.crisis-card { border: 1px solid color-mix(in srgb, var(--calm) 45%, transparent); background: var(--calm-soft); border-radius: 12px; padding: 16px 18px; margin: 14px 0 18px; }
+.crisis-card h2 { font-family: var(--serif); font-size: 19px; font-weight: 700; color: var(--calm); margin-bottom: 6px; }
 .crisis-card p { font-size: 15px; line-height: 1.7; color: var(--ink); }
 .crisis-card .acts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
-.crisis-card .acts a { display: inline-flex; align-items: center; height: 40px; padding: 0 16px; border-radius: 10px; font-weight: 700; font-size: 15px; background: var(--paper-3); border: 1px solid var(--rule-2); color: var(--ink); }
-.crisis-card .acts a.tel { background: var(--bad); color: #fff; border-color: var(--bad); }
+.crisis-card .acts a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px; border-radius: 10px; font-weight: 700; font-size: 15px; background: var(--paper-3); border: 1px solid var(--rule-2); color: var(--ink); }
+.crisis-card .acts a.tel { background: var(--calm); color: var(--calm-ink); border-color: var(--calm); }
 .crisis-card .acts a:hover { filter: brightness(1.05); }
 .crisis-card.watch { background: var(--paper-2); border-color: var(--rule-2); }
 .crisis-card.watch h2 { color: var(--ink); }
@@ -410,7 +417,9 @@ main { min-width: 0; padding: 28px 0 64px; outline: none; }
 @media (max-width: 760px) {
   .courses, .backlinks ul { grid-template-columns: minmax(0, 1fr); }
   .continue { grid-template-columns: minmax(0, 1fr); }
-  .continue .btn { grid-column: 1; grid-row: auto; justify-self: start; }
+  .continue .btn { grid-column: 1; grid-row: auto; justify-self: start; height: 44px; padding: 0 18px; }
+  /* 한 손 휴대폰: 이어서 읽기 제목 링크도 누르는 높이 44px 가까이(줄 안 링크 27px → 위아래 여백) */
+  .continue h3 a { display: inline-block; padding: 10px 0; }
 }
 
 /* 전화번호 링크는 줄을 나누지 않는다(1577-0199 가 두 줄로 갈라지지 않게) */

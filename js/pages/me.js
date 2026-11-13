@@ -54,30 +54,42 @@
     });
     return out;
   }
-  /* 시작한 코스만 [{id, title, read, total, pct, done}]. 진행 중(많이 읽은 순)이 먼저, 다 읽은 코스는 뒤에 */
-  function courseRows(courses, map) {
+  /* 들어간 코스 기록({코스id: 시각} 또는 id 배열) → 원형 없는 색인. 없으면 null */
+  function enteredSet(entered) {
+    if (entered == null) return null;
+    const set = Object.create(null);
+    if (Array.isArray(entered)) entered.forEach(function (id) { if (typeof id === 'string' && id) set[id] = true; });
+    else if (typeof entered === 'object') Object.keys(entered).forEach(function (id) { set[id] = true; });
+    return set;
+  }
+  /* 시작한 코스만 [{id, title, read, total, pct, done}]. 진행 중(많이 읽은 순)이 먼저, 다 읽은 코스는 뒤에.
+     entered(JHB.app.progress.enteredCourses()): 코스 화면을 열었거나 ?course= 로 글을 연 코스만 "시작한 코스"예요
+     (읽은 글이 여러 코스에 겹친다고 시작한 것으로 세지 않음. 이어서 읽기와 같은 기준). 들어갔으면 아직 읽은 글이 없어도 보여요.
+     entered 를 주지 않으면(진도 기록 API 가 없는 판) 읽은 글이 하나라도 있는 코스 */
+  function courseRows(courses, map, entered) {
     const m = isMap(map) ? map : {};
+    const inSet = enteredSet(entered);
     const rows = [];
     (Array.isArray(courses) ? courses : []).forEach(function (c, i) {
       const steps = (c && Array.isArray(c.steps)) ? c.steps : [];
       if (!steps.length) return;
+      if (inSet && !(typeof c.id === 'string' && inSet[c.id] === true)) return;
       const read = steps.filter(function (st) { return st && own(m, st.slug) && m[st.slug] != null; }).length;
-      if (!read) return;
+      if (!read && !inSet) return;
       rows.push({ id: c.id, title: c.title, read: read, total: steps.length, pct: Math.round(read * 100 / steps.length), done: read >= steps.length, i: i });
     });
     rows.sort(function (a, b) { return (a.done - b.done) || (b.pct - a.pct) || (a.i - b.i); });
     return rows.map(function (r) { return { id: r.id, title: r.title, read: r.read, total: r.total, pct: r.pct, done: r.done }; });
   }
   function needsConfirm(id) { return TRACE.indexOf(id) < 0; }
-  /* 전부 지우기 계획.
-     ids: 보기 설정까지 지우면 'all'(privacy.clear('all') — 등록된 키 전부 + jhb.privacy.*, 단 기록 쉼은 남음), 남기면 settings 를 뺀 id 목록.
+  /* 전부 지우기 계획: 코어 API 한 번 privacy.clear(ids, { keep }).
+     ids: 늘 'all'(등록된 키 전부 + jhb.privacy.*, 단 기록 쉼은 남고 최근 검색 저장은 꺼짐).
+     keep: 보기 설정을 남기면 ['settings'](그 종류의 키는 지우지 않음).
      extraLs·extraSs: 등록되지 않은 jhb.* 키(모듈이 등록을 빠뜨린 기록도 "전부"에 들게). jhb.privacy.* 는 API 가 다루고,
-     sessionStorage 'jhb.q.cleared'(지운 시각, 검색어 아님)는 찾기 화면이 옛 검색어를 되살리지 않게 남긴다.
-     offRecentq: settings 를 남기는 길에서는 clear('all') 을 쓰지 않으니 최근 검색 저장을 따로 끈다 */
+     sessionStorage 'jhb.q.cleared'(지운 시각, 검색어 아님)는 찾기 화면이 옛 검색어를 되살리지 않게 남긴다 */
   function planClearAll(o) {
     o = o || {};
     const kinds = Array.isArray(o.kinds) ? o.kinds : [];
-    const keep = !!o.keepSettings;
     const regLs = {}, regSs = {};
     kinds.forEach(function (k) {
       (k.keys || []).forEach(function (x) { regLs[x] = true; });
@@ -85,10 +97,10 @@
     });
     const jhb = function (k) { return typeof k === 'string' && k.indexOf('jhb.') === 0; };
     return {
-      ids: keep ? kinds.map(function (k) { return k.id; }).filter(function (id) { return id !== 'settings'; }) : 'all',
+      ids: 'all',
+      keep: o.keepSettings ? ['settings'] : [],
       extraLs: (o.lsKeys || []).filter(function (k) { return jhb(k) && k.indexOf('jhb.privacy.') !== 0 && !own(regLs, k); }),
-      extraSs: (o.ssKeys || []).filter(function (k) { return jhb(k) && k !== 'jhb.q.cleared' && !own(regSs, k); }),
-      offRecentq: keep && !!o.recentq
+      extraSs: (o.ssKeys || []).filter(function (k) { return jhb(k) && k !== 'jhb.q.cleared' && !own(regSs, k); })
     };
   }
   /* 확인 대화상자에 보일 "지울 것": 기록이 있는 종류만, 보기 설정은 함께 지울 때만 */
@@ -122,7 +134,8 @@
     '브라우저의 방문 기록과 주소창 자동 완성은 이 화면에서 지울 수 없어요. 브라우저 설정에서 지워요.',
     '찾기 화면에서 찾은 말은 이 탭의 뒤로 가기 기록에 남아 있을 수 있어요. 아래 "최근 검색"이나 "전부 지우기"로 지우면 찾기 화면이 그 말을 되살리지 않아요. ' +
       '탭을 닫아도 브라우저의 "닫은 탭 다시 열기"로 돌아올 수 있으니, 함께 쓰는 기기라면 브라우저 방문 기록도 지워요.',
-    '오프라인에서도 볼 수 있게, 열어 본 글 화면은 브라우저가 따로 저장해 둬요. "기록 남기지 않기"를 켜도 저장돼요. "읽은 글", "최근 읽은 글"이나 "전부 지우기"로 지울 때 함께 지워요.'
+    '오프라인에서도 볼 수 있게, 열어 본 글 화면은 브라우저가 따로 저장해 둬요. "기록 남기지 않기"를 켜면 그 뒤에 새로 연 화면은 저장하지 않아요. ' +
+      '이미 저장된 화면은 "읽은 글", "최근 읽은 글", "읽던 자리"나 "전부 지우기"로 지울 때 함께 지워요.'
   ];
   /* 받침에 맞는 조사: obj 을/를, subj 이/가 */
   function josa(w, withB, without) {
@@ -182,7 +195,7 @@
         '<p>이 화면에서는 이 기기의 브라우저에 남은 기록(저장한 글, 읽은 글, 최근 읽은 글, 읽던 자리, 최근 검색, 고른 역할, 보기 설정)을 보고 지울 수 있어요.</p>' +
         '<p>기록을 새로 남기지 않게 하거나, 첫 화면에 맞출 역할을 고를 수도 있어요. 이 기록은 어디로도 보내지 않아요.</p>' +
         '<noscript><p class="pg-me-nojs">이 화면은 자바스크립트가 필요해요. 브라우저 설정에서 이 사이트의 "사이트 데이터 지우기"로도 기록을 지울 수 있어요. ' +
-        '자세한 내용은 <a href="#/about">이 백과에 대해</a> 화면 아래쪽의 "기록과 개인정보" 소절에 있어요.</p></noscript>' +
+        '자세한 내용은 <a href="#/about#privacy">이 백과에 대해</a> 화면의 "기록과 개인정보" 소절에 있어요.</p></noscript>' +
         '</div>';
     },
     render: function (mount, ctx) {
@@ -197,13 +210,19 @@
         const hid = 'pg-me-h-' + key;
         return el('section.pg-me-sec', { 'aria-labelledby': hid, 'data-sec': key }, [el('h2.h-sec.pg-me-h', { id: hid }, [title])].concat(kids));
       }
+      /* 들어간 코스 기록(코어 progress 의 enteredCourses). 그 함수가 없는 판이면 null(읽은 글 기준으로 셈) */
+      function entered() {
+        const PG = A.progress;
+        if (!PG || typeof PG.enteredCourses !== 'function') return null;
+        try { return PG.enteredCourses(); } catch (e) { return null; }
+      }
       function snapshot() {
         const readMap = store.get('jhb.read', {});
         return {
           read: readEntries(readMap, A.bySlug),
           fav: slugList(store.get('jhb.fav', []), A.bySlug),
           recent: slugList(store.get('jhb.recent', []), A.bySlug),
-          courses: courseRows(A.courses, readMap),
+          courses: courseRows(A.courses, readMap, entered()),
           total: (A.articles || []).length
         };
       }
@@ -269,7 +288,7 @@
             const done = s.courses.filter(function (c) { return c.done; }).length;
             return {
               n: s.courses.length, v: s.courses.length + '개',
-              sub: s.courses.length ? '시작한 코스' + (done ? ', 그중 ' + done + '개는 다 읽었어요' : '') : '코스의 글을 읽으면 진행이 여기에 보여요.',
+              sub: s.courses.length ? '시작한 코스' + (done ? ', 그중 ' + done + '개는 다 읽었어요' : '') : '읽기 코스를 열어 읽으면 진행이 여기에 보여요.',
               items: s.courses.map(function (c) { return c.id + ':' + c.read; }), rows: s.courses
             };
           }
@@ -443,18 +462,8 @@
           btn.setAttribute('aria-label', k.label + ' 지우기');
         });
       }
-      /* 보기 설정을 지우면 화면도 기본 보기로(설정 모듈은 지운 것을 모르고 기억해 둔 값을 다시 쓸 수 있어서, 먼저 기본값으로 맞춘 뒤 키를 지운다) */
-      function resetView() {
-        const S = J.ui && J.ui.settings;
-        if (S && typeof S.set === 'function') {
-          [['theme', 'auto'], ['fs', 'm'], ['width', 'normal'], ['font', 'sans'], ['motion', 'normal']].forEach(function (kv) { try { S.set(kv[0], kv[1]); } catch (e) { } });
-        } else {
-          ['data-theme', 'data-fs', 'data-width', 'data-font', 'data-motion'].forEach(function (a) { doc.documentElement.removeAttribute(a); });
-          root.dispatchEvent(new Event('jhb:layout'));
-        }
-      }
+      /* 보기 설정을 지우면 설정 모듈(js/ui/settings.js)이 jhb:privacy 를 받아 스스로 기본 보기로 되돌려요 */
       function clearKinds(ids, label) {
-        if (ids.indexOf('settings') >= 0) resetView();
         P.clear(ids);
         clearCaches({ pages: ids.some(function (id) { return PAGE_KINDS.indexOf(id) >= 0; }) });
         sync();
@@ -505,10 +514,8 @@
           ok: '전부 지우기', opener: allBtn,
           onOk: function () {
             const keepSettings = hasSettings && !(check && check.checked);
-            const plan = planClearAll({ kinds: P.kinds, lsKeys: keysOf('localStorage'), ssKeys: keysOf('sessionStorage'), keepSettings: keepSettings, recentq: P.recentq() });
-            if (!keepSettings && hasSettings) resetView();
-            P.clear(plan.ids);
-            if (plan.offRecentq) P.setRecentq(false);
+            const plan = planClearAll({ kinds: P.kinds, lsKeys: keysOf('localStorage'), ssKeys: keysOf('sessionStorage'), keepSettings: keepSettings });
+            P.clear(plan.ids, { keep: plan.keep });
             plan.extraLs.forEach(function (k) { store.remove(k); });
             plan.extraSs.forEach(ssRemove);
             clearCaches({ pages: true });
@@ -618,7 +625,7 @@
         ]),
         sec('know', '알아둘 것', [
           el('ul.pg-me-know', null, KNOW.map(function (t) { return el('li', null, [t]); })),
-          el('p.pg-me-know-more', null, ['더 자세한 내용은 ', el('a', { href: '#/about' }, ['이 백과에 대해']), ' 화면 아래쪽의 "기록과 개인정보" 소절에 있어요.'])
+          el('p.pg-me-know-more', null, ['더 자세한 내용은 ', el('a', { href: '#/about#privacy' }, ['이 백과에 대해']), ' 화면의 "기록과 개인정보" 소절에 있어요.'])
         ])
       ]));
       sync();

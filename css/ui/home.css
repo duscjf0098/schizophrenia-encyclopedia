@@ -1,11 +1,12 @@
 /* home: 쓰는 사람에 맞춰 바뀌는 첫 화면. 선택자는 .hm- 로 시작한다(토큰은 css/style.css). */
 
 /* 역할 자리가 들어오기 전 빈자리: home.js 가 머리 끝에 역할 자리를 끼우면서 아래 묶음이 밀리지 않게(CLS).
-   코어가 그린 첫 화면(.portal)에 data-hm 이 붙기 전까지만 있고, 처음 온 사람(카드 4장) 높이에 맞춘다.
-   셸이 html[data-hm-start="line"](역할을 골랐거나 읽은 기록이 있음)을 미리 달아 주면 한 줄 높이로 줄인다 */
+   코어가 그린 첫 화면(.portal)에 data-hm 이 붙기 전까지만 있고, 처음 온 사람(카드 4장) 높이에 맞춘다
+   (2026-11-14 잰 값: 1280 218px · 980 이하 328px · 760 이하 411px = 실제 역할 자리 높이+위 여백).
+   다시 온 사람용 한 줄 예약(html[data-hm-start="line"], 72px)은 셸이 달지 않아 지웠어요: 코어가 처음부터
+   이어서 읽기·코스를 앞에 그린 뒤로는 그 속성을 달아도 CLS 가 줄지 않았어요(1280 0.016 → 0.015~0.029, 390 0.002~0.003 → 0.003) */
 .portal:not([data-hm]) > .portal-head::after { content: ''; display: block; height: var(--hm-reserve, 0px); }
 .portal:not([data-hm]) { --hm-reserve: 218px; }
-html[data-hm-start="line"] .portal:not([data-hm]) { --hm-reserve: 72px; }
 
 /* 역할 자리: 첫 화면 머리 안 끝(책꽂이 위) */
 .hm-role { margin-top: 22px; }
@@ -64,15 +65,12 @@ html[data-hm-start="line"] .portal:not([data-hm]) { --hm-reserve: 72px; }
 .hm-xp-t { font-family: var(--serif); font-weight: 700; font-size: 17px; line-height: 1.35; }
 .hm-xp-d { font-size: 14px; color: var(--ink-2); line-height: 1.6; }
 
-/* 최근에 읽은 문서: 제목 줄(제목 h2 + 가리기 버튼), 접어 둔 위기·응급 글, 기록 쉼 안내 */
+/* 최근에 읽은 문서: 제목 줄(제목 h2 + 가리기 버튼), 기록 쉼 안내 */
 .hm-recent-head { display: flex; align-items: center; gap: 12px; margin: 40px 0 14px; padding-bottom: 8px; border-bottom: 1px solid var(--rule); }
 .hm-recent-head > .h-sec { flex: 1 1 auto; min-width: 0; margin: 0; padding: 0; border: 0; }
 .hm-recent-btn { flex: none; margin-left: auto; height: 32px; padding: 0 10px; border-radius: 8px; font-family: var(--sans); font-weight: 500; font-size: 14px; color: var(--accent); }
 .hm-recent-btn:hover { background: var(--paper-2); text-decoration: underline; }
 .hm-recent-hidden { font-size: 14px; line-height: 1.6; color: var(--ink-2); padding: 4px 2px; }
-.hm-sens { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; padding: 10px 4px; border-bottom: 1px solid var(--rule); font-size: 14px; line-height: 1.6; color: var(--ink-2); }
-.hm-sens-btn { min-height: 32px; padding: 0 10px; border-radius: 8px; color: var(--accent); font-size: 14px; font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
-.hm-sens-btn:hover { background: var(--paper-2); }
 .hm-paused { margin: 0 0 12px; padding: 8px 12px; border: 1px dashed var(--rule-2); border-radius: 10px; font-size: 13.5px; line-height: 1.6; color: var(--ink-2); }
 .hm-paused a { color: var(--accent); font-weight: 650; text-decoration: underline; text-underline-offset: 2px; }
 .hm-paused-box { margin-top: 32px; }
@@ -116,7 +114,6 @@ html[data-hm-start="line"] .portal:not([data-hm]) { --hm-reserve: 72px; }
   .hm-card-d { font-size: 13.5px; }
   .hm-card-go { top: 50%; margin-top: -13px; right: 14px; }
   .portal:not([data-hm]) { --hm-reserve: 411px; }
-  html[data-hm-start="line"] .portal:not([data-hm]) { --hm-reserve: 72px; }
   .hm-doors { margin-top: 18px; }
   .hm-doors-list { gap: 8px; }
   .hm-door { flex-direction: column; align-items: flex-start; justify-content: center; gap: 0; min-height: 56px; padding: 8px 12px; }
@@ -124,13 +121,12 @@ html[data-hm-start="line"] .portal:not([data-hm]) { --hm-reserve: 72px; }
   .hm-door-go { margin-left: 0; }
   .hm-xp-list { grid-template-columns: minmax(0, 1fr); }
   .hm-recent-btn { height: 44px; }
-  .hm-sens-btn { min-height: 44px; }
   .hm-install { margin-top: 24px; }
   .hm-install-x { width: 44px; height: 44px; }
 }
 @media print {
   /* 역할(기기 안 기록)과 화면용 버튼·카드는 종이에 남기지 않는다. 두 입구 대신 번호가 든 위기 고지 한 줄 */
-  .hm-role, .hm-doors-list, .hm-recent-btn, .hm-sens-btn, .hm-install { display: none !important; }
+  .hm-role, .hm-doors-list, .hm-recent-btn, .hm-install { display: none !important; }
   .hm-doors-print { display: block !important; }
   .portal-head::after { display: none !important; }
 }

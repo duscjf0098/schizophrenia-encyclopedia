@@ -194,14 +194,31 @@
   /* 주소의 조각(#h-3, #sources 처럼)이 문서 화면 안의 요소를 가리키면 true.
      그때는 앱(js/app.js)이 그 자리로 옮기니, 읽던 자리로 되돌리지 않고 "읽던 자리로 돌아왔어요" 알림도 띄우지 않는다 */
   function hashInDoc() {
-    const h = String(location.hash || '');
-    if (h.length < 2 || h.charAt(1) === '/') return false;
+    return idInDoc(location.hash);
+  }
+  /* '#h-3' 같은 조각이 문서 화면 안의 요소를 가리키면 true(옛 해시 주소 '#/…'는 아님) */
+  function idInDoc(hash) {
+    const h = String(hash || '');
+    if (h.length < 2 || h.charAt(0) !== '#' || h.charAt(1) === '/') return false;
     let id = h.slice(1);
     try { id = decodeURIComponent(id); } catch (e) { }
     const n = id && document.getElementById(id);
     const main = A.main || document.getElementById('app');
     return !!(n && main && main.contains(n));
   }
+  /* 같은 문서 안의 소절(#h-N 등)로 옮기면 이미 원하는 자리라서 "읽던 자리로 돌아왔어요" 알림을 감춘다.
+     남겨 두면 그 알림의 "처음부터 보기"가 맨 위로 보내고 읽던 자리 기록을 지울 수 있어서.
+     - 주소창·다른 화면에서 온 소절 주소: hashchange
+     - 왼쪽 목차·본문 차례(js/app.js jumpTo)·따라오는 제목 줄 차례(sticky)·출처 링크: 기본 동작을 막고 옮겨서 hashchange 가 없음.
+       그래서 문서 안 '#…' 링크 클릭을 따로 듣는다(잡는 단계라 링크 쪽이 이벤트를 멈춰도 받음) */
+  window.addEventListener('hashchange', function () {
+    if (hashInDoc()) hideResume();
+  });
+  document.addEventListener('click', function (e) {
+    if (!resumeEl) return;
+    const a = e.target && e.target.closest && e.target.closest('a[href^="#"]:not([href^="#/"])');
+    if (a && idInDoc(a.getAttribute('href'))) hideResume();
+  }, true);
   function restorePos(slug) {
     if (hashInDoc()) return;
     const rec = allPos()[slug];
