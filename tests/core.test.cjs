@@ -246,6 +246,41 @@ test('planClear: id 목록은 그 종류만(jhb.privacy.* 는 건드리지 않�
   [undefined, null, '', []].forEach(function (v) { eq(PR.planClear(KINDS, v, { lsKeys: LS }), { all: false, done: [], ls: [], ss: [] }, JSON.stringify(v)); });
 });
 
+/* ---------- K5-1 기록 종류 plan: 모든 화면에서(app.js 기본 종류) ---------- */
+/* app.js 는 node 에서 불러지지 않아서, 기본 종류 목록(BASE_KINDS) 글자만 떼어 그대로 실행해 봐요 */
+function appBaseKinds() {
+  const src = read('js/app.js');
+  const m = /const BASE_KINDS = (\[[\s\S]*?\n  \]);/.exec(src);
+  ok(m, 'app.js 의 const BASE_KINDS = [ … ]');
+  ok(/BASE_KINDS\.forEach\(privRegister\)/.test(src), '기본 종류는 화면과 상관없이 바로 등록');
+  return vm.runInNewContext(m[1]).map(function (k) { return { id: k.id, label: k.label, keys: k.keys || [], session: k.session || [] }; });
+}
+test('K5-1 app.js 기본 기록 종류에 plan(미리 써 두는 종이)이 있고, 키는 plan 화면(js/pages/plan.js)의 KEYS 와 같다', function () {
+  const kinds = appBaseKinds();
+  const plan = kinds.filter(function (k) { return k.id === 'plan'; })[0];
+  ok(plan, 'plan 종류');
+  eq(plan, { id: 'plan', label: '미리 써 두는 종이', keys: ['jhb.ui.plan.keep', 'jhb.ui.plan.data'], session: [] });
+  const PL = require('../js/pages/plan.js').lib;
+  eq(plan.keys, [PL.KEYS.keep, PL.KEYS.data], 'plan.js 의 저장 키와 같음');
+  eq(kinds.map(function (k) { return k.id; }), ['read', 'recent', 'pos', 'recentq', 'fav', 'role', 'settings', 'plan'], '기존 종류 순서는 그대로, plan 은 뒤에 더함');
+  /* plan 화면 안의 등록(배포 직후 옛 app.js 대비)은 같은 값이라 덮어써도 바뀌지 않음 */
+  const src = read('js/pages/plan.js');
+  has(src, "app.privacy.register({ id: 'plan', label: '미리 써 두는 종이', keys: [KEYS.keep, KEYS.data] })");
+});
+test("K5-1 지우기: clear('all')·clear('all', { keep: ['settings'] }) 는 종이 두 키를 지우고, clear(['plan']) 은 그것만", function () {
+  const kinds = appBaseKinds();
+  const LSK = ['jhb.ui.plan.keep', 'jhb.ui.plan.data', 'jhb.read', 'jhb.theme', 'jhb.privacy.recentq'];
+  const all = PR.planClear(kinds, 'all', { lsKeys: LSK });
+  ok(all.done.indexOf('plan') >= 0 && all.ls.indexOf('jhb.ui.plan.keep') >= 0 && all.ls.indexOf('jhb.ui.plan.data') >= 0, '전부 지우기');
+  const keep = PR.planClear(kinds, 'all', { keep: ['settings'], lsKeys: LSK });
+  ok(keep.ls.indexOf('jhb.ui.plan.keep') >= 0 && keep.ls.indexOf('jhb.ui.plan.data') >= 0, '보기 설정만 남기는 전부 지우기');
+  ok(keep.ls.indexOf('jhb.theme') < 0, '보기 설정은 남음');
+  const one = PR.planClear(kinds, ['plan'], { lsKeys: LSK });
+  eq(one, { all: false, done: ['plan'], ls: ['jhb.ui.plan.keep', 'jhb.ui.plan.data'], ss: [] });
+  const other = PR.planClear(kinds, ['read'], { lsKeys: LSK });
+  ok(other.ls.indexOf('jhb.ui.plan.data') < 0, '다른 종류를 지울 때는 종이를 건드리지 않음');
+});
+
 test('app.js: 기본 settings 종류에 jhb.ui.home.recentHidden, 읽은 글 종류에 jhb.course, clear 는 planClear 를 쓰고 keep 을 받는다', function () {
   const src = read('js/app.js');
   ok(/id: 'settings'[^\n]*'jhb\.ui\.home\.recentHidden'/.test(src), 'settings 기본 키');
@@ -572,7 +607,10 @@ test('소개(data/about.js): "기록과 개인정보" 소절에 id="privacy", �
   eq((html.match(/id="privacy"/g) || []).length, 1);
   has(html, 'href="#/changes"');
   ['저장한 글', '읽은 글', '최근 읽은 글', '읽던 자리', '보기 설정', '고른 역할', '최근 검색', '진료 질문 바구니', '켰을 때만', '내 서재', '닫은 탭 다시 열기', '오프라인'].forEach(function (w) { has(html, w, w); });
-  /* 아직 없는 기능(종이 양식)은 저장 목록에 적지 않음 */
+  /* K5-1: 미리 써 두는 종이는 저장을 켰을 때만 이 기기에 남아요(jhb.ui.plan.*). 옛 이름 "종이 양식"은 쓰지 않음 */
+  const onItem = sec.split('<li>').filter(function (x) { return x.indexOf('켰을 때만 이 기기에 남는 것') >= 0; })[0] || '';
+  has(onItem, '미리 써 두는 종이', '켰을 때만 남는 것에 종이');
+  has(onItem, '진료 질문 바구니');
   not(sec, '종이 양식');
   /* 열어 본 화면(오프라인 저장)을 어떻게 지우는지: 내 서재의 읽은 글·최근 읽은 글·읽던 자리·전부 지우기가 함께 지움(js/pages/me.js PAGE_KINDS·clearCaches) */
   has(sec, '저장된 화면도 함께 지워요');
@@ -727,6 +765,14 @@ test('K3-7 실제 목차: 앱(paths.sectionArticles)과 빌드(tools/build-pages
   ok(n > 200, '글 수 ' + n);
 });
 
+test('K5-4 build-pages.cjs: 분류 글 정렬도 js/paths.js 의 sectionArticles 한 곳(빌드 안에 정렬 규칙 사본 없음)', function () {
+  const src = read('tools/build-pages.cjs');
+  const fn = src.split('function sectionArticles(id)')[1].split('\n}\n')[0];
+  has(fn, 'P.sectionArticles(articles, id)');
+  not(fn, 'localeCompare', '정렬 규칙 사본');
+  not(fn, '.sort(', '정렬 규칙 사본');
+});
+
 test('K3-7 app.js: 분류 글 정렬은 JHB.paths.sectionArticles 한 곳(앱 안에 정렬 규칙 사본 없음)', function () {
   const src = read('js/app.js');
   const fn = src.split('function sectionArticles(id)')[1].split('\n  }\n')[0];
@@ -784,4 +830,85 @@ test('K3-8 app.js: 첫 화면은 isReturning·homeOrder 로 처음부터 그 순
   has(home, 'isReturning');
   ok(/'jhb\.ui\.home\.role'/.test(src), '역할 키를 읽음');
   ok(/sessionStorage\.getItem\(HOME_ROLE_KEY\)/.test(src), '기록 쉼 중 이 탭의 역할');
+});
+
+/* ================= K5 코어 뒤처리 3 ================= */
+
+/* ---------- K5-5 실행기: 테스트 파일을 불러오다 예외가 나면 그 파일만 FAIL 1건, 다음 파일은 계속 ---------- */
+test('K5-5 tests/run.cjs: 깨진 테스트 파일은 FAIL 1건(파일 이름·예외 글), 뒤 파일은 그대로 돈다', function () {
+  if (process.env.JHB_TESTS_DIR) return; /* 이 시험이 띄운 실행기 안에서는 다시 띄우지 않음 */
+  const os = require('os');
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'jhb-run-'));
+  try {
+    fs.writeFileSync(path.join(tmp, 'a-broken.test.cjs'), "require('./없는-모듈');\n");
+    fs.writeFileSync(path.join(tmp, 'b-throws.test.cjs'), "test('앞 시험', function () { ok(true); });\nthrow new Error('최상위에서 던짐');\n");
+    fs.writeFileSync(path.join(tmp, 'c-good.test.cjs'), "test('뒤 시험', function () { eq(1, 1); });\n");
+    const r = cp.spawnSync(process.execPath, [path.join(__dirname, 'run.cjs')], { env: Object.assign({}, process.env, { JHB_TESTS_DIR: tmp }), encoding: 'utf8', timeout: 60000 });
+    const out = r.stdout || '';
+    eq(r.status, 1, '실패가 있으면 종료 코드 1');
+    has(out, 'FAIL a-broken.test.cjs');
+    has(out, '없는-모듈', '예외 글');
+    has(out, 'FAIL b-throws.test.cjs');
+    has(out, '최상위에서 던짐');
+    has(out, '  ok   앞 시험', '던지기 전의 시험은 셈');
+    has(out, '  ok   뒤 시험', '깨진 파일 뒤의 파일도 돈다');
+    has(out, '2 passed, 2 failed');
+  } finally { fs.rmSync(tmp, { recursive: true, force: true }); }
+});
+
+/* ---------- K5-2 공용 팝오버(#pop): 포커스가 밖으로 나가면 닫고 연 요소로, 크기가 바뀌면 다시 자리 잡거나 닫음 ---------- */
+/* 판정 자체(첫·마지막·Shift 방향, 열어 둠·닫기만·되돌림)는 순수 함수라 tests/progress.test.cjs 가 값으로 시험해요.
+   여기서는 app.js 가 그 함수를 쓰고, 결과대로 닫고 돌려주는지만 봐요. 브라우저 확인: meds/ 1280 표 첫 칸 Enter → Tab 으로 끝까지 → anchor 다음 칸 */
+test('K5-2 app.js #pop: Tab·Shift+Tab 판정은 popTabOut, 그 밖의 focusout 은 popLeave 로(되돌리기는 포커스가 옮겨 간 뒤)', function () {
+  const src = read('js/app.js');
+  const part = src.slice(src.indexOf('/* ---------- 팝오버 ----------'), src.indexOf('function setProgress('));
+  ok(part.length > 0, '팝오버 절');
+  has(part, "pop.addEventListener('keydown'");
+  ok(/e\.key !== 'Tab'/.test(part), 'Tab 키를 봄');
+  ok(/PRG\.popTabOut\(f, document\.activeElement, e\.shiftKey, pop\)/.test(part), 'popTabOut 에 목록·포커스·Shift·팝오버 자신을 넘김');
+  has(part, 'closePop(true)');
+  has(part, "pop.addEventListener('focusout'");
+  ok(/relatedTarget/.test(part), 'focusout 은 옮겨 간 곳을 보고');
+  ok(/PRG\.popLeave\(\{/.test(part), 'popLeave 로 판정');
+  ok(/pointer: popPointer/.test(part), '마우스·터치 여부를 넘김');
+  ok(/act === 'back'[^\n]*popFocusBack\(a\)/.test(part), "'back' 이면 연 요소로");
+  ok(/addEventListener\('pointerdown'[^\n]*popPointer = true/.test(part), '누르면 표시');
+  ok(/addEventListener\('keydown'[^\n]*popPointer = false/.test(part), '키를 누르면 풀림');
+});
+
+test('K5-2 app.js: 화면을 바꿀 때(show)는 팝오버를 닫기만 하고 옛 anchor 로 포커스를 돌리지 않음', function () {
+  const src = read('js/app.js');
+  const showFn = src.slice(src.indexOf('function show(nodes, opts)'), src.indexOf("app.innerHTML = '';", src.indexOf('function show(nodes, opts)')));
+  has(showFn, 'closePop(false, { nav: true })');
+  const close = src.slice(src.indexOf('function closePop('), src.indexOf("document.addEventListener('click'", src.indexOf('function closePop(')));
+  ok(/if \(opts && opts\.nav\) return;\s*\n\s*if \(refocus \|\| inside\) popFocusBack\(a\);/.test(close), 'nav 이면 popFocusBack 앞에서 끝냄');
+});
+
+test('K5-3 app.js: dated 의 lastmod 자료가 멈춰도 화면 전체가 시간 초과로 실패하지 않게 짧게만 기다림', function () {
+  const src = read('js/app.js');
+  const job = src.slice(src.indexOf('function datedJob('), src.indexOf('function featureNotices('));
+  ok(/Promise\.race\(\[loadData\(ref\.name\)\.catch\(/.test(job), '받기와 기다림 중 먼저 끝나는 쪽');
+  ok(/res\(null\)/.test(job), '기다림이 끝나면 null(선언의 updated 로 그림)');
+  const m = /const DATED_WAIT = (\d+);/.exec(src);
+  ok(m && +m[1] > 0 && +m[1] < 10000, '전체 시간 초과(10초)보다 짧음');
+});
+
+test('K5-2 app.js #pop: 닫을 때 포커스가 팝오버 안이었거나 연 요소가 안 보이면 BODY 대신 보이는 곳(본문 제목·#app)으로', function () {
+  const src = read('js/app.js');
+  const part = src.slice(src.indexOf('/* ---------- 팝오버 ----------'), src.indexOf('function setProgress('));
+  const close = part.slice(part.indexOf('function closePop('));
+  ok(/pop\.contains\(document\.activeElement\)/.test(close), '팝오버 안에 포커스가 있었는지');
+  has(part, 'function popFocusBack(');
+  ok(/getClientRects\(\)\.length/.test(part), '보이는지 확인');
+  has(part, "U.qs('h1', app)");
+  has(part, "aria-expanded', 'false'");
+});
+
+test('K5-2 app.js #pop: 창 너비가 바뀌거나 화면을 돌리면 다시 자리 잡고, 연 요소가 안 보이면 닫음(높이만 바뀌는 휴대폰 주소창은 그대로)', function () {
+  const src = read('js/app.js');
+  const part = src.slice(src.indexOf('/* ---------- 팝오버 ----------'), src.indexOf('function setProgress('));
+  has(part, "window.addEventListener('resize', popResize");
+  has(part, "window.addEventListener('orientationchange', popResize");
+  has(part, 'function placePop(');
+  ok(/innerWidth === popW/.test(part), '너비가 그대로면 아무것도 하지 않음');
 });

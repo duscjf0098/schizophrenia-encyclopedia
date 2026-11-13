@@ -165,16 +165,20 @@
     },
     clear: privClear
   };
-  /* 읽은 글(read)에는 들어간 읽기 코스 기록(jhb.course)도 함께 든다(코스 진도·이어서 읽기의 바탕이라서) */
-  [
+  /* 기본 기록 종류: 어느 화면에서든 등록된다(내 서재에서 이름으로 보이고, 다른 화면의 clear('all') 도 지운다).
+     읽은 글(read)에는 들어간 읽기 코스 기록(jhb.course)도 함께 든다(코스 진도·이어서 읽기의 바탕이라서).
+     plan: 미리 써 두는 종이(js/pages/plan.js, 저장을 켰을 때만 쓰는 키. K5-1 — 그 화면을 연 페이지에서만 등록되던 것을 모든 화면으로) */
+  const BASE_KINDS = [
     { id: 'read', label: '읽은 글', keys: ['jhb.read', 'jhb.course'] },
     { id: 'recent', label: '최근 읽은 글', keys: ['jhb.recent'] },
     { id: 'pos', label: '읽던 자리', keys: ['jhb.ui.reading.pos'] },
     { id: 'recentq', label: '최근 검색', keys: ['jhb.ui.palette.recentq'], session: ['jhb.q'] },
     { id: 'fav', label: '저장한 글', keys: ['jhb.fav'] },
     { id: 'role', label: '역할', keys: ['jhb.ui.home.role'] },
-    { id: 'settings', label: '보기 설정', keys: ['jhb.theme', 'jhb.fs', 'jhb.ui.settings', 'jhb.ui.reading.mode', 'jhb.ui.home.installHidden', 'jhb.ui.home.recentHidden'] }
-  ].forEach(privRegister);
+    { id: 'settings', label: '보기 설정', keys: ['jhb.theme', 'jhb.fs', 'jhb.ui.settings', 'jhb.ui.reading.mode', 'jhb.ui.home.installHidden', 'jhb.ui.home.recentHidden'] },
+    { id: 'plan', label: '미리 써 두는 종이', keys: ['jhb.ui.plan.keep', 'jhb.ui.plan.data'] }
+  ];
+  BASE_KINDS.forEach(privRegister);
   function reducedMotion() {
     return document.documentElement.getAttribute('data-motion') === 'reduce' || !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
   }
@@ -311,7 +315,7 @@
     const fns = pageCleanup; pageCleanup = [];
     fns.forEach(function (f) { try { f(); } catch (e) { setTimeout(function () { throw e; }); } });
     curSlots = null;
-    closePop();
+    closePop(false, { nav: true }); /* 옛 화면의 anchor 로 포커스를 돌리지 않음(K5-2) */
     app.innerHTML = '';
     (nodes || []).forEach(function (n) { if (n) app.appendChild(n); });
     /* 주소의 조각(about/#privacy, a/<slug>/#h-3)이 화면 안의 id 를 가리키면 맨 위 대신 그 자리로 */
@@ -435,6 +439,7 @@
   }
   /* data/kb/<name>.json */
   const kbCache = {};
+  const kbDone = {}; /* 받은 자료 값(이름 → JSON). dated 고지 날짜가 곧바로 꺼내 써요 */
   function loadData(name) {
     name = String(name || '');
     if (!/^[a-z0-9][a-z0-9-]*$/.test(name)) return Promise.reject(new Error('잘못된 데이터 이름: ' + name));
@@ -444,7 +449,7 @@
       kbCache[name] = fetch(BASE + 'data/kb/' + name + '.json', { cache: 'no-cache' }).then(function (r) {
         if (!r.ok) throw dataError('HTTP ' + r.status + ': data/kb/' + name + '.json');
         return r.json().catch(function () { throw dataError('JSON 오류: data/kb/' + name + '.json'); });
-      });
+      }).then(function (v) { kbDone[name] = v; return v; }); /* 받은 값을 바로 꺼내 쓸 수 있게(dated 고지 날짜) */
       kbCache[name].catch(function () { delete kbCache[name]; });
     }
     return kbCache[name];
@@ -465,10 +470,29 @@
   }
   /* 공용 고지 DOM (문구는 js/md.js 의 noticeHtml 과 같다) */
   function notice(kind, arg) { return fromHtml(md.noticeHtml(kind, arg)); }
+  /* "○○에 확인한 내용"(dated) 날짜: 사이트맵과 같은 규칙(js/progress.js 의 pageDate — 빌드 tools/lib/assets.cjs 의 resolveLastmod 도 같은 함수).
+     선언에 lastmod("kb:<자료>:<날짜 경로>")가 있으면 그 자료에서 구한 날짜, 자료를 아직 못 받았거나 날짜가 없으면 선언의 updated.
+     자료는 datedJob 이 그리기 전에 받아 두므로(featurePage) 고지가 그려진 뒤 날짜가 바뀌지 않는다 */
+  function datedDay(d) {
+    const ref = PRG.lastmodRef ? PRG.lastmodRef(d.lastmod) : null;
+    if (!PRG.pageDate) return d.updated;
+    return PRG.pageDate(d, ref && Object.prototype.hasOwnProperty.call(kbDone, ref.name) ? kbDone[ref.name] : undefined);
+  }
+  /* dated 고지에 lastmod 가 있으면 그 자료를 받는 일(실패해도 화면은 그린다: updated 로).
+     응답 없이 멈춰도 화면 전체가 10초 시간 초과로 실패하지 않게 DATED_WAIT 뒤에는 기다리지 않아요(그 뒤에 와도 이미 그린 날짜는 바꾸지 않음) */
+  const DATED_WAIT = 3000;
+  function datedJob(d) {
+    const ref = (d.notice || []).indexOf('dated') >= 0 && PRG.lastmodRef ? PRG.lastmodRef(d.lastmod) : null;
+    if (!ref) return null;
+    let t = 0;
+    const give = new Promise(function (res) { t = setTimeout(function () { res(null); }, DATED_WAIT); });
+    return Promise.race([loadData(ref.name).catch(function () { return null; }), give])
+      .then(function (v) { clearTimeout(t); return v; });
+  }
   function featureNotices(d) {
     /* 일반 고지는 뺄 수 없고 늘 맨 앞. 위기 줄은 crisisLine 하나로만(notice 의 'crisis' 와 겹쳐 두 번 붙지 않게) */
     const kinds = ['general'].concat((d.notice || []).filter(function (k) { return k !== 'general' && k !== 'crisis'; }));
-    const list = kinds.map(function (k) { return notice(k, k === 'dated' ? d.updated : undefined); });
+    const list = kinds.map(function (k) { return notice(k, k === 'dated' ? datedDay(d) : undefined); });
     if (d.crisisLine !== false || (d.notice || []).indexOf('crisis') >= 0) list.push(notice('crisis'));
     return el('div.fp-notices', null, list);
   }
@@ -491,7 +515,8 @@
         return registered[id] || Promise.reject(codeError('화면 코드가 등록되지 않았어요'));
       }) : Promise.resolve(registered[id] || null),
       Promise.all((d.data || []).map(function (n) { return loadData(n).then(function (v) { return [n, v]; }); })),
-      d.hasCss ? load('css/pages/' + id + '.css').catch(function () { return null; }) : null /* 스타일이 없어도 그린다 */
+      d.hasCss ? load('css/pages/' + id + '.css').catch(function () { return null; }) : null, /* 스타일이 없어도 그린다 */
+      datedJob(d) /* "○○에 확인한 내용" 날짜의 자료(K5-3). 받지 못해도 그린다 */
     ];
     Promise.race([Promise.all(jobs), timeout]).then(function (res) {
       clearTimeout(timer);
@@ -909,7 +934,8 @@
             el('span', null, [src.org ? src.org + '. ' : '', src.title || '', src.year ? ' (' + src.year + ')' : '']),
             el('div.pop-links', null, [
               src.url ? el('a', { href: src.url, target: '_blank', rel: 'noopener' }, ['원문 열기']) : null,
-              el('a', { href: '#src-' + n, onclick: function (ev2) { ev2.preventDefault(); closePop(); const li = document.getElementById('src-' + n); if (li) { li.scrollIntoView({ block: 'center' }); li.classList.add('flash'); setTimeout(function () { li.classList.remove('flash'); }, 1800); } } }, ['출처 목록에서 보기'])
+              /* 출처 목록으로: 포커스도 그 줄로(팝오버가 닫히며 포커스가 출처 번호로 돌아갔다가 그 줄로 옮겨 가요. K5-2) */
+              el('a', { href: '#src-' + n, onclick: function (ev2) { ev2.preventDefault(); closePop(); const li = document.getElementById('src-' + n); if (li) { if (!li.hasAttribute('tabindex')) li.setAttribute('tabindex', '-1'); try { li.focus({ preventScroll: true }); } catch (e3) { } li.scrollIntoView({ block: 'center' }); li.classList.add('flash'); setTimeout(function () { li.classList.remove('flash'); }, 1800); } } }, ['출처 목록에서 보기'])
             ])
           ]);
         });
@@ -993,9 +1019,39 @@
     ];
   }
 
-  /* ---------- 팝오버 ---------- */
+  /* ---------- 팝오버 ----------
+     출처 번호·용어(문서 화면), 약 표의 칸(meds) 등이 함께 쓰는 #pop. 760px 이하에서는 아래 시트(.sheet).
+     키보드(K5-2): 열리면 팝오버로 포커스가 가요. #pop 은 body 끝에 있어 DOM 순서로는 바닥글·건너뛰기 링크로 새어 나가므로,
+     마지막 요소 다음 Tab·첫 요소(또는 팝오버 자신) 앞 Shift+Tab 이면 닫고 연 요소(anchor)로 돌아가요. 그 뒤 Tab 은 anchor 의 다음 요소로 이어져요.
+     그 밖에 포커스가 키보드·프로그램으로 팝오버 밖의 요소로 옮겨 가도 닫고 anchor 로 돌아가요. 단 마우스·터치로 누른 곳, 글을 칠 칸(검색창 등),
+     다른 모듈의 대화상자로 간 포커스는 빼앗지 않고 닫기만 해요(판정은 js/progress.js 의 popTabOut·popLeave).
+     화면을 바꿀 때(show)는 닫기만 하고 옛 anchor 로 포커스를 돌리지 않아요(closePop(false, { nav: true })).
+     닫을 때 포커스가 팝오버 안이었으면 BODY 에 떨어지지 않게 anchor 로, anchor 가 안 보이면(display:none·inert 등) 본문 제목이나 #app 으로.
+     창 너비가 바뀌거나 화면을 돌리면 다시 자리 잡고(넓은 화면 ↔ 아래 시트), anchor 가 안 보이게 됐으면 닫아요(옛 자리에 남아 가로 넘침이 생기지 않게).
+     높이만 바뀌는 경우(휴대폰 주소창이 숨고 나타남)는 그대로 둬요. 마우스로 다른 곳을 눌러 닫는 동작은 예전 그대로 */
   const pop = U.qs('#pop');
-  let popAnchor = null;
+  let popAnchor = null, popW = 0, popRaf = 0;
+  function shown(n) { return !!n && n.nodeType === 1 && document.contains(n) && n.getClientRects().length > 0 && !(n.closest && n.closest('[inert]')); }
+  function popFocusBack(a) {
+    if (shown(a)) { a.focus(); return; }
+    /* 연 요소가 사라졌거나 숨었으면 보이는 곳(본문 제목, 없으면 #app)으로. 화면은 옮기지 않아요 */
+    const h = U.qs('h1', app);
+    const to = shown(h) ? h : app;
+    if (to !== app && !to.hasAttribute('tabindex')) to.setAttribute('tabindex', '-1');
+    try { to.focus({ preventScroll: true }); } catch (e) { to.focus(); }
+  }
+  function placePop(anchor) {
+    popW = innerWidth;
+    if (innerWidth <= 760) { pop.classList.add('sheet'); pop.style.left = ''; pop.style.top = ''; return; }
+    pop.classList.remove('sheet');
+    const r = anchor.getBoundingClientRect();
+    const w = pop.offsetWidth, h = pop.offsetHeight;
+    let left = r.left + scrollX + r.width / 2 - w / 2;
+    left = Math.max(scrollX + 12, Math.min(left, scrollX + innerWidth - w - 12));
+    let top = r.bottom + scrollY + 8;
+    if (r.bottom + h + 16 > innerHeight && r.top - h - 8 > 0) top = r.top + scrollY - h - 8;
+    pop.style.left = left + 'px'; pop.style.top = top + 'px';
+  }
   function openPop(anchor, children) {
     if (popAnchor === anchor && !pop.hidden) { closePop(); return; }
     closePop();
@@ -1010,32 +1066,71 @@
     anchor.setAttribute('aria-controls', 'pop');
     const head = pop.querySelector('b'); if (head) { head.id = 'pop-title'; pop.setAttribute('aria-labelledby', 'pop-title'); }
     pop.tabIndex = -1;
-    setTimeout(function () { pop.focus({ preventScroll: true }); }, 0);
-    if (innerWidth <= 760) { pop.classList.add('sheet'); pop.style.left = ''; pop.style.top = ''; }
-    else {
-      pop.classList.remove('sheet');
-      const r = anchor.getBoundingClientRect();
-      const w = pop.offsetWidth, h = pop.offsetHeight;
-      let left = r.left + scrollX + r.width / 2 - w / 2;
-      left = Math.max(scrollX + 12, Math.min(left, scrollX + innerWidth - w - 12));
-      let top = r.bottom + scrollY + 8;
-      if (r.bottom + h + 16 > innerHeight && r.top - h - 8 > 0) top = r.top + scrollY - h - 8;
-      pop.style.left = left + 'px'; pop.style.top = top + 'px';
-    }
+    setTimeout(function () { if (!pop.hidden) pop.focus({ preventScroll: true }); }, 0);
+    placePop(anchor);
   }
-  function closePop(refocus) {
+  /* opts.nav: 화면을 바꾸는 중(show). 곧 지워질 옛 화면의 anchor 로 포커스·스크롤을 옮기지 않아요(새 화면의 포커스는 라우터 몫) */
+  function closePop(refocus, opts) {
     if (pop.hidden) return;
     const a = popAnchor;
+    /* 포커스가 팝오버 안에 있었으면 숨기는 순간 BODY 로 떨어지니 함께 돌려줘요 */
+    const inside = pop.contains(document.activeElement);
     pop.hidden = true;
     if (a) { a.setAttribute('aria-expanded', 'false'); }
     popAnchor = null;
-    if (refocus && a && document.contains(a)) a.focus();
+    if (opts && opts.nav) return;
+    if (refocus || inside) popFocusBack(a);
   }
   document.addEventListener('click', function (e) {
     if (pop.hidden) return;
     if (pop.contains(e.target) || (popAnchor && popAnchor.contains(e.target))) return;
     closePop();
   });
+  /* Tab 으로 팝오버 끝을 넘으면 닫고 연 요소로 */
+  pop.addEventListener('keydown', function (e) {
+    if (e.key !== 'Tab' || pop.hidden || e.altKey || e.ctrlKey || e.metaKey) return;
+    const f = U.qsa('a[href], button, input, select, textarea, [tabindex]:not([tabindex="-1"])', pop).filter(function (n) { return !n.disabled && n.getClientRects().length > 0; });
+    /* 판정은 순수 함수(js/progress.js 의 popTabOut, 테스트 tests/progress.test.cjs) */
+    if (PRG.popTabOut && PRG.popTabOut(f, document.activeElement, e.shiftKey, pop)) { e.preventDefault(); closePop(true); }
+  });
+  /* 마지막 입력이 마우스·터치였는지(키를 누르면 풀림). 마우스로 다른 곳을 눌러 옮긴 포커스는 빼앗지 않으려고 */
+  let popPointer = false;
+  document.addEventListener('pointerdown', function () { popPointer = true; }, true);
+  document.addEventListener('keydown', function () { popPointer = false; }, true);
+  /* 그 밖의 이유로 포커스가 팝오버 밖의 요소로 가면(js/progress.js 의 popLeave):
+     키보드·프로그램으로 옮겨 갔으면 닫고 연 요소로(지시서 K5-2). 단 마우스·터치로 누른 곳, 글을 칠 칸(검색창 등),
+     다른 모듈의 대화상자로 간 포커스는 빼앗지 않고 닫기만. relatedTarget 이 없으면(다른 탭·앱으로 감) 그대로 두고,
+     연 요소로 가면 그 요소의 클릭이 닫기·열기를 맡아요 */
+  pop.addEventListener('focusout', function (e) {
+    if (pop.hidden) return;
+    const to = e.relatedTarget;
+    const isEl = !!to && to.nodeType === 1;
+    const act = !PRG.popLeave ? 'close' : PRG.popLeave({
+      to: isEl,
+      inPop: isEl && pop.contains(to),
+      inAnchor: isEl && !!popAnchor && popAnchor.contains(to),
+      pointer: popPointer,
+      typing: isEl && (/^(INPUT|TEXTAREA|SELECT)$/.test(to.tagName) || !!to.isContentEditable),
+      dialog: isEl && !!to.closest('dialog, [role="dialog"], [role="alertdialog"], [aria-modal="true"]')
+    });
+    if (act === 'stay') return;
+    const a = popAnchor;
+    closePop();
+    /* focusout 안에서 focus() 를 부르면 브라우저마다 다르게 굴어서, 포커스가 실제로 옮겨 간 뒤 그대로일 때만 돌려줘요 */
+    if (act === 'back') setTimeout(function () { if (pop.hidden && document.activeElement === to) popFocusBack(a); }, 0);
+  });
+  /* 창 너비가 바뀌면(화면 돌리기 포함) 한 프레임에 한 번 다시 자리 잡기, 연 요소가 안 보이면 닫기 */
+  function popResize() {
+    if (popRaf || pop.hidden) return;
+    popRaf = requestAnimationFrame(function () {
+      popRaf = 0;
+      if (pop.hidden || innerWidth === popW) return;
+      if (!shown(popAnchor)) { closePop(); return; }
+      placePop(popAnchor);
+    });
+  }
+  window.addEventListener('resize', popResize);
+  window.addEventListener('orientationchange', popResize);
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { if (!pop.hidden) closePop(true); else if (nav.classList.contains('open')) setNav(false); } });
 
   function setProgress(v) { const p = U.qs('#progress'); if (p) p.style.width = (v * 100).toFixed(2) + '%'; }

@@ -35,10 +35,9 @@ const secById = {}; sections.forEach(function (s) { secById[s.id] = s; });
 const bySlug = {}; articles.forEach(function (a) { bySlug[a.slug] = a; });
 
 function esc(s) { return md.esc(s); }
-/* 분류의 글: 앱(js/app.js 의 sectionArticles)과 같은 규칙 — order → 제목 가나다 */
+/* 분류의 글: 규칙은 js/paths.js 의 sectionArticles 한 곳(앱 js/app.js 도 같은 함수 — order → 제목 가나다) */
 function sectionArticles(id) {
-  return articles.filter(function (a) { return a.section === id; })
-    .sort(function (a, b) { return (a.order || 999) - (b.order || 999) || a.title.localeCompare(b.title, 'ko'); });
+  return P.sectionArticles(articles, id);
 }
 function fill(t, v) {
   return t.replace(/\{\{(\w+)\}\}/g, function (m, k) { return Object.prototype.hasOwnProperty.call(v, k) ? v[k] : m; });
@@ -109,8 +108,15 @@ function docMetaInput(a, docMeta, body) {
 function staticCtx(d, data) {
   return { data: data || {}, esc: esc, articles: bySlug, sections: sections, glossary: glossary, courses: courses, page: d };
 }
-/* 사이트맵 날짜: 선언의 lastmod("kb:<자료>:<날짜 항목>") → updated → 오늘 */
+/* 사이트맵 날짜: 선언의 lastmod("kb:<자료>:<날짜 경로>") → updated → 오늘 */
 function featureLastmod(d, today) { return A.resolveLastmod(d, { root: root }) || today; }
+/* 고지 줄: 앱(js/app.js 의 featureNotices)과 같은 순서·문구 — 선언의 notice 종류마다 한 줄, 그리고 위기 줄(한 번만. crisisLine 이 맡음).
+   "○○에 확인한 내용"(dated)의 날짜는 사이트맵과 같은 규칙(resolveLastmod: lastmod 자료 날짜 → updated). 앱은 js/progress.js 의 같은 pageDate 로 그려요 */
+function featureNoticesHtml(d) {
+  const kinds = ['general'].concat((d.notice || []).filter(function (k) { return k !== 'general' && k !== 'crisis'; }));
+  return '<div class="fp-notices">' + kinds.map(function (k) { return md.noticeHtml(k, k === 'dated' ? A.resolveLastmod(d, { root: root }) : undefined); }).join('') +
+    (d.crisisLine !== false ? md.noticeHtml('crisis') : '') + '</div>';
+}
 /* 읽기 코스 머리 문장: 앱(js/app.js 의 coursesPage)과 같은 글자(앱이 다시 그릴 때 문장이 바뀌지 않게). 코스 수는 설명(coursesDesc)에만 */
 const COURSES_LEAD = '지금 상황에 맞는 코스를 고르면 읽을 순서를 안내해요. 읽은 문서는 표시가 남고, 첫 화면에서 이어서 읽을 수 있어요. 기록은 이 기기에만 저장돼요.';
 function coursesDesc(list) {
@@ -263,13 +269,7 @@ function main() {
   pages.push(page('fav', { title: '저장한 문서 - 조현병 백과', robots: 'noindex,follow', noCanonical: true, main: '<h1 class="page-title">저장한 문서</h1>' }));
   pages.push(page('random', { title: '아무 문서 - 조현병 백과', robots: 'noindex,follow', noCanonical: true, main: '<p class="empty">아무 문서나 고르고 있어요.</p>' }));
 
-  /* 특집 화면: 선언마다 <id>/index.html. 본문은 js/pages/<id>.js 의 staticHtml(ctx) — 자바스크립트 없이도 보이는 내용 */
-  /* 앱(js/app.js 의 featureNotices)과 같은 순서·문구: 선언의 notice 종류마다 한 줄, 그리고 위기 줄(한 번만. crisisLine 이 맡음) */
-  function featureNoticesHtml(d) {
-    const kinds = ['general'].concat(d.notice.filter(function (k) { return k !== 'general' && k !== 'crisis'; }));
-    return '<div class="fp-notices">' + kinds.map(function (k) { return md.noticeHtml(k, k === 'dated' ? d.updated : undefined); }).join('') +
-      (d.crisisLine !== false ? md.noticeHtml('crisis') : '') + '</div>';
-  }
+  /* 특집 화면: 선언마다 <id>/index.html. 본문은 js/pages/<id>.js 의 staticHtml(ctx) — 자바스크립트 없이도 보이는 내용. 고지 줄은 featureNoticesHtml */
   decls.forEach(function (d) {
     let body = '';
     if (d.hasJs) {
@@ -348,7 +348,7 @@ if (require.main === module) main();
 module.exports = {
   SITE: SITE, sections: sections, articles: articles, bySlug: bySlug,
   sectionArticles: sectionArticles, sectionMainHtml: sectionMainHtml, hubHtml: hubHtml,
-  prtStaticHtml: prtStaticHtml, docMetaInput: docMetaInput, staticCtx: staticCtx, featureLastmod: featureLastmod, coursesDesc: coursesDesc,
+  prtStaticHtml: prtStaticHtml, docMetaInput: docMetaInput, staticCtx: staticCtx, featureLastmod: featureLastmod, featureNoticesHtml: featureNoticesHtml, coursesDesc: coursesDesc,
   COURSES_LEAD: COURSES_LEAD, loadHub: loadHub,
   /* 테스트용: hub 모듈이 없을 때(null)를 흉내 내고 원래 값을 돌려받아요 */
   setHub: function (h) { const old = hub; hub = h; return old; }

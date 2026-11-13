@@ -162,6 +162,10 @@ test('소스 금지: 바깥 요청·음성·공유·쿼리 주소·innerHTML·�
   ['fetch(', 'XMLHttpRequest', 'speechSynthesis', 'sendBeacon', 'navigator.share', 'location.search', 'pushState', 'innerHTML', 'JHB.crisis', 'WebSocket', 'importScripts'].forEach(function (w) { not(src, w, '소스'); });
   eq(lib.KEYS, { keep: 'jhb.ui.plan.keep', data: 'jhb.ui.plan.data' });
   has(src, "privacy.register({ id: 'plan'", '기록 종류 등록');
+  /* K5-1: 코어(js/app.js BASE_KINDS)가 모든 화면에서 같은 값으로 등록. 이 화면의 등록은 같은 값(덮어써도 그대로) */
+  const app = read('js/app.js');
+  has(app, "{ id: 'plan', label: '미리 써 두는 종이', keys: ['" + lib.KEYS.keep + "', '" + lib.KEYS.data + "'] }", '코어 기본 종류에 같은 키');
+  has(src, "app.privacy.register({ id: 'plan', label: '미리 써 두는 종이', keys: [KEYS.keep, KEYS.data] })", '이 화면의 등록도 같은 이름·키');
   has(src, 'privacy.paused()', '기록 쉼 존중');
   has(src, "'beforeunload'", '떠날 때 확인');
   has(src, "'pagehide'", '뒤로 가기 저장(bfcache)에 들어갈 때 저장하지 않은 글 지우기');

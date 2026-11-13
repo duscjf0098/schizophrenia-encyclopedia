@@ -143,14 +143,16 @@ function tmpRoot(files) {
   return tmp;
 }
 
-test('선언 검사: lastmod 는 "kb:<이름>:<항목>" 꼴만, 가리키는 자료는 날짜 배열이어야 함', function () {
+test('선언 검사: lastmod 는 "kb:<이름>:<항목>" 꼴만(항목은 점 경로도), 가리키는 자료는 배열이나 객체여야 함', function () {
   eq(errs(good({ lastmod: 'kb:changes:date' })), [], '형식만 보면 통과(root 없음)');
-  ['2026-11-14', 'kb:changes', 'kb::date', 'kb:Changes:date', 'kb:changes:da-te', 'changes:date', 7].forEach(function (v) {
+  eq(errs(good({ lastmod: 'kb:red-flags:source.updated' })), [], '점 경로(K5-3)');
+  ['2026-11-14', 'kb:changes', 'kb::date', 'kb:Changes:date', 'kb:changes:da-te', 'changes:date', 7, 'kb:x:.a', 'kb:x:a.', 'kb:x:a..b'].forEach(function (v) {
     ok(errs(good({ lastmod: v })).some(function (e) { return e.indexOf('lastmod') >= 0; }), JSON.stringify(v) + ' 는 잘못된 lastmod');
   });
   const tmp = tmpRoot({
     'data/kb/log.json': JSON.stringify([{ date: '2026-10-25' }, { date: '2026-11-12' }, { date: 'x' }]),
-    'data/kb/obj.json': '{"date":"2026-11-12"}',
+    'data/kb/obj.json': '{"date":"2026-11-12","source":{"updated":"2026-11-13"}}',
+    'data/kb/num.json': '7',
     'data/kb/empty.json': '[]',
     'data/kb/broken.json': '[{'
   });
@@ -158,7 +160,10 @@ test('선언 검사: lastmod 는 "kb:<이름>:<항목>" 꼴만, 가리키는 자
     const at = function (v) { return A.validateDecl(good({ lastmod: v }), 'guide', { root: tmp }); };
     eq(at('kb:log:date').errors, []);
     ok(at('kb:nope:date').errors.some(function (e) { return e.indexOf('data/kb/nope.json') >= 0; }), '없는 자료');
-    ok(at('kb:obj:date').errors.some(function (e) { return e.indexOf('배열') >= 0; }), '배열이 아닌 자료');
+    eq(at('kb:obj:date').errors, [], '배열이 아닌 자료도 읽어요(K5-3)');
+    eq(at('kb:obj:source.updated').warnings, [], '점 경로로 날짜를 찾음');
+    ok(at('kb:obj:source.nope').warnings.some(function (w) { return w.indexOf('source.nope') >= 0; }), '없는 경로는 경고(updated 로 대신)');
+    ok(at('kb:num:date').errors.some(function (e) { return e.indexOf('배열') >= 0; }), '배열·객체가 아닌 자료는 오류');
     ok(at('kb:broken:date').errors.length > 0, '깨진 JSON');
     eq(at('kb:empty:date').errors, [], '빈 배열은 오류가 아님');
     ok(at('kb:empty:date').warnings.some(function (w) { return w.indexOf('날짜') >= 0; }), '빈 배열은 경고(updated 로 대신)');
@@ -349,6 +354,33 @@ test('특집 화면 사이트맵 날짜: lastmod 를 풀고, 없으면 updated, 
   ok(/^\d{4}-\d{2}-\d{2}$/.test(v) && v !== '2000-01-01' && v !== '2099-01-01', v);
 });
 
+/* K5-3: "○○에 확인한 내용" 고지(dated)는 사이트맵 날짜와 같은 규칙(lastmod 가 있으면 자료에서 구한 날짜) */
+test('K5-3 정적 고지: dated 날짜는 사이트맵 날짜와 같고(lastmod 가 있으면 자료 날짜), 없으면 선언의 updated', function () {
+  eq(typeof B.featureNoticesHtml, 'function', 'build-pages 가 고지 함수를 내보냄');
+  const lm = A.normalizeDecl(good({ id: 'changes', notice: ['general', 'dated'], lastmod: 'kb:changes:date', updated: '2000-01-01' }));
+  const day = A.resolveLastmod(lm);
+  const html = B.featureNoticesHtml(lm);
+  has(html, md.noticeHtml('dated', day), '자료 날짜로 그린 고지');
+  not(html, '2000년 1월 1일', '선언의 updated 가 아님');
+  eq(B.featureLastmod(lm, '2099-01-01'), day, '사이트맵과 같은 날짜');
+  const plain = A.normalizeDecl(good({ notice: ['general', 'dated'], updated: '2026-11-03' }));
+  has(B.featureNoticesHtml(plain), md.noticeHtml('dated', '2026-11-03'));
+  /* 고지 순서: 일반 → 선언 순서 → 위기 줄 한 번 */
+  const parts = B.featureNoticesHtml(plain).match(/notice-[a-z]+/g);
+  eq(parts, ['notice-general', 'notice-dated', 'notice-crisis']);
+});
+
+test('K5-3 앱: dated 고지는 progress.pageDate(선언, 자료)로 그리고, lastmod 자료를 그리기 전에 함께 받는다', function () {
+  const app = fs.readFileSync(path.join(__dirname, '..', 'js', 'app.js'), 'utf8');
+  const fn = app.slice(app.indexOf('function featureNotices('), app.indexOf('function featureHead('));
+  has(fn, "k === 'dated' ? datedDay(d)", 'dated 고지의 날짜');
+  not(fn, "k === 'dated' ? d.updated", '선언 updated 를 바로 쓰지 않음');
+  has(app, 'PRG.pageDate(d, ');
+  has(app, 'PRG.lastmodRef(d.lastmod)');
+  const fp = app.slice(app.indexOf('function featurePage('), app.indexOf('function drawFeature('));
+  has(fp, 'datedJob(d)', '그리기 전에 lastmod 자료를 받음(그린 뒤 날짜가 바뀌지 않게)');
+});
+
 /* ---------- 틀(tools/shell.html): 바닥글 위기 줄·인쇄용 한 줄 스타일·첫 화면 자리 표시 ---------- */
 const SHELL = fs.readFileSync(path.join(__dirname, '..', 'tools', 'shell.html'), 'utf8');
 
@@ -418,15 +450,13 @@ function runHead(ls, ss, opt) {
   return attrs;
 }
 
-/* 결정 K2-5 보류(2026-11-14, 지시서 spec-K-core 의 K2-5 를 넣지 않기로 함. 검수 재측정으로 확인):
-   data-hm-start="line" 을 달면 다시 온 사람(역할 + 읽은 기록)의 첫 화면 CLS 가 커져요
-   — 구현자 측정 390px 0.10 → 0.35~0.52, 1280px 0.21 → 0.28 / 검수 재측정 390px 0.10 → 0.35, 1280px 0.18 → 0.25.
-   큰 흔들림은 역할 자리가 아니라 home.js 의 rearrange(첫 그리기 뒤에 이어서 읽기·코스를 오늘의 문서 앞으로 옮김)와 shelf 끼우기에서 나와요.
-   72px 로 줄이면 옮겨지는 today 섹션이 화면 안에 들어와 더 크게 보여요.
-   다시 넣는 조건(home 모듈 몫, 둘 다): ① css/ui/home.css 의 html[data-hm-start=line] 예약 높이를 실제 다시 온 사람 높이에 맞추거나
-   rearrange 를 첫 그리기 전에 끝냄 ② 그 뒤 390·1280 에서 속성을 단 쪽의 CLS 가 안 단 쪽보다 작음을 3회씩 재서 확인.
-   그때 이 테스트의 기대를 eq(a['data-hm-start'], 'line') 으로 바꾸고 머리 스크립트에 넣어요 */
-test('머리 스크립트: 테마·글자 크기만 적용하고(첫 화면 자리 표시는 아직 달지 않음), 저장소에 닿을 수 없어도 던지지 않는다', function () {
+/* data-hm-start 는 쓰지 않기로 했어요(K2-5 보류 → K4 에서 끝냄). 머리 스크립트는 이 속성을 달지 않고,
+   그 속성을 읽던 css/ui/home.css 의 html[data-hm-start="line"] 규칙(72px 예약)도 K4 가 지웠어요. 그래서 다시 달아도 효과가 없어요.
+   까닭(잰 값): K3 부터 코어가 다시 온 사람의 첫 화면을 처음부터 이어서 읽기·코스·오늘의 문서 순으로 그려서, 속성 없이도
+   다시 온 사람 CLS 가 1280 0.014~0.017, 390 0.002~0.003 이에요(속성을 달아 본 비교: 1280 0.0148~0.0294, 390 0.003 — 줄지 않음).
+   (그 전, K2 때는 속성을 달면 390px 0.10 → 0.35, 1280px 0.18~0.21 → 0.25~0.28 로 오히려 커졌어요.)
+   이 테스트는 머리 스크립트가 그 속성을 달지 않는지만 지켜요 */
+test('머리 스크립트: 테마·글자 크기만 적용하고(첫 화면 자리 표시 data-hm-start 는 쓰지 않음), 저장소에 닿을 수 없어도 던지지 않는다', function () {
   const a = runHead({ 'jhb.theme': '"dark"', 'jhb.fs': '"l"', 'jhb.ui.home.role': '"family"', 'jhb.recent': '["a"]' }, {});
   eq(a['data-theme'], 'dark');
   eq(a['data-fs'], 'l');

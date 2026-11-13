@@ -3,8 +3,10 @@
    저장 키 'jhb.read'(값 { slug: timestamp }), 'jhb.course'(들어간 읽기 코스, 값 { 코스id: timestamp }).
    문서는 data/toc.js 형식 { slug, section, order, title, tags }, 코스는 { id, title, who, steps: [{slug}] }.
    그 밖에 앱(js/app.js)이 쓰는 순수 함수: 코스 찾기(courseMap·getCourse), 코스 대상 문구(whoText),
-   첫 화면 최근 목록 고르기(visibleRecent), 기기 안 기록 지우기 계획(planClear), 첫 화면 순서(isReturning·homeOrder).
-   테스트는 tests/progress.test.cjs·tests/core.test.cjs */
+   첫 화면 최근 목록 고르기(visibleRecent), 기기 안 기록 지우기 계획(planClear), 첫 화면 순서(isReturning·homeOrder),
+   특집 화면 날짜(lastmodRef·latestDate·pageDate — 빌드 tools/lib/assets.cjs 도 같은 함수를 require 해요),
+   공용 팝오버 키보드 판정(popTabOut·popLeave).
+   테스트는 tests/progress.test.cjs·tests/core.test.cjs·tests/assets.test.cjs */
 (function (root) {
   const KEY = 'jhb.read';
   const COURSE_KEY = 'jhb.course';
@@ -268,12 +270,76 @@
     return returning ? ['continue', 'courses', 'today', 'recent', 'index', 'terms'] : ['today', 'continue', 'courses', 'recent', 'index', 'terms'];
   }
 
+  /* ---------- 특집 화면 날짜(사이트맵 lastmod 와 "○○에 확인한 내용" 고지, K5-3) ----------
+     선언의 "lastmod": "kb:<data/kb 이름>:<날짜 경로>". 경로는 점으로 잇고(예: 'date', 'source.updated'),
+     자료가 배열이면 항목마다, 경로 중간의 배열도 펼쳐서 따라가요. 실제 있는 YYYY-MM-DD 가운데 가장 최근 날짜.
+     빌드(tools/lib/assets.cjs 의 resolveLastmod → 사이트맵·정적 고지)와 앱(js/app.js 의 dated 고지)이 이 함수를 함께 써요 */
+  const LASTMOD_RE = /^kb:([a-z0-9][a-z0-9-]*):([A-Za-z_][A-Za-z0-9_]*(?:\.[A-Za-z_][A-Za-z0-9_]*)*)$/;
+  function lastmodRef(s) {
+    const m = typeof s === 'string' ? LASTMOD_RE.exec(s) : null;
+    return m ? { name: m[1], path: m[2] } : null;
+  }
+  /* 실제 있는 날짜인 'YYYY-MM-DD' 만(2026-02-30·2026-1-01·시각이 붙은 글자는 아님) */
+  function isDay(s) {
+    const m = typeof s === 'string' ? /^(\d{4})-(\d{2})-(\d{2})$/.exec(s) : null;
+    if (!m) return false;
+    const d = new Date(Date.UTC(+m[1], +m[2] - 1, +m[3]));
+    return d.getUTCFullYear() === +m[1] && d.getUTCMonth() === +m[2] - 1 && d.getUTCDate() === +m[3];
+  }
+  /* value(읽은 JSON)에서 path 를 따라간 날짜 가운데 가장 최근 것. 없으면 '' (던지지 않음, 원형의 값은 집지 않음) */
+  function latestDate(value, path) {
+    if (typeof path !== 'string' || !/^[A-Za-z_][A-Za-z0-9_]*(?:\.[A-Za-z_][A-Za-z0-9_]*)*$/.test(path)) return '';
+    let cur = [value];
+    path.split('.').forEach(function (k) {
+      const next = [];
+      cur.forEach(function (v) {
+        (Array.isArray(v) ? v : [v]).forEach(function (x) {
+          if (x && typeof x === 'object' && !Array.isArray(x) && own(x, k)) next.push(x[k]);
+        });
+      });
+      cur = next;
+    });
+    let max = '';
+    cur.forEach(function (v) {
+      (Array.isArray(v) ? v : [v]).forEach(function (d) { if (isDay(d) && d > max) max = d; });
+    });
+    return max;
+  }
+  /* 화면 날짜: lastmod 가 가리키는 자료(value, 읽은 값. 아직 없으면 undefined)에서 구한 날짜 → 없으면 선언의 updated → '' */
+  function pageDate(decl, value) {
+    const ref = lastmodRef(decl && decl.lastmod);
+    const d = ref && value !== undefined ? latestDate(value, ref.path) : '';
+    return d || (decl && typeof decl.updated === 'string' ? decl.updated : '');
+  }
+
+  /* ---------- 공용 팝오버(#pop) 키보드 판정(K5-2, js/app.js 가 DOM 에서 값을 모아 불러요) ----------
+     popTabOut: Tab 이 팝오버 밖으로 나가는지. list = 팝오버 안의 포커스 가능한 요소(보이는 순서), active = 지금 포커스,
+     shift = Shift+Tab, self = 팝오버 자신(열리면 포커스가 여기로 와요). 갈 곳이 없으면 어느 쪽이든 밖으로 */
+  function popTabOut(list, active, shift, self) {
+    const f = Array.isArray(list) ? list : [];
+    if (!f.length) return true;
+    return shift ? (active === self || active === f[0]) : active === f[f.length - 1];
+  }
+  /* popLeave: Tab 말고 다른 이유로 포커스가 팝오버를 떠날 때(focusout).
+     o = { to: 옮겨 갈 요소가 있음, inPop: 팝오버 안, inAnchor: 연 요소 안, pointer: 마우스·터치로 누름,
+           typing: 글을 칠 칸(input·textarea·select·contenteditable), dialog: 다른 대화상자 안 }
+     'stay'(열어 둠) | 'close'(닫기만, 옮겨 간 포커스는 그대로) | 'back'(닫고 연 요소로) */
+  function popLeave(o) {
+    if (!o || !o.to || o.inPop || o.inAnchor) return 'stay';
+    if (o.pointer || o.typing || o.dialog) return 'close';
+    return 'back';
+  }
+
   const api = {
     KEY: KEY, COURSE_KEY: COURSE_KEY, SENSITIVE_TAGS: SENSITIVE_TAGS, create: create,
     isSensitive: isSensitive, courseMap: courseMap, getCourse: getCourse, whoText: whoText,
     visibleRecent: visibleRecent, planClear: planClear,
     /* K3: 첫 화면 순서 */
-    HOME_ROLES: HOME_ROLES, isReturning: isReturning, homeOrder: homeOrder
+    HOME_ROLES: HOME_ROLES, isReturning: isReturning, homeOrder: homeOrder,
+    /* K5-3: 특집 화면 날짜(빌드와 앱이 같은 규칙) */
+    LASTMOD_RE: LASTMOD_RE, lastmodRef: lastmodRef, isDay: isDay, latestDate: latestDate, pageDate: pageDate,
+    /* K5-2: 공용 팝오버 키보드 판정 */
+    popTabOut: popTabOut, popLeave: popLeave
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else { root.JHB = root.JHB || {}; root.JHB.progress = api; }

@@ -28,8 +28,13 @@
     recentq: '찾기 창의 최근 검색',
     fav: '"저장" 버튼으로 모은 글',
     role: '위의 "나는 이런 사람이에요"에서 고른 것',
-    settings: '글자 크기, 밝게·어둡게 같은 보기 설정'
+    settings: '글자 크기, 밝게·어둡게 같은 보기 설정',
+    /* 다른 화면·모듈이 쓰는 종류(코어 js/app.js 와 js/ui/ask.js 가 모든 화면에서 등록) */
+    ask: '글을 읽다 담아 둔 진료 질문',
+    plan: '"미리 써 두는 종이"에서 이 기기에 저장한 종이'
   };
+  /* 개수 단위. 없으면 '편'(글) */
+  const UNIT = { recentq: '개' };
   const STEP = 20; /* 목록을 한 번에 보여 주는 글 수 */
 
   /* ---------- 순수 함수 ---------- */
@@ -82,6 +87,8 @@
     return rows.map(function (r) { return { id: r.id, title: r.title, read: r.read, total: r.total, pct: r.pct, done: r.done }; });
   }
   function needsConfirm(id) { return TRACE.indexOf(id) < 0; }
+  /* 지우기 줄의 개수 글자: 3편, 4개, 2장. 0 이면 '' */
+  function countLabel(id, n) { return n > 0 ? n + (own(UNIT, id) ? UNIT[id] : '편') : ''; }
   /* 전부 지우기 계획: 코어 API 한 번 privacy.clear(ids, { keep }).
      ids: 늘 'all'(등록된 키 전부 + jhb.privacy.*, 단 기록 쉼은 남고 최근 검색 저장은 꺼짐).
      keep: 보기 설정을 남기면 ['settings'](그 종류의 키는 지우지 않음).
@@ -128,6 +135,9 @@
   }
   const RECENTQ_DESC = '켜면 찾기 창에서 찾은 말 몇 개가 이 기기에 남아 다음에 바로 고를 수 있어요. ' +
     '이 기기의 브라우저에만 남고, 같은 기기를 쓰는 사람이 찾기 창에서 볼 수 있어요. 위기와 관련된 말은 저장하지 않아요. 끄면 남아 있던 최근 검색도 지워요.';
+  /* 기록 쉼 스위치 설명. 종이(js/pages/plan.js TEXT.pausedSave)와 진료 질문 바구니(js/ui/ask.js)도 기록 쉼을 따라요 */
+  const PAUSED_DESC = '켜면 읽은 글, 최근 읽은 글, 읽던 자리, 최근 검색이 새로 남지 않아요. ' +
+    '미리 써 두는 종이와 진료 질문 바구니도 이 기기에 새로 저장하지 않아요. 이미 남은 기록은 그대로 있으니 아래 "지우기"에서 지워요.';
   const RECENTQ_ON = '최근 검색을 이 기기에 저장해요. 같은 기기를 쓰는 사람도 볼 수 있어요';
   const KNOW = [
     '이 기록은 이 기기의 브라우저에만 있어요.',
@@ -148,7 +158,8 @@
   const lib = {
     ROLES: ROLES, roleOf: roleOf, roleLabel: roleLabel, readEntries: readEntries, slugList: slugList, courseRows: courseRows,
     needsConfirm: needsConfirm, planClearAll: planClearAll, clearPreview: clearPreview, isQueryEntry: isQueryEntry, isPageEntry: isPageEntry,
-    roleToast: roleToast, RECENTQ_DESC: RECENTQ_DESC, RECENTQ_ON: RECENTQ_ON, KNOW: KNOW, obj: obj, subj: subj
+    roleToast: roleToast, RECENTQ_DESC: RECENTQ_DESC, RECENTQ_ON: RECENTQ_ON, KNOW: KNOW, obj: obj, subj: subj,
+    HINT: HINT, countLabel: countLabel, PAUSED_DESC: PAUSED_DESC
   };
 
   /* ---------- 브라우저 ---------- */
@@ -192,7 +203,7 @@
     /* 자바스크립트가 꺼졌거나 화면 코드를 받기 전: 소개 두세 문장 + 안내(noscript) */
     staticHtml: function () {
       return '<div class="pg-me-static">' +
-        '<p>이 화면에서는 이 기기의 브라우저에 남은 기록(저장한 글, 읽은 글, 최근 읽은 글, 읽던 자리, 최근 검색, 고른 역할, 보기 설정)을 보고 지울 수 있어요.</p>' +
+        '<p>이 화면에서는 이 기기의 브라우저에 남은 기록(저장한 글, 읽은 글, 최근 읽은 글, 읽던 자리, 최근 검색, 고른 역할, 보기 설정, 진료 질문 바구니, 미리 써 두는 종이)을 보고 지울 수 있어요.</p>' +
         '<p>기록을 새로 남기지 않게 하거나, 첫 화면에 맞출 역할을 고를 수도 있어요. 이 기록은 어디로도 보내지 않아요.</p>' +
         '<noscript><p class="pg-me-nojs">이 화면은 자바스크립트가 필요해요. 브라우저 설정에서 이 사이트의 "사이트 데이터 지우기"로도 기록을 지울 수 있어요. ' +
         '자세한 내용은 <a href="#/about#privacy">이 백과에 대해</a> 화면의 "기록과 개인정보" 소절에 있어요.</p></noscript>' +
@@ -244,8 +255,7 @@
           set: function (on) { btn.setAttribute('aria-checked', on ? 'true' : 'false'); state.textContent = on ? '켬' : '끔'; }
         };
       }
-      const swPaused = makeSwitch('paused', '기록 남기지 않기',
-        '켜면 읽은 글, 최근 읽은 글, 읽던 자리, 최근 검색이 새로 남지 않아요. 이미 남은 기록은 아래 "지우기"에서 지워요.',
+      const swPaused = makeSwitch('paused', '기록 남기지 않기', PAUSED_DESC,
         function (on) {
           P.setPaused(on);
           sync();
@@ -416,13 +426,13 @@
       const kindRows = {};
       function safeId(id) { return String(id).replace(/[^a-z0-9-]/gi, '-'); }
       function countText(id, snap) {
-        let n = 0, unit = '편';
+        let n = 0;
         if (id === 'read') n = snap.read.length;
         else if (id === 'recent') n = snap.recent.length;
         else if (id === 'fav') n = snap.fav.length;
         else if (id === 'pos') { const p = store.get('jhb.ui.reading.pos', {}); n = isMap(p) ? Object.keys(p).length : 0; }
-        else if (id === 'recentq') { const q = store.get('jhb.ui.palette.recentq', []); n = Array.isArray(q) ? q.length : 0; unit = '개'; }
-        return n ? n + unit : '';
+        else if (id === 'recentq') { const q = store.get('jhb.ui.palette.recentq', []); n = Array.isArray(q) ? q.length : 0; }
+        return countLabel(id, n);
       }
       function stateText(id, has, snap) {
         if (!has) return '없어요';

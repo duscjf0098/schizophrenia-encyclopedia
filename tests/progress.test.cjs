@@ -155,3 +155,34 @@ test('깨진 저장값(배열·문자열)은 빈 기록으로 취급', function 
   p.markRead('s1a', 1);
   eq(s.get('jhb.read'), { s1a: 1 });
 });
+
+/* ---------- K5-2 공용 팝오버(#pop) 키보드 판정(js/app.js 가 이 순수 함수를 써요) ---------- */
+test('K5-2 popTabOut: 마지막 요소에서 Tab·첫 요소나 팝오버 자신에서 Shift+Tab 일 때만 밖으로', function () {
+  const self = { n: 'pop' }, a = { n: 'a' }, b = { n: 'b' }, c = { n: 'c' };
+  const f = [a, b, c];
+  eq(P.popTabOut(f, c, false, self), true, '마지막에서 Tab');
+  eq(P.popTabOut(f, a, false, self), false, '첫 요소에서 Tab 은 안쪽');
+  eq(P.popTabOut(f, b, false, self), false, '가운데에서 Tab');
+  eq(P.popTabOut(f, self, false, self), false, '팝오버 자신에서 Tab 은 첫 요소로');
+  eq(P.popTabOut(f, a, true, self), true, '첫 요소에서 Shift+Tab');
+  eq(P.popTabOut(f, self, true, self), true, '팝오버 자신에서 Shift+Tab');
+  eq(P.popTabOut(f, c, true, self), false, '마지막에서 Shift+Tab 은 안쪽');
+  eq(P.popTabOut(f, b, true, self), false, '가운데에서 Shift+Tab');
+  eq(P.popTabOut([], self, false, self), true, '갈 곳이 없으면 Tab 도 밖으로');
+  eq(P.popTabOut([], self, true, self), true);
+  eq(P.popTabOut(null, self, false, self), true, '깨진 목록');
+  eq(P.popTabOut([a], a, false, self), true, '하나뿐이면 Tab 도');
+  eq(P.popTabOut([a], a, true, self), true, '하나뿐이면 Shift+Tab 도');
+});
+
+test('K5-2 popLeave: 그 밖의 focusout — 열어 둠·닫기만·닫고 연 요소로', function () {
+  eq(P.popLeave({ to: false }), 'stay', '옮겨 간 곳이 없으면(다른 탭·앱) 열어 둠');
+  eq(P.popLeave({ to: true, inPop: true }), 'stay', '팝오버 안');
+  eq(P.popLeave({ to: true, inAnchor: true }), 'stay', '연 요소(그 클릭이 닫기·열기를 맡음)');
+  eq(P.popLeave({ to: true }), 'back', '키보드·프로그램으로 밖의 요소에 가면 닫고 연 요소로');
+  eq(P.popLeave({ to: true, pointer: true }), 'close', '마우스·터치로 누른 곳은 빼앗지 않음');
+  eq(P.popLeave({ to: true, typing: true }), 'close', '글을 칠 칸(검색창 등)은 빼앗지 않음');
+  eq(P.popLeave({ to: true, dialog: true }), 'close', '다른 모듈의 대화상자는 빼앗지 않음');
+  eq(P.popLeave(null), 'stay');
+  eq(P.popLeave(undefined), 'stay');
+});

@@ -276,7 +276,8 @@
     var ids = forms.map(function (f) { return f.id; });
     function formById(id) { return forms[ids.indexOf(id)] || null; }
 
-    /* 기록 종류 등록: 이 화면에서는 내 서재 API(has·clear)가 이 키를 알아요(모든 화면 등록은 coreRequests) */
+    /* 기록 종류 등록: 코어(js/app.js 의 BASE_KINDS)가 모든 화면에서 같은 값으로 등록해요(K5-1). 같은 id 는 덮어쓰니
+       여기서 다시 불러도 바뀌지 않고, 배포 직후 옛 app.js 가 캐시에 남은 기기에서도 이 화면에서는 내 서재 API(has·clear)가 이 키를 알아요 */
     if (app.privacy && typeof app.privacy.register === 'function') app.privacy.register({ id: 'plan', label: '미리 써 두는 종이', keys: [KEYS.keep, KEYS.data] });
     function paused() { return !!(app.privacy && app.privacy.paused()); }
 

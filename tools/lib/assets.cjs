@@ -4,11 +4,13 @@
    - uiCss()          css/ui.css 내용(css/ui/*.css 이름순으로 이어 붙임)
    - pageDecls()      data/pages/<id>.json 특집 화면 선언 읽기·검사·정리
    - pagesJs(pages)   data/pages.js 내용
-   - resolveLastmod(decl)  사이트맵 날짜(선언의 "lastmod": "kb:<자료>:<날짜 항목>" → 그 자료의 가장 최근 날짜, 없으면 updated)
+   - resolveLastmod(decl)  사이트맵·dated 고지 날짜(선언의 "lastmod": "kb:<자료>:<날짜 경로>" → 그 자료의 가장 최근 날짜, 없으면 updated)
    - kbFiles()        data/kb/*.json 목록, kbCheck() JSON 검사
    - uiScriptsHtml(base), topLinksHtml(pages, base), footLinksHtml(pages, base), applyShellMarkers(html, base, pages)  shell 조각 */
 const fs = require('fs');
 const path = require('path');
+/* 날짜 규칙(lastmod 꼴·경로 따라가기·실제 있는 날짜)은 앱과 같은 순수 함수(js/progress.js, K5-3) */
+const PR = require('../../js/progress.js');
 
 const ROOT = path.join(__dirname, '..', '..');
 const ID_RE = /^[a-z][a-z0-9-]{1,19}$/;
@@ -20,10 +22,9 @@ const NAV_PLACES = ['top', 'side', 'home', 'palette'];
 const NOTICE_KINDS = ['general', 'crisis', 'emergency', 'device', 'dated'];
 const KNOWN_KEYS = ['id', 'title', 'label', 'summary', 'lead', 'group', 'order', 'nav', 'keywords', 'data', 'robots', 'crisisLine', 'notice', 'updated', 'lastmod'];
 const SUMMARY_MAX = 155;
-/* 사이트맵 날짜를 자료에서 읽는 명시 항목: "lastmod": "kb:<data/kb 이름>:<날짜 항목 이름>" (예: "kb:changes:date").
-   빌드는 선언에 이렇게 적힌 화면만 자료를 읽어요(자료 모양으로 짐작하지 않음). */
-const LASTMOD_RE = /^kb:([a-z0-9][a-z0-9-]*):([A-Za-z_][A-Za-z0-9_]*)$/;
-const DAY_RE = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/;
+/* 사이트맵 날짜를 자료에서 읽는 명시 항목: "lastmod": "kb:<data/kb 이름>:<날짜 경로>" (예: "kb:changes:date", "kb:red-flags:source.updated").
+   빌드는 선언에 이렇게 적힌 화면만 자료를 읽어요(자료 모양으로 짐작하지 않음). 꼴은 js/progress.js 의 LASTMOD_RE 하나 */
+const LASTMOD_RE = PR.LASTMOD_RE;
 /* crisisLine:false(위기 줄 빼기)를 허락받은 화면 id. 위기 안내는 빠지지 않는 게 원칙이라(plan-final 4-4) 총괄만 이 목록에 더해요. 지금은 없음. */
 const CRISIS_LINE_OFF_OK = [];
 
@@ -94,7 +95,7 @@ function validateDecl(d, fileId, opts) {
   if (d.updated != null && (typeof d.updated !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(d.updated))) bad('updated 는 YYYY-MM-DD 꼴이어야 해요');
   if (d.lastmod != null) {
     const lm = typeof d.lastmod === 'string' ? LASTMOD_RE.exec(d.lastmod) : null;
-    if (!lm) bad('lastmod 는 "kb:<data/kb 이름>:<날짜 항목>" 꼴이어야 해요(예: "kb:changes:date"). 날짜를 직접 적을 때는 updated 를 써요');
+    if (!lm) bad('lastmod 는 "kb:<data/kb 이름>:<날짜 경로>" 꼴이어야 해요(예: "kb:changes:date", "kb:red-flags:source.updated"). 날짜를 직접 적을 때는 updated 를 써요');
     else if (opts && opts.root) {
       const r = kbLastmod(lm[1], lm[2], { root: opts.root });
       if (r.error) bad('lastmod: ' + r.error);
@@ -164,31 +165,31 @@ function pagesJs(pages) {
 }
 
 /* ---------- 사이트맵 날짜 ---------- */
-/* data/kb/<name>.json(배열)에서 각 항목의 field 값 가운데 가장 최근 YYYY-MM-DD.
-   돌려주는 값: { date: 'YYYY-MM-DD' | '' } 또는 { error } (파일 없음·JSON 오류·배열 아님) */
-function kbLastmod(name, field, opts) {
+/* data/kb/<name>.json 을 읽는다. 돌려주는 값: { value } 또는 { error } (파일 없음·JSON 오류·배열이나 객체가 아님) */
+function readKb(name, field, opts) {
   const rel = 'data/kb/' + name + '.json';
   const file = path.join(rootOf(opts), 'data', 'kb', name + '.json');
   if (!fs.existsSync(file)) return { error: rel + ' 이 없어요' };
   let v;
   try { v = JSON.parse(stripBom(fs.readFileSync(file, 'utf8'))); }
   catch (e) { return { error: rel + ' 을 JSON 으로 읽을 수 없어요(' + e.message + ')' }; }
-  if (!Array.isArray(v)) return { error: rel + ' 은 항목 배열이어야 해요(가장 최근 "' + field + '" 를 찾아요)' };
-  let max = '';
-  v.forEach(function (x) {
-    const d = x && typeof x === 'object' ? x[field] : null;
-    if (typeof d === 'string' && DAY_RE.test(d) && d > max) max = d;
-  });
-  return { date: max };
+  if (!v || typeof v !== 'object') return { error: rel + ' 은 항목 배열이나 객체여야 해요(가장 최근 "' + field + '" 를 찾아요)' };
+  return { value: v };
 }
-/* 정리된 선언(normalizeDecl)의 사이트맵 날짜: lastmod 가 가리키는 자료의 가장 최근 날짜 → 없으면 updated → 없으면 ''(빌드가 오늘로) */
+/* data/kb/<name>.json 에서 field(점 경로, 배열이면 항목마다) 값 가운데 가장 최근 실제 날짜(YYYY-MM-DD). 규칙은 js/progress.js 의 latestDate.
+   돌려주는 값: { date: 'YYYY-MM-DD' | '' } 또는 { error } */
+function kbLastmod(name, field, opts) {
+  const r = readKb(name, field, opts);
+  return r.error ? { error: r.error } : { date: PR.latestDate(r.value, field) };
+}
+/* 정리된 선언(normalizeDecl)의 사이트맵 날짜이자 "○○에 확인한 내용" 고지 날짜:
+   lastmod 가 가리키는 자료의 가장 최근 날짜 → 없으면(자료 없음·깨짐·경로 없음·틀린 날짜) updated → 없으면 ''(사이트맵은 빌드한 날로).
+   앱(js/app.js)도 같은 js/progress.js 의 pageDate 로 고지를 그려요 */
 function resolveLastmod(decl, opts) {
-  const lm = decl && typeof decl.lastmod === 'string' ? LASTMOD_RE.exec(decl.lastmod) : null;
-  if (lm) {
-    const r = kbLastmod(lm[1], lm[2], opts);
-    if (r.date) return r.date;
-  }
-  return (decl && decl.updated) || '';
+  const ref = PR.lastmodRef(decl && decl.lastmod);
+  let value;
+  if (ref) { const r = readKb(ref.name, ref.path, opts); if (!r.error) value = r.value; }
+  return PR.pageDate(decl, value) || '';
 }
 
 /* ---------- 지식 데이터 ---------- */

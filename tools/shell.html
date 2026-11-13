@@ -57,7 +57,7 @@ html:not(.js) #btn-nav, html:not(.js) #btn-fs, html:not(.js) #btn-theme { displa
 </style>
 <script>
 /* 자바스크립트가 켜졌다는 표시(html.js)를 달고, 옛 해시 주소(#/a/…)로 들어오면 새 경로로 옮기고, 첫 그리기 전에 테마·글자 크기를 적용한다.
-   첫 화면 자리 표시(data-hm-start)는 달지 않아요(결정 K2-5 보류, tests/pages.test.cjs 의 '머리 스크립트' 테스트 주석) */
+   첫 화면 자리 표시(data-hm-start)는 쓰지 않기로 했어요: 그 속성을 읽던 css/ui/home.css 규칙은 K4 에서 지웠어요(잰 값은 tests/pages.test.cjs 의 '머리 스크립트' 테스트 주석) */
 (function () {
   try { document.documentElement.classList.add('js'); } catch (e) { }
   var h = location.hash;

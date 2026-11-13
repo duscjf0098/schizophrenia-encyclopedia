@@ -225,3 +225,41 @@ test('소개: "기록과 개인정보"의 지우는 방법이 내 서재를 가�
   has(html, '<h2>AI로 만든 백과예요</h2>');
   has(html, 'GitHub Pages');
 });
+
+/* ---------- K5-1 미리 써 두는 종이(plan): 내 서재에서 이름으로 보이고, 개수는 내용을 드러내지 않게 ---------- */
+/* 종이는 장 수를 세지 않아요: 종이 화면은 지금 양식 목록에 있는 칸만 살려서(plan.js 의 clean),
+   양식이 빠지거나 이름이 바뀌면 내 서재의 "N장"과 종이 화면이 어긋날 수 있어서. "있어요/없어요"만(privacy.has) */
+test('K5-1 내 서재: 종이 줄은 장 수 없이 있어요·없어요만(양식 이름·적은 글·장 수를 세지 않음)', function () {
+  ok(!('planSheets' in L), '장 수를 세는 함수가 없음');
+  const src = fs.readFileSync(path.join(__dirname, '..', 'js', 'pages', 'me.js'), 'utf8');
+  const ct = src.slice(src.indexOf('function countText('), src.indexOf('function stateText('));
+  ok(ct.length > 0, 'countText');
+  not(ct, "'plan'", '종이는 개수 글자를 만들지 않음');
+  not(src, 'jhb.ui.plan.data', '종이 내용 키를 읽지 않음');
+  eq(L.countLabel('plan', 2), '2편', '단위 표에도 종이 없음(쓰지 않음)');
+});
+
+test('K5-1 내 서재: 개수 글자·설명 줄(종이는 이 기기 저장을 말함)', function () {
+  eq(L.countLabel('read', 3), '3편');
+  eq(L.countLabel('recentq', 4), '4개');
+  ok(L.HINT.plan && L.HINT.plan.indexOf('이 기기') >= 0, '설명 줄');
+  ['재발', '안전 계획', '내 정보'].forEach(function (w) { not(L.HINT.plan, w, '양식 이름을 드러내지 않음'); });
+  eq(L.subj('미리 써 두는 종이 2장'), '미리 써 두는 종이 2장이');
+  eq(L.obj('미리 써 두는 종이'), '미리 써 두는 종이를');
+  ok(L.needsConfirm('plan'), '직접 쓴 것이라 지우기 전에 한 번 더 물음');
+});
+
+test('K5-1 내 서재: 정적 소개 문장에도 진료 질문 바구니·미리 써 두는 종이', function () {
+  const html = page.staticHtml({ data: {}, esc: md.esc, articles: {}, sections: [], page: { id: 'me' } });
+  has(html, '진료 질문 바구니');
+  has(html, '미리 써 두는 종이');
+});
+
+/* 기록 쉼 스위치 설명: 종이와 진료 질문 바구니도 새로 저장하지 않는다는 것(plan.js TEXT.pausedSave, js/ui/ask.js 의 기록 쉼과 같은 뜻) */
+test('K5-1 내 서재: "기록 남기지 않기" 설명에 미리 써 두는 종이·진료 질문 바구니도', function () {
+  const d = L.PAUSED_DESC;
+  ok(typeof d === 'string' && d.length > 0, '설명');
+  ['읽은 글', '최근 읽은 글', '읽던 자리', '최근 검색', '미리 써 두는 종이', '진료 질문 바구니', '새로 저장하지 않아요', '지우기'].forEach(function (w) { has(d, w); });
+  const src = fs.readFileSync(path.join(__dirname, '..', 'js', 'pages', 'me.js'), 'utf8');
+  ok(/makeSwitch\('paused', '기록 남기지 않기',\s*PAUSED_DESC,/.test(src), '스위치가 이 설명을 씀');
+});
