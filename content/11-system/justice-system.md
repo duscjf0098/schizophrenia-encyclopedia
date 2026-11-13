@@ -95,3 +95,4 @@ sources:
 - [조현병이 있는 사람은 위험한가요?](#/a/faq-dangerous)
 - [보호의무자: 누가 되고 무엇을 하나](#/a/guardian-duties)
 - [당사자·가족 단체](#/a/advocacy-groups)
+- [언론 보도와 낙인](#/a/media-reporting-guidelines)

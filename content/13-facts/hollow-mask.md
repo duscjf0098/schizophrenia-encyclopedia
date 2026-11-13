@@ -64,6 +64,7 @@ sources:
 
 - [양성 증상의 신경과학](#/a/positive-neuroscience)
 - [선천성 시각장애와 조현병](#/a/congenital-blindness)
+- [환시](#/a/visual-hallucination)
 - [스스로를 간질일 수 있다?](#/a/self-tickling)
 - [관계망상](#/a/referential-delusion)
 - [재발과 재발 신호](#/a/relapse-signs)

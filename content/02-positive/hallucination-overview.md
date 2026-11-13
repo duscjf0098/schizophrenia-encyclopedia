@@ -4,7 +4,7 @@ section: 2
 order: 2
 summary: 바깥 자극이 없는데도 생생하게 보이고 들리고 느껴지는 경험이 환각이에요. 조현병에서는 환청이 가장 흔하지만, 절반 넘는 사람이 두 가지 이상의 감각에서 환각을 겪어요.
 tags: 양성, 환각, 총론
-updated: 2026-10-23
+updated: 2026-11-14
 points:
   - 환각은 바깥 자극 없이 실제처럼 보이고 들리고 느껴지는 경험이에요.
   - 있다 없다보다 얼마나 자주, 괴롭게, 생활을 방해하는지가 중요해요.
@@ -18,6 +18,7 @@ sources:
   - Brookwell ML 외 | Externalizing biases and hallucinations in source-monitoring, self-monitoring and signal detection studies: a meta-analytic review (Psychological Medicine) | 2013 | https://doi.org/10.1017/S0033291712002760
   - Sterzer P 외 | The Predictive Coding Account of Psychosis (Biological Psychiatry) | 2018 | https://doi.org/10.1016/j.biopsych.2018.05.015
   - Haddock G 외 | Scales to measure dimensions of hallucinations and delusions: the psychotic symptom rating scales (PSYRATS) (Psychological Medicine) | 1999 | https://doi.org/10.1017/S0033291799008661
+  - NIMH | Schizophrenia (NIH Publication No. 24-MH-8082) | 2024 | https://www.nimh.nih.gov/health/publications/schizophrenia
 ---
 ## 한 문장으로
 
@@ -94,7 +95,7 @@ sources:
 
 ## 무엇이 도움이 되나
 
-- **약물 치료**: 항정신병약(환각·망상을 줄이는 약)은 환각의 세기와 빈도를 줄이는 데 효과가 가장 잘 확인된 치료예요. 담당 의사와 상의해서 조정해요. 약이 듣는 속도와 순서는 [양성 증상이 약에 반응하는 방식](#/a/positive-medication-response)에 정리했어요.
+- **약물 치료**: 항정신병약(환각·망상을 줄이는 약)은 환각을 비롯한 정신증 증상을 덜 심하고 덜 잦게 만드는 데 도움이 될 수 있어요.[^8] 담당 의사와 상의해서 조정해요. 약이 듣는 속도와 순서는 [양성 증상이 약에 반응하는 방식](#/a/positive-medication-response)에 정리했어요.
 - **[인지행동치료(CBTp)](#/a/cbtp)**: 환각을 없애기보다 환각과의 관계를 바꿔요. 목소리가 하는 말을 얼마나 믿는지, 어떻게 반응하는지를 함께 살펴요.
 - **스스로 할 수 있는 것**: 수면 지키기, 환각이 심해지는 상황 기록하기, 주의를 돌릴 수 있는 활동 목록 만들기. 자세한 방법은 [양성 증상 자기 관리](#/a/positive-self-help) 글에 모아 뒀어요.
 
@@ -104,7 +105,7 @@ sources:
 
 ## 주변 사람이 알아둘 것
 
-환각은 당사자에게는 실제처럼 생생해요. "그런 거 없어"라고 부정하면 당사자는 "아무도 안 믿어 준다"고 느끼기 쉬워요. "나한테는 안 들리지만 네가 듣고 있다는 건 알겠어"처럼 경험은 인정하고, 해석은 다르게 둘 수 있어요. 환각이 자신이나 남을 해치라고 시키거나, 환각 때문에 먹고 자지 못하는 상태가 이어지면 담당 의사나 정신건강위기상담(1577-0199)에 연락하는 게 안전해요.
+환각은 당사자에게는 실제처럼 생생해요. "그런 거 없어"라고 부정하면 당사자는 "아무도 안 믿어 준다"고 느끼기 쉬워요. "나한테는 안 들리지만 네가 듣고 있다는 건 알겠어"처럼 경험은 인정하고, 해석은 다르게 둘 수 있어요. 환각이 자신이나 남을 해치라고 시키거나, 환각 때문에 먹고 자지 못하는 상태가 이어지면 담당 의사나 자살예방상담(109), 정신건강위기상담(1577-0199)에 연락하는 게 안전해요. 그때 무엇을 할지는 [환청](#/a/auditory-hallucination) 글의 "목소리가 해치라고 할 때"에 정리했어요.
 
 ## 더 읽을 글
 

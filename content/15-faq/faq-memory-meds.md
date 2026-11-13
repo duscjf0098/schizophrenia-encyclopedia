@@ -49,6 +49,7 @@ sources:
 ## 더 읽을 글
 
 - [인지 증상이란 무엇인가](#/a/cognitive-overview)
+- [인지재활(CRT)](#/a/cognitive-remediation)
 - [진정과 항콜린 부작용](#/a/sedation-anticholinergic)
 - [조현병과 치매 위험](#/a/dementia-risk)
 - [약 때문에 멍하고 감정이 없어진 것 같아요](#/a/faq-dull-feeling)

@@ -8,7 +8,7 @@ points:
   - 위험이 커지는 정도는 7%로, 한 사람에게는 아주 작은 차이예요.
   - 태어난 계절은 개인의 원인으로 볼 수 없어서 부모가 자책할 이유가 없어요.
 tags: 잘 알려지지 않은 사실, 원인, 출생 계절, 비타민 D, 감염
-updated: 2026-10-23
+updated: 2026-11-14
 evidence: 연구
 sources:
   - Torrey EF 외 | Seasonality of births in schizophrenia and bipolar disorder: a review of the literature (Schizophrenia Research) | 1997 | https://doi.org/10.1016/S0920-9964(97)00092-3
@@ -18,6 +18,7 @@ sources:
   - Mortensen PB 외 | Effects of family history and place and season of birth on the risk of schizophrenia (New England Journal of Medicine) | 1999 | https://doi.org/10.1056/NEJM199902253400803
   - Escott-Price V 외 | Polygenic risk for schizophrenia and season of birth within the UK Biobank cohort (Psychological Medicine) | 2019 | https://doi.org/10.1017/S0033291718000454
   - Eyles DW 외 | The association between neonatal vitamin D status and risk of schizophrenia (Scientific Reports) | 2018 | https://doi.org/10.1038/s41598-018-35418-z
+  - Messias E 외 | Summer birth and deficit schizophrenia: a pooled analysis from 6 countries (Archives of General Psychiatry) | 2004 | https://doi.org/10.1001/archpsyc.61.10.985
 ---
 ## 근거 수준
 
@@ -36,6 +37,8 @@ sources:
 **최신 메타분석(2023년).** 30개 나라와 지역의 43개 연구, 조현병이 있는 사람 44만 39명을 모았어요. 겨울 출생은 위험이 약간 높았고(오즈비 1.05), 여름 출생은 약간 낮았어요(0.96). 계절 단위로는 남북반구 차이가 뚜렷하지 않았지만, 월별로 보면 겨울에 높고 여름~가을에 낮은 흐름이 북반구에서만 분명했어요.[^4]
 
 **남반구는?** 1999년 남반구 메타분석에서 겨울 출생의 오즈비는 1.04였고 통계적으로 유의하지 않았어요.[^3] 그러니 "남반구에서도 재현됐다"고 말하기는 어려워요. 연구진은 남반구에서는 계절에 따라 달라지는 위험 요인이 약하거나 덜 규칙적일 수 있다고 해석했어요.[^3]
+
+**반대 방향의 하위 집단.** 일차 음성 증상이 오래 이어지는 [결핍 증후군](#/a/deficit-syndrome)은 오히려 여름 출생과 관련된다는 보고가 있어요. 북반구 6개 나라 자료를 합친 2004년 분석에서, 발생률에 가까운 인구 기반 연구들을 보면 결핍 집단은 그렇지 않은 조현병 집단보다 6~7월 출생이 많았어요(오즈비 1.9). 편의 표본 연구 3개를 합친 결과에서는 뚜렷한 차이가 없었어요.[^8]
 
 ::: fact 크기는 작지만 사람 수는 많다
 상대위험 1.07은 위험이 7% 늘어난다는 뜻이에요. 원래 드문 병에서 7%는 한 사람에게 거의 느껴지지 않는 차이예요. 그런데 모든 사람이 어느 계절엔가 태어나기 때문에, 인구 전체로 보면 적지 않은 몫이 돼요. 덴마크 연구에서 출생 계절에 돌릴 수 있는 몫은 10.5%로, 부모·형제의 조현병 병력(5.5%)보다 컸어요.[^5] 개인에게는 작고, 인구에게는 큰 요인인 거예요.

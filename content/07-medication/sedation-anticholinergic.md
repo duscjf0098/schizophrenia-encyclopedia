@@ -8,7 +8,7 @@ updated: 2026-11-14
 points:
   - 졸림과 입마름·변비는 진료실에서 가장 자주 나오는 부작용이에요.
   - 졸림은 몇 주면 줄기도 하지만, 변비는 가볍게 넘기면 안 돼요.
-  - 클로자핀을 먹는 중 며칠째 대변이 없고 배가 아프거나 토하면 당일 병원이나 119예요.
+  - 클로자핀을 먹는 중 며칠째 대변이 없고 배가 부풀거나 아프고 토하면 오늘 안에 의사나 병원에 연락해요.
 evidence: 연구
 sources:
   - Huhn M 외 | Comparative efficacy and tolerability of 32 oral antipsychotics for the acute treatment of adults with multi-episode schizophrenia: a systematic review and network meta-analysis (Lancet) | 2019 | https://doi.org/10.1016/S0140-6736(19)31135-3
@@ -19,6 +19,9 @@ sources:
   - Maher S 외 | Clozapine-induced hypersalivation: an estimate of prevalence, severity and impact on quality of life (Therapeutic Advances in Psychopharmacology) | 2016 | https://doi.org/10.1177/2045125316641019
   - U.S. CDC | Heat and Medications – Guidance for Clinicians | 2025 | https://www.cdc.gov/heat-health/hcp/clinical-guidance/heat-and-medications-guidance-for-clinicians.html
   - Yosef L 외 | Antipsychotic treatment influence on urinary incontinence in young women: types, severity and life quality (European Journal of Obstetrics & Gynecology and Reproductive Biology) | 2025 | https://doi.org/10.1016/j.ejogrb.2025.03.020
+  - Solmi M 외 | Safety, tolerability, and risks associated with first- and second-generation antipsychotics: a state-of-the-art clinical review (Therapeutics and Clinical Risk Management) | 2017 | https://doi.org/10.2147/TCRM.S117321
+  - Stroup TS, Gray N | Management of common adverse effects of antipsychotic medications (World Psychiatry) | 2018 | https://doi.org/10.1002/wps.20567
+  - U.S. FDA / DailyMed | CLOZARIL (clozapine) tablets, prescribing information (Revised 6/2025) · 5.7 Gastrointestinal Hypomotility with Severe Complications, 17 Patient Counseling Information, Medication Guide | 2025 | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=90876802-0e3a-44c9-9ff7-1754dfbe736a&type=display
 ---
 ## 한 문장으로
 
@@ -32,11 +35,11 @@ sources:
 2019년 란셋 네트워크 메타분석(3만 770명 자료)에서 위약 대비 진정 위험비는 피모지드 0.92에서 주클로펜틱솔 10.2까지 벌어졌어요. 32개 약 사이의 차이가 10배가 넘는다는 뜻이에요.[^1]
 :::
 
-흔히 쓰는 약 중에서는 클로자핀, 쿠에티아핀, 올란자핀, 클로르프로마진이 진정이 큰 쪽으로, 아리피프라졸, 카리프라진, 루라시돈, 팔리페리돈은 작은 쪽으로 알려져 있어요. 성분별 글에 자세한 내용이 있어요.
+여러 약을 견준 2017년 종설은 진정이 클로자핀과 클로르프로마진에서 가장 크고, 쿠에티아핀·올란자핀에서 루라시돈·아리피프라졸·팔리페리돈 쪽으로 갈수록 줄어든다고 정리했어요. 카리프라진은 졸리게 하기보다 오히려 각성시키는(활성화) 쪽으로 봤어요.[^9] 다만 이 종설과 2018년 종설의 약별 표는 모두 루라시돈과 올란자핀의 진정을 같은 기호(+/++)로 매겨서, 루라시돈의 자리는 자료마다 조금 달라요.[^9][^10] 이 기호는 2018년 종설의 범례로 읽으면 가벼움과 중간 사이예요.[^10] 성분별 글에 자세한 내용이 있어요.
 
 **시간이 지나면 줄어드나요?** 많은 경우 몇 주 안에 몸이 적응해 처음보다 덜 졸려요. 하지만 완전히 사라지지 않는 사람도 있고, 용량이 높을수록 남기 쉬워요. 시작 후 한 달이 지나도 낮 활동이 어렵다면 의사에게 말할 때예요.
 
-**졸림인가, 음성 증상인가, 우울인가?** 아침에 못 일어나고 낮에 누워 있는 모습은 셋 모두에서 보여요. 구분하는 단서는 "약을 먹은 뒤 몇 시간 안에 가장 심한가"예요. 그렇다면 진정일 가능성이 커요. [무의욕](#/a/avolition)이나 [우울](#/a/depression-anxiety)과 섞여 있을 수 있어 의사의 판단이 필요해요.
+**졸림인가, 음성 증상인가, 우울인가?** 아침에 못 일어나고 낮에 누워 있는 모습은 셋 모두에서 보여요. 구분하는 단서는 "약을 먹은 뒤 몇 시간 안에 가장 심한가"예요. 그렇다면 진정일 가능성이 커요. [무의욕](#/a/avolition)이나 [우울](#/a/depression-anxiety)과 섞여 있을 수 있어 의사의 판단이 필요해요. 진정처럼 약 때문에 활동이 줄어 음성 증상처럼 보이는 것을 [이차 음성 증상](#/a/primary-secondary-negative)이라고 불러요.
 
 ## 진정에 대처하는 일반 정보
 
@@ -60,7 +63,7 @@ sources:
 | 인지 | 깜빡함, 집중 저하, 멍함 | 항콜린 부담 전체를 의사와 점검 |
 
 ::: warn 변비를 가볍게 보지 마세요
-클로자핀에서 장 운동 저하는 장폐색으로 이어질 수 있어요. 호주·뉴질랜드 22년 약물감시 자료에서 심각한 사례 160건 중 최소 29명(18%)이 사망했어요.[^4] 며칠째 대변이 없고 배가 부풀거나 아프고 토한다면 당일에 병원이나 119에 연락하세요. 다른 항콜린 약을 함께 먹으면 위험이 더 커요. 그 밖에 바로 연락해야 하는 약 부작용 신호는 [부작용 총론](#/a/side-effects-overview)의 표에 모아 두었어요.
+클로자핀에서 장 운동 저하는 장폐색으로 이어질 수 있어요. 호주·뉴질랜드 22년 약물감시 자료에서 심각한 사례 160건 중 최소 29명(18%)이 사망했어요.[^4] 며칠째 대변이 없고 배가 부풀거나 아프고 토한다면 오늘 안에 담당 의사나 병원에 연락하세요. 연락이 닿지 않으면 응급실이나 119로 가요.[^11] 다른 항콜린 약을 함께 먹으면 위험이 더 커요. 그 밖에 바로 연락해야 하는 약 부작용 신호는 [부작용 총론](#/a/side-effects-overview)의 표에 모아 두었어요.
 :::
 
 **더운 날.** 항콜린 작용이 있는 약과 항정신병약은 땀을 줄이고 뇌의 체온 조절을 방해해, 더운 날 몸이 잘 식지 않게 할 수 있어요.[^7] 여름 수칙과 바로 119에 연락할 신호는 [더위와 약](#/a/heat-and-medication)에 있어요.

@@ -25,6 +25,7 @@ sources:
   - Capinha M 외 | Drug-induced hyponatremia: insights into pharmacological mechanisms and clinical practice management (Journal of Clinical Medicine) | 2025 | https://doi.org/10.3390/jcm14186584
   - Peritogiannis V, Rizos DV | Catatonia associated with hyponatremia: case report and brief review of the literature (Clinical Practice & Epidemiology in Mental Health) | 2021 | https://doi.org/10.2174/1745017902117010026
   - Haddad PM, Anderson IM | Antipsychotic-related QTc prolongation, torsade de pointes and sudden death (Drugs) | 2002 | https://doi.org/10.2165/00003495-200262110-00006
+  - NHS | Heat exhaustion and heatstroke · Call 999 | 2026 | https://www.nhs.uk/conditions/heat-exhaustion-heatstroke/
 ---
 ## 한 문장으로
 
@@ -42,7 +43,7 @@ sources:
 | 클로자핀을 먹는 중 열이나 오한, 독감 같은 몸살, 목 아픔, 입안이 헐거나 궤양이 생김[^9] | 호중구 감소(무과립구증) | 오늘 안에 담당 의사나 병원에 연락. 미루지 말고 바로 전화하고, 연락이 닿지 않으면 응급실이나 119. 혈액 검사로 확인해요 | [클로자핀](#/a/clozapine) |
 | 클로자핀을 먹는 중 며칠째 대변이 없고, 배가 부풀거나 아프고, 메스껍거나 토함[^9] | 장 운동 저하(장폐색) | 오늘 안에 담당 의사나 병원에 연락. 연락이 닿지 않으면 응급실이나 119 | [클로자핀](#/a/clozapine) |
 | 경련(발작)을 함[^9][^11][^12] | 경련 발작 | 바로 119 | [클로자핀](#/a/clozapine) |
-| 더운 날 정신이 흐려지거나 비틀거림, 몸이 매우 뜨거움, 맥박이나 숨이 아주 빠름, 쓰러지거나 유난히 졸림[^11] | 열사병 | 바로 119. 기다리는 동안 시원한 곳에서 몸을 식혀요 | [더위와 약](#/a/heat-and-medication) |
+| 더운 날 정신이 흐려지거나 비틀거림, 몸이 매우 뜨거움, 맥박이나 숨이 아주 빠름, 쓰러지거나 유난히 졸림, 시원한 곳에서 물을 마시며 30분쯤 쉬어도 나아지지 않음[^11][^15] | 열사병 | 바로 119. 기다리는 동안 시원한 곳에서 몸을 식혀요 | [더위와 약](#/a/heat-and-medication) |
 | 물을 아주 많이 마신 뒤 토함, 숨쉬기 힘듦, 비틀거려 제대로 걷지 못함, 심한 혼란, 깨워도 잘 깨지 않을 만큼 깊은 졸음, 경련[^12][^13] | 물 중독(심한 저나트륨) | 바로 119 | [물을 너무 많이 마실 때](#/a/polydipsia-hyponatremia) |
 | 물을 많이 마신 뒤 두통, 토하지 않는 메스꺼움, 새로 생긴 멍함[^12][^13] | 저나트륨 | 오늘 안에 담당 의사나 병원에 연락. 미루지 말고 바로 전화해 피검사로 나트륨을 재요. 연락이 닿지 않으면 응급실, 헷갈림이 심해지면 119 | [물을 너무 많이 마실 때](#/a/polydipsia-hyponatremia) |
 
@@ -56,7 +57,7 @@ sources:
 
 약을 정해진 것보다 훨씬 많이 먹었다면 실수였더라도 기다리지 말고 바로 119예요. 클로자핀 허가사항은 너무 많이 먹었을 때 빠른 맥박, 부정맥, 경련 같은 일이 생길 수 있다고 적어요.[^9] 남은 약 봉투를 챙겨 가요. 일부러 먹었다면 [위기 상담 전화](#/a/crisis-hotlines)도 함께 봐요. 자세한 내용은 [심장과 약](#/a/heart-and-antipsychotics)에 있어요.
 
-표의 신호는 미국 클로자핀 허가사항과 환자용 안내문, 악성 증후군 종설, 영국 정신건강 단체 Rethink의 더위 안내, 약물성 저나트륨 종설과 정신증의 저나트륨 증례 고찰에 실린 증상을 옮긴 거예요.[^9][^10][^11][^12][^13] 심장 행의 증상 낱말은 허가사항에서 옮겼어요. QT 연장과 위험한 부정맥은 클로자핀만이 아니라 여러 항정신병약에서 생길 수 있고, 그 정도는 약마다 달라요.[^14] 각 상태의 자세한 설명과 근거는 '자세한 글'에 있어요.
+표의 신호는 미국 클로자핀 허가사항과 환자용 안내문, 악성 증후군 종설, 영국 정신건강 단체 Rethink의 더위 안내와 영국 국민보건서비스(NHS)의 열사병 안내, 약물성 저나트륨 종설과 정신증의 저나트륨 증례 고찰에 실린 증상을 옮긴 거예요.[^9][^10][^11][^12][^13][^15] 심장 행의 증상 낱말은 허가사항에서 옮겼어요. QT 연장과 위험한 부정맥은 클로자핀만이 아니라 여러 항정신병약에서 생길 수 있고, 그 정도는 약마다 달라요.[^14] 각 상태의 자세한 설명과 근거는 '자세한 글'에 있어요.
 
 ## 부작용의 8가지 갈래
 
@@ -134,3 +135,4 @@ sources:
 - [심장과 약](#/a/heart-and-antipsychotics)
 - [다른 과 진료·수술·치과·약국에서 알릴 것](#/a/other-medical-care)
 - [신체 건강](#/a/physical-health)
+- [클로자핀과 침 흘림](#/a/clozapine-hypersalivation)

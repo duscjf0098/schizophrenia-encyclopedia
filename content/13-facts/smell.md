@@ -8,7 +8,7 @@ points:
   - 약이나 흡연 탓만이 아니고, 발병 전 고위험 청소년에게서도 보여요.
   - 가스·화재 경보기를 두고, 음식은 유통기한과 색으로 확인해요.
 tags: 잘 알려지지 않은 사실, 후각, 감각, 바이오마커, 신경발달
-updated: 2026-10-23
+updated: 2026-11-14
 evidence: 연구
 sources:
   - Moberg PJ 외 | Olfactory dysfunction in schizophrenia: a qualitative and quantitative review (Neuropsychopharmacology) | 1999 | https://doi.org/10.1016/S0893-133X(99)00019-6
@@ -16,6 +16,7 @@ sources:
   - Turetsky BI 외 | Reduced olfactory bulb volume in patients with schizophrenia (American Journal of Psychiatry) | 2000 | https://doi.org/10.1176/appi.ajp.157.5.828
   - Egbujo CN 외 | Molecular evidence for decreased synaptic efficacy in the postmortem olfactory bulb of individuals with schizophrenia (Schizophrenia Research) | 2015 | https://doi.org/10.1016/j.schres.2015.07.026
   - Turetsky BI 외 | Structural anomalies of the peripheral olfactory system in psychosis high-risk subjects (Schizophrenia Research) | 2018 | https://doi.org/10.1016/j.schres.2017.09.015
+  - Cohen AS 외 | Neuropsychology of the deficit syndrome: new data and meta-analysis of findings to date (Schizophrenia Bulletin) | 2007 | https://doi.org/10.1093/schbul/sbl066
 ---
 ## 근거 수준
 
@@ -39,6 +40,8 @@ sources:
 | 조현형 성격 특성이 있는 사람 | 0.19 (유의하지 않음)[^2] |
 
 약을 먹는 사람과 먹지 않는 사람의 차이는 거의 같았어요. 흥미롭게도 담배를 많이 피운 사람일수록 차이가 작았고, 병을 앓은 기간이 길수록 결과가 달라졌어요.[^2] 중요한 점은 **발병 전 고위험 청소년에게서도** 비슷한 크기의 저하가 보였다는 거예요. 약이나 오랜 투병의 결과만은 아니라는 뜻이에요.
+
+**결핍 증후군에서는 차이가 더 클 수 있어요.** 일차 음성 증상이 오래 이어지는 [결핍 증후군](#/a/deficit-syndrome) 집단과 그렇지 않은 조현병 집단을 비교한 2007년 메타분석(13개 연구)에서, 여러 검사 가운데 후각 검사의 차이가 가장 컸어요(효과 크기 1.11). 다만 13개 연구 전체를 합친 차이는 0.41이었고, 후각 값은 같은 표본을 쓴 연구 다섯 편 가운데 하나(70명)만 넣어 계산한 것이라 더 확인이 필요해요.[^6]
 
 ## 후각 망울: 냄새 신경의 첫 정거장
 

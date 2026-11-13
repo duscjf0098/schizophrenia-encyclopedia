@@ -4,7 +4,7 @@ section: 15
 order: 32
 summary: 화 뒤에는 증상, 불면, 약 부작용, 술, 좌절이 숨어 있을 수 있어요. 지금은 설득하지 말고 자극을 낮추고 거리를 두세요. 흉기나 위협, 자해가 보이면 112·119가 먼저예요. 화가 잦아지면 의료진에게 알리는 것이 재발을 막는 길이에요.
 tags: FAQ, 가족, 분노, 짜증, 비확전, 재발 신호, 위기
-updated: 2026-10-24
+updated: 2026-11-14
 evidence: 연구
 sources:
   - Gleeson JF 외 | Systematic review of early warning signs of relapse and behavioural antecedents of symptom worsening in people living with schizophrenia spectrum disorders (Clinical Psychology Review) | 2024 | https://doi.org/10.1016/j.cpr.2023.102357
@@ -45,7 +45,7 @@ sources:
 내가 안전하지 않다고 느끼면 그 자리를 떠나도 돼요. 떠나는 것은 포기가 아니라 안전 확보예요.
 
 ::: fact 화와 폭력은 다른 일이에요
-조현병이 있는 사람 대부분은 폭력적이지 않아요. 20개 연구를 모은 메타분석에서 위험 증가의 대부분은 치료받지 않은 상태에 물질 사용이 겹친 경우에서 나왔어요.[^3] 화를 낸다는 것이 곧 위험하다는 뜻은 아니지만, 아래 신호가 보이면 안전이 먼저예요.
+조현병이 있는 사람 대부분은 폭력적이지 않아요. 20개 연구를 모은 메타분석에서 위험 증가의 대부분은 물질 사용이 겹친 데서 오는 것으로 보였어요.[^3] 화를 낸다는 것이 곧 위험하다는 뜻은 아니지만, 아래 신호가 보이면 안전이 먼저예요.
 :::
 
 ### 위험 신호와 연락할 곳

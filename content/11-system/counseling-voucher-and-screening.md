@@ -108,4 +108,5 @@ sources:
 - [정신건강복지센터](#/a/mental-health-center)
 - [전구기와 고위험군](#/a/prodrome)
 - [조기 발견과 예방 연구](#/a/early-detection)
+- [신체 건강: 몸을 챙기는 것이 치료다](#/a/physical-health)
 - [가족이 쓰는 돌봄휴가·휴직·단축 근무](#/a/family-care-leave)

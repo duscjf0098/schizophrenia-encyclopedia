@@ -93,3 +93,4 @@ sources:
 - [외상과 정신증](#/a/trauma-and-psychosis)
 - [스트레스 때문에 생기나요?](#/a/faq-stress-cause)
 - [내 탓인가요? 부모 탓인가요?](#/a/faq-whose-fault)
+- [조현병이란 무엇인가](#/a/what-is-schizophrenia)

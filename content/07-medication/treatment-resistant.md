@@ -4,7 +4,7 @@ section: 7
 order: 24
 summary: 두 가지 약을 충분히 써도 증상이 남는 상태로, 조현병이 있는 사람의 약 1/3이 해당해요. 2017년 국제 합의 기준(TRRIP), 클로자핀의 근거, 클로자핀에도 반응하지 않을 때의 선택지(ECT 등), "도파민이 정상"이라는 가설, 그리고 진짜 저항성인지 먼저 확인해야 할 것들을 정리했어요.
 tags: 약물 치료, 치료저항성, 클로자핀, 전기경련치료, 도파민, TRRIP
-updated: 2026-10-25
+updated: 2026-11-14
 points:
   - 두 약을 충분히 써도 증상이 남는 유형으로, 세 명 중 한 명꼴이에요.
   - 이때 효과가 확인된 약은 클로자핀이고, 당사자의 잘못이 아니에요.
@@ -18,6 +18,8 @@ sources:
   - McCutcheon R 외 | Antipsychotic plasma levels in the assessment of poor treatment response in schizophrenia (Acta Psychiatrica Scandinavica) | 2018 | https://doi.org/10.1111/acps.12825
   - Wang G 외 | ECT augmentation of clozapine for clozapine-resistant schizophrenia: a meta-analysis of randomized controlled trials (Journal of Psychiatric Research) | 2018 | https://doi.org/10.1016/j.jpsychires.2018.08.002
   - Tiihonen J 외 | The efficacy of lamotrigine in clozapine-resistant schizophrenia: a systematic review and meta-analysis (Schizophrenia Research) | 2009 | https://doi.org/10.1016/j.schres.2009.01.002
+  - Slotema CW 외 | Review of the efficacy of transcranial magnetic stimulation for auditory verbal hallucinations (Biological Psychiatry) | 2014 | https://doi.org/10.1016/j.biopsych.2013.09.038
+  - Cobandag M, Sigala N | The effectiveness of non-pharmacological treatments for auditory verbal hallucinations in schizophrenia spectrum disorders: a systematic review and meta-analysis (European Psychiatry) | 2025 | https://doi.org/10.1192/j.eurpsy.2025.10115
 ---
 ## 한 문장으로
 
@@ -61,7 +63,7 @@ sources:
 
 - **물질 사용**: 대마·각성제·과음은 약 효과를 가리고 증상을 키워요. [대마](#/a/cannabis)와 [술·약물 문제가 함께 있을 때](#/a/comorbid-substance-use)를 보세요.
 - **오진**: 양극성장애, 조현정동장애, 신체 질환 등이 섞여 있으면 치료 방향이 달라요. [감별 진단](#/a/diagnostic-process)을 보세요.
-- **용량·기간 부족**: 각 약을 충분히 썼는지 확인해요.
+- **용량·기간 부족**: 각 약을 충분히 썼는지 확인해요. 약이 보통 언제부터 듣기 시작하는지는 [양성 증상이 약에 반응하는 방식](#/a/positive-medication-response)에 있어요.
 - **부작용으로 인한 불규칙 복용**: 부작용 때문에 거르면 "안 듣는" 것처럼 보여요.
 
 이것들을 확인한 뒤에도 증상이 남아야 진짜 치료저항성이에요.
@@ -78,7 +80,7 @@ sources:
 2018년 메타분석은 클로자핀 저항성에서 ECT를 더한 무작위 시험 18개(1,769명)를 모았어요. ECT 병합군의 반응률은 53.6%로, 클로자핀 단독군 25.4%보다 높았어요. 반응 하나를 더 얻기 위해 치료가 필요한 사람 수는 약 3명이었어요.[^6]
 :::
 
-ECT는 마취 아래 뇌에 짧은 전기 자극을 주는 치료로, 영화의 이미지와 달리 현대의 ECT는 통증 없이 이뤄져요. 자세한 내용은 [전기경련치료](#/a/ect)에 있어요. 약물 보강으로는 항전간제 라모트리진(lamotrigine)이 연구됐어요. 5개 시험 161명을 모은 2009년 메타분석에서 위약보다 효과가 있었지만(효과 크기 0.57), 표본이 작아 근거 수준은 제한적이에요.[^7] 다른 보강 약물의 근거는 대체로 약해요. [보조 약물](#/a/adjunct-medications)을 보세요. 약 바깥에서는 [인지행동치료](#/a/cbtp)가 남은 증상의 괴로움을 줄이는 데 쓰여요. 약을 먹어도 목소리가 남을 때 할 수 있는 일은 [약을 먹어도 목소리가 계속 들려요](#/a/faq-voices-persist)에 짧게 정리했어요.
+ECT는 마취 아래 뇌에 짧은 전기 자극을 주는 치료로, 영화의 이미지와 달리 현대의 ECT는 통증 없이 이뤄져요. 자세한 내용은 [전기경련치료](#/a/ect)에 있어요. 약물 보강으로는 항전간제 라모트리진(lamotrigine)이 연구됐어요. 5개 시험 161명을 모은 2009년 메타분석에서 위약보다 효과가 있었지만(효과 크기 0.57), 표본이 작아 근거 수준은 제한적이에요.[^7] 다른 보강 약물의 근거는 대체로 약해요. [보조 약물](#/a/adjunct-medications)을 보세요. 약 바깥에서는 [인지행동치료](#/a/cbtp)가 남은 증상의 괴로움을 줄이는 데 쓰여요. 남은 환청에는 뇌 자극 치료도 연구됐어요. 25개 시험을 모은 2014년 리뷰에서 rTMS는 약에 반응하지 않는 환청에도 가짜 자극보다 나았지만(효과 크기 0.45),[^8] 2013~2024년 시험을 모은 2025년 메타분석에서는 효과가 작고 통계적으로 유의하지 않았어요.[^9] 근거 수준은 [rTMS와 tDCS](#/a/rtms-tdcs)에 정리했어요. 약을 먹어도 목소리가 남을 때 할 수 있는 일은 [약을 먹어도 목소리가 계속 들려요](#/a/faq-voices-persist)에 짧게 정리했어요.
 
 ## 나에게 의미하는 것
 

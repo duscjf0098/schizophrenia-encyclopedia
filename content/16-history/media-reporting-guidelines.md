@@ -19,6 +19,7 @@ sources:
   - Thornicroft A 외 | Newspaper coverage of mental illness in England 2008-2011 (British Journal of Psychiatry) | 2013 | https://doi.org/10.1192/bjp.bp.112.112920
   - Ross AM 외 | A systematic review of the impact of media reports of severe mental illness on stigma and discrimination, and interventions that aim to mitigate any adverse impact (Social Psychiatry and Psychiatric Epidemiology) | 2019 | https://doi.org/10.1007/s00127-018-1608-9
   - 한국기자협회 누리집 | 정신건강보도 권고기준 사례집 (2025년 12월 발행) | 2025 | https://journalist.or.kr/data/banner/spirit.pdf
+  - Duckworth K 외 | Use of schizophrenia as a metaphor in US newspapers (Psychiatric Services) | 2003 | https://doi.org/10.1176/appi.ps.54.10.1402
 ---
 ## 한 문장으로
 
@@ -84,7 +85,7 @@ sources:
 - **제목만 보고 판단하지 않기.** 범죄 기사의 진단명은 대개 수사 초기의 확인되지 않은 정보예요. 권고기준도 검증되지 않은 추정을 하지 말라고 해요.[^1] 기사에 나오는 "심신미약", "치료감호" 같은 법률 용어의 뜻은 [경찰 조사·재판을 받게 됐을 때](#/a/justice-system)에서 볼 수 있어요.
 - **기사에 의견 남기기.** 권고기준을 어긴 기사를 보면 해당 언론사에 정중하게 알려요. 근거로 「정신건강보도 권고기준」 원칙을 짚어 주면 좋아요.
 - **좋은 기사 공유하기.** 회복 사례를 다룬 기사를 퍼뜨리는 것도 낙인을 줄이는 일이에요.[^7]
-- **말을 바꾸기.** 진단명으로 사람을 부르지 않고 "조현병이 있는 사람"처럼 사람을 먼저 쓰기, 병명을 비유로 쓰지 않기. 이유는 [영화와 책 속의 조현병](#/a/media-portrayals)과 [낙인과 자기낙인](#/a/stigma-self-stigma)에 있어요.
+- **말을 바꾸기.** 진단명으로 사람을 부르지 않고 "조현병이 있는 사람"처럼 사람을 먼저 쓰기. 권고기준도 진단명으로 사람을 수식하지 말라고 해요.[^1] 병명을 비유로 쓰지 않기. 이것은 권고기준의 항목이 아니라 연구에서 나온 이야기예요. 1996~1997년 미국 신문 기사를 분석한 연구(2003)에서 조현병을 언급한 기사의 28%가 병명을 비유로 썼고(암은 1%), 연구진은 이런 비유가 낙인과 오해를 키운다고 봤어요.[^9] 이유는 [영화와 책 속의 조현병](#/a/media-portrayals)과 [낙인과 자기낙인](#/a/stigma-self-stigma)에 있어요.
 
 ## 나에게 의미하는 것
 

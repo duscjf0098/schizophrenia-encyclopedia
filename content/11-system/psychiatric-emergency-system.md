@@ -101,3 +101,4 @@ sources:
 - [입원의 종류와 내 권리](#/a/admission-types)
 - [정신건강복지센터](#/a/mental-health-center)
 - [보호의무자: 누가 되고 무엇을 하나](#/a/guardian-duties)
+- [한국 정신건강 정책의 역사](#/a/korea-mental-health-history)

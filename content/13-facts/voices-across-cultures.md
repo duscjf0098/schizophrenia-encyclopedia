@@ -64,3 +64,4 @@ sources:
 - [종교망상](#/a/religious-delusion)
 - [환각 총론](#/a/hallucination-overview)
 - [정신병에 대한 인지행동치료(CBTp)](#/a/cbtp)
+- [당사자 운동과 회복 운동](#/a/survivor-movement)

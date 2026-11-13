@@ -16,6 +16,7 @@ sources:
   - Li X 외 | Adjunctive aripiprazole versus placebo for antipsychotic-induced hyperprolactinemia: meta-analysis of randomized controlled trials (PLoS ONE) | 2013 | https://doi.org/10.1371/journal.pone.0070179
   - 국립정신건강센터 | 국가정신건강정보포털 · 질환별 정보 · 조현병 | 2026 | https://www.mentalhealth.go.kr/portal/disease/diseaseDetail.do?dissId=26
   - NICE | Psychosis and schizophrenia in adults: prevention and management (Clinical guideline CG178) · 1.3.6 Starting antipsychotic medication | 2014 | https://www.nice.org.uk/guidance/cg178/chapter/Recommendations
+  - Taipale H 외 | Antipsychotic use and risk of breast cancer in women with schizophrenia: a nationwide nested case-control study in Finland (Lancet Psychiatry) | 2021 | https://doi.org/10.1016/S2215-0366(21)00241-8
 ---
 ## 한 문장으로
 
@@ -51,9 +52,11 @@ sources:
 
 청소년과 젊은 성인에게는 뼈가 아직 자라는 시기라 특히 중요해요. 월경이 끊긴 것을 "스트레스 때문"으로 넘기기 쉬운데, 약 시작 뒤 생겼다면 프로락틴을 의심해요.
 
+유방암과의 관계도 연구되고 있어요. 핀란드 전국 기록으로 조현병이 있는 여성을 본 2021년 연구에서, 프로락틴을 올리는 약을 모두 합쳐 5년 이상 먹은 사람은 1년 미만인 사람보다 유방암이 생길 가능성이 1.56배였어요. 1~4년은 차이가 없었고, 프로락틴을 덜 올리는 약(이 연구에서는 클로자핀·쿠에티아핀·아리피프라졸)은 먹은 기간과 상관없이 관련이 없었어요. 연구진은 이런 약을 먹는 여성에게 프로락틴을 살피고, 높으면 다루는 것이 중요하다고 했어요.[^6] 기록을 견준 연구라 약이 원인이라고 확정할 수는 없어요. 약을 스스로 바꾸거나 끊지 말고, 유방 검진을 챙기며 담당 의사와 상의해요. 조현병과 암 전반의 이야기는 [조현병과 암 발생률의 역설](#/a/cancer-incidence)에 있어요.
+
 ## 검사
 
-혈액검사로 프로락틴 수치를 재요. 아침에, 식사와 운동·성관계 뒤 시간이 지난 상태에서 재는 것이 정확해요. 수치가 매우 높거나 두통·시야 이상이 같이 있으면 뇌하수체 종양 같은 다른 원인을 확인하기 위해 영상 검사를 할 수 있어요. 월경이 끊긴 지 오래됐거나 골절 위험 요인이 있으면 골밀도 검사를 고려해요. 약 시작 전에 기준 수치를 재 두면 비교가 쉬워요. 영국 NICE 진료지침도 항정신병약을 시작하기 전에 재고 기록할 기본 검사에 체중·혈당·지질과 함께 프로락틴을 넣었어요.[^5]
+혈액검사로 프로락틴 수치를 재요. 아침에, 식사와 운동·성관계 뒤 시간이 지난 상태에서 재는 것이 정확해요. 수치가 매우 높거나 두통·시야 이상이 같이 있으면 뇌하수체 종양 같은 다른 원인을 확인하기 위해 영상 검사를 할 수 있어요. 월경이 끊긴 지 오래됐거나 골절 위험 요인이 있으면 골밀도 검사를 고려해요. 약 시작 전에 기준 수치를 재 두면 비교가 쉬워요. 영국 NICE 진료지침도 항정신병약을 시작하기 전에 재고 기록할 기본 검사에 체중·혈당·지질과 함께 프로락틴을 넣었어요.[^5] 다른 기본 검사와 함께 [신체 건강](#/a/physical-health)의 검사 표에도 정리돼 있어요.
 
 ## 대응 선택지
 
@@ -69,7 +72,7 @@ sources:
 :::
 
 5. **도파민 작용제(브로모크립틴 등).** 프로락틴을 직접 낮추지만 정신증을 악화시킬 수 있어 조현병에서는 신중하게 써요.
-6. **피임약·호르몬 보충.** 뼈 보호 목적으로 부인과와 상의하기도 해요. 약을 바꿀 때 피임을 함께 의논해야 하는 이유는 [여성 당사자의 몸](#/a/womens-health)에 있어요.
+6. **피임약·호르몬 보충.** 뼈 보호 목적으로 부인과와 상의하기도 해요. 약을 바꿀 때 피임을 함께 의논해야 하는 이유는 [여성 당사자의 몸](#/a/womens-health)에 있어요. 임신을 계획한다면 [임신·출산과 약, 부모 되기](#/a/pregnancy-parenting)도 함께 보세요.
 
 ## 말하기 어려운 증상을 말하는 법
 

@@ -67,3 +67,4 @@ Rethink는 자해·자살 같은 심각한 고민을 챗봇에만 기대지 말�
 - [망상 총론과 형성 과정](#/a/delusion-overview)
 - [재발과 재발 신호](#/a/relapse-signs)
 - [대화법: LEAP와 그 밖의 방법](#/a/leap-communication)
+- [외로움과 관계](#/a/loneliness-relationships)

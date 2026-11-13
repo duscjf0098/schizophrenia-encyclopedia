@@ -19,6 +19,7 @@ sources:
   - Vancampfort D 외 | The impact of pharmacological and non-pharmacological interventions to improve physical health outcomes in people with schizophrenia: a meta-review of meta-analyses of randomized controlled trials (World Psychiatry) | 2019 | https://doi.org/10.1002/wps.20614
   - Bruins J 외 | The effects of lifestyle interventions on (long-term) weight management, cardiometabolic risk and depressive symptoms in people with psychotic disorders: a meta-analysis (PLoS ONE) | 2014 | https://doi.org/10.1371/journal.pone.0112276
   - NICE | Psychosis and schizophrenia in adults: prevention and management (Clinical guideline CG178) · 1.3.6 Starting antipsychotic medication | 2014 | https://www.nice.org.uk/guidance/cg178/chapter/Recommendations
+  - Solmi M 외 | Safety, tolerability, and risks associated with first- and second-generation antipsychotics: a state-of-the-art clinical review (Therapeutics and Clinical Risk Management) | 2017 | https://doi.org/10.2147/TCRM.S117321
 ---
 ## 한 문장으로
 
@@ -40,7 +41,7 @@ H1 수용체 차단은 식욕을 올리고 포만감을 둔하게 만들어요. 
 
 같은 연구에서 혈당 상승은 기준 체중이 높을수록, 남성에서 더 컸어요. 흥미로운 건 증상이 많이 좋아진 사람일수록 체중과 콜레스테롤도 더 올랐다는 점이에요.[^1] 효과와 대사 부작용이 어느 정도 같은 작용에서 나온다는 뜻이라, "효과는 그대로 두고 부작용만 없애기"가 쉽지 않은 이유이기도 해요. 다만 급성기 단기 시험(치료 기간 2~13주, 중앙값 6주)을 모은 숫자라서, 연구진도 오래 약을 먹는 사람의 대사 변화는 따로 살펴야 한다고 했어요.[^1] 몇 달에서 몇 년 동안의 체중 변화는 이보다 클 수 있어요.
 
-연구진은 대사 부작용이 가장 나쁜 쪽으로 올란자핀과 클로자핀을, 가장 순한 쪽으로 아리피프라졸·브렉스피프라졸·카리프라진·루라시돈·지프라시돈을 꼽았어요. 체중만 보면 할로페리돌이 가장 적게 늘었어요. 나머지 약(쿠에티아핀, 리스페리돈, 팔리페리돈 등)은 그 사이에 있어요. 연구진은 약은 당사자의 상황과 선호를 함께 보고 한 사람씩 정해야 한다고 덧붙였어요.[^1] 성분별 글에 자세한 숫자가 있어요.
+연구진은 대사 부작용이 가장 나쁜 쪽으로 [올란자핀](#/a/olanzapine)과 클로자핀을, 가장 순한 쪽으로 [아리피프라졸](#/a/aripiprazole)·브렉스피프라졸·카리프라진·루라시돈·[지프라시돈](#/a/ziprasidone)을 꼽았어요. 체중만 보면 할로페리돌이 가장 적게 늘었어요. 나머지 약(쿠에티아핀, 리스페리돈, 팔리페리돈 등)은 그 사이에 있어요. 연구진은 약은 당사자의 상황과 선호를 함께 보고 한 사람씩 정해야 한다고 덧붙였어요.[^1] 2017년의 다른 종설은 메타분석과 개별 연구를 바탕으로 [쿠에티아핀](#/a/quetiapine)을 클로르프로마진·클로자핀·올란자핀과 함께 대사 위험이 가장 큰 쪽에 넣었어요.[^9] 그래서 쿠에티아핀의 자리는 자료마다 조금 달라요. 성분별 글에 자세한 숫자가 있어요.
 
 ## 얼마나 흔한가
 

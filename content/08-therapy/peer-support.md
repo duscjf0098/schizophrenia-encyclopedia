@@ -86,3 +86,4 @@ sources:
 - [정말 회복한 사람이 있나요?](#/a/faq-recovery-real)
 - [당사자·가족 단체](#/a/advocacy-groups)
 - [당사자 운동과 회복 운동](#/a/survivor-movement)
+- [외로움과 관계](#/a/loneliness-relationships)

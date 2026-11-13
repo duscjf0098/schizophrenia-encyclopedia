@@ -8,7 +8,7 @@ points:
   - 2026년 7월부터 자살 유족 원스톱 서비스가 17개 시·도 전체에서 열려요.
   - 혼자 견디기 어려우면 109나 1577-0199에 언제든 전화해요.
 tags: 위기, 가족, 자살 유족, 애도, 자조모임, 109
-updated: 2026-11-13
+updated: 2026-11-14
 reviewed: 2026-11-13
 evidence: 연구
 sources:
@@ -18,9 +18,10 @@ sources:
   - Hor K, Taylor M | Suicide and schizophrenia: a systematic review of rates and risk factors (Journal of Psychopharmacology) | 2010 | https://doi.org/10.1177/1359786810385490
   - CaseNote(현행 조문) | 자살예방 및 생명존중문화 조성을 위한 법률 제11조의2(심리부검) (2026.11.12. 시행) | 2026 | https://casenote.kr/법령/자살예방_및_생명존중문화_조성을_위한_법률
   - Andriessen K 외 | Effectiveness of interventions for people bereaved through suicide: a systematic review of controlled studies of grief, psychosocial and suicide-related outcomes (BMC Psychiatry) | 2019 | https://doi.org/10.1186/s12888-019-2020-z
+  - 한국생명존중희망재단 | 마들랜 서비스 소개 (자살예방 SNS 상담, 문자 109·카카오톡·앱, 24시간) | 2026 | https://www.madeullan.or.kr/consult/guide
 ---
 ::: crisis 지금 견디기 어렵다면
-나도 사라지고 싶다는 생각이 들거나 혼자 있기가 너무 힘들다면 지금 연락하세요. 자살예방상담 **109**, 정신건강위기상담 **1577-0199**는 24시간 받아요.[^1] 당장 위험하면 **119**예요. 전화가 어렵다면 한국생명존중희망재단의 온라인 상담 공간 [마들랜](https://www.madeullan.or.kr/)에서 자살예방 전문상담사와 실시간으로 이야기할 수 있어요.[^1]
+나도 사라지고 싶다는 생각이 들거나 혼자 있기가 너무 힘들다면 지금 연락하세요. 자살예방상담 **109**, 정신건강위기상담 **1577-0199**는 24시간 받아요.[^1] 당장 위험하면 **119**예요. 전화가 어렵다면 한국생명존중희망재단의 온라인 상담 공간 [마들랜](https://www.madeullan.or.kr/)에서 자살예방 전문상담사와 실시간으로 이야기할 수 있어요.[^1] 마들랜은 **109**로 문자를 보내거나 카카오톡, 앱으로도 24시간 이용할 수 있어요.[^7]
 :::
 
 ## 한 문장으로
@@ -93,3 +94,4 @@ sources:
 - [형제자매와 자녀](#/a/siblings-children)
 - [가족의 슬픔: 기대를 다시 세우는 일](#/a/family-grief)
 - [가족 돌봄자의 소진](#/a/caregiver-burnout)
+- [언론 보도와 낙인](#/a/media-reporting-guidelines): 보도준칙이 말하는 유족의 사생활 존중

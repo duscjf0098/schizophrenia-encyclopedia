@@ -109,6 +109,7 @@ sources:
 
 - [가족 돌봄자의 소진](#/a/caregiver-burnout)
 - [형제자매와 자녀](#/a/siblings-children)
+- [배우자·연인이 조현병이 있을 때](#/a/partner-caregiving)
 - [활동지원과 돌봄 서비스](#/a/activity-support-service)
 - [직장·학교에서 증상이 올 때](#/a/coping-at-work)
 - [심리상담 바우처와 건강검진 정신건강검사](#/a/counseling-voucher-and-screening)

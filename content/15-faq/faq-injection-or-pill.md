@@ -52,6 +52,7 @@ sources:
 
 - [장기지속형 주사제(LAI)](#/a/lai)
 - [약 꾸준히 먹기 전략](#/a/medication-adherence)
+- [리스페리돈](#/a/risperidone)
 - [팔리페리돈](#/a/paliperidone)
 - [아리피프라졸](#/a/aripiprazole)
 - [치료를 함께 정하기](#/a/shared-decision-making)

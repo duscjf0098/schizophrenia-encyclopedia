@@ -4,7 +4,7 @@ section: 7
 order: 35
 summary: 항정신병약이 심장에 주는 영향을 세 갈래로 정리했어요. 심전도의 QT 간격이 늘어나는 것, 맥박이 빨라지는 것, 클로자핀에서 드물게 생기는 심근염이에요. 심전도를 언제 찍는지, 위험을 키우는 것, 바로 119에 연락할 신호와 그날 담당 의료진에게 알릴 신호를 담았어요.
 tags: 약물 치료, 부작용, 심장, QT 연장, 빈맥, 심근염, 클로자핀, 응급
-updated: 2026-11-13
+updated: 2026-11-14
 points:
   - 항정신병약과 심장, 곧 QT 연장·빈맥·심근염을 다룬 글이에요.
   - 심장병을 앓았거나 입원할 때는 약을 시작하기 전 심전도를 권해요.
@@ -17,6 +17,9 @@ sources:
   - 윤제연 외 | ‘2019 한국형 조현병 약물치료 지침서’에 따른 조현병에서 동반증상 및 부작용의 치료 (대한조현병학회지) | 2019 | https://doi.org/10.16946/kjsr.2019.22.2.21
   - Siskind D 외 | Systematic review and meta-analysis of rates of clozapine-associated myocarditis and cardiomyopathy (Australian and New Zealand Journal of Psychiatry) | 2020 | https://doi.org/10.1177/0004867419898760
   - U.S. FDA / DailyMed | CLOZARIL (clozapine) tablets, prescribing information (Revised 6/2025) · 5.5 Myocarditis, 5.9 QT Interval Prolongation, 5.13 Fever, 10 Overdosage | 2025 | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=90876802-0e3a-44c9-9ff7-1754dfbe736a&type=display
+  - U.S. FDA / DailyMed | Haloperidol injection (haloperidol lactate), Fresenius Kabi USA, prescribing information (Revised 6/2026) · WARNINGS: Cardiovascular Effects | 2026 | https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=b1ad2abd-a9d6-44e3-957b-36a73260f4f5
+  - Huhn M 외 | Comparative efficacy and tolerability of 32 oral antipsychotics for the acute treatment of adults with multi-episode schizophrenia: a systematic review and network meta-analysis (Lancet) | 2019 | https://doi.org/10.1016/S0140-6736(19)31135-3
+  - Health Products Regulatory Authority (아일랜드 의약품규제청) | Solian (amisulpride) 제품 허가 요약 (SmPC) · 4.4 Prolongation of the QT interval | 2022 | https://assets.hpra.ie/products/Human/18144/Licence_PA0540-158-002_25082022143946.pdf
 ---
 ## 한 문장으로
 
@@ -40,7 +43,7 @@ sources:
 한 사람의 QTc가 500ms(1,000분의 1초 단위)를 넘거나 처음보다 60ms 늘면 위험이 커진 신호로 봐요. 다만 그보다 낮아도 부정맥이 생길 수 있어요.[^2] 국내 지침 해설은 500ms 초과를 주의할 기준으로 들고, 이전보다 30~60ms 이상 늘어난 경우에도 의료진이 약을 조정하도록 권해요.[^3]
 :::
 
-QT를 늘리는 정도는 약마다 다르고, 같은 약이라도 용량이 높을수록 커져요. 모든 항정신병약이 같은 정도로 늘리지는 않아요.[^2] 내 약이 어떤지는 담당 의사·약사에게 물어봐요.
+QT를 늘리는 정도는 약마다 다르고, 같은 약이라도 용량이 높을수록 커져요. 모든 항정신병약이 같은 정도로 늘리지는 않아요.[^2] 2002년 종설은 당시 쓰이던 약 가운데 티오리다진과 [지프라시돈](#/a/ziprasidone)이 QTc를 가장 많이 늘린다고 정리했어요.[^2] 더 최근인 2019년 메타분석에서는 QTc 자료가 있는 14개 약 가운데 7개가 위약보다 QTc를 의미 있게 늘렸고, 가장 크게 늘린 약은 세르틴돌이었어요.[^7] [아미설프리드](#/a/amisulpride)도 유럽 허가사항에 QT 연장 주의가 적혀 있어요.[^8] 약마다 어느 정도인지는 각 약 글의 약 카드와 본문에 있어요. [할로페리돌](#/a/haloperidol) 주사의 미국 허가사항은 이 주사를 정맥에 놓는 것은 승인되지 않았다고 밝히고, 정맥에 놓을 때, 그리고 제형과 관계없이 권장보다 높은 용량을 쓸 때 QT 연장과 토르사드 위험이 더 커 보인다고 경고해요.[^6] 내 약이 어떤지는 담당 의사·약사에게 물어봐요.
 
 ## 위험을 키우는 것
 

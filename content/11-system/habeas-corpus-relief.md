@@ -81,3 +81,4 @@ sources:
 - [강제로 입원시킬 수 있나요?](#/a/faq-forced-admission)
 - [정신건강복지법 한눈에](#/a/mental-health-welfare-act)
 - [당사자·가족 단체](#/a/advocacy-groups)
+- [한국 정신건강 정책의 역사](#/a/korea-mental-health-history)

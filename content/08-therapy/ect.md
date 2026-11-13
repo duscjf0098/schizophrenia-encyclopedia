@@ -98,3 +98,4 @@ ECT는 설명을 듣고 서면으로 동의한 뒤 받는 시술이에요. 설�
 - [클로자핀](#/a/clozapine)
 - [rTMS와 tDCS](#/a/rtms-tdcs)
 - [입원 생활은 어떤가](#/a/hospital-stay-life)
+- [항정신병약 이전의 치료](#/a/early-treatments)
