@@ -20,7 +20,8 @@
 /* 역할 한 줄과 고른 근거: 작게, 흐린 글씨 */
 .ns-foot { margin-top: 10px; font-size: calc(var(--fs-body) * .77); color: var(--muted); line-height: 1.65; }
 .ns-foot p { margin: 0; }
-.ns-change { display: inline-block; padding: 11px 4px; margin: -11px -4px; color: var(--accent); font-weight: 650; text-decoration: underline; text-underline-offset: 3px; }
+/* 누르는 영역 44×44 이상(기본 글자 크기에서 글자만으로는 42×43.6), 음수 여백으로 줄 높이는 그대로 */
+.ns-change { display: inline-block; box-sizing: border-box; min-width: 44px; min-height: 44px; text-align: center; padding: 11px 4px; margin: -11px -4px;color: var(--accent); font-weight: 650; text-decoration: underline; text-underline-offset: 3px; }
 .ns-change:hover { color: var(--accent-2); }
 
 /* 이 주제의 자주 묻는 질문: 질문 + 답의 첫 문장 */
