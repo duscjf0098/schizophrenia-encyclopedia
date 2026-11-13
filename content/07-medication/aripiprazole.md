@@ -4,7 +4,11 @@ section: 7
 order: 7
 summary: 아리피프라졸(aripiprazole)은 도파민 D2 수용체를 "부분적으로 자극"하는 약이에요. 체중과 프로락틴에서 유리하지만, 가만히 있지 못하는 정좌불능과 초기 불면·활성화가 약점이에요. 월 1회 주사제가 있고, 2016년 미국 FDA는 충동조절 문제 경고를 추가했어요.
 tags: 약물 치료, 아리피프라졸, 부분 작용제, 정좌불능, 장기지속형 주사제
-updated: 2026-10-23
+updated: 2026-11-14
+points:
+  - 도파민 수용체를 부분적으로 자극하는 2세대 약 아리피프라졸을 다룬 글이에요.
+  - 체중·프로락틴 부작용은 적은 편이지만, 정좌불능이 흔해요.
+  - 안절부절못하거나 도박·쇼핑 충동이 새로 생기면 담당 의사에게 말해요.
 evidence: 연구
 sources:
   - Otsuka America Pharmaceutical | ABILIFY (aripiprazole) 미국 FDA 처방정보 (DailyMed) | 2025 | https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=c040bd1d-45b7-49f2-93ea-aed7220b30ac
@@ -12,8 +16,11 @@ sources:
   - Regulatory Affairs Professionals Society (RAPS) | Antipsychotic label updated with new impulse control warnings | 2016 | https://www.raps.org/resource/antipsychotic-label-updated-with-new-impulse-contr.html
   - Pillinger T 외 | Comparative effects of 18 antipsychotics on metabolic function in patients with schizophrenia, predictors of metabolic dysregulation, and association with psychopathology: a systematic review and network meta-analysis (Lancet Psychiatry) | 2020 | https://doi.org/10.1016/S2215-0366(19)30416-X
   - Leucht S 외 | Second-generation versus first-generation antipsychotic drugs for schizophrenia: a meta-analysis (Lancet) | 2009 | https://doi.org/10.1016/S0140-6736(08)61764-X
-  - Huhn M 외 | Comparative efficacy and tolerability of 32 oral antipsychotics for acute treatment in adults with multi-episode schizophrenia: a systematic review and network meta-analysis (Lancet) | 2019 | https://doi.org/10.1016/S0140-6736(19)31135-3
+  - Huhn M 외 | Comparative efficacy and tolerability of 32 oral antipsychotics for the acute treatment of adults with multi-episode schizophrenia: a systematic review and network meta-analysis (Lancet) | 2019 | https://doi.org/10.1016/S0140-6736(19)31135-3
   - 식품의약품안전처 | 의약품안전나라 · 의약품 검색 "아빌리파이" | 2026 | https://nedrug.mfds.go.kr/searchDrug?searchYn=true&itemName=%EC%95%84%EB%B9%8C%EB%A6%AC%ED%8C%8C%EC%9D%B4
+  - Stroup TS 외 | Management of common adverse effects of antipsychotic medications (World Psychiatry) | 2018 | https://doi.org/10.1002/wps.20567
+  - Solmi M 외 | Safety, tolerability, and risks associated with first- and second-generation antipsychotics: a state-of-the-art clinical review (Therapeutics and Clinical Risk Management) | 2017 | https://doi.org/10.2147/TCRM.S117321
+  - Tse L 외 | Neuroleptic malignant syndrome: a review from a clinically oriented perspective (Current Neuropharmacology) | 2015 | https://doi.org/10.2174/1570159X13999150424113345
 ---
 ## 한 문장으로
 
@@ -25,6 +32,22 @@ sources:
 
 적응증은 성인과 13~17세 청소년의 조현병, 양극성 조증, 우울증 보조, 자폐 관련 과민성, 투렛 등이에요.[^1] 국내에는 아빌리파이정·구강붕해정(한국오츠카)과 월 1회 주사 아빌리파이메인테나(2015년 허가), 2개월 간격 주사 아빌리파이아심투파이(2025년 허가)가 있어요.[^7]
 
+## 약 카드
+
+| 항목 | 내용 |
+|---|---|
+| 계열 | 2세대 · 부분 작용제 |
+| 제형 | 먹는 약 · 장기지속형 주사 있음[^7] |
+| 체중·대사 | 적은 편[^8] |
+| 추체외로 증상·좌불안석 | 중간(좌불안석 쪽)[^8] |
+| 프로락틴 | 적은 편[^8] |
+| 졸림 | 적은 편[^8] |
+| QT 연장 | 적은 편[^8] |
+| 기립성 저혈압 | 적은 편[^8] |
+| 꼭 알아둘 것 | 도박·폭식·쇼핑·성적 충동을 멈추기 어려워지면 바로 담당 의사에게 말해요.[^1] |
+
+같은 약이라도 사람마다 반응이 달라요. 이 표로 약을 고르거나 바꾸지 말고 담당 의사와 상의하세요. 부작용 경향은 여러 약을 견준 종설의 범주를 옮겼어요.
+
 ## 효과
 
 2019년 32개 약 네트워크 메타분석에서 아리피프라졸은 위약보다 유의하게 효과적이었지만, 클로자핀·아미설프리드·올란자핀·리스페리돈처럼 상위권은 아니었어요.[^6] 2009년 메타분석에서도 1세대보다 더 효과적이지는 않았고, 대신 체중 증가가 1세대와 다르지 않은 예외적 2세대였어요.[^5] 요약하면 "효과는 중간, 부작용은 가벼운 쪽"이에요.
@@ -35,13 +58,15 @@ sources:
 
 **초기 활성화·불면.** 조현병·양극성 시험을 합친 자료에서 두통 27%, 초조 19%, 불면 18%, 불안 17%가 보고됐어요.[^1] 진정 작용이 약해서 처음 며칠은 오히려 "깨어 있는" 느낌이 들 수 있어요. 대개 시간이 지나며 가라앉아요.
 
-**체중·대사.** 성인 조현병 시험에서 체중 7% 이상 증가는 8.1% 대 위약 3.2%였어요.[^1] 2020년 18개 약 대사 네트워크 메타분석에서 아리피프라졸은 브렉스피프라졸·카리프라진·루라시돈·지프라시돈과 함께 가장 유리한 축에 들었어요.[^4] "안 는다"가 아니라 "덜 는다"예요.
+**체중·대사.** 성인 조현병 시험에서 체중 7% 이상 증가는 8.1% 대 위약 3.2%였어요.[^1] 2020년 18개 약 대사 네트워크 메타분석에서 아리피프라졸은 브렉스피프라졸·카리프라진·루라시돈·지프라시돈과 함께 가장 유리한 축에 들었어요.[^4] "안 는다"가 아니라 "덜 는다"예요. 체중·혈당 검사와 대처는 [대사 부작용](#/a/metabolic-side-effects)에서 다뤄요.
 
 **프로락틴.** 부분 작용제라서 프로락틴을 올리지 않고 오히려 낮추는 쪽이에요. 처방정보도 프로락틴 감소가 관찰됐다고 적어요.[^1]
 
+**QT·기립성 저혈압.** 여러 약을 견준 종설에서 아리피프라졸은 QT 연장과 기립성 저혈압 모두 적은 편에 들어요.[^8] 다른 종설도 여러 메타분석을 근거로, 아리피프라졸은 QT에 임상적으로 의미 있는 영향을 주지 않는 것으로 보인다고 정리했어요.[^9] 미국 처방정보의 성인 단기 위약 대조 시험에서 기립성 저혈압은 1% 대 위약 0.3%, 실신은 0.5% 대 0.4%였어요.[^1] 그래도 일어설 때 심하게 어지럽거나 쓰러질 것 같으면 담당 의사에게 말해요. 쓰러졌다면 그날 담당 의사에게 알리고, 두근거림·가슴 통증이 함께였거나 머리를 다쳤다면 119에 연락해요. [기립성 저혈압과 어지러움](#/a/orthostatic-hypotension)을 보세요.
+
 ::: warn 바로 연락할 신호
 - 도박, 폭식, 쇼핑, 성적 행동에 대한 "멈출 수 없는 충동"이 새로 생기거나 심해지면 바로 말하세요. 2016년 미국 식품의약국(FDA)은 모든 아리피프라졸 제품 라벨에 충동조절 문제 경고를 추가했어요. 드물지만 본인과 주변에 해가 될 수 있고, 약을 조정하면 가라앉는 경우가 많아요.[^3][^1]
-- 고열, 온몸 뻣뻣함, 의식 혼탁 → 악성증후군 가능성. 119 또는 담당 병원에 연락하세요.
+- 고열, 온몸 뻣뻣함, 의식 혼탁, 맥박·혈압 요동 → [신경이완제 악성 증후군](#/a/neuroleptic-malignant-syndrome) 가능성. 바로 119에 연락하거나 응급실로 가요. 열이 아직 없어도, 약을 시작하거나 바꾼 뒤 몸이 새로 굳고 정신이 흐려지면 마찬가지예요.[^10]
 :::
 
 ::: fact 충동조절 경고가 붙은 과정
@@ -54,12 +79,12 @@ sources:
 - **월 1회 근육주사(메인테나)**: 시작할 때 14일 동안 먹는 약을 함께 써요. 12주 시험에서 흔한 부작용은 체중 증가, 정좌불능, 주사 부위 통증, 진정이었어요.[^2]
 - **2개월 간격 주사(아심투파이)**: 국내 2025년 허가.[^7]
 - CYP2D6 효소가 느린 사람(백인의 약 8%)은 혈중 농도가 높아져 조정이 필요할 수 있어요.[^1]
-- 장기지속형 전반은 [장기지속형 주사제](#/a/lai)에서 다뤄요.
+- 장기지속형 전반은 [장기지속형 주사제](#/a/lai)에서, 먹는 약과 주사를 견준 이야기는 [주사제가 먹는 약보다 나은가요?](#/a/faq-injection-or-pill)에서 다뤄요.
 
 ## 누구에게 고려되나
 
 - 체중·혈당·프로락틴 부작용을 피하는 게 중요한 사람에게 1차 선택지로 고려돼요.[^4]
-- 다른 약으로 프로락틴이 올라 생리 불순·유즙 분비가 생겼을 때 바꾸거나 더하는 약으로 쓰여요.[^1]
+- 다른 약으로 프로락틴이 올라 생리 불순·유즙 분비가 생겼을 때 바꾸거나 더하는 약으로 쓰여요.[^1] [고프로락틴혈증](#/a/hyperprolactinemia)을 보세요.
 - 반대로 급성기에 불면·초조가 심해 진정이 필요한 상황, 또는 효과가 최우선인 상황에서는 다른 약이 먼저 검토돼요.[^6]
 
 ## 나에게 의미하는 것
@@ -74,3 +99,12 @@ sources:
 - 안절부절못하는 느낌이 생기면 어떻게 하나요?
 - 처음 며칠 잠이 안 오면 복용 시간을 바꿀 수 있나요?
 - 주사제로 바꾸면 처음 2주 동안 무엇이 달라지나요?
+
+## 더 읽을 글
+
+- [추체외로 증상과 지연성 운동장애](#/a/eps)
+- [장기지속형 주사제(LAI)](#/a/lai)
+- [대사 부작용: 체중·혈당·지질](#/a/metabolic-side-effects)
+- [고프로락틴혈증](#/a/hyperprolactinemia)
+- [주사제가 먹는 약보다 나은가요?](#/a/faq-injection-or-pill)
+- [2세대 항정신병약 총론](#/a/second-generation)

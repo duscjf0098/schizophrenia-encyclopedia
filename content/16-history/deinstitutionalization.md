@@ -5,6 +5,10 @@ order: 4
 summary: 1955년 이후 미국 공공 정신병원 입원자는 55만 9천 명에서 크게 줄었고, 이탈리아는 1978년 법으로 정신병원을 닫았어요. 탈원화가 가져온 자유와 회복, 그리고 노숙·교정시설로 옮겨 갔다는 비판까지 근거를 함께 봐요.
 tags: 역사, 탈원화, 지역사회 정신건강, 이탈리아, 바살리아, 노숙, 교정시설
 updated: 2026-10-23
+points:
+  - 미국 공공 정신병원 입원자는 1955년 약 55만 9천 명에서 크게 줄었어요.
+  - 병원을 닫는 것과 지역에서 돌보는 것은 다른 일이라는 게 핵심 교훈이에요.
+  - 퇴원할 때 정신건강복지센터 같은 지역 서비스와 이어지는지 확인해요.
 evidence: 연구
 sources:
   - Mechanic D, Rochefort DA | Deinstitutionalization: An Appraisal of Reform (Annual Review of Sociology) | 1990 | https://doi.org/10.1146/annurev.so.16.080190.001505
@@ -70,5 +74,13 @@ sources:
 ## 나에게 의미하는 것
 
 - 지금 한국의 [정신건강복지센터](#/a/mental-health-center), [사례관리와 ACT](#/a/case-management-act), [재활시설](#/a/rehab-facilities)은 모두 "지역에서 돌본다"는 탈원화의 생각 위에 있어요.
-- 탈원화의 실패는 대개 "병원 밖"이 아니라 "병원 밖에 아무것도 없을 때" 일어났어요. 퇴원할 때 지역 서비스와 연결되는지 꼭 확인하세요.
+- 탈원화의 실패는 대개 "병원 밖"이 아니라 "병원 밖에 아무것도 없을 때" 일어났어요. 퇴원할 때 지역 서비스와 연결되는지 꼭 확인하세요. 퇴원 전에 챙길 것은 [퇴원 직후 첫 한 달](#/a/first-month-after-discharge)에 정리돼 있어요.
 - 한국의 장기 입원과 탈원화 논의는 [한국 정신건강 정책의 역사](#/a/korea-mental-health-history)에서 이어져요.
+
+## 더 읽을 글
+
+- [한국 정신건강 정책의 역사](#/a/korea-mental-health-history)
+- [반정신의학 운동](#/a/antipsychiatry)
+- [클로르프로마진과 정신약물학 혁명](#/a/chlorpromazine-revolution)
+- [사례관리와 적극적 지역사회치료(ACT)](#/a/case-management-act)
+- [퇴원 직후 첫 한 달](#/a/first-month-after-discharge)

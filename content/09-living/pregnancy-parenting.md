@@ -4,7 +4,11 @@ section: 9
 order: 8
 summary: 조현병이 있어도 계획하고 준비하면 부모가 될 수 있어요. 대규모 연구에서 임신 초기 항정신병약은 대체로 기형 위험을 의미 있게 높이지 않았고, 한국 자료에서는 임신 중 약을 이어 간 여성의 산후 재발이 적었어요. 약 결정은 반드시 임신 전에 의사와 함께 해요.
 tags: 임신, 출산, 산후, 수유, 육아, 항정신병약, 유전
-updated: 2026-10-23
+updated: 2026-11-14
+points:
+  - 대규모 연구에서 임신 초기 항정신병약은 대체로 기형 위험을 의미 있게 높이지 않았어요.
+  - 출산 직후는 재발 위험이 커지는 때라 잠과 돌봄을 미리 계획해 둬요.
+  - 임신을 알게 되면 약을 스스로 끊기 전에 먼저 담당 의사에게 연락해요.
 evidence: 연구
 sources:
   - Huybrechts KF 외 | Antipsychotic use in pregnancy and the risk for congenital malformations (JAMA Psychiatry) | 2016 | https://doi.org/10.1001/jamapsychiatry.2016.1520
@@ -13,6 +17,9 @@ sources:
   - Munk-Olsen T 외 | Risks and predictors of readmission for a mental disorder during the postpartum period (Archives of General Psychiatry) | 2009 | https://doi.org/10.1001/archgenpsychiatry.2008.528
   - Gottesman II 외 | Severe mental disorders in offspring with 2 psychiatrically ill parents (Archives of General Psychiatry) | 2010 | https://doi.org/10.1001/archgenpsychiatry.2010.1
   - Schrank B 외 | How to support patients with severe mental illness in their parenting role with children aged over 1 year? A systematic review of interventions (Social Psychiatry and Psychiatric Epidemiology) | 2015 | https://doi.org/10.1007/s00127-015-1069-3
+  - González-Rodríguez A 외 | Reproductive and fertility care of women with schizophrenia: a narrative review (Healthcare) | 2025 | https://doi.org/10.3390/healthcare13182349
+  - NHS Specialist Pharmacy Service | Using antipsychotics during breastfeeding | 2025 | https://www.sps.nhs.uk/articles/using-antipsychotics-during-breastfeeding/
+  - NHS | When to get urgent medical help for babies and children under 5 | 2026 | https://www.nhs.uk/conditions/baby/health/is-your-baby-or-toddler-seriously-ill
 ---
 ## 한 문장으로
 
@@ -27,6 +34,10 @@ sources:
 - 엽산 같은 임신 준비, 체중·혈당 관리([식사와 운동](#/a/diet-exercise))
 - 금연, 술·대마 끊기
 - 출산 뒤 잠과 육아를 도와줄 사람
+
+2025년 고찰은 조현병이 있는 여성이 계획하지 않은 임신 위험이 높다고 정리했어요. 그래서 지금 임신 계획이 없어도, 가임기 여성이라면 임신 중 치료 선택지를 미리 의논해 두기를 권해요. 이런 대화가 임신 중 갑자기 약을 끊는 위험을 줄일 수 있다고 봤어요.[^7]
+
+같은 고찰은 프로락틴을 올리는 약이 생리를 멈추게 하고 임신을 어렵게 할 수 있다고 설명해요.[^7] 거꾸로, 프로락틴을 덜 올리는 약으로 바뀌면 다시 임신할 수 있게 되기도 해요.[^7] 그래서 지금 임신을 원하지 않는다면, 약을 바꿀 때 피임도 함께 의논해요.[^7] 피임과 생리 변화는 [여성 당사자의 몸](#/a/womens-health)에 따로 정리했어요.
 
 계획하지 않은 임신을 알게 되었다면, 스스로 약을 끊기 전에 먼저 의사에게 연락하세요. 갑자기 끊는 것도 위험이 있어요.
 
@@ -58,6 +69,15 @@ sources:
 
 약이 모유로 넘어가는 정도와 아기에게 미치는 영향은 약마다 달라요. 모유 수유를 원하면 출산 전에 담당 의사·소아과 의사와 상의하세요. 분유 수유도 괜찮은 선택이에요. 밤 수유를 다른 사람과 나눌 수 있어 엄마의 잠을 지키는 데 도움이 될 수 있어요.
 
+영국 국가보건서비스(NHS)의 약 전문 안내(SPS, 2025년)는 의료진에게 몇 가지 일반 원칙을 정리해 두었어요.[^8] 개별 약의 판단은 아니에요.
+
+- 수유 중에도 정신질환을 제대로 치료하는 것이 중요하고, 약을 갑자기 끊지 않아요.[^8]
+- 졸음을 부르는 약을 먹을 때는 아기와 한 침대에서 자지 않도록 권해요.[^8]
+- 약별 안내에서 공통으로, 아기가 지나치게 졸려 하는지, 잘 먹는지, 체중이 잘 느는지 살피라고 해요.[^8]
+- 아기가 일찍 태어났거나 아플 때, 여러 약을 함께 먹을 때는 더 전문적인 상담이 필요하다고 봐요.[^8]
+
+아기에게 이런 변화가 보이면 다음 진료를 기다리지 말고 바로 소아과나 담당 의사에게 연락하세요.[^9] 어떤 약을 어떻게 할지는 의사·약사와 함께 정해요. 영국 국가보건서비스는 아기를 깨우기 어렵거나 깨지 않을 때, 숨쉬기를 힘들어할 때는 바로 응급 도움을 받으라고 안내해요.[^9] 우리나라에서는 119에 연락하세요.
+
 ## 아이에게 유전될까
 
 덴마크 270만 명 자료에서 부모 중 한 명만 조현병으로 입원한 적이 있을 때 자녀가 52세까지 조현병 진단을 받은 비율은 7.0%였어요. 부모 모두 조현병일 때는 27.3%, 부모 모두 아닐 때는 0.86%였어요.[^5]
@@ -67,6 +87,8 @@ sources:
 ## 부모 역할 지원
 
 부모가 되는 데 필요한 것은 완벽함이 아니라 지원이에요. 중증 정신질환이 있는 부모를 위한 개입 15개 연구를 모은 고찰에서는 가정 방문, 지역사회 프로그램, 온라인 개입 등이 쓰였고, 부모와 아이 양쪽 결과가 좋아지는 경향이 있었어요. 다만 대부분 연구의 질이 낮고 추적 기간이 짧았어요.[^6] 여러 방법을 유연하게 섞는 지원이 필요하다는 것이 결론이었어요.[^6]
+
+2025년 고찰에 따르면 아이를 키우는 여성 당사자가 가장 자주 말하는 걱정 가운데 하나는 아이를 빼앗길지 모른다는 두려움이에요. 이 두려움 때문에 의료진에게 어려움을 솔직히 말하지 못하기도 해요.[^7] 같은 고찰은 의료진과 복지 담당자가 덜 판단하고 더 공감하는 태도로 대할 때 엄마들이 필요한 것을 솔직히 말하는 데 도움이 된다고 했어요.[^7] 도움을 청하는 것은 아이를 함께 지키는 방법이 될 수 있어요.
 
 - 정신건강복지센터와 보건소의 모자보건·육아 지원을 함께 알아봐요.
 - 아이가 자라면 나이에 맞게 "엄마(아빠)가 아플 때가 있어, 그건 네 잘못이 아니야"라고 설명해요([형제와 자녀](#/a/siblings-children)).
@@ -89,4 +111,14 @@ sources:
 
 - 출산 뒤 첫 한 달은 특히 잠을 지켜 주세요. 밤 수유와 집안일을 나눠 주세요.
 - 잠이 줄고 예민해지거나 이상한 생각을 말하면 바로 담당 의사에게 연락하세요.
+- 담당 의사와 연락이 안 되면 정신건강위기상담 1577-0199에 묻고, 엄마나 아기가 당장 위험해 보이면 119에 연락하세요([위기 상담 전화와 기관](#/a/crisis-hotlines)).
 - "아이를 키울 수 있겠어?"라는 의심보다 "무엇을 도와줄까?"가 필요해요.
+- 약의 부작용으로 표정이 무뎌질 수 있어요. 그것을 아이에게 관심이 없다는 뜻으로 오해하지 마세요.[^7]
+
+## 더 읽을 글
+
+- [여성 당사자의 몸: 생리·피임·폐경과 약](#/a/womens-health)
+- [고프로락틴혈증](#/a/hyperprolactinemia)
+- [유전 상담과 가족 계획](#/a/genetic-counseling)
+- [형제자매와 자녀](#/a/siblings-children)
+- [재발 예방 계획 쓰기](#/a/relapse-prevention-plan)

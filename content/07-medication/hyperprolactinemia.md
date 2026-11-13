@@ -4,13 +4,18 @@ section: 7
 order: 20
 summary: 항정신병약이 뇌하수체의 프로락틴 분비를 풀어놓으면서 생기는 부작용이에요. 월경이 끊기고, 유즙이 나오고, 성기능이 떨어지고, 오래되면 뼈가 약해질 수 있어요. 어떤 약이 많이 올리는지, 검사와 대응 선택지, 말하기 어려운 증상을 의사에게 꺼내는 법을 정리했어요.
 tags: 약물 치료, 부작용, 프로락틴, 무월경, 성기능, 골밀도
-updated: 2026-10-23
+updated: 2026-11-14
+points:
+  - 일부 항정신병약은 프로락틴을 올려 월경·유즙·성기능을 바꿔요.
+  - 흔한데도 말하기 어려워 놓치기 쉽고, 오래 두면 뼈가 약해질 수 있어요.
+  - 월경이나 성기능이 달라지면 쪽지로라도 담당 의사에게 알려요.
 evidence: 연구
 sources:
   - Huhn M 외 | Comparative efficacy and tolerability of 32 oral antipsychotics for the acute treatment of adults with multi-episode schizophrenia: a systematic review and network meta-analysis (Lancet) | 2019 | https://doi.org/10.1016/S0140-6736(19)31135-3
   - Peuskens J 외 | The effects of novel and newly approved antipsychotics on serum prolactin levels: a comprehensive review (CNS Drugs) | 2014 | https://doi.org/10.1007/s40263-014-0157-3
   - Li X 외 | Adjunctive aripiprazole versus placebo for antipsychotic-induced hyperprolactinemia: meta-analysis of randomized controlled trials (PLoS ONE) | 2013 | https://doi.org/10.1371/journal.pone.0070179
   - 국립정신건강센터 | 국가정신건강정보포털 · 질환별 정보 · 조현병 | 2026 | https://www.mentalhealth.go.kr/portal/disease/diseaseDetail.do?dissId=26
+  - NICE | Psychosis and schizophrenia in adults: prevention and management (Clinical guideline CG178) · 1.3.6 Starting antipsychotic medication | 2014 | https://www.nice.org.uk/guidance/cg178/chapter/Recommendations
 ---
 ## 한 문장으로
 
@@ -33,14 +38,14 @@ sources:
 | 큼 | 팔리페리돈, 리스페리돈, 아미설프리드[^1][^2] |
 | 거의 없음 또는 낮춤 | 쿠에티아핀, 클로자핀, 아리피프라졸[^1][^2] |
 
-나머지 약은 대체로 그 사이에 있어요. 성분별 글에 자세한 내용이 있어요.
+나머지 약은 대체로 그 사이에 있어요. 성분별 글([리스페리돈](#/a/risperidone), [팔리페리돈](#/a/paliperidone), [아미설프리드](#/a/amisulpride), [아리피프라졸](#/a/aripiprazole) 등)에 자세한 내용이 있어요.
 
 ## 어떤 증상이 생기나
 
 프로락틴이 높으면 성호르몬(에스트로겐·테스토스테론) 분비가 눌려요. 그래서 증상은 성과 생식 쪽에 몰려요.
 
-- **여성**: 월경이 불규칙해지거나 끊김(무월경), 유방 통증, 유즙 분비, 성욕 저하, 질 건조.
-- **남성**: 성욕 저하, 발기·사정 문제, 가슴이 커짐(여성형 유방), 드물게 유즙.
+- **여성**: 월경이 불규칙해지거나 끊김(무월경), 유방 통증, 유즙 분비, 성욕 저하, 질 건조. 생리·피임·폐경과 약의 관계는 [여성 당사자의 몸](#/a/womens-health)에 따로 정리돼 있어요.
+- **남성**: 성욕 저하, 발기·사정 문제, 가슴이 커짐(여성형 유방), 드물게 유즙. 성기능 변화와 그 대처는 [성기능 부작용](#/a/sexual-side-effects)에 있어요.
 - **모두**: 오래 지속되면 뼈의 밀도가 줄어 골다공증·골절 위험이 올라갈 수 있어요. 성호르몬이 뼈를 지키는 역할을 하기 때문이에요.
 - 프로락틴 자체는 증상 없이 높기만 할 수도 있어요. 수치가 높다고 모두 치료 대상은 아니고, 증상과 수치를 함께 봐요.
 
@@ -48,7 +53,7 @@ sources:
 
 ## 검사
 
-혈액검사로 프로락틴 수치를 재요. 아침에, 식사와 운동·성관계 뒤 시간이 지난 상태에서 재는 것이 정확해요. 수치가 매우 높거나 두통·시야 이상이 같이 있으면 뇌하수체 종양 같은 다른 원인을 확인하기 위해 영상 검사를 할 수 있어요. 월경이 끊긴 지 오래됐거나 골절 위험 요인이 있으면 골밀도 검사를 고려해요. 약 시작 전에 기준 수치를 재 두면 비교가 쉬워요.
+혈액검사로 프로락틴 수치를 재요. 아침에, 식사와 운동·성관계 뒤 시간이 지난 상태에서 재는 것이 정확해요. 수치가 매우 높거나 두통·시야 이상이 같이 있으면 뇌하수체 종양 같은 다른 원인을 확인하기 위해 영상 검사를 할 수 있어요. 월경이 끊긴 지 오래됐거나 골절 위험 요인이 있으면 골밀도 검사를 고려해요. 약 시작 전에 기준 수치를 재 두면 비교가 쉬워요. 영국 NICE 진료지침도 항정신병약을 시작하기 전에 재고 기록할 기본 검사에 체중·혈당·지질과 함께 프로락틴을 넣었어요.[^5]
 
 ## 대응 선택지
 
@@ -64,7 +69,7 @@ sources:
 :::
 
 5. **도파민 작용제(브로모크립틴 등).** 프로락틴을 직접 낮추지만 정신증을 악화시킬 수 있어 조현병에서는 신중하게 써요.
-6. **피임약·호르몬 보충.** 뼈 보호 목적으로 부인과와 상의하기도 해요.
+6. **피임약·호르몬 보충.** 뼈 보호 목적으로 부인과와 상의하기도 해요. 약을 바꿀 때 피임을 함께 의논해야 하는 이유는 [여성 당사자의 몸](#/a/womens-health)에 있어요.
 
 ## 말하기 어려운 증상을 말하는 법
 
@@ -91,3 +96,11 @@ sources:
 - 월경 변화·성기능 변화가 약 때문일 가능성이 있나요?
 - 프로락틴을 덜 올리는 약으로 바꾸거나 아리피프라졸을 더하는 것이 저에게 해당되나요?
 - 골밀도 검사가 필요한 상황인가요?
+
+## 더 읽을 글
+
+- [성기능 부작용](#/a/sexual-side-effects)
+- [여성 당사자의 몸: 생리·피임·폐경과 약](#/a/womens-health)
+- [부작용 총론](#/a/side-effects-overview)
+- [아리피프라졸](#/a/aripiprazole)
+- [약 바꾸기·줄이기와 중단의 위험](#/a/switching-reducing-stopping)

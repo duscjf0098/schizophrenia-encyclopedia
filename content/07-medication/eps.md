@@ -5,6 +5,10 @@ order: 18
 summary: 항정신병약이 일으키는 운동 부작용 네 가지, 즉 급성 근긴장이상·파킨슨증·정좌불능·지연성 운동장애를 각각 정의·시기·빈도로 정리했어요. 지연성 운동장애의 연간 발생률(1세대 6.5%, 2세대 2.6%), AIMS 검사, 2017년 미국에서 승인되고 2021년 국내에도 허가된 VMAT2 억제제까지 담았어요.
 tags: 약물 치료, 부작용, 추체외로 증상, 지연성 운동장애, 정좌불능, 근긴장이상, 위기
 updated: 2026-10-25
+points:
+  - 운동 부작용은 네 가지이고, 생기는 시기와 대처가 서로 달라요.
+  - 일찍 알아차려 말하면 의사가 약을 조정할 여지가 생겨요.
+  - 안절부절이 견디기 힘들면 바로 말하고, 위기 때는 109에 연락해요.
 evidence: 연구
 sources:
   - Carbon M 외 | Tardive dyskinesia risk with first- and second-generation antipsychotics in comparative randomized controlled trials: a meta-analysis (World Psychiatry) | 2018 | https://doi.org/10.1002/wps.20579
@@ -57,8 +61,10 @@ sources:
 ::: warn 바로 연락할 신호
 - 목이 뒤로 젖혀지거나 턱이 굳어 말하기·삼키기가 어려울 때
 - 목소리가 쉬고 숨쉬기가 힘들 때(후두 근긴장이상): 드물지만 응급이에요. 119
-- 고열, 온몸이 굳음, 땀, 의식이 흐려짐(신경이완제 악성증후군 의심): 119
+- 고열, 온몸이 굳음, 땀, 의식이 흐려짐([신경이완제 악성 증후군](#/a/neuroleptic-malignant-syndrome) 의심): 119
 - 안절부절이 너무 심해 "차라리 죽고 싶다"는 생각이 들 때: 의사에게 즉시, 위기 시 109 또는 1577-0199
+
+운동 부작용 말고도 바로 연락해야 하는 약 부작용 신호는 [부작용 총론](#/a/side-effects-overview)의 '바로 연락할 신호' 표에 모아 두었어요.
 :::
 
 ## 당사자가 알아차리는 법
@@ -81,3 +87,11 @@ sources:
 - 지연성 운동장애 검사(AIMS)는 얼마나 자주 하나요?
 - 항콜린제를 먹고 있다면, 언제까지 먹어야 하나요?
 - 안절부절이 생기면 어떤 선택지가 있나요?
+
+## 더 읽을 글
+
+- [부작용 총론](#/a/side-effects-overview)
+- [신경이완제 악성 증후군](#/a/neuroleptic-malignant-syndrome)
+- [진정과 항콜린 부작용](#/a/sedation-anticholinergic)
+- [부작용 대처](#/a/managing-side-effects)
+- [약 바꾸기·줄이기와 중단의 위험](#/a/switching-reducing-stopping)

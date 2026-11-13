@@ -4,7 +4,7 @@ section: 12
 order: 11
 summary: 국내 조현병 스펙트럼 평생 유병률은 2016년 조사에서 0.5%, 건강보험 자료에서는 연간 진단 유병률 0.45%(2017년)로 보고돼요. 전국 역학조사, 건보 빅데이터 연구, 첫 삽화 코호트(KEPS), 대한조현병학회, 긴 입원과 낙인이라는 한국 특유의 쟁점, 연구에 참여하는 방법을 정리했어요.
 tags: 연구, 역학, 유병률, 한국, 건강보험 빅데이터, 코호트, 대한조현병학회, 임상시험, 장기 입원, 낙인
-updated: 2026-10-24
+updated: 2026-11-14
 evidence: 연구
 sources:
   - 보건복지부 | 2021년 정신건강실태조사 결과 발표 (보도자료) | 2021 | https://www.mohw.go.kr/board.es?mid=a10503010100&bid=0027&act=view&list_no=369088&nPage=163
@@ -12,14 +12,16 @@ sources:
   - Jung YS 외 | The prevalence, incidence, and admission rate of diagnosed schizophrenia spectrum disorders in Korea, 2008–2017: a nationwide population-based study using claims big data analysis (PLoS One) | 2021 | https://doi.org/10.1371/journal.pone.0256221
   - Kim SW 외 | Design and methodology of the Korean Early Psychosis Cohort Study (Psychiatry Investigation) | 2017 | https://doi.org/10.4306/pi.2017.14.1.93
   - Setiani A 외 | Association between the Korea-Polyenvironmental Risk Score and clinical outcomes in schizophrenia spectrum disorders (Schizophrenia Bulletin) | 2026 | https://doi.org/10.1093/schbul/sbaf090
-  - Go DS, Shin KC, Paik JW | A review of the admission system for mental disorders in South Korea (International Journal of Environmental Research and Public Health) | 2020 | https://doi.org/10.3390/ijerph17249159
+  - Go DS 외 | A review of the admission system for mental disorders in South Korea (International Journal of Environmental Research and Public Health) | 2020 | https://doi.org/10.3390/ijerph17249159
   - 대한조현병학회 | 학회 소개·학술대회·학회지(Korean Journal of Schizophrenia Research) | 2026 | https://www.schizophrenia.or.kr/
 ---
 ## 한 문장으로
 
-조현병 연구의 큰 흐름은 세계 공통이지만, "한국에서 얼마나 많은 사람이 앓고, 어떻게 치료받고, 무엇이 문제인가"는 한국 자료로만 알 수 있어요. 한국은 전 국민 건강보험 덕분에 진단·처방·입원 기록이 하나의 데이터베이스에 모이는 드문 나라예요. 그 장점이 최근 10년 사이 조현병 역학 연구를 빠르게 키웠어요. 동시에 세계에서 가장 긴 입원 기간과 깊은 낙인이라는, 한국이 풀어야 할 숙제도 연구가 분명히 보여 줘요. 세계 유병률의 큰 그림은 [유병률, 발병 연령, 성차](#/a/epidemiology)에 있어요.
+한국은 전 국민 건강보험 덕분에 진단·처방·입원 기록이 하나의 데이터베이스에 모이는 드문 나라라서, 한국 당사자가 얼마나 많고 어떻게 치료받는지를 한국 자료로 볼 수 있어요. 한국 연구들은 OECD 나라 가운데 가장 긴 입원 기간[^6]과 깊은 낙인이라는, 한국이 풀어야 할 숙제도 분명히 보여 줘요.
 
 ## 얼마나 많은가: 두 종류의 숫자
+
+조현병 연구의 큰 흐름은 세계 공통이지만, "한국에서 얼마나 많은 사람이 앓고, 어떻게 치료받고, 무엇이 문제인가"는 한국 자료로만 알 수 있어요. 세계 유병률의 큰 그림은 [유병률, 발병 연령, 성차](#/a/epidemiology)에 있어요.
 
 한국의 유병률 숫자는 두 갈래에서 나와요. 사람을 직접 면담하는 **역학조사**와 진료 기록을 세는 **건강보험 자료**예요. 둘은 다른 것을 재요.
 
@@ -35,7 +37,7 @@ sources:
 
 ## 건강보험 빅데이터 연구
 
-건강보험 자료는 유병률만이 아니라 사망, 신체 질환, 약 사용, 입원 패턴을 전 국민 규모로 볼 수 있게 해 줘요. 조현병이 있는 사람의 사망률이 일반 인구의 몇 배인지, 자살 사망이 얼마나 높은지도 이 자료로 계산됐어요([기대수명 격차](#/a/life-expectancy)). 2017년 정신건강복지법 전면 개정이 입원에 어떤 영향을 미쳤는지도 같은 자료로 분석되고 있어요([입원 생활은 어떤가](#/a/hospital-stay-life)).
+진단·처방·입원 기록이 한곳에 모이는 장점이 최근 10년 사이 조현병 역학 연구를 빠르게 키웠어요. 건강보험 자료는 유병률만이 아니라 사망, 신체 질환, 약 사용, 입원 패턴을 전 국민 규모로 볼 수 있게 해 줘요. 조현병이 있는 사람의 사망률이 일반 인구의 몇 배인지, 자살 사망이 얼마나 높은지도 이 자료로 계산됐어요([기대수명 격차](#/a/life-expectancy)). 2017년 정신건강복지법 전면 개정이 입원에 어떤 영향을 미쳤는지도 같은 자료로 분석되고 있어요([입원 생활은 어떤가](#/a/hospital-stay-life)).
 
 이 자료의 한계도 알아야 해요. 청구 자료의 진단명은 의사가 보험 청구를 위해 적은 코드라서 임상 진단과 다를 수 있고, 치료받지 않는 사람은 아예 잡히지 않아요. 그래서 역학조사와 청구 자료는 서로를 보완하는 관계예요.
 
@@ -77,5 +79,13 @@ sources:
 
 - 한국에서 조현병은 성인 200명 중 1명 안팎이 겪는 흔한 병이에요.[^2][^3] 당신은 혼자가 아니에요.
 - 한국 자료로 한국 당사자의 경과를 추적하는 연구가 자라고 있어요.[^4][^5] 그 결과가 앞으로의 치료 지침을 바꿔요.
-- 긴 입원과 낮은 서비스 이용률은 개인의 문제가 아니라 제도의 숙제예요.[^1][^6] 권리를 알고 지역사회 자원을 쓰는 것이 그 숙제를 푸는 한 부분이에요.
+- 긴 입원과 낮은 서비스 이용률은 개인의 문제가 아니라 제도의 숙제예요.[^1][^6] 권리를 알고 지역사회 자원을 쓰는 것이 그 숙제를 푸는 한 부분이에요. 가까운 지역사회 창구는 [정신건강복지센터](#/a/mental-health-center)예요.
 - 연구 참여는 선택이에요. 참여하든 하지 않든 치료에 불이익은 없어야 해요.
+
+## 더 읽을 글
+
+- [유병률, 발병 연령, 성차](#/a/epidemiology)
+- [조기 발견과 예방 연구](#/a/early-detection)
+- [신약 개발의 큰 흐름](#/a/drug-pipeline)
+- [한국 정신건강 정책의 역사](#/a/korea-mental-health-history)
+- [입원 생활은 어떤가](#/a/hospital-stay-life)

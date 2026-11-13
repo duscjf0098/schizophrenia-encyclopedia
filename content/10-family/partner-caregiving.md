@@ -4,7 +4,11 @@ section: 10
 order: 8
 summary: 부모의 돌봄과 파트너의 돌봄은 달라요. 파트너는 대등한 관계 안에서 돌보는 사람이고, 성·돈·육아를 함께 나누는 사람이에요. 증상기와 안정기의 역할 변화, 친밀감, 경제·육아 부담, 자기 삶 지키기, 파트너 연구에서 확인된 것, 그리고 헤어짐을 생각할 때의 안내를 판단 없이 정리했어요.
 tags: 가족, 배우자, 연인, 파트너, 돌봄, 관계, 친밀감
-updated: 2026-11-12
+updated: 2026-11-14
+points:
+  - 파트너는 대등한 관계 안에서 돌보는 사람이라 고민이 달라요.
+  - 안정기에는 대신 하던 결정을 당사자에게 돌려주는 것이 중요해요.
+  - 내 관계·활동 하나는 지키고, 내 우울·불안도 도움을 받아요.
 evidence: 연구
 sources:
   - Jungbauer J 외 | The disregarded caregivers: subjective burden in spouses of schizophrenia patients (Schizophrenia Bulletin) | 2004 | https://doi.org/10.1093/oxfordjournals.schbul.a007114
@@ -13,6 +17,8 @@ sources:
   - Chen Y 외 | Prevalence and sociodemographic configurations of anxiety and depression among caregivers of individuals with mental illness: a meta-analysis and qualitative comparative analysis (Journal of Affective Disorders) | 2025 | https://doi.org/10.1016/j.jad.2025.01.129
   - de Boer MK 외 | The facts about sexual (dys)function in schizophrenia: an overview of clinically relevant findings (Schizophrenia Bulletin) | 2015 | https://doi.org/10.1093/schbul/sbv001
   - NICE | Psychosis and schizophrenia in adults: prevention and management (CG178), 1.1.4 Support for carers | 2014(2026.9.4. 최종 갱신) | https://www.nice.org.uk/guidance/cg178/chapter/Recommendations
+  - 보건복지부 | 정신건강 심리상담 바우처사업 (정책 · 정신건강정책) | 2026 | https://www.mohw.go.kr/menu.es?mid=a10706040800
+  - CaseNote(현행 조문) | 남녀고용평등과 일·가정 양립 지원에 관한 법률 제22조의2 (2026.9.18. 시행, 법률 제21476호) | 2026 | https://casenote.kr/법령/남녀고용평등과_일·가정_양립_지원에_관한_법률
 ---
 ## 한 문장으로
 
@@ -60,14 +66,15 @@ sources:
 
 - 돌봄과 무관한 **나만의 관계·활동**을 한 가지는 유지해요.
 - 당사자의 가족(부모·형제)과 **역할을 나눠요**. 파트너가 전부 떠안을 이유는 없어요.
-- 파트너 자신의 우울·불안도 치료 대상이에요. [가족 돌봄자의 소진](#/a/caregiver-burnout)을 읽어 보세요.
+- 파트너 자신의 우울·불안도 치료 대상이에요. [가족 돌봄자의 소진](#/a/caregiver-burnout)을 읽어 보세요. 보건복지부의 2026년 정신건강 심리상담 바우처사업은 우울·불안 같은 정서적 어려움이 있는 사람에게 전문 심리상담 8회를 지원하고, 정신건강복지센터 등의 의뢰서나 정신건강의학과 소견서 같은 증빙이 필요해요.[^7] 자세한 내용은 [심리상담 바우처와 건강검진 정신건강검사](#/a/counseling-voucher-and-screening)에 있어요. 죽고 싶다는 생각이 들면 바우처를 기다리지 말고 자살예방상담 109, 정신건강위기상담 1577-0199에 연락하세요.
+- 회사에 다닌다면 배우자를 돌보려고 가족돌봄휴가(연 최장 10일)나 가족돌봄휴직(연 최장 90일, 휴가 기간 포함)을 신청할 수 있어요. 2026년 11월 현재 시행 중인 남녀고용평등법(2026년 9월 18일 시행본)이 정한 대상 가족에 배우자가 들어 있어요. 결혼하지 않은 연인은 법이 정한 대상 가족 목록에 없어서 이 휴가·휴직을 권리로 요구하기는 어려워요.[^8] 연차나 회사 규정의 다른 휴가를 알아보고, 고용노동부 고객상담센터에 물어보세요. 신청 방법과 상담 연락처는 [가족이 쓰는 돌봄휴가·휴직·단축 근무](#/a/family-care-leave)에 있어요.
 - 영국 NICE 진료지침은 돌봄자에게 교육·지지 프로그램을 가능한 한 일찍, 필요할 때마다 제공하라고 권해요.[^6] 한국에서는 [정신건강복지센터](#/a/mental-health-center)의 가족 프로그램, 병원 가족 교육, [가족 개입](#/a/family-intervention)이 그 역할을 해요. 파트너도 "가족"으로 참여할 수 있어요.
 
 ## 헤어짐을 생각하게 될 때
 
 이혼이나 별거를 생각하는 것은 배신이 아니에요. 2004년 연구가 보여 준 것처럼 많은 관계가 위기를 지나고, 어떤 관계는 이어지고 어떤 관계는 끝나요.[^1] 어느 쪽도 실패가 아니에요. 다만 몇 가지는 알아 두면 좋아요.
 
-- **안전이 먼저예요.** 폭력이나 위협이 있다면 관계를 고민하기 전에 안전을 확보해요. 급박하면 112·119, 정신건강 위기 상담은 1577-0199예요.
+- **안전이 먼저예요.** 폭력이나 위협이 있다면 관계를 고민하기 전에 안전을 확보해요. 급박하면 112·119, 정신건강 위기 상담은 1577-0199예요. 평온할 때 세워 두는 안전 계획과 신고 뒤의 절차는 [가족이 위협받을 때: 안전 계획과 도움](#/a/family-violence-safety)에 있어요.
 - **결정은 안정기에.** 급성기의 말과 행동만으로 관계 전체를 판단하면 후회가 남기 쉬워요. 가능하면 증상이 가라앉은 뒤, 둘이 이야기할 수 있을 때 결정해요.
 - **법적인 문제는 전문가와.** 재산 분할, 양육, 당사자의 치료 지속 방안은 변호사·법률구조공단 같은 전문 창구와 상의해요.
 - **헤어진 뒤의 역할도 선택이에요.** 아이의 부모로, 또는 위기 때 연락할 사람으로 남을 수도 있고, 거리를 둘 수도 있어요. 어느 쪽이든 미리 당사자의 다른 지지 체계(가족, 센터 사례관리자)를 연결해 두면 서로에게 좋아요.
@@ -77,3 +84,11 @@ sources:
 - 당신의 부담은 연구로 확인된 현실이고, 배우자 전용 지원이 필요하다는 것이 전문가들의 결론이에요.[^2]
 - 역할을 되돌려 주는 것, 친밀감을 다시 쌓는 것, 내 삶을 남겨 두는 것이 관계를 오래 가게 해요.
 - 대화가 막힐 때는 [대화법: LEAP와 그 밖의 방법](#/a/leap-communication)이 도움이 돼요.
+
+## 더 읽을 글
+
+- [가족 돌봄자의 소진](#/a/caregiver-burnout)
+- [연애하고 결혼할 수 있나요?](#/a/faq-love-marriage)
+- [가족이 위협받을 때: 안전 계획과 도움](#/a/family-violence-safety)
+- [가족의 슬픔: 기대를 다시 세우는 일](#/a/family-grief)
+- [가족이 쓰는 돌봄휴가·휴직·단축 근무](#/a/family-care-leave)

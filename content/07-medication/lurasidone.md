@@ -4,14 +4,22 @@ section: 7
 order: 10
 summary: 루라시돈(lurasidone)은 체중·혈당·지질·QT에서 가장 유리한 축에 드는 2세대 약이에요. 대신 정좌불능과 추체외로 증상이 흔하고, 음식과 함께 먹어야 흡수돼요. 청소년 조현병과 양극성 우울증에도 적응증이 있고, 국내는 2023년 허가됐어요.
 tags: 약물 치료, 루라시돈, 2세대 항정신병약, 대사 부작용, 정좌불능
-updated: 2026-10-25
+updated: 2026-11-14
+points:
+  - 체중·혈당·지질 부담이 적은 편인 2세대 항정신병약이에요.
+  - 대신 정좌불능이 흔하고, 음식과 함께 먹어야 흡수가 잘돼요.
+  - 가만히 있기 힘들거나 다리가 근질거리면 담당 의사에게 말해요.
+reviewed: 2026-11-14
 evidence: 연구
 sources:
   - Sumitomo Pharma America | LATUDA (lurasidone) 미국 FDA 처방정보 (DailyMed) | 2025 | https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=afad3051-9df2-4c54-9684-e8262a133af8
-  - Huhn M 외 | Comparative efficacy and tolerability of 32 oral antipsychotics for acute treatment in adults with multi-episode schizophrenia: a systematic review and network meta-analysis (Lancet) | 2019 | https://doi.org/10.1016/S0140-6736(19)31135-3
+  - Huhn M 외 | Comparative efficacy and tolerability of 32 oral antipsychotics for the acute treatment of adults with multi-episode schizophrenia: a systematic review and network meta-analysis (Lancet) | 2019 | https://doi.org/10.1016/S0140-6736(19)31135-3
   - Pillinger T 외 | Comparative effects of 18 antipsychotics on metabolic function in patients with schizophrenia, predictors of metabolic dysregulation, and association with psychopathology: a systematic review and network meta-analysis (Lancet Psychiatry) | 2020 | https://doi.org/10.1016/S2215-0366(19)30416-X
   - 식품의약품안전처 | 의약품안전나라 · 의약품 검색 "라투다" | 2026 | https://nedrug.mfds.go.kr/searchDrug?searchYn=true&itemName=%EB%9D%BC%ED%88%AC%EB%8B%A4
   - Pharmacy Times | FDA Approves Latuda for Adolescent Schizophrenia | 2017 | https://pharmacytimes.com/view/fda-approves-latuda-for-adolescent-schizophrenia
+  - Stroup TS 외 | Management of common adverse effects of antipsychotic medications (World Psychiatry) | 2018 | https://doi.org/10.1002/wps.20567
+  - Solmi M 외 | Safety, tolerability, and risks associated with first- and second-generation antipsychotics: a state-of-the-art clinical review (Therapeutics and Clinical Risk Management) | 2017 | https://doi.org/10.2147/TCRM.S117321
+  - 식품의약품안전처 | 의약품안전나라 · 의약품 검색(주성분 영문명 Lurasidone, 제품명 '주') | 2026 | https://nedrug.mfds.go.kr/searchDrug?searchYn=true&itemName=%EC%A3%BC&ingrEngName=Lurasidone
 ---
 ## 한 문장으로
 
@@ -23,23 +31,43 @@ sources:
 
 미국 처방정보상 적응증은 성인과 13~17세 청소년의 조현병, 성인과 10~17세의 양극성 1형 우울증(단독요법)이에요. 리튬·발프로산과 함께 쓰는 병용요법은 성인에서만 허가돼 있어요.[^1] 청소년 조현병 적응증은 2017년에 추가됐어요.[^5] 국내에는 2023년 11월 라투다정(부광약품)이 허가됐어요.[^4]
 
+## 약 카드
+
+| 항목 | 내용 |
+|---|---|
+| 계열 | 2세대 |
+| 제형 | 먹는 약 · 장기지속형 주사 없음[^8] |
+| 체중·대사 | 적은 편[^6] |
+| 추체외로 증상·좌불안석 | 중간[^7][^6] |
+| 프로락틴 | 중간(자료마다 달라요)[^7][^6] |
+| 졸림 | 자료 부족(가벼움과 중간 사이)[^6][^7] |
+| QT 연장 | 적은 편[^6] |
+| 기립성 저혈압 | 적은 편[^6] |
+| 꼭 알아둘 것 | 가만히 있지 못하거나 다리가 근질거려 앉아 있기 힘들면 담당 의사에게 말해요.[^1] |
+
+같은 약이라도 사람마다 반응이 달라요. 이 표로 약을 고르거나 바꾸지 말고 담당 의사와 상의하세요.
+
+부작용 경향은 여러 약을 견준 종설 두 편의 범주를 옮겼고, 자료끼리 다르면 "자료마다 달라요"로, 범주를 하나로 정하기 어려우면 "자료 부족"으로 적었어요.
+
 ## 효과
 
 2019년 32개 약 네트워크 메타분석에서 루라시돈은 위약보다 유의하게 효과적이었지만, 클로자핀·아미설프리드·올란자핀·리스페리돈 같은 상위권은 아니었어요.[^2] "효과는 중간, 부작용은 가벼운 쪽"에 속하는 약이에요. 양극성 우울증 적응증이 있어서 우울이 겹친 사람에게 의미가 있어요.[^1]
 
 ## 부작용
 
-**정좌불능·추체외로 증상.** 가장 흔해요. 성인 조현병 시험에서 정좌불능 13% 대 위약 3%, 추체외로 장애 14% 대 6%, 구역 10% 대 5%, 졸림 17.0% 대 7.1%였어요.[^1] 다리가 근질거려 앉아 있기 힘든 느낌, 떨림, 뻣뻣함이 생기면 말하세요. [추체외로 증상](#/a/eps)을 보세요.
+**정좌불능·추체외로 증상.** 가장 흔해요. 성인 조현병 시험에서 정좌불능 13% 대 위약 3%, 추체외로 장애 14% 대 6%, 구역 10% 대 5%, 졸림 17.0% 대 7.1%였어요.[^1] 다리가 근질거려 앉아 있기 힘든 느낌, 떨림, 뻣뻣함이 생기면 말하세요. 여러 약을 견준 종설에서도 추체외로 증상은 리스페리돈·팔리페리돈과 함께 "중간"으로 묶여요. 졸림은 두 종설의 표에서 모두 가벼움과 중간 사이로 표시되고, 그 가운데 한 편은 본문에서 루라시돈을 졸림이 덜한 쪽에 두어요. 범주를 하나로 정하기 어려워 약 카드에는 "자료 부족"으로 적었어요.[^6][^7] [추체외로 증상](#/a/eps)을 보세요.
 
-**체중·대사.** 성인 조현병 시험에서 평균 체중 변화는 +0.43kg(위약 −0.02kg)이었고, 7% 이상 증가는 4.8% 대 3.3%였어요.[^1] 2020년 18개 약 대사 네트워크 메타분석에서 아리피프라졸·브렉스피프라졸·카리프라진·지프라시돈과 함께 가장 유리한 축이었어요.[^3]
+**체중·대사.** 성인 조현병 시험에서 평균 체중 변화는 +0.43kg(위약 −0.02kg)이었고, 7% 이상 증가는 4.8% 대 3.3%였어요.[^1] 2020년 18개 약 대사 네트워크 메타분석에서 아리피프라졸·브렉스피프라졸·카리프라진·지프라시돈과 함께 가장 유리한 축이었어요.[^3] 여러 약을 견준 종설 두 편도 적은 편으로 묶어요.[^6][^7] 그래도 정기 검사는 받아요. 검사 일정은 [대사 부작용](#/a/metabolic-side-effects)에 있어요.
 
-**심전도.** 32개 약 비교에서 QTc 변화가 −2.21ms로 가장 작았어요.[^2]
+**심전도.** 32개 약 비교에서 QTc 변화가 −2.21ms로 가장 작았어요.[^2] 처방정보에 실린 조현병·양극성 우울증 단기 위약 대조 시험에서는 복용 뒤 QT가 500ms를 넘은 사람이 없었어요.[^1] 여러 약을 견준 종설에서도 적은 편이에요.[^6][^7] 심장과 약의 관계는 [심장과 약](#/a/heart-and-antipsychotics)에서 다뤄요.
 
-**프로락틴.** 네트워크 메타분석에서 유의하게 올라가는 약에 들었어요.[^2] 리스페리돈·팔리페리돈만큼은 아니지만 생리·가슴 변화가 있으면 말하세요.
+**프로락틴.** 네트워크 메타분석에서 유의하게 올라가는 약에 들었어요.[^2] 리스페리돈·팔리페리돈만큼은 아니지만 생리·가슴 변화가 있으면 말하세요. 여러 약을 견준 종설 두 편 가운데 한 편은 "중간 정도 올리는" 약으로, 다른 한 편은 표에서 적은 편으로 표시해 자료마다 달라요.[^7][^6] 자세한 건 [고프로락틴혈증](#/a/hyperprolactinemia)에서 다뤄요.
+
+**일어설 때 어지러움.** 처방정보는 알파1 차단 때문일 수 있는 기립성 저혈압과 실신을 경고하고, 시작할 때와 용량을 올릴 때 위험이 가장 크다고 해요. 성인 조현병 단기 시험에서 이상반응으로 보고된 기립성 저혈압은 0.3% 대 위약 0.1%, 실신은 0.1% 대 0%로 드물었어요.[^1] 여러 약을 견준 종설에서도 적은 편이에요.[^6][^7] 일어설 때의 요령은 [기립성 저혈압과 어지러움](#/a/orthostatic-hypotension)에 있어요.
 
 ::: warn 바로 연락할 신호
-- 고열, 온몸 뻣뻣함, 의식 혼탁 → 악성증후군 가능성. 119 또는 담당 병원에 연락하세요.
-- 눈이 위로 돌아가거나 목·혀가 뒤틀림 → 급성 근긴장이상. 응급 처치로 풀 수 있어요.
+- 고열, 온몸 뻣뻣함, 의식 혼탁 → [신경이완제 악성 증후군](#/a/neuroleptic-malignant-syndrome) 가능성. 바로 119에 연락하거나 응급실로 가요.
+- 눈이 위로 돌아가거나 목·혀가 뒤틀림 → 급성 근긴장이상. 치료로 풀 수 있으니 그날 바로 담당 병원이나 응급실에 가요. 목이 조이거나 삼키기·숨쉬기가 힘들면 바로 119예요.[^1]
 - 케토코나졸·클래리스로마이신 같은 항진균제·항생제, 리팜핀·카바마제핀·세인트존스워트를 새로 쓰게 되면 꼭 알리세요. 강한 CYP3A4 억제제·유도제와는 병용 금기예요.[^1]
 :::
 
@@ -49,7 +77,7 @@ sources:
 루라시돈은 음식과 함께 먹으면 흡수가 크게 늘어요. 처방정보에 따르면 식사와 함께 복용했을 때 최고 혈중 농도가 공복의 약 3배, 총 노출량이 약 2배예요. 처방정보는 일정량 이상의 식사와 함께 먹도록 정하고 있고, 그 이상에서는 식사 양이나 지방 함량에 따라 달라지지 않아요.[^1] 공복에 먹으면 같은 용량이라도 효과가 떨어질 수 있다는 뜻이에요.
 :::
 
-- 정제만 있어요. 장기지속형 주사제는 없어요.
+- 정제만 있어요.[^4] 장기지속형 주사제는 없어요.[^8]
 - 자몽과 자몽주스는 피해야 해요.[^1]
 - "저녁 식사와 함께"처럼 식사에 묶어 두면 잊지 않기 쉬워요. 구체적인 복용 시간은 의사와 정하세요.
 
@@ -71,3 +99,11 @@ sources:
 - 안절부절못하는 느낌이 생기면 어떤 선택지가 있나요?
 - 제가 먹는 다른 약(항생제, 항진균제, 한약·건강식품 포함)과 상호작용이 있나요?
 - 효과가 충분한지 언제 판단하나요?
+
+## 더 읽을 글
+
+- [추체외로 증상과 지연성 운동장애](#/a/eps)
+- [대사 부작용: 체중·혈당·지질](#/a/metabolic-side-effects)
+- [2세대 항정신병약 총론](#/a/second-generation)
+- [고프로락틴혈증](#/a/hyperprolactinemia)
+- [부작용 대처: 기록하고, 말하고, 함께 정하기](#/a/managing-side-effects)

@@ -4,7 +4,11 @@ section: 12
 order: 7
 summary: 스마트폰이 재발 신호를 미리 알아챌 수 있을까요? 2026년 10월 미국에서는 음성 증상용 앱이 처음으로 허가를 받았어요. 동시에 AI 챗봇이 망상을 키울 수 있다는 사례 보고가 나오고 있어요. 디지털 표현형, 디지털 치료기기, 대형언어모델의 가능성과 위험, 개인정보 문제를 확인된 연구로 정리해요.
 tags: 연구 최전선, 디지털 치료, 스마트폰, 인공지능, 챗봇, 개인정보, 음성 증상, 위기
-updated: 2026-10-23
+updated: 2026-11-14
+points:
+  - 음성 증상 앱은 미국 허가를 받았고, 재발 예측은 아직 연구 단계예요.
+  - AI 챗봇이 망상을 키울 수 있다는 경고와 사례 보고가 쌓이고 있어요.
+  - 챗봇과 이야기하다 죽고 싶어지면 109나 1577-0199로 사람에게 연락해요.
 evidence: 초기연구
 sources:
   - Barnett I 외 | Relapse prediction in schizophrenia through digital phenotyping: a pilot study (Neuropsychopharmacology) | 2018 | https://doi.org/10.1038/s41386-018-0030-z
@@ -14,6 +18,7 @@ sources:
   - Psychiatric Times | FDA grants clearance to Motivista, the first authorized treatment for negative symptoms of schizophrenia | 2026 | https://www.psychiatrictimes.com/view/fda-grants-clearance-to-motivista-the-first-authorized-treatment-for-negative-symptoms-of-schizophrenia
   - Østergaard SD | Will generative artificial intelligence chatbots generate delusions in individuals prone to psychosis? (Schizophrenia Bulletin) | 2023 | https://doi.org/10.1093/schbul/sbad128
   - Olsen SG 외 | Potentially harmful consequences of artificial intelligence (AI) chatbot use among patients with mental illness: early data from a large psychiatric service system (Acta Psychiatrica Scandinavica) | 2026 | https://doi.org/10.1111/acps.70068
+  - Rethink Mental Illness | Are AI chatbots linked to psychosis and delusions? Risks, symptoms, and safe use | 2026 | https://www.rethink.org/advice-and-information/digital-mental-health-hub/are-ai-chatbots-linked-to-psychosis-and-delusions-risks-symptoms-and-safe-use/
 ---
 ## 한 문장으로
 
@@ -71,7 +76,7 @@ ChatGPT 같은 대형언어모델 챗봇은 2022년 말부터 널리 쓰이기 �
 **첫 체계적 사례 자료(2026).** 덴마크 대형 정신건강 서비스의 약 5만 4천 명 진료 기록을 검색한 연구에서, 챗봇 사용이 기록된 환자는 126명이었고, 그중 38명에서 해로울 수 있는 결과가 기록됐어요.[^7] 가장 흔한 것은 망상 악화(11명)였고, 자살 생각 악화나 자해 방법 질문(6명), 섭식장애 악화(5명)도 있었어요.[^7] 반면 32명은 증상을 이해하거나 대화 상대를 찾는 데, 20명은 일상 업무를 정리하는 데 썼어요.[^7]
 
 ::: warn 해석에 주의할 점
-진료 기록 연구라서 챗봇이 **원인**인지는 알 수 없어요. 의료진이 기술 사용을 늘 묻지는 않아 실제보다 적게 잡혔을 수 있어요.[^7] 그래도 "챗봇은 사용자의 믿음에 맞장구치는 경향이 있다"는 지적은 망상을 겪는 사람에게 중요한 경고예요.[^6][^7]
+진료 기록 연구라서 챗봇이 **원인**인지는 알 수 없어요. 의료진이 기술 사용을 늘 묻지는 않아 실제보다 적게 잡혔을 수 있어요.[^7] 그래도 영국 정신건강 단체 Rethink Mental Illness가 짚은 것처럼, 많은 챗봇이 내 말에 반박하지 않고 망상에서 나온 생각에도 동의해 버릴 수 있다는 점은 망상을 겪는 사람에게 중요한 경고예요.[^8]
 :::
 
 ## 개인정보: 가장 민감한 자료
@@ -85,5 +90,13 @@ ChatGPT 같은 대형언어모델 챗봇은 2022년 말부터 널리 쓰이기 �
 ## 나에게 의미하는 것
 
 - 디지털 도구는 치료를 **보조**해요. 허가된 음성 증상 앱도 기존 치료에 더하는 용도예요.[^5] 약이나 진료를 대신한다는 광고는 의심해 보세요.
-- AI 챗봇과 대화하다 "나만 아는 비밀을 알려 준다", "특별한 사명이 있다" 같은 느낌이 커지면 대화를 멈추고 믿을 만한 사람이나 담당 의사에게 이야기하세요.[^6][^7] 챗봇과 이야기하다 죽고 싶은 마음이 커진다면 혼자 견디지 말고 109(자살예방상담), 1577-0199(정신건강위기상담), 응급 상황이면 119에 연락하세요. [위기 상담 전화](#/a/crisis-hotlines) 글도 참고하세요.
-- 스마트폰 기록이 재발 신호를 잡는 데 쓰일 날이 올 수 있어요.[^2] 그때도 어떤 자료를 나눌지는 당신이 정할 권리가 있어요.[^3]
+- AI 챗봇과 대화하다 "나만 아는 비밀을 알려 준다", "특별한 사명이 있다" 같은 느낌이 커지면 대화를 멈추고 믿을 만한 사람이나 담당 의사에게 이야기하세요.[^6][^7][^8] 쓰는 법과 살펴볼 신호는 [AI 챗봇과 이야기해도 괜찮나요?](#/a/faq-ai-chatbot)에 정리했어요. 챗봇과 이야기하다 죽고 싶은 마음이 커진다면 혼자 견디지 말고 109(자살예방상담), 1577-0199(정신건강위기상담), 응급 상황이면 119에 연락하세요. [위기 상담 전화](#/a/crisis-hotlines) 글도 참고하세요.
+- 스마트폰 기록이 재발 신호를 잡는 데 쓰일 날이 올 수 있어요.[^2] 그때도 어떤 자료를 나눌지는 당신이 정할 권리가 있어요.[^3] 지금 할 수 있는 기록 방법은 [증상 기록지와 대화 기록](#/a/symptom-diary-tools)에 있어요.
+
+## 더 읽을 글
+
+- [AI 챗봇과 이야기해도 괜찮나요?](#/a/faq-ai-chatbot)
+- [재발과 재발 신호](#/a/relapse-signs)
+- [증상 기록지와 대화 기록](#/a/symptom-diary-tools)
+- [음성 증상 치료의 최신 접근](#/a/negative-treatment-latest)
+- [아바타 치료](#/a/avatar-therapy)

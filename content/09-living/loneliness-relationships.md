@@ -4,7 +4,11 @@ section: 9
 order: 15
 summary: 정신증을 겪는 사람 대부분이 외로움을 느끼고, 외로움은 증상과도 함께 움직여요. 효과가 확실한 해법은 아직 없지만, 작은 접촉을 조금씩 늘리는 방법과 동료 모임, 온라인 관계의 장단점을 정리했어요.
 tags: 생활, 외로움, 관계, 사회적 고립, 동료지원
-updated: 2026-10-23
+updated: 2026-11-14
+points:
+  - 정신증을 겪는 사람 대부분이 외로움을 느끼고, 외로움은 증상과 함께 움직여요.
+  - 확실한 해법은 아직 없어서 작은 방법을 여러 개 시험하는 것이 현실적이에요.
+  - 이번 주에 인사나 짧은 문자처럼 한 칸 더 가는 접촉을 하나 정해요.
 evidence: 연구
 sources:
   - Michalska da Rocha B 외 | Loneliness in psychosis: a meta-analytical review (Schizophrenia Bulletin) | 2018 | https://doi.org/10.1093/schbul/sbx036
@@ -14,6 +18,7 @@ sources:
   - Hogg LI 외 | A randomised feasibility trial comparing group and individual format GROUPS FOR HEALTH interventions for loneliness in people who experience psychosis (Psychology and Psychotherapy) | 2025 | https://doi.org/10.1111/papt.12574
   - Vogel JS 외 | Effects of an eating club for people with a psychotic disorder on personal recovery: results of a randomized controlled trial (Journal of Behavior Therapy and Experimental Psychiatry) | 2023 | https://doi.org/10.1016/j.jbtep.2023.101871
   - Naslund JA 외 | The future of mental health care: peer-to-peer support and social media (Epidemiology and Psychiatric Sciences) | 2016 | https://doi.org/10.1017/S2045796015001067
+  - Rethink Mental Illness | Are AI chatbots linked to psychosis and delusions? Risks, symptoms, and safe use | 2026 | https://www.rethink.org/advice-and-information/digital-mental-health-hub/are-ai-chatbots-linked-to-psychosis-and-delusions-risks-symptoms-and-safe-use/
 ---
 ## 한 문장으로
 
@@ -52,6 +57,8 @@ sources:
 
 조현병 등 중증 정신질환이 있는 사람들은 온라인 동료와 교류하며 연결감과 소속감을 얻었다고 보고해요. 전문가들은 지금까지의 근거로는 이득이 위험보다 커 보인다고 평가하면서도, 온라인에서 얻은 것이 실제 생활의 회복으로 이어지는지는 더 연구가 필요하다고 했어요.[^7] 약 정보는 담당 의사에게 확인하고, 의심이 커지는 날은 화면에서 잠시 멀어지세요.
 
+이야기할 사람이 없어서 AI 챗봇과 대화하는 사람도 있어요.[^8] 영국 정신건강 단체 Rethink Mental Illness는 챗봇이 틀린 믿음에 반박하지 않고 맞장구칠 수 있다고 경고해요. 그래서 챗봇은 보조 도구로만 쓰고, 친구·가족과 보내는 시간이 줄었다면 사용을 줄여 보라고 권해요.[^8] 챗봇이 사람과의 연결을 대신하지 않게 하는 게 핵심이에요. 자세한 수칙과 멈출 신호는 [AI 챗봇과 이야기해도 괜찮나요?](#/a/faq-ai-chatbot)에 있어요. 같은 단체는 자해·자살 같은 위험한 마음은 챗봇에만 기대지 말고 사람에게 도움을 청하라고 해요.[^8] 죽고 싶은 마음이 들 때는 109나 1577-0199로 사람에게 연락하세요.
+
 ## 할 수 있는 것: 작은 접촉 늘리기 실천표
 
 목표는 "친구 많이 만들기"가 아니라 **이번 주에 한 칸 더 가기**예요.
@@ -79,9 +86,17 @@ sources:
 
 - 거절이 반복돼도 초대를 멈추지 마세요. "올 수 있으면 와, 못 와도 괜찮아"라는 말이 문을 열어 둬요.
 - 오래 말하지 않아도 함께 있는 시간이 연결이 돼요.
-- 외로움을 말하면 "네가 안 나가서 그렇지"보다 "말해 줘서 고마워. 같이 뭘 해 볼까?"가 좋아요.
+- 외로움을 말하면 "네가 안 나가서 그렇지"보다 "말해 줘서 고마워. 같이 뭘 해 볼까?"가 좋아요. 친구로서 연락을 이어 가는 법은 [친구가 조현병일 때](#/a/for-friends)에 있어요.
 
 ## 나에게 의미하는 것
 
 - 외로움은 흔하고, 내 탓이 아니에요. 증상과 상황이 함께 만든 결과예요.[^2]
 - 정답 프로그램은 아직 없지만, 작은 시도를 쌓는 것은 지금 할 수 있어요.[^4]
+
+## 더 읽을 글
+
+- [비사회성](#/a/asociality)
+- [동료 지원](#/a/peer-support)
+- [친구가 조현병일 때](#/a/for-friends)
+- [AI 챗봇과 이야기해도 괜찮나요?](#/a/faq-ai-chatbot)
+- [당사자 수기에서 배운 것](#/a/lived-experience-lessons)

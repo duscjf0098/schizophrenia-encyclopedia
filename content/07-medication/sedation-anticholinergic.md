@@ -4,7 +4,11 @@ section: 7
 order: 21
 summary: 졸림·피로가 왜 생기고 어떤 약이 심한지, 시간이 지나면 줄어드는지, 운전과 일은 어떻게 할지 정리했어요. 입마름·변비·시야 흐림·배뇨 곤란·기억력 저하를 묶는 항콜린 부작용과, 항콜린 부담이 인지와 치매 위험에 미치는 연구도 담았어요.
 tags: 약물 치료, 부작용, 졸림, 항콜린, 변비, 인지
-updated: 2026-10-23
+updated: 2026-11-14
+points:
+  - 졸림과 입마름·변비는 진료실에서 가장 자주 나오는 부작용이에요.
+  - 졸림은 몇 주면 줄기도 하지만, 변비는 가볍게 넘기면 안 돼요.
+  - 클로자핀을 먹는 중 며칠째 대변이 없고 배가 아프거나 토하면 당일 병원이나 119예요.
 evidence: 연구
 sources:
   - Huhn M 외 | Comparative efficacy and tolerability of 32 oral antipsychotics for the acute treatment of adults with multi-episode schizophrenia: a systematic review and network meta-analysis (Lancet) | 2019 | https://doi.org/10.1016/S0140-6736(19)31135-3
@@ -12,6 +16,9 @@ sources:
   - Coupland CAC 외 | Anticholinergic drug exposure and the risk of dementia: a nested case-control study (JAMA Internal Medicine) | 2019 | https://doi.org/10.1001/jamainternmed.2019.0677
   - Every-Palmer S 외 | Clozapine-induced gastrointestinal hypomotility: a 22-year bi-national pharmacovigilance study of serious or fatal 'slow gut' reactions (CNS Drugs) | 2017 | https://doi.org/10.1007/s40263-017-0448-6
   - Cerovecki A 외 | Withdrawal symptoms and rebound syndromes associated with switching and discontinuing atypical antipsychotics: theoretical background and practical recommendations (CNS Drugs) | 2013 | https://doi.org/10.1007/s40263-013-0079-5
+  - Maher S 외 | Clozapine-induced hypersalivation: an estimate of prevalence, severity and impact on quality of life (Therapeutic Advances in Psychopharmacology) | 2016 | https://doi.org/10.1177/2045125316641019
+  - U.S. CDC | Heat and Medications – Guidance for Clinicians | 2025 | https://www.cdc.gov/heat-health/hcp/clinical-guidance/heat-and-medications-guidance-for-clinicians.html
+  - Yosef L 외 | Antipsychotic treatment influence on urinary incontinence in young women: types, severity and life quality (European Journal of Obstetrics & Gynecology and Reproductive Biology) | 2025 | https://doi.org/10.1016/j.ejogrb.2025.03.020
 ---
 ## 한 문장으로
 
@@ -35,7 +42,7 @@ sources:
 
 - **복용 시간대.** 저녁이나 자기 전에 먹으면 낮 졸림이 줄고 수면에 도움이 되기도 해요. 시간대 변경은 의사와 정해요.
 - **용량·약 조정.** 의사가 용량을 조정하거나 진정이 적은 약으로 바꾸는 것을 검토할 수 있어요.
-- **다른 진정 약 점검.** 수면제, 항불안제, 항히스타민제, 일부 항우울제가 겹치면 졸림이 쌓여요. 먹는 약 전부를 의사·약사에게 보여 주세요.
+- **다른 진정 약 점검.** 수면제, 항불안제, 항히스타민제, 일부 항우울제가 겹치면 졸림이 쌓여요. 먹는 약 전부를 의사·약사에게 보여 주세요. 수면제와 항불안제는 [벤조디아제핀과 수면제](#/a/benzodiazepines-sleep-meds)에 따로 정리돼 있어요.
 - **술.** 진정을 크게 키워요. [담배·카페인·술과 약](#/a/smoking-caffeine-alcohol)을 보세요.
 - **운전과 일.** 새 약을 시작하거나 용량을 바꾼 직후에는 운전과 위험한 기계 작업을 피하는 것이 안전해요. 몸이 적응한 뒤 낮에 또렷하다면 가능한 경우가 많지만, 의사와 확인하세요. 직장에는 "약 적응 기간"으로 설명하고 업무 시간 조정을 요청할 수 있어요.
 
@@ -45,16 +52,22 @@ sources:
 
 | 증상 | 모습 | 대처의 일반 정보 |
 |---|---|---|
-| 입마름 | 말이 어눌, 충치·잇몸병 증가 | 물 자주 마시기, 무설탕 껌·사탕, 치과 정기 검진 |
+| 입마름 | 말이 어눌, 충치·잇몸병 증가 | 물 자주 마시기, 무설탕 껌·사탕, 치과 정기 검진(치과에 약 알리기: [다른 과 진료·수술·치과·약국에서 알릴 것](#/a/other-medical-care)) |
 | 변비 | 며칠째 대변 없음, 복부 팽만 | 수분·섬유질·걷기, 심하면 의사와 변비약 상의 |
 | 시야 흐림 | 가까운 글씨가 흐림 | 보통 적응됨, 지속되면 안과·의사 |
 | 배뇨 곤란 | 소변이 잘 안 나옴, 잔뇨감 | 남성·고령에서 주의, 의사에게 말하기 |
-| 빈맥 | 맥박이 빠름 | 측정해서 알리기 |
+| 빈맥 | 맥박이 빠름 | 측정해서 알리기([심장과 약](#/a/heart-and-antipsychotics)) |
 | 인지 | 깜빡함, 집중 저하, 멍함 | 항콜린 부담 전체를 의사와 점검 |
 
 ::: warn 변비를 가볍게 보지 마세요
-클로자핀에서 장 운동 저하는 장폐색으로 이어질 수 있어요. 호주·뉴질랜드 22년 약물감시 자료에서 심각한 사례 160건 중 최소 29명(18%)이 사망했어요.[^4] 며칠째 대변이 없고 배가 부풀거나 아프고 토한다면 당일에 병원이나 119에 연락하세요. 다른 항콜린 약을 함께 먹으면 위험이 더 커요.
+클로자핀에서 장 운동 저하는 장폐색으로 이어질 수 있어요. 호주·뉴질랜드 22년 약물감시 자료에서 심각한 사례 160건 중 최소 29명(18%)이 사망했어요.[^4] 며칠째 대변이 없고 배가 부풀거나 아프고 토한다면 당일에 병원이나 119에 연락하세요. 다른 항콜린 약을 함께 먹으면 위험이 더 커요. 그 밖에 바로 연락해야 하는 약 부작용 신호는 [부작용 총론](#/a/side-effects-overview)의 표에 모아 두었어요.
 :::
+
+**더운 날.** 항콜린 작용이 있는 약과 항정신병약은 땀을 줄이고 뇌의 체온 조절을 방해해, 더운 날 몸이 잘 식지 않게 할 수 있어요.[^7] 여름 수칙과 바로 119에 연락할 신호는 [더위와 약](#/a/heat-and-medication)에 있어요.
+
+**반대 방향으로 오는 것도 있어요.** 클로자핀은 이 수용체를 막는 약인데도 거꾸로 침이 늘어나는 일이 흔해요. 클로자핀을 먹는 사람을 조사한 2016년 연구에서 92%가 침 흘림을 겪었고, 낮보다 밤에 더 흔했어요(85% 대 48%).[^6] 이유와 대처는 [클로자핀과 침 흘림](#/a/clozapine-hypersalivation)에 있어요.
+
+**소변이 새는 쪽도 있어요.** 항콜린 작용은 소변을 잘 안 나오게 하는 쪽이지만, 소변이 새거나 자는 동안 실수하는(야뇨) 일도 보고돼요. 항정신병약을 먹는 20~40세 여성 100명을 같은 나이의 대조군과 견준 2025년 연구에서 요실금은 29% 대 13%, 야뇨는 12% 대 2%였어요. 야뇨를 겪은 12명 가운데 5명은 클로자핀을 먹고 있었어요. 요실금 증상, 특히 야뇨는 삶의 질을 크게 떨어뜨렸지만 치료를 찾은 사람은 3분의 1 정도였어요.[^8] 부끄러워 숨길 일이 아니라 진료 때 말할 수 있는 일이에요. 여성 당사자의 이야기는 [여성 당사자의 몸](#/a/womens-health)에 더 있어요.
 
 ## 항콜린 부담과 인지
 
@@ -62,7 +75,7 @@ sources:
 2021년 미국 연구는 조현병·조현정동장애가 있는 1,120명의 처방을 항콜린 인지 부담 척도로 점수화하고 인지 검사와 비교했어요. 63%가 부담 점수 3점 이상이었고, 점수가 높을수록 검사한 모든 인지 영역의 점수가 낮았어요. 인구학적 특성과 증상 심각도를 보정해도 같았어요.[^2]
 :::
 
-[인지 기능](#/a/cognitive-overview)은 조현병에서 기능 회복을 좌우하는 영역이에요. 그 인지가 약의 항콜린 작용 때문에 더 떨어질 수 있다는 뜻이에요. 단면 연구라 인과를 단정할 수는 없지만, "항콜린 부담을 줄일 수 있는지"를 점검할 이유는 충분해요. 추체외로 증상 때문에 시작한 항콜린제를 습관처럼 계속 먹고 있다면 특히 그래요.
+[인지 기능](#/a/cognitive-overview)은 조현병에서 기능 회복을 좌우하는 영역이에요. 그 인지가 약의 항콜린 작용 때문에 더 떨어질 수 있다는 뜻이에요. 단면 연구라 인과를 단정할 수는 없지만, "항콜린 부담을 줄일 수 있는지"를 점검할 이유는 충분해요. 추체외로 증상 때문에 시작한 항콜린제를 습관처럼 계속 먹고 있다면 특히 그래요. 약을 오래 먹으면 기억력이 나빠질까 걱정된다면 [약을 오래 먹으면 머리가 나빠지나요?](#/a/faq-memory-meds)에 짧은 답이 있어요.
 
 ## 노인과 치매 위험
 
@@ -89,3 +102,12 @@ sources:
 - 제가 먹는 약 전체의 항콜린 부담은 어느 정도인가요? 줄일 수 있는 약이 있나요?
 - 항콜린제(벤즈트로핀 등)는 언제까지 먹어야 하나요?
 - 운전은 언제부터 해도 되나요?
+
+## 더 읽을 글
+
+- [부작용 총론](#/a/side-effects-overview)
+- [클로자핀과 침 흘림](#/a/clozapine-hypersalivation)
+- [약을 오래 먹으면 머리가 나빠지나요?](#/a/faq-memory-meds)
+- [벤조디아제핀과 수면제](#/a/benzodiazepines-sleep-meds)
+- [더위와 약: 여름을 안전하게](#/a/heat-and-medication)
+- [술 마셔도 되나요?](#/a/faq-alcohol)

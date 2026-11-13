@@ -4,15 +4,20 @@ section: 9
 order: 1
 summary: 조현병이 있는 사람 둘 중 한 명 가까이가 약을 처방대로 먹지 못해요. 의지가 약해서가 아니라 부작용·병식·낙인·복잡함 같은 이유가 있어요. 이유를 찾고, 알림·약 상자·루틴 연결·의사와 함께 정하기·주사제 같은 도구를 골라 써요.
 tags: 복약, 약, 재발예방, 장기지속형주사제, 공유의사결정, 자기관리
-updated: 2026-10-23
+updated: 2026-11-14
+points:
+  - 약을 처방대로 먹지 못하는 일은 둘 중 한 명 가까이에게 있어요.
+  - 의지 문제가 아니라 부작용·병식·생활 같은 이유가 있어요.
+  - 거른 사실과 이유를 의사에게 말하고, 이유에 맞는 도구를 골라요.
+reviewed: 2026-11-14
 evidence: 연구
 sources:
   - Lacro JP 외 | Prevalence of and risk factors for medication nonadherence in patients with schizophrenia: a comprehensive review of recent literature (Journal of Clinical Psychiatry) | 2002 | https://doi.org/10.4088/jcp.v63n1007
   - Semahegn A 외 | Psychotropic medication non-adherence and its associated factors among patients with major psychiatric disorders: a systematic review and meta-analysis (Systematic Reviews) | 2020 | https://doi.org/10.1186/s13643-020-1274-3
   - Kane JM, Kishimoto T, Correll CU | Non-adherence to medication in patients with psychotic disorders: epidemiology, contributing factors and management strategies (World Psychiatry) | 2013 | https://doi.org/10.1002/wps.20060
-  - Kishimoto T 외 | Long-acting injectable versus oral antipsychotics for the maintenance treatment of schizophrenia: a systematic review and comparative meta-analysis of randomised, cohort, and pre-post studies (Lancet Psychiatry) | 2021 | https://doi.org/10.1016/S2215-0366(21)00039-0
-  - Kauppi K 외 | Information and communication technology based prompting for treatment compliance for people with serious mental illness (Cochrane Database of Systematic Reviews) | 2014 | https://doi.org/10.1002/14651858.CD009960.pub2
   - Stovell D 외 | Shared treatment decision-making and empowerment-related outcomes in psychosis: systematic review and meta-analysis (British Journal of Psychiatry) | 2016 | https://doi.org/10.1192/bjp.bp.114.158931
+  - Kauppi K 외 | Information and communication technology based prompting for treatment compliance for people with serious mental illness (Cochrane Database of Systematic Reviews) | 2014 | https://doi.org/10.1002/14651858.CD009960.pub2
+  - Kishimoto T 외 | Long-acting injectable versus oral antipsychotics for the maintenance treatment of schizophrenia: a systematic review and comparative meta-analysis of randomised, cohort, and pre-post studies (Lancet Psychiatry) | 2021 | https://doi.org/10.1016/S2215-0366(21)00039-0
 ---
 ## 한 문장으로
 
@@ -48,7 +53,7 @@ sources:
 
 ### 1. 이유부터 말하기: 함께 정하기
 
-부작용이 싫어서 거른다면 해결책은 "참기"가 아니라 "말하기"예요. 약 종류, 복용 시간, 부작용 관리는 바꿀 수 있는 경우가 많아요([부작용 다루기](#/a/managing-side-effects)). 11개 무작위 시험을 합친 메타분석에서 공유 의사결정(의사와 당사자가 선택지를 같이 따져 정하는 방식)은 치료에 대한 주도감을 작지만 의미 있게 높였어요(효과 크기 0.30). 미래 치료를 미리 함께 정한 연구들에서는 강제 치료가 줄어드는 경향도 보였어요.[^6]
+부작용이 싫어서 거른다면 해결책은 "참기"가 아니라 "말하기"예요. 약 종류, 복용 시간, 부작용 관리는 바꿀 수 있는 경우가 많아요([부작용 다루기](#/a/managing-side-effects)). 무작위 시험 11개를 찾은 2016년 메타분석에서 공유 의사결정(의사와 당사자가 선택지를 같이 따져 정하는 방식)은 치료에 대한 주도감을 작지만 의미 있게 높였어요(6개 시험을 합친 값, 효과 크기 0.30). 미래 치료를 미리 함께 정한 3개 시험에서는 강제 치료가 줄어드는 경향이 보였지만, 통계적으로 뚜렷하지는 않았어요.[^4] 진료 전에 무엇을 준비하고 어떻게 함께 정하는지는 [치료를 함께 정하기](#/a/shared-decision-making)에 있어요.
 
 ### 2. 알림: 도움은 되지만 만능은 아님
 
@@ -60,15 +65,15 @@ sources:
 
 ### 4. 장기지속형 주사제라는 선택지
 
-[장기지속형 주사제(LAI)](#/a/lai)는 몇 주~몇 달에 한 번 맞는 약이에요. 매일 기억할 필요가 없어요. 137개 연구(약 39만 7천 명)를 합친 2021년 메타분석에서 LAI는 먹는 약보다 입원·재발 위험이 낮았어요. 무작위 시험에서 위험비 0.88, 코호트 연구에서 0.92, 전후 비교 연구에서 0.44였어요.[^4] 맞을지 말지는 담당 의사와 장단점을 따져 정해요.
+[장기지속형 주사제(LAI)](#/a/lai)는 몇 주~몇 달에 한 번 맞는 약이에요. 매일 기억할 필요가 없어요. 137개 연구(약 39만 7천 명)를 합친 2021년 메타분석에서 LAI는 먹는 약보다 입원·재발 위험이 낮았어요. 무작위 시험에서 위험비 0.88, 코호트 연구에서 0.92, 전후 비교 연구에서 0.44였어요.[^6] 맞을지 말지는 담당 의사와 장단점을 따져 정해요.
 
 ### 5. 동기를 함께 찾는 대화
 
-"약을 먹으면 내가 원하는 삶에 무엇이 가까워지나"를 의사·상담자와 이야기하는 방식이에요. 일, 학업, 관계 같은 목표와 약을 연결하는 거예요. 여러 접근을 결합할 때 효과가 컸다는 정리와 맞닿아 있어요.[^3]
+"약을 먹으면 내가 원하는 삶에 무엇이 가까워지나"를 의사·상담자와 이야기하는 방식이에요. 일, 학업, 관계 같은 목표와 약을 연결하는 거예요. 여러 접근을 결합할 때 효과가 컸다는 정리와 맞닿아 있어요.[^3] 병과 약, 재발 신호를 체계적으로 배우는 [정신교육](#/a/psychoeducation)도 이런 대화의 바탕이 될 수 있어요.
 
 ## 약을 잊었을 때
 
-잊은 약을 언제, 어떻게 먹을지는 약 종류와 복용 시간에 따라 달라요. 그래서 여기서 정해 드릴 수 없어요. 처방받을 때 **"잊으면 어떻게 하나요?"**를 의사나 약사에게 미리 물어 적어 두세요. 두 번 몫을 한꺼번에 먹는 것처럼 스스로 판단하지 말고, 헷갈리면 약국이나 병원에 전화하세요. 며칠 이상 연달아 걸렀다면 그 사실을 의사에게 꼭 알려요.
+잊은 약을 언제, 어떻게 먹을지는 약 종류와 복용 시간에 따라 달라요. 그래서 여기서 정해 드릴 수 없어요. 처방받을 때 **"잊으면 어떻게 하나요?"**를 의사나 약사에게 미리 물어 적어 두세요. 두 번 몫을 한꺼번에 먹는 것처럼 스스로 판단하지 말고, 헷갈리면 약국이나 병원에 전화하세요. 며칠 이상 연달아 걸렀다면 다시 먹기 전에 처방한 병원이나 약국에 먼저 연락해요. 약에 따라서는 다시 시작하는 방법이 따로 정해져 있기도 해요. 처방받을 때 미리 물어 둘 것은 [약을 빠뜨렸을 때와 복용 시간](#/a/missed-dose)에 정리돼 있어요.
 
 ## 오늘 해 볼 수 있는 것
 
@@ -78,7 +83,7 @@ sources:
 - 휴대폰 알림 한 개 설정하기
 - 요일별 약 상자 준비하기
 - 다음 외래 때 물어볼 질문 메모: "이 부작용은 바꿀 수 있나요?", "잊으면 어떻게 하나요?", "주사제는 저에게 맞나요?"
-- 약값이 부담이면 [산정특례](#/a/special-calculation) 같은 제도를 정신건강복지센터에 물어보기
+- 약값이 부담이면 [산정특례](#/a/special-calculation) 같은 제도를 정신건강복지센터에 물어보기([약값과 건강보험](#/a/drug-costs-coverage))
 
 ## 나에게 의미하는 것
 
@@ -92,3 +97,12 @@ sources:
 - "약 먹었어?"를 매일 확인하는 것보다 "요즘 약 먹을 때 불편한 건 없어?"가 대화를 열어요.
 - 부작용 불평을 "핑계"로 듣지 마세요. 실제 이유인 경우가 많아요.
 - 약 상자 채우기, 외래 같이 가기처럼 구조를 함께 만드는 도움이 감시보다 효과적이에요.
+- 약을 몰래 음식에 섞는 것은 이 백과가 권하지 않는 방법이에요. 그 이유는 [약을 몰래 음식에 섞어도 되나요?](#/a/faq-hide-meds-in-food)에 있어요. 이미 섞어 왔다면 혼자 갑자기 멈추지 말고 처방한 의사에게 먼저 알려 함께 방법을 찾으세요.
+
+## 더 읽을 글
+
+- [치료를 함께 정하기](#/a/shared-decision-making)
+- [약을 빠뜨렸을 때와 복용 시간](#/a/missed-dose)
+- [부작용 대처: 기록하고, 말하고, 함께 정하기](#/a/managing-side-effects)
+- [장기지속형 주사제(LAI)](#/a/lai)
+- [증상 기록지와 대화 기록: 쓰는 법과 양식](#/a/symptom-diary-tools)

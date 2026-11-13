@@ -2,9 +2,13 @@
 title: 1세대 항정신병약
 section: 7
 order: 2
-summary: 1952년 클로르프로마진에서 시작한 1세대 항정신병약의 역사, 종류, 작용과 부작용(추체외로 증상·지연성 운동장애이 많음), 그리고 "효과는 2세대와 생각보다 비슷하다"는 CATIE·메타분석 결과를 정리했어요.
+summary: 1952년 클로르프로마진에서 시작한 1세대 항정신병약의 역사, 종류, 작용과 부작용(추체외로 증상·지연성 운동장애가 많음), 그리고 "효과는 2세대와 생각보다 비슷하다"는 CATIE·메타분석 결과를 정리했어요.
 tags: 약물 치료, 1세대 항정신병약, 클로르프로마진, 할로페리돌, 추체외로 증상
-updated: 2026-10-23
+updated: 2026-11-14
+points:
+  - 1950년대에 나와 도파민 D2 수용체를 강하게 막는 첫 세대 약이에요.
+  - 효과는 2세대와 비슷했지만 떨림·뻣뻣함 같은 증상이 더 흔해요.
+  - 약을 시작·바꾼 뒤 몸이 굳고 정신이 흐려지면 바로 119예요.
 evidence: 연구
 sources:
   - Ban TA | Fifty years chlorpromazine: a historical perspective (Neuropsychiatric Disease and Treatment) | 2007 | https://pmc.ncbi.nlm.nih.gov/articles/PMC2655089/
@@ -14,6 +18,7 @@ sources:
   - Lieberman JA 외 | Effectiveness of antipsychotic drugs in patients with chronic schizophrenia (New England Journal of Medicine) | 2005 | https://doi.org/10.1056/NEJMoa051688
   - Carbon M 외 | Tardive dyskinesia prevalence in the period of second-generation antipsychotic use: a meta-analysis (Journal of Clinical Psychiatry) | 2017 | https://doi.org/10.4088/JCP.16r10832
   - Huhn M 외 | Comparative efficacy and tolerability of 32 oral antipsychotics for acute treatment in adults with multi-episode schizophrenia: a systematic review and network meta-analysis (Lancet) | 2019 | https://doi.org/10.1016/S0140-6736(19)31135-3
+  - Tse L 외 | Neuroleptic malignant syndrome: a review from a clinically oriented perspective (Current Neuropharmacology) | 2015 | https://doi.org/10.2174/1570159X13999150424113345
 ---
 ## 한 문장으로
 
@@ -26,6 +31,8 @@ sources:
 ::: fact 병원을 바꾼 약
 미국에서는 1954년 소라진(Thorazine)이라는 이름으로 승인돼 8개월 만에 200만 명 넘게 썼어요. 미국 정신병원 입원자 수는 1955년 55만 9천 명에서 10년 뒤 45만 2천 명으로 줄었어요.[^2] 클로르프로마진 이후에야 "약으로 정신병 증상을 줄일 수 있다"는 생각이 자리 잡았고, 나중에 이 약이 도파민 수용체를 막는다는 사실이 밝혀지면서 [도파민 가설](#/a/dopamine-hypothesis)이 나왔어요.[^1]
 :::
+
+이 약이 정신과 치료와 병원을 어떻게 바꿨는지는 [클로르프로마진과 정신약물학 혁명](#/a/chlorpromazine-revolution)에서 더 자세히 다뤄요.
 
 ## 종류
 
@@ -51,9 +58,8 @@ sources:
 :::
 
 ::: warn 바로 연락할 신호
-- 고열, 온몸이 뻣뻣해짐, 의식이 흐려짐, 땀·맥박 이상이 함께 오면 **악성증후군**일 수 있어요. 드물지만 생명이 위험할 수 있어요.[^3]
-- 눈이 위로 돌아가 고정되거나, 목·혀가 갑자기 뒤틀리면 **급성 근긴장이상**이에요. 응급 처치로 빨리 풀려요.
-- 이런 때는 119 또는 담당 병원에 바로 연락하세요.
+- 고열, 온몸이 뻣뻣해짐, 의식이 흐려짐, 땀·맥박 이상이 함께 오면 [신경이완제 악성 증후군](#/a/neuroleptic-malignant-syndrome)일 수 있어요. 드물지만 생명이 위험할 수 있어요.[^3] 약을 시작하거나 바꾼 뒤라면 열이 아직 없어도, 새로 몸이 굳고 정신이 흐려질 때 마찬가지로 의심해요. 열이 없거나 가볍게 나타나는 경우도 보고돼 있어요.[^8] 이때는 바로 **119**에 연락하세요.
+- 눈이 위로 돌아가 고정되거나, 목·혀가 갑자기 뒤틀리면 **급성 근긴장이상**이에요. 응급 처치로 빨리 풀려요. 이때는 담당 병원이나 응급실에 바로 연락하세요.
 :::
 
 ## 효과는 2세대와 얼마나 다를까
@@ -70,7 +76,7 @@ sources:
 
 ## 지금도 쓰이는 이유
 
-- 효과가 2세대와 비슷하거나, 양성 증상에는 상위권이에요.[^4][^7]
+- 효과는 2세대 대부분과 비슷해요.[^4][^5]
 - 체중·혈당·지질 부작용이 2세대 일부보다 훨씬 적어요.[^5][^7]
 - 값이 싸고, 주사제(급성 초조용, 장기지속형)가 오래전부터 있어요.
 - 2세대에 반응이 없거나 대사 부작용이 심한 사람에게 선택지가 돼요.
@@ -88,5 +94,14 @@ sources:
 
 - 제가 1세대를 쓰는 이유는 무엇인가요?
 - 떨림이나 뻣뻣함이 생기면 어떻게 하나요?
-- 지연성 운동장애을 얼마나 자주 확인하나요?
+- 지연성 운동장애를 얼마나 자주 확인하나요?
 - 2세대로 바꾸는 걸 고려할 상황은 언제인가요?
+
+## 더 읽을 글
+
+- [항정신병약의 원리](#/a/antipsychotic-basics)
+- [2세대 항정신병약 총론](#/a/second-generation)
+- [할로페리돌](#/a/haloperidol)
+- [추체외로 증상과 지연성 운동장애](#/a/eps)
+- [신경이완제 악성 증후군](#/a/neuroleptic-malignant-syndrome)
+- [클로르프로마진과 정신약물학 혁명](#/a/chlorpromazine-revolution)

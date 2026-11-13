@@ -4,16 +4,23 @@ section: 7
 order: 5
 summary: 팔리페리돈(paliperidone)은 리스페리돈의 활성 대사물을 서방형으로 만든 약이에요. 간 대사가 적고, 1개월·3개월·6개월 간격 장기지속형 주사가 모두 있어요. 프로락틴 상승이 가장 큰 축에 들고, 용량이 오르면 추체외로 증상이 늘어요.
 tags: 약물 치료, 팔리페리돈, 2세대 항정신병약, 장기지속형 주사제, 프로락틴
-updated: 2026-10-23
+updated: 2026-11-14
+points:
+  - 리스페리돈의 활성 대사물을 약으로 만든 것으로, 1·3·6개월 간격 주사가 있어요.
+  - 프로락틴 상승이 뚜렷해서 생리·가슴·성기능 변화가 올 수 있어요.
+  - 이런 변화가 생기면 숨기지 말고 담당 의사에게 말해요.
 evidence: 연구
 sources:
   - Janssen Pharmaceuticals | INVEGA (paliperidone) 서방정 미국 FDA 처방정보 (DailyMed) | 2025 | https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=7b8e5b26-b9e4-4704-921b-3c3c0d159916
   - Janssen Pharmaceuticals | INVEGA SUSTENNA (paliperidone palmitate) 1개월 주사 미국 FDA 처방정보 (DailyMed) | 2025 | https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=1af14e42-951d-414d-8564-5d5fce138554
   - Janssen Pharmaceuticals | INVEGA TRINZA (paliperidone palmitate) 3개월 주사 미국 FDA 처방정보 (DailyMed) | 2025 | https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=c39e65d7-fa44-4e4c-8b12-a654d3ed0eae
   - Janssen Pharmaceuticals | INVEGA HAFYERA (paliperidone palmitate) 6개월 주사 미국 FDA 처방정보 (DailyMed) | 2025 | https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=6cd61892-d2cb-434d-83ed-5c1b2c4e7a0b
-  - Huhn M 외 | Comparative efficacy and tolerability of 32 oral antipsychotics for acute treatment in adults with multi-episode schizophrenia: a systematic review and network meta-analysis (Lancet) | 2019 | https://doi.org/10.1016/S0140-6736(19)31135-3
+  - Huhn M 외 | Comparative efficacy and tolerability of 32 oral antipsychotics for the acute treatment of adults with multi-episode schizophrenia: a systematic review and network meta-analysis (Lancet) | 2019 | https://doi.org/10.1016/S0140-6736(19)31135-3
   - 식품의약품안전처 | 의약품안전나라 · 의약품 검색 "인베가" | 2026 | https://nedrug.mfds.go.kr/searchDrug?searchYn=true&itemName=%EC%9D%B8%EB%B2%A0%EA%B0%80
   - Psychiatric Times | First and Only Twice-Yearly Treatment for Schizophrenia Receives FDA Approval | 2021 | https://www.psychiatrictimes.com/view/first-and-only-twice-yearly-treatment-schizophrenia-receives-fda-approval
+  - Stroup TS 외 | Management of common adverse effects of antipsychotic medications (World Psychiatry) | 2018 | https://doi.org/10.1002/wps.20567
+  - Solmi M 외 | Safety, tolerability, and risks associated with first- and second-generation antipsychotics: a state-of-the-art clinical review (Therapeutics and Clinical Risk Management) | 2017 | https://doi.org/10.2147/TCRM.S117321
+  - Tse L 외 | Neuroleptic malignant syndrome: a review from a clinically oriented perspective (Current Neuropharmacology) | 2015 | https://doi.org/10.2174/1570159X13999150424113345
 ---
 ## 한 문장으로
 
@@ -24,6 +31,22 @@ sources:
 리스페리돈은 간에서 팔리페리돈으로 바뀌어 작용하는데, 팔리페리돈을 바로 쓰면 그 단계를 건너뛰어요. 그래서 간 대사의 영향을 덜 받고, 간 효소를 억제하거나 유도하는 다른 약과의 상호작용이 적은 편이에요. 먹는 약은 하루 동안 천천히 녹는 삼투압 서방정(OROS)이에요. 껍질이 녹지 않고 그대로 나와서, 대변에서 알약 모양을 봐도 놀랄 필요 없다고 처방정보에 적혀 있어요.[^1]
 
 미국 처방정보상 적응증은 성인과 12~17세 청소년의 조현병, 성인의 조현정동장애예요.[^1] 국내에는 인베가서방정과 세 가지 주사제(인베가서스티나 2010년, 인베가트린자 2016년, 인베가하피에라 2022년 허가)가 모두 허가돼 있어요.[^6]
+
+## 약 카드
+
+| 항목 | 내용 |
+|---|---|
+| 계열 | 2세대 |
+| 제형 | 먹는 약 · 장기지속형 주사 있음[^6] |
+| 체중·대사 | 중간[^8] |
+| 추체외로 증상·좌불안석 | 중간(떨림·뻣뻣함 쪽)[^8] |
+| 프로락틴 | 많은 편[^8] |
+| 졸림 | 적은 편[^8] |
+| QT 연장 | 자료 부족(자료마다 달라요)[^8][^9] |
+| 기립성 저혈압 | 적은 편[^8] |
+| 꼭 알아둘 것 | 생리·가슴·성기능에 변화가 생기면 프로락틴 때문일 수 있으니 담당 의사에게 말해요.[^1] |
+
+같은 약이라도 사람마다 반응이 달라요. 이 표로 약을 고르거나 바꾸지 말고 담당 의사와 상의하세요. 부작용 경향은 여러 약을 견준 종설 두 편의 범주를 옮겼고, 자료끼리 다르면 「자료마다 달라요」로 적었으며, 「자료 부족」은 위험이 없다는 뜻이 아니에요.
 
 ## 효과
 
@@ -37,16 +60,20 @@ sources:
 
 **흔한 것.** 성인 조현병 시험에서 추체외로 증상은 최고 용량군 약 18% 대 위약 8%, 빠른 맥박 14% 대 7%, 정좌불능 10% 대 4%, 졸림 11% 대 7%였어요.[^1] 1개월 주사 시험에서는 추체외로 증상 전체가 11~12% 대 위약 10%로 큰 차이가 없었고, 정좌불능만 용량에 따라 늘었어요.[^2]
 
-**프로락틴.** 팔리페리돈의 가장 뚜렷한 약점이에요. 네트워크 메타분석에서 프로락틴 상승이 가장 큰 약이었어요(위약 대비 48.51ng/mL).[^5] 1개월 주사 시험에서 프로락틴이 정상 범위를 넘은 비율은 남성 51.9% 대 위약 29.0%, 여성 50.5% 대 42.9%였어요.[^2] 생리 불순, 유즙 분비, 성기능 변화가 올 수 있고, 오래가면 뼈 밀도에 영향을 줄 수 있어요.[^1] [고프로락틴혈증](#/a/hyperprolactinemia)을 보세요.
+**프로락틴.** 팔리페리돈의 가장 뚜렷한 약점이에요. 네트워크 메타분석에서 프로락틴 상승이 가장 큰 약이었어요(위약 대비 48.51ng/mL).[^5] 1개월 주사 시험에서 프로락틴이 정상 범위를 넘은 비율은 남성 51.9% 대 위약 29.0%, 여성 50.5% 대 42.9%였어요.[^2] 생리 불순, 유즙 분비, 성기능 변화가 올 수 있고, 오래가면 뼈 밀도에 영향을 줄 수 있어요.[^1] [고프로락틴혈증](#/a/hyperprolactinemia)을 보세요. 생리 변화와 피임 이야기는 [여성 당사자의 몸](#/a/womens-health)에 있어요.
 
-**추체외로 증상.** 용량 의존적이에요. 성인에서 높은 용량군에서 추체외로 증상이 늘었고, 청소년에서는 위약 0%에서 최고 용량군 40%까지 올라갔어요.[^1] 떨림·뻣뻣함·안절부절이 생기면 말하세요.
+**추체외로 증상.** 용량 의존적이에요. 성인에서 높은 용량군에서 추체외로 증상이 늘었고, 청소년에서는 위약 0%에서 최고 용량군 40%까지 올라갔어요.[^1] 떨림·뻣뻣함·안절부절이 생기면 말하세요. [추체외로 증상](#/a/eps)을 보세요.
 
 **진정·EPS의 상대적 위치.** 같은 메타분석에서 팔리페리돈은 진정(RR 1.33)과 항파킨슨약 사용(RR 1.61)에서 "유의하게 늘긴 하지만 그중 가장 낮은" 약이었어요.[^5] 즉 졸림은 덜한 편이고, 떨림은 약 사이에서 중간쯤이에요.
+
+**체중·대사.** 처방정보는 이 계열 약이 혈당·지질·체중을 바꿀 수 있다고 적고, 체중을 정기적으로 확인하라고 권해요. 성인 6주 위약 대조 시험 세 개를 묶은 자료에서 체중이 7% 이상 는 사람은 위약 5% 대 팔리페리돈 6~9%였어요.[^1] 여러 약을 견준 종설 두 편은 팔리페리돈의 체중 증가를 중간으로 놓아요.[^8][^9] 체중·혈당·지질 검사와 대처는 [대사 부작용](#/a/metabolic-side-effects)에서 다뤄요.
+
+**심장 리듬(QT)·기립성 저혈압.** 처방정보는 팔리페리돈이 심전도의 QTc 간격을 어느 정도 늘린다고 적어요. 그래서 QT를 늘리는 다른 약과 함께 쓰는 것, 타고난 QT 연장 증후군이 있거나 부정맥을 앓은 적이 있는 경우를 피하라고 해요.[^1] 이런 경우에 해당하면 약을 스스로 끊지 말고, 담당 의사에게 알리고 먹는 다른 약을 모두 말해요. 여러 약을 견준 종설 두 편의 비교표는 팔리페리돈의 QT 연장을 모두 적은 편으로 놓지만,[^8][^9] 한 종설은 본문에서 여러 메타분석을 근거로 QT를 가장 많이 늘리는 쪽에 넣어요.[^9] 일어설 때 혈압이 떨어져 어지럽거나 드물게 실신할 수 있어요. 6주 위약 대조 시험을 묶은 자료에서 실신은 0.8% 대 위약 0.3%였어요.[^1] 쓰러졌다면 그날 담당 의사에게 알리고, 두근거림·가슴 통증이 함께였거나 머리를 다쳤다면 119에 연락해요. 종설 두 편 모두 기립성 저혈압은 적은 편으로 놓아요.[^8][^9] 심장 이야기는 [심장과 약](#/a/heart-and-antipsychotics), 어지러움은 [기립성 저혈압과 어지러움](#/a/orthostatic-hypotension)에서 다뤄요.
 
 **주사 부위.** 장기지속형 주사에서는 주사 부위 통증·단단함이 흔해요.[^3][^4]
 
 ::: warn 바로 연락할 신호
-- 고열, 온몸 뻣뻣함, 의식 혼탁, 맥박·혈압 요동 → 악성증후군 가능성. 119 또는 담당 병원에 바로 연락하세요.
+- 고열, 온몸 뻣뻣함, 의식 혼탁, 맥박·혈압 요동 → [신경이완제 악성 증후군](#/a/neuroleptic-malignant-syndrome) 가능성. 바로 119에 연락하거나 응급실로 가요. 열이 아직 없어도, 약을 시작하거나 바꾼 뒤 몸이 새로 굳고 정신이 흐려지면 마찬가지예요.[^10]
 - 눈이 위로 돌아가거나 목·혀가 뒤틀림 → 급성 근긴장이상. 응급 처치로 풀 수 있어요.
 - 주사제는 한 번 맞으면 몇 주~몇 달 동안 몸에 남아요. 심한 부작용이 생기면 "약을 끊어도 바로 사라지지 않는다"는 점을 알고 빨리 연락해야 해요.
 :::
@@ -57,7 +84,7 @@ sources:
 - **1개월 주사(서스티나)**: 정해진 초기 요법으로 시작한 뒤 한 달 간격으로 맞아요.[^2]
 - **3개월 주사(트린자)**: 1개월 주사로 최소 4개월 안정된 뒤에 바꿔요.[^3]
 - **6개월 주사(하피에라)**: 1개월 주사 4개월 이상 또는 3개월 주사 한 주기 이상 뒤에 바꿔요.[^4][^7]
-- 음식의 영향은 특별히 없어요. 장기지속형 전반은 [장기지속형 주사제](#/a/lai)에서 다뤄요.
+- 음식의 영향은 특별히 없어요. 장기지속형 전반은 [장기지속형 주사제](#/a/lai)에서, 먹는 약과 주사를 견준 이야기는 [주사제가 먹는 약보다 나은가요?](#/a/faq-injection-or-pill)에서 다뤄요.
 
 ## 누구에게 고려되나
 
@@ -77,3 +104,12 @@ sources:
 - 프로락틴 검사 결과는 어떤가요? 조정이 필요한가요?
 - 주사로 바꾸면 부작용이 생겼을 때 어떻게 대처하나요?
 - 3개월·6개월 주사로 넘어가는 조건은 무엇인가요?
+
+## 더 읽을 글
+
+- [리스페리돈](#/a/risperidone)
+- [장기지속형 주사제(LAI)](#/a/lai)
+- [고프로락틴혈증](#/a/hyperprolactinemia)
+- [주사제가 먹는 약보다 나은가요?](#/a/faq-injection-or-pill)
+- [심장과 약: QT 연장·빈맥·심근염](#/a/heart-and-antipsychotics)
+- [여성 당사자의 몸: 생리·피임·폐경과 약](#/a/womens-health)

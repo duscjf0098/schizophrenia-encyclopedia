@@ -5,6 +5,10 @@ order: 7
 summary: 가족 가운데 조현병이 있으면 다른 가족의 위험은 관계에 따라 달라지지만, 대부분은 병에 걸리지 않아요. 고전적인 위험 수치와 덴마크 전국 코호트의 최신 수치, 정신과 유전 상담의 효과, 유전자 검사로 알 수 없는 것을 정리했어요.
 tags: 가족, 유전, 유전상담, 가족계획, 위험
 updated: 2026-10-23
+points:
+  - 가족 중 조현병이 있으면 위험은 관계에 따라 달라져요.
+  - 부모 한 명이 조현병이어도 자녀의 90% 이상은 걸리지 않았어요.
+  - 유전자 검사로는 아직 미래를 알 수 없으니 의사와 유전 상담을 해 보세요.
 evidence: 연구
 sources:
   - Al-Jeshi AA 외 | An overview of the genetic risk of developing schizophrenia in relatives of schizophrenic patients (Neurosciences) | 2006 | https://nsj.org.sa/content/11/1/7.full.pdf
@@ -81,8 +85,19 @@ sources:
 - 결혼을 앞두고: "우리 가족에 조현병이 있어. 유전 상담을 같이 받아 보고 숫자를 정확히 알고 싶어."
 - 의사에게: "아이를 갖고 싶은데, 아이의 위험과 제 약에 대해 같이 계획하고 싶어요."
 
+당사자 자신의 연애와 결혼은 [연애하고 결혼할 수 있나요?](#/a/faq-love-marriage)에, 상대 가족에게 언제 얼마나 말할지는 [공개할지 말지](#/a/disclosure)에 정리했어요.
+
 ## 나에게 의미하는 것
 
 - 위험이 높아도 대부분은 병에 걸리지 않아요.[^3]
 - 유전자 검사로 개인의 미래를 알 수는 아직 없어요.[^7]
 - 정확한 정보를 아는 것 자체가 걱정과 낙인을 줄여요.[^6]
+- 유전이 영향을 준다는 것이 누군가의 잘못이라는 뜻은 아니에요. [내 탓인가요? 부모 탓인가요?](#/a/faq-whose-fault)도 함께 읽어 보세요.
+
+## 더 읽을 글
+
+- [아이에게 유전되나요?](#/a/faq-inheritance)
+- [유전](#/a/genetics)
+- [형제자매와 자녀](#/a/siblings-children)
+- [임신·출산과 약, 부모 되기](#/a/pregnancy-parenting)
+- [내 탓인가요? 부모 탓인가요?](#/a/faq-whose-fault)

@@ -4,7 +4,11 @@ section: 9
 order: 13
 summary: 사회의 편견(공적 낙인)과 제도의 차별(구조적 낙인)은 결국 내 안의 목소리(자기낙인)가 되기 쉬워요. 자기낙인은 희망과 자존감을 깎지만, 줄이는 프로그램과 스스로 쓸 수 있는 대응 문장이 있어요.
 tags: 생활, 낙인, 자기낙인, 편견, 회복
-updated: 2026-10-23
+updated: 2026-11-14
+points:
+  - 고찰에서 당사자 평균 64.5%가 낙인을 느꼈고, 55.9%가 차별을 겪었어요.
+  - 자기낙인은 희망과 자존감을 깎아 회복을 늦추는 숨은 짐이 될 수 있어요.
+  - 자기낙인이 말을 걸 때 쓸 반박 문장을 미리 하나 적어 둬요.
 evidence: 연구
 sources:
   - Corrigan PW, Watson AC | Understanding the impact of stigma on people with mental illness (World Psychiatry) | 2002 | https://pmc.ncbi.nlm.nih.gov/articles/PMC1489832/
@@ -14,6 +18,7 @@ sources:
   - 쿠키뉴스(국립정신건강센터 2024년 국민 정신건강 지식 및 태도 조사 보도) | 정신질환 이해도 올랐지만…'위험한 사람' 부정적 인식도 여전 | 2024 | https://www.kukinews.com/article/view/kuk202407040073
   - Yanos PT 외 | A randomized-controlled trial of treatment for self-stigma among persons diagnosed with schizophrenia-spectrum disorders (Social Psychiatry and Psychiatric Epidemiology) | 2019 | https://doi.org/10.1007/s00127-019-01702-0
   - Lucksted A 외 | Outcomes of a psychoeducational intervention to reduce internalized stigma among psychosocial rehabilitation clients (Psychiatric Services) | 2017 | https://doi.org/10.1176/appi.ps.201600037
+  - 한국기자협회·보건복지부·중앙정신건강복지사업지원단 | 정신건강보도 권고기준 | 2024 | https://journalist.or.kr/news/section4.html?p_num=23
 ---
 ## 한 문장으로
 
@@ -43,7 +48,7 @@ Corrigan은 자기낙인이 단계적으로 생긴다고 설명해요. 편견을
 
 127편을 검토하고 45편을 메타분석한 연구에서, 자기낙인은 희망·자존감·자기 힘(임파워먼트)과 뚜렷하고 견고한 반비례 관계였어요. 자기낙인이 높을수록 증상은 심했고 치료를 꾸준히 받는 정도는 낮았어요.[^4] 다만 대부분 한 시점을 본 연구라, 무엇이 먼저인지는 아직 분명하지 않아요.
 
-일상에서는 "해 봤자 뭐 해"라는 마음으로 나타나요. 일자리에 지원하지 않고, 사람을 만나지 않고, 치료에도 덜 나가게 돼요. 그래서 자기낙인은 회복을 늦추는 숨은 짐처럼 작동할 수 있어요.
+일상에서는 "해 봤자 뭐 해"라는 마음으로 나타나요. 일자리에 지원하지 않고, 사람을 만나지 않고, 치료에도 덜 나가게 돼요. 그래서 자기낙인은 회복을 늦추는 숨은 짐처럼 작동할 수 있어요. 처음 진단을 들은 뒤 찾아오는 부끄러움과 슬픔은 [진단을 받아들이는 시간](#/a/diagnosis-emotions)에서 따로 다뤄요.
 
 ## 줄이는 프로그램
 
@@ -65,6 +70,9 @@ Corrigan은 자기낙인이 단계적으로 생긴다고 설명해요. 편견을
 | 증상이 심했던 시기 | 미쳤을 때 |
 | 약을 먹으며 회복 중 | 평생 약에 의존 |
 | 입원 치료를 받았다 | 정신병원에 갇혔다 |
+| 조현병이 있는 A씨 | 조현병 A씨, 정신질환자 A씨[^8] |
+
+2024년 11월 한국기자협회·보건복지부·중앙정신건강복지사업지원단이 만든 「정신건강보도 권고기준」도 같은 방향이에요. 진단명을 사람 앞에 수식어로 붙이는 표현("조현병 A씨")과 "정신병자", "사이코" 같은 비하 표현을 피하라고 해요.[^8] 기준은 대신 쓸 표현을 따로 들지 않아요. 표 왼쪽 칸의 바꿔 쓴 표현은 이 백과의 표기 원칙이에요. 기준이 나온 배경은 [언론 보도와 낙인](#/a/media-reporting-guidelines)에 있어요.
 
 ## 할 수 있는 것: 대응 문장 예시
 
@@ -86,3 +94,12 @@ Corrigan은 자기낙인이 단계적으로 생긴다고 설명해요. 편견을
 - 자기낙인은 내 성격이 아니라 사회에서 배운 생각이에요. 배운 것은 바꿀 수 있어요.
 - 편견을 알아도 "그건 내 이야기가 아니야"라고 거부할 수 있어요.[^1]
 - 같은 경험을 한 사람을 만나는 것이 가장 강한 반박이 되기도 해요.
+
+## 더 읽을 글
+
+- [진단을 받아들이는 시간](#/a/diagnosis-emotions)
+- [공개할지 말지](#/a/disclosure)
+- [흔한 오해 12가지](#/a/myths)
+- [언론 보도와 낙인](#/a/media-reporting-guidelines)
+- [친구가 조현병일 때](#/a/for-friends)
+- [동료 지원](#/a/peer-support)

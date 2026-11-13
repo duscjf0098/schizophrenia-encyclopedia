@@ -5,6 +5,10 @@ order: 2
 summary: 인지 증상을 영역별로 뜯어 봐요. 가장 크게 떨어지는 건 처리 속도이고, 작업기억과 언어 기억이 그 뒤를 따라요. 각 영역의 일상 예와 검사, 보완 전략을 정리했어요.
 tags: 인지, 주의, 기억, 작업기억, 실행기능, 처리속도
 updated: 2026-10-23
+points:
+  - 가장 크게 떨어지는 영역은 처리 속도이고, 기억이 그 뒤를 따라요.
+  - 영역마다 떨어지는 정도가 달라서 내 프로필은 검사로 알 수 있어요.
+  - 적으면서 듣기, 한 번에 하나처럼 약한 영역은 도구로 보완해요.
 evidence: 연구
 sources:
   - Dickinson D 외 | Overlooking the obvious: a meta-analytic comparison of digit symbol coding tasks and other cognitive measures in schizophrenia (Archives of General Psychiatry) | 2007 | https://doi.org/10.1001/archpsyc.64.5.532
@@ -76,9 +80,18 @@ sources:
 ## 나에게 의미하는 것
 
 - "머리가 전부 나빠진 것"이 아니라 특정 영역이 느려진 거예요. 느린 영역은 도구로, 빠른 영역은 강점으로 쓰면 돼요.
-- 처리 속도가 느리면 시험·면접처럼 시간 제한이 있는 상황에서 가장 손해를 봐요. 시간 연장이나 조용한 환경을 요청하는 건 합리적 배려예요.
+- 처리 속도가 느리면 시험·면접처럼 시간 제한이 있는 상황에서 가장 손해를 봐요. 시간 연장이나 조용한 환경을 요청하는 건 합리적 배려예요. 일터와 학교에서 요청할 수 있는 편의는 [직장·학교에서 증상이 올 때](#/a/coping-at-work)에 정리했어요.
 - 운동은 작업기억과 주의에 근거가 있는 몇 안 되는 방법이에요.[^6] 약으로는 안 되는 부분을 몸으로 채울 수 있어요.
 
 ## 주변 사람이 알아둘 것
 
 지시는 한 번에 하나, 짧게, 글로 남겨 주세요. 말을 끊지 말고 대답을 기다려 주세요. "왜 못 외우니"보다 "같이 적어 두자"가 실제로 기억을 도와요.
+
+## 더 읽을 글
+
+- [인지 증상이란 무엇인가](#/a/cognitive-overview)
+- [사회 인지](#/a/social-cognition)
+- [인지재활](#/a/cognitive-remediation)
+- [운동](#/a/exercise)
+- [일·학업·복학](#/a/work-study)
+- [약을 오래 먹으면 머리가 나빠지나요?](#/a/faq-memory-meds)

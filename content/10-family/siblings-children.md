@@ -4,7 +4,11 @@ section: 10
 order: 6
 summary: 조현병은 부모만이 아니라 형제자매와 자녀의 삶도 바꿔요. 형제자매가 겪는 부담, 부모에게 조현병이 있는 아이의 위험과 회복력, 나이에 맞게 설명하는 법, 가족을 돌보는 청소년·청년을 위한 지원을 정리했어요.
 tags: 가족, 형제자매, 자녀, 가족돌봄청년, 유전, 회복력
-updated: 2026-10-23
+updated: 2026-11-14
+points:
+  - 형제자매와 자녀도 돌봄의 당사자이고, 그들의 마음에도 이름이 필요해요.
+  - 조현병·기분장애 부모의 자녀는 위험이 높지만, 대다수는 중증 정신질환을 겪지 않아요.
+  - 아이에게는 나이에 맞게, 네 탓이 아니라는 말부터 해 주세요.
 evidence: 연구
 sources:
   - Izon E 외 | The psychosocial stressors of siblings of people with experiences of psychosis (SOPEP): a systematic narrative review across cultures (Clinical Psychology & Psychotherapy) | 2024 | https://doi.org/10.1002/cpp.2921
@@ -13,6 +17,7 @@ sources:
   - Siegenthaler E 외 | Effect of preventive interventions in mentally ill parents on the mental health of the offspring: systematic review and meta-analysis (Journal of the American Academy of Child & Adolescent Psychiatry) | 2012 | https://doi.org/10.1016/j.jaac.2011.10.018
   - Royal College of Psychiatrists | When a parent has a mental illness | 2022 | https://www.rcpsych.ac.uk/mental-health/parents-and-young-people/information-for-parents-and-carers/parental-mental-illness-the-impact-on-children-and-adolescents-for-parents-and-carers
   - 파이낸셜뉴스 | 강원도청년미래센터 업무 개시…가족돌봄청년에 200만원 지원 | 2026 | https://www.fnnews.com/news/202610051009394556
+  - CaseNote(현행 조문) | 남녀고용평등과 일·가정 양립 지원에 관한 법률 제22조의2 (2026.9.18. 시행, 법률 제21476호) | 2026 | https://casenote.kr/법령/남녀고용평등과_일·가정_양립_지원에_관한_법률
 ---
 ## 한 문장으로
 
@@ -30,7 +35,11 @@ sources:
 - "나도 걸리면 어쩌지" 하는 불안
 - 부모가 나이 들면 내가 돌봐야 한다는 미래의 무게
 
+곁에 있는데 예전의 형제를 잃은 것 같은 슬픔을 말하는 형제자매도 있어요. 이 슬픔을 다루는 법은 [가족의 슬픔: 기대를 다시 세우는 일](#/a/family-grief)에 정리했어요.
+
 **부모가 할 수 있는 것**: 형제자매와 따로 시간을 보내고, "너도 힘들 수 있어"라고 먼저 말해 주세요. 돌봄 계획을 세울 때 형제자매의 생각도 물어보세요. 형제자매 자신의 유전 위험은 [유전 상담과 가족 계획](#/a/genetic-counseling)에 정리했어요.
+
+**결혼을 앞둔 형제자매**: 상대와 상대 가족에게 언제, 얼마나 말할지 고민하게 돼요. 말할지와 그 범위는 본인이 정할 일이에요. 다만 아픈 형제의 건강 이야기이기도 하니, 가능하면 당사자에게도 어디까지 말해도 되는지 물어보세요. 털어놓는 정도를 단계로 나눠 생각하는 방법은 [공개할지 말지](#/a/disclosure)에 있어요. 아이에 대한 걱정이 있다면 둘이 함께 유전 상담을 받아 숫자를 같이 확인하는 방법도 있어요([유전 상담과 가족 계획](#/a/genetic-counseling)). 부모가 떠난 뒤의 역할을 미리 나누는 일은 [부모가 떠난 뒤를 준비하기](#/a/parents-future-planning)에 있어요.
 
 ## 부모에게 조현병이 있는 아이
 
@@ -68,8 +77,18 @@ sources:
 
 한국에서는 가족을 돌보는 청년을 위해 지역 **청년미래센터**가 상담과 지원을 하고 있어요. 2026년 10월 문을 연 강원특별자치도청년미래센터는 13~34세 가족돌봄청년(기준 중위소득 100% 이하)에게 1인당 200만 원을 생애 한 번 지원한다고 밝혔어요. 신청은 센터, 읍·면·동 행정복지센터, 보건복지부 '청년ON' 누리집에서 받았어요.[^6] 지원 내용과 기준은 지역과 연도마다 다르니 거주지 청년미래센터나 행정복지센터에 확인하세요.
 
+직장에 다니는 형제자매라면 알아 둘 점이 있어요. 2026년 11월 현재 시행 중인 남녀고용평등법(2026년 9월 18일 시행본)의 가족돌봄휴가·휴직은 조부모, 부모, 배우자, 배우자의 부모, 자녀, 손자녀를 돌볼 때 쓰는 제도라, 형제자매를 돌보는 일은 법이 정한 대상에 들어 있지 않아요.[^7] 연차나 회사 규정의 다른 휴가를 알아보는 법은 [가족이 쓰는 돌봄휴가·휴직·단축 근무](#/a/family-care-leave)에 있어요.
+
 ## 나에게 의미하는 것
 
 - 형제자매와 자녀도 돌봄의 당사자예요. 그들의 마음에도 이름을 붙여 주세요.
 - 위험은 숫자로 존재하지만, 예방 개입과 좋은 관계로 줄일 수 있어요.[^4]
 - 부모가 자신의 치료를 꾸준히 받는 것도 아이를 지키는 일이에요. 임신과 양육은 [임신과 육아](#/a/pregnancy-parenting)를 참고하세요.
+
+## 더 읽을 글
+
+- [유전 상담과 가족 계획](#/a/genetic-counseling)
+- [가족의 슬픔: 기대를 다시 세우는 일](#/a/family-grief)
+- [가족 돌봄자의 소진](#/a/caregiver-burnout)
+- [부모가 떠난 뒤를 준비하기](#/a/parents-future-planning)
+- [가족이 쓰는 돌봄휴가·휴직·단축 근무](#/a/family-care-leave)

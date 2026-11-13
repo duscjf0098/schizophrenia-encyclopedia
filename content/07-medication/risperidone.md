@@ -2,28 +2,53 @@
 title: 리스페리돈
 section: 7
 order: 4
-summary: 리스페리돈(risperidone)은 D2·5-HT2A 차단 2세대 약으로 효과 상위권이지만, 용량이 올라가면 프로락틴 상승과 추체외로 증상이 생겨요. 2주 간격 근육주사부터 월 1회 피하주사까지 장기지속형이 여럿 있어요.
+summary: 리스페리돈(risperidone)은 D2·5-HT2A를 막는 2세대 약으로, 프로락틴 상승이 대표 부작용이고 용량이 올라가면 추체외로 증상이 늘어요. 장기지속형 주사는 나라마다 달라서, 국내에도 장기지속형 피하주사가 있어요.
 tags: 약물 치료, 리스페리돈, 2세대 항정신병약, 프로락틴, 장기지속형 주사제
-updated: 2026-10-23
+updated: 2026-11-14
+points:
+  - 1990년대부터 쓰인 2세대 항정신병약 리스페리돈을 다룬 글이에요.
+  - 대표 부작용은 프로락틴 상승이고, 생리 불순으로 나타나기도 해요.
+  - 생리 변화나 떨림이 생기면 숨기지 말고 담당 의사에게 말해요.
 evidence: 연구
 sources:
   - Janssen Pharmaceuticals | RISPERDAL (risperidone) 정·구강붕해정·액 미국 FDA 처방정보 (DailyMed) | 2025 | https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=7e117c7e-02fc-4343-92a1-230061dfc5e0
-  - Huhn M 외 | Comparative efficacy and tolerability of 32 oral antipsychotics for acute treatment in adults with multi-episode schizophrenia: a systematic review and network meta-analysis (Lancet) | 2019 | https://doi.org/10.1016/S0140-6736(19)31135-3
+  - Huhn M 외 | Comparative efficacy and tolerability of 32 oral antipsychotics for the acute treatment of adults with multi-episode schizophrenia: a systematic review and network meta-analysis (Lancet) | 2019 | https://doi.org/10.1016/S0140-6736(19)31135-3
   - Leucht S 외 | Second-generation versus first-generation antipsychotic drugs for schizophrenia: a meta-analysis (Lancet) | 2009 | https://doi.org/10.1016/S0140-6736(08)61764-X
   - Janssen Pharmaceuticals | RISPERDAL CONSTA (risperidone) 장기지속형 주사 미국 FDA 처방정보 (DailyMed) | 2025 | https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=bb34ee82-d2c2-43b8-ba21-2825c0954691
   - Teva Pharmaceuticals | UZEDY (risperidone) 서방형 피하주사 미국 FDA 처방정보 (DailyMed) | 2025 | https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=734eb776-4be0-4808-834b-0d8b0f9e021e
   - 식품의약품안전처 | 의약품안전나라 · 의약품 검색 "리스페달" | 2026 | https://nedrug.mfds.go.kr/searchDrug?searchYn=true&itemName=%EB%A6%AC%EC%8A%A4%ED%8E%98%EB%8B%AC
   - Clinical Psychopharmacology and Neuroscience(대한정신약물학회) | Antipsychotic Prescribing Patterns in First-episode Schizophrenia: A Five-year Comparison | 2015 | https://scholar.kyobobook.co.kr/article/detail/4010025851578
+  - Stroup TS 외 | Management of common adverse effects of antipsychotic medications (World Psychiatry) | 2018 | https://doi.org/10.1002/wps.20567
+  - Solmi M 외 | Safety, tolerability, and risks associated with first- and second-generation antipsychotics: a state-of-the-art clinical review (Therapeutics and Clinical Risk Management) | 2017 | https://doi.org/10.2147/TCRM.S117321
+  - 식품의약품안전처 | 의약품안전나라 · 의약품 검색 "유제디" | 2026 | https://nedrug.mfds.go.kr/searchDrug?searchYn=true&itemName=%EC%9C%A0%EC%A0%9C%EB%94%94
+  - 식품의약품안전처 | 의약품안전나라 · 유제디원엠주100밀리그램(리스페리돈) 제품 상세정보(용법·용량, 적용상의 주의) | 2026 | https://nedrug.mfds.go.kr/pbp/CCBBB01/getItemDetail?itemSeq=202502346
+  - Tse L 외 | Neuroleptic malignant syndrome: a review from a clinically oriented perspective (Current Neuropharmacology) | 2015 | https://doi.org/10.2174/1570159X13999150424113345
 ---
 ## 한 문장으로
 
-리스페리돈(risperidone)은 1990년대부터 쓰인 2세대 항정신병약이에요. 효과는 상위권이고 진정이 덜한 편이지만, 프로락틴 상승과 용량에 따른 추체외로 증상이 약점이에요. 이 글은 일반 정보예요. 용량과 조정은 담당 의사와 정해요.
+리스페리돈(risperidone)은 1990년대부터 쓰인 2세대 항정신병약이에요. 효과가 여러 연구로 확인됐고 진정이 덜한 편이지만, 프로락틴 상승과 용량에 따른 추체외로 증상이 약점이에요. 이 글은 일반 정보예요. 용량과 조정은 담당 의사와 정해요.
 
 ## 어떤 약인가
 
 리스페리돈은 도파민 D2 수용체와 세로토닌 5-HT2A 수용체를 함께 막아요. 몸속에서 팔리페리돈(9-히드록시리스페리돈)이라는 활성 대사물로 바뀌는데, 이 대사물 자체가 나중에 [팔리페리돈](#/a/paliperidone)이라는 약으로 따로 나왔어요.[^1] 미국 처방정보상 적응증은 성인과 13~17세 청소년의 조현병, 양극성 조증, 자폐 관련 과민성이에요.[^1] 국내에서는 리스페달정(한국얀센)을 비롯한 여러 제품이 허가돼 있어요.[^6]
 
 국내 첫 발병 당사자의 처방을 2005년과 2010년에 비교한 연구에서, 2010년에 가장 많이 처음 처방된 약이 리스페리돈이었어요(그다음 쿠에티아핀, 팔리페리돈, 올란자핀).[^7] 전국 단위 통계는 아니지만, 국내에서 흔히 쓰이는 약이라는 걸 보여 줘요.
+
+## 약 카드
+
+| 항목 | 내용 |
+|---|---|
+| 계열 | 2세대 |
+| 제형 | 먹는 약 · 장기지속형 주사 있음[^10] |
+| 체중·대사 | 중간[^8] |
+| 추체외로 증상·좌불안석 | 중간[^8] |
+| 프로락틴 | 많은 편[^8] |
+| 졸림 | 적은 편[^8] |
+| QT 연장 | 자료 부족(자료마다 달라요)[^8][^9] |
+| 기립성 저혈압 | 중간(자료마다 달라요)[^9][^8] |
+| 꼭 알아둘 것 | 생리가 멈추거나 젖이 나오거나 성기능이 달라지면 프로락틴 때문일 수 있으니 담당 의사에게 말해요.[^1] |
+
+같은 약이라도 사람마다 반응이 달라요. 이 표로 약을 고르거나 바꾸지 말고 담당 의사와 상의하세요. 부작용 경향은 여러 약을 견준 종설 두 편의 범주를 옮겼고, 자료끼리 다르면 「자료마다 달라요」로 적었으며, 「자료 부족」은 위험이 없다는 뜻이 아니에요.
 
 ## 효과
 
@@ -37,22 +62,24 @@ sources:
 
 **흔한 것.** 성인 조현병 임상시험(저용량군 대 위약)에서 불면 32% 대 27%, 불안 16% 대 11%, 파킨슨증(떨림·뻣뻣함) 14% 대 8%, 정좌불능 10% 대 3%, 진정 10% 대 2%, 어지러움 7% 대 2%였어요.[^1]
 
-**프로락틴.** 리스페리돈은 다른 많은 항정신병약보다 프로락틴을 더 올리고, 장기 복용 중에도 유지돼요.[^1] 네트워크 메타분석에서도 리스페리돈은 프로락틴을 유의하게 올리는 약에 들어요.[^2] 증상은 생리 불순, 유즙 분비, 여성형 유방, 성기능 변화예요. 오래 지속되면 뼈 밀도가 줄 수 있어요.[^1] 자세한 건 [고프로락틴혈증](#/a/hyperprolactinemia)에서 다뤄요.
+**프로락틴.** 리스페리돈은 다른 많은 항정신병약보다 프로락틴을 더 올리고, 장기 복용 중에도 유지돼요.[^1] 네트워크 메타분석에서도 리스페리돈은 프로락틴을 유의하게 올리는 약에 들어요.[^2] 증상은 생리 불순, 유즙 분비, 여성형 유방, 성기능 변화예요. 오래 지속되면 뼈 밀도가 줄 수 있어요.[^1] 자세한 건 [고프로락틴혈증](#/a/hyperprolactinemia)에서 다루고, 생리 변화와 피임 이야기는 [여성 당사자의 몸](#/a/womens-health)에 있어요.
 
 **추체외로 증상.** 용량 의존적이에요. 고정 용량 시험에서 용량이 올라갈수록 파킨슨증 점수와 발생률이 올라갔어요.[^1] 낮은 용량에서는 적고, 높은 용량에서는 1세대와 비슷해질 수 있다는 뜻이에요. 떨림, 뻣뻣함, 가만히 못 있음이 생기면 말하세요. [추체외로 증상](#/a/eps)을 보세요.
 
 **체중.** 체중 7% 이상 증가는 성인에서 8.7% 대 위약 2.9%였고, 고용량군은 20.9%였어요. 아동·청소년에서는 32.6% 대 6.9%로 훨씬 컸어요.[^1] 올란자핀만큼은 아니지만 무시할 수 없어요.
 
+**QT·기립성 저혈압.** 미국 처방정보에서 성인 위약 대조 시험을 묶어 보면 심전도의 QT·QTc 간격 변화는 위약과 통계적으로 다르지 않았어요.[^1] 그런데 여러 약을 견준 종설 두 편의 평가는 갈려요. 한 종설의 비교표는 적은 편으로 놓고,[^8] 다른 종설은 비교표에서 중간으로 놓으면서 본문에서는 여러 메타분석을 근거로 QT를 가장 많이 늘리는 쪽에 넣어요.[^9] 일어설 때 혈압이 떨어지는 기립성 저혈압은 어지러움·빠른 맥박과 함께, 일부에서는 실신으로 올 수 있어요. 처방정보는 약을 시작해 맞춰 가는 초기에 특히 그렇다고 경고해요.[^1] 종설 두 편에서는 적은 편[^8]과 중간[^9]으로 갈려요. 심장 이야기는 [심장과 약](#/a/heart-and-antipsychotics), 어지러움은 [기립성 저혈압과 어지러움](#/a/orthostatic-hypotension)에서 다뤄요.
+
 ::: warn 바로 연락할 신호
-- 고열, 온몸 뻣뻣함, 의식 혼탁, 맥박·혈압 요동 → 악성증후군 가능성. 119 또는 담당 병원에 바로 연락하세요.
+- 고열, 온몸 뻣뻣함, 의식 혼탁, 맥박·혈압 요동 → [신경이완제 악성 증후군](#/a/neuroleptic-malignant-syndrome) 가능성. 바로 119에 연락하거나 응급실로 가요. 열이 아직 없어도, 약을 시작하거나 바꾼 뒤 몸이 새로 굳고 정신이 흐려지면 마찬가지예요.[^12]
 - 눈이 위로 돌아가 고정되거나 목·혀가 뒤틀림 → 급성 근긴장이상. 빨리 풀 수 있는 응급 처치가 있어요.
-- 일어설 때 심하게 어지럽거나 실신 → 혈압 저하. 특히 복용 초기에 조심하세요.[^1]
+- 일어설 때 심하게 어지럽거나 실신 → 혈압 저하일 수 있어요. 특히 복용 초기에 조심하세요.[^1] 쓰러졌다면 그날 담당 의사에게 알리고, 두근거림·가슴 통증이 함께였거나 머리를 다쳤다면 119에 연락해요.
 :::
 
 ## 복용·형태
 
 - 먹는 약: 정제, 입에서 녹는 구강붕해정, 액제가 있어요.[^1]
-- 장기지속형 주사(LAI): 2주 간격 근육주사(리스페달 콘스타)는 처음 3주 동안 먹는 약을 함께 써야 해요.[^4] 미국에서는 한 달 또는 두 달 간격의 피하주사(유제디)도 승인돼 있어요.[^5] 국내 허가 상황은 제품마다 다르니 담당 의사에게 확인하세요.
+- 장기지속형 주사(LAI): 국내에서는 2025년 9월 리스페리돈 장기지속형 피하주사(유제디)가 허가됐어요.[^10][^11] 미국에서 같은 약은 한 달 또는 두 달 간격 피하주사로 승인돼 있어요.[^5] 2주 간격 근육주사(리스페달 콘스타)는 미국 처방정보상 처음 3주 동안 먹는 약을 함께 써야 해요.[^4] 다만 2026년 11월 의약품안전나라의 "리스페달" 검색에서는 이 근육주사의 국내 품목이 나오지 않았어요.[^6] 지금 쓸 수 있는 제품은 담당 의사에게 확인하세요.
 - 음식 영향은 특별히 없어요. 장기지속형 전반은 [장기지속형 주사제](#/a/lai)에서 다뤄요.
 
 ## 누구에게 고려되나
@@ -63,13 +90,13 @@ sources:
 
 - **"생리가 멈췄어요. 약 때문인가요?"** 리스페리돈의 프로락틴 상승 때문일 수 있어요. 숨기지 말고 말하세요. 검사와 조정 방법이 있어요.[^1]
 - **"손이 떨려요."** 용량과 관련 있을 가능성이 커요. 의사가 용량 조정, 보조약, 약 변경 중에서 선택해요.[^1]
-- **"주사로 바꿀 수 있나요?"** 가능해요. 매일 약을 챙기기 어렵거나, 재발이 반복됐을 때 고려돼요.[^4]
+- **"주사로 바꿀 수 있나요?"** 가능해요. 매일 약을 챙기기 어렵거나, 재발이 반복됐을 때 고려돼요.[^4] 먹는 약과 주사를 견준 이야기는 [주사제가 먹는 약보다 나은가요?](#/a/faq-injection-or-pill)에 있어요.
 
 ## 나에게 의미하는 것
 
 - 리스페리돈은 효과가 확인된 약이에요. 증상이 잘 조절된다면 그 자체가 큰 장점이에요.[^2]
 - 프로락틴과 떨림은 이 약의 대표 부작용이고, 둘 다 조절 가능해요. 말해야 조절돼요.[^1]
-- 주사제가 여럿 있어서 복약 방식의 선택지가 넓어요.[^4][^5]
+- 장기지속형 주사도 있어서 매일 먹는 약 말고도 선택지가 있어요. 나라마다 쓸 수 있는 제품이 달라요.[^4][^5][^10]
 
 ## 담당 의사에게 물어볼 것
 
@@ -77,3 +104,12 @@ sources:
 - 떨림이 생기면 용량을 낮추나요, 보조약을 쓰나요, 약을 바꾸나요?
 - 장기지속형 주사로 바꾸면 무엇이 달라지나요?
 - 체중은 얼마나 자주 재고, 늘면 어떻게 하나요?
+
+## 더 읽을 글
+
+- [2세대 항정신병약 총론](#/a/second-generation)
+- [팔리페리돈](#/a/paliperidone)
+- [고프로락틴혈증](#/a/hyperprolactinemia)
+- [장기지속형 주사제(LAI)](#/a/lai)
+- [주사제가 먹는 약보다 나은가요?](#/a/faq-injection-or-pill)
+- [여성 당사자의 몸: 생리·피임·폐경과 약](#/a/womens-health)
