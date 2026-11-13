@@ -79,6 +79,9 @@ function throwsWith(fn, word) {
 test('meds 생성기: 행 이름이 검사기(tools/checks/drug-card.cjs)와 같다', function () {
   eq(gen.ROWS, card.ROWS);
   eq(gen.KEYS.length, gen.ROWS.length);
+  /* 같은 값이 아니라 같은 것(검사기의 목록·함수를 그대로 가져다 씀). 판정이 같은지는 tests/checks.test.cjs 의 표본 맞대기 */
+  ok(gen.ROWS === card.ROWS && gen.KEYS === card.KEYS && gen.FORBIDDEN === card.FORBIDDEN && gen.MAX_LEN === card.MAX_LEN, '행·열쇠·넣지 않는 말·길이 목록은 검사기 것 그대로');
+  ok(gen.cellText === card.cellText && gen.refsOf === card.refsOf && gen.forbiddenIn === card.forbiddenIn && gen.tooLong === card.tooLong, '칸 글자·각주·넣지 않는 말·길이 함수는 검사기 것 그대로');
   eq(M.FX_KEYS, gen.FX_KEYS, '화면과 생성기의 부작용 열 열쇠');
 });
 test('meds 생성기: 견본 글 → 이름·slug·영문·약 카드 소절 id·9행·각주를 출처로 풀기', function () {

@@ -8,6 +8,9 @@
    - 실행: node tools/gen/meds.cjs (인자 없음). 문제가 있으면 이유를 알리고 종료 코드 1(파일은 쓰지 않아요).
    - 막는 것: 행 빠짐·겹침·모르는 행, 부작용 칸이 정해진 낱말로 시작하지 않음, 자료 부족이 아닌 부작용 칸에 각주 없음,
      없는 출처를 가리키는 각주, 빈 칸, 너무 긴 칸(꼭 알아둘 것 140자, 나머지 60자, 띄어쓰기 없이 24자), 용량 단위·복용 횟수·값 비교·임부 등급·권하는 말 같은 표에 넣지 않는 낱말(FORBIDDEN).
+   - 약 카드 규칙(행 이름·열쇠·값 낱말·FORBIDDEN·칸 길이·칸 글자 다듬기·소절과 표 찾기)과 표 판정 함수 cardProblems 는 검사기 tools/checks/drug-card.cjs 한 곳에 있고
+     여기서는 가져다 써요(이 생성기는 cardProblems 의 첫 오류로 멈춰요).
+     그래서 node tools/check-content.cjs 가 오류 없이 통과한 약 카드는 이 생성기도 같은 표 때문에 멈추지 않아요(tests/checks.test.cjs 가 같은 표본으로 맞대요).
    - require 로 불러오면 파일을 쓰지 않고 순수 함수만 내보내요(tests/meds.test.cjs). */
 'use strict';
 const fs = require('fs');
@@ -18,108 +21,32 @@ const ROOT = path.join(__dirname, '..', '..');
 const SRC_DIR = path.join(ROOT, 'content', '07-medication');
 const OUT = path.join(ROOT, 'data', 'kb', 'meds.json');
 
-/* 행 이름은 tools/checks/drug-card.cjs 의 ROWS 와 같아야 해요(테스트가 맞대요) */
-const ROWS = ['계열', '제형', '체중·대사', '추체외로 증상·좌불안석', '프로락틴', '졸림', 'QT 연장', '기립성 저혈압', '꼭 알아둘 것'];
-const KEYS = ['class', 'form', 'weight', 'eps', 'prolactin', 'sleep', 'qt', 'ortho', 'note'];
+/* 약 카드 규칙은 검사기(tools/checks/drug-card.cjs)와 한 벌이에요. 여기서 따로 정하지 않고 가져다 써요(다시 어긋나지 않게) */
+const card = require('../checks/drug-card.cjs');
+const ROWS = card.ROWS;
+const KEYS = card.KEYS;
 const FX_KEYS = KEYS.slice(2, 8);
-const LEVEL_RE = /^(적은 편|중간|많은 편|자료 부족)/;
-const SLUG_RE = /^[a-z0-9][a-z0-9-]*$/;
-const DAY_RE = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/;
-const HEAD_RE = /^##\s+약 카드\s*$/;
+const SLUG_RE = card.SLUG_RE;
+const DAY_RE = card.DAY_RE;
 /* 칸 어디에도 두지 않는 말(집필가이드 "약 카드"의 넣지 않는 것 + 한계선 L3·L10) */
-const FORBIDDEN = [
-  { re: /(?:^|[^A-Za-z])(mg|mcg|μg|µg)(?![A-Za-z])|㎎|㎍|밀리그램|마이크로그램/i, why: '용량 단위' },
-  { re: /용량/, why: '용량 이야기' },
-  { re: /하루\s*(?:\d+|한두|두세|한|두|세|네)\s*(?:번|회|차례)|1\s*일\s*\d+\s*회|(?:아침|저녁|자기 전)에?\s*(?:\d+|한)\s*(?:번|회)/, why: '복용 횟수' },
-  { re: /추천|순위|\d\s*위(?![가-힣])|별점|가장\s*(?:좋은|효과적인|잘\s*듣는)|이런 사람에게/, why: '권하는 말·줄 세우기' },
-  { re: /가격|약값|값이?\s*(?:싸|비싸)/, why: '값 비교' },
-  { re: /임신/, why: '임부 안전 등급' },
-  { re: /상호\s*작용/, why: '함께 먹는 약 판정' },
-  { re: /상품명|®|™/, why: '상품명' }
-];
-
-function cells(line) {
-  return String(line).trim().replace(/^\|/, '').replace(/\|$/, '').split('|').map(function (c) { return c.trim(); });
-}
+const FORBIDDEN = card.FORBIDDEN;
 /* 칸 글자: 각주 표시([^n])만 빼고, 굵게·기울임·코드·링크 표시는 글자만 남겨요. 빈칸은 하나로 */
-function cellText(raw) {
-  return String(raw == null ? '' : raw)
-    .replace(/\[\^\d+\]/g, '')
-    .replace(/\[([^\]]+)\]\([^)\s]+\)/g, '$1')
-    .replace(/\*\*([^*]+)\*\*/g, '$1')
-    .replace(/(^|[^*])\*([^*\n]+)\*(?!\*)/g, '$1$2')
-    .replace(/`([^`]+)`/g, '$1')
-    .replace(/\s+/g, ' ')
-    .trim();
-}
+const cellText = card.cellText;
 /* 각주 번호(처음 나온 순서, 겹치지 않게) */
-function refsOf(raw) {
-  const out = [];
-  String(raw == null ? '' : raw).replace(/\[\^(\d+)\]/g, function (_, n) { n = Number(n); if (out.indexOf(n) < 0) out.push(n); return _; });
-  return out;
-}
+const refsOf = card.refsOf;
 /* 칸 길이(화면 표의 한 칸에 들어가는 만큼). 띄어쓰기 없이 이어진 글자가 길면 칸 밖으로 넘쳐요 */
-const MAX_LEN = { note: 140, other: 60 };
-const MAX_RUN = 24;
-function tooLong(key, text) {
-  const max = key === 'note' ? MAX_LEN.note : MAX_LEN.other;
-  const t = String(text == null ? '' : text);
-  if (t.length > max) return '너무 길어요(' + t.length + '자, ' + max + '자까지). 자세한 것은 본문에 써요';
-  const run = t.split(/\s+/).reduce(function (a, w) { return w.length > a.length ? w : a; }, '');
-  if (run.length > MAX_RUN) return '띄어쓰기 없이 ' + run.length + '자가 이어져요(' + MAX_RUN + '자까지): "' + run.slice(0, 30) + '"';
-  return '';
-}
-function forbiddenIn(text) {
-  const out = [];
-  FORBIDDEN.forEach(function (f) { const hit = f.re.exec(text); if (hit) out.push(f.why + '("' + (hit[1] || hit[0]).trim() + '")'); });
-  return out;
-}
+const MAX_LEN = card.MAX_LEN;
+const MAX_RUN = card.MAX_RUN;
+const tooLong = card.tooLong;
+const forbiddenIn = card.forbiddenIn;
 
 /* 본문에서 "## 약 카드" 소절의 표를 읽어요. 소절이 없으면 null, 형식이 틀리면 예외(이유 문구) */
 function parseCard(body) {
-  const lines = String(body == null ? '' : body).split('\n');
-  const starts = [];
-  lines.forEach(function (l, i) { if (HEAD_RE.test(l.trim())) starts.push(i); });
-  if (!starts.length) return null;
-  if (starts.length > 1) throw new Error('"## 약 카드" 소절이 ' + starts.length + '개예요(하나만)');
-  const s = starts[0];
-  let e = lines.length;
-  for (let i = s + 1; i < lines.length; i++) if (/^#{1,3}\s/.test(lines[i])) { e = i; break; }
-  const sec = lines.slice(s + 1, e);
-  const t0 = sec.findIndex(function (l) { return /^\s*\|/.test(l); });
-  if (t0 < 0) throw new Error('"## 약 카드" 소절에 표가 없어요');
-  let t1 = t0;
-  while (t1 < sec.length && /^\s*\|/.test(sec[t1])) t1++;
-  const tbl = sec.slice(t0, t1);
-  const head = cells(tbl[0]);
-  if (head.length !== 2 || head[0] !== '항목' || head[1] !== '내용') throw new Error('약 카드 머리 줄은 "| 항목 | 내용 |" 이어야 해요');
-  const byName = {};
-  tbl.slice(1).forEach(function (l) {
-    if (/^\s*\|[\s:|-]+\|\s*$/.test(l)) return;
-    const c = cells(l);
-    if (c.length !== 2) throw new Error('약 카드는 2열 표예요: "' + l.trim() + '"');
-    const name = c[0].replace(/\*\*/g, '').trim();
-    if (ROWS.indexOf(name) < 0) throw new Error('약 카드에 정해진 행이 아니에요: "' + name + '"');
-    if (byName[name] != null) throw new Error('약 카드 행 "' + name + '" 이 두 번 있어요');
-    byName[name] = c[1];
-  });
-  return ROWS.map(function (name, i) {
-    if (byName[name] == null) throw new Error('약 카드에 "' + name + '" 행이 없어요');
-    const raw = byName[name];
-    const text = cellText(raw);
-    if (!text) throw new Error('약 카드 "' + name + '" 칸이 비었어요');
-    const bad = forbiddenIn(text);
-    if (bad.length) throw new Error('약 카드 "' + name + '" 칸에 넣지 않는 말: ' + bad.join(', '));
-    const refs = refsOf(raw);
-    const key = KEYS[i];
-    const long = tooLong(key, text);
-    if (long) throw new Error('약 카드 "' + name + '" 칸이 ' + long);
-    if (FX_KEYS.indexOf(key) >= 0) {
-      if (!LEVEL_RE.test(text)) throw new Error('약 카드 "' + name + '" 칸은 적은 편·중간·많은 편·자료 부족 가운데 하나로 시작해요: "' + text + '"');
-      if (!/^자료 부족/.test(text) && !refs.length) throw new Error('약 카드 "' + name + '" 칸에 출처 각주가 없어요(확인 못 한 칸은 자료 부족)');
-    }
-    return { key: key, name: name, text: text, refs: refs };
-  });
+  /* 소절·표 찾기, 행 모으기, 칸마다 판정까지 검사기와 같은 함수(cardProblems) 하나로 해요. 생성기는 그 첫 오류로 멈춰요 */
+  const r = card.cardProblems(body);
+  if (!r.count) return null;
+  if (r.errors.length) throw new Error(r.errors[0]);
+  return r.rows;
 }
 
 /* 본문의 "제목(영문)" 첫 꼴에서 영문 성분명. 없으면 '' */
