@@ -10,7 +10,7 @@
   "data": ["meds"],
   "robots": "index",
   "crisisLine": true,
-  "notice": ["general", "dated"],
+  "notice": ["general", "revised"],
   "updated": "2026-11-14",
   "lastmod": "kb:meds:updated"
 }

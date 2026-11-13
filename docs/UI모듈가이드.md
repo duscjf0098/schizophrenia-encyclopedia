@@ -58,9 +58,18 @@
 | `data` | | 그리기 전에 받아 넘겨 줄 `data/kb/<이름>.json` 목록 |
 | `robots` | | `index`(기본, 사이트맵에 들어감) · `noindex`(기기 안 기록 화면: me·ask·plan, 찾기) |
 | `crisisLine` | | 기본 true(위기 줄 109·1577-0199·119). **false 는 검사 오류**예요(위기 안내는 빠지지 않아요). 꼭 빼야 하는 화면은 총괄이 `tools/lib/assets.cjs` 의 `CRISIS_LINE_OFF_OK` 에 id 를 더해야 해요 |
-| `notice` | | 고지 종류: `general`(늘 붙음, 뺄 수 없음) · `device`(기기 안 기록 화면) · `emergency` · `dated`("○○에 확인한 내용". 날짜는 사이트맵과 같은 값: `lastmod` 가 있으면 그 자료에서 구한 날짜, 없으면 `updated`) · `crisis`(적어도 위기 줄은 `crisisLine` 하나로 **한 번만** 붙어요. 정리 때 notice 에서 빠져요) |
-| `updated` | | `YYYY-MM-DD`. 사이트맵 lastmod 와 `dated` 고지의 날짜(아래 `lastmod` 가 없거나, 그 자료에서 날짜를 찾지 못할 때) |
-| `lastmod` | | 날짜를 자료에서 읽을 때만: `"kb:<data/kb 이름>:<날짜 경로>"`. 경로는 점으로 이어요. 자료가 배열이면 항목마다 경로를 따라가고(예: 고침 기록 `"kb:changes:date"` = `data/kb/changes.json` 항목들의 `date` 가운데 가장 최근), 배열이 아닌 자료는 그 객체에서 따라가요(예: `"kb:red-flags:source.updated"`). 경로 중간의 배열도 펼쳐 봐요. 실제 있는 `YYYY-MM-DD` 만 세요(`2026-02-30`·시각이 붙은 글자는 건너뜀). 자료가 배열·객체가 아니거나 파일이 없으면 검사 오류, 날짜가 하나도 없으면 경고와 함께 `updated` 를 써요. 이 날짜가 **사이트맵 lastmod 와 `dated` 고지에 함께** 쓰여요(빌드 `tools/lib/assets.cjs` 의 `resolveLastmod` 와 앱 `js/app.js` 가 같은 순수 함수 `js/progress.js` 의 `latestDate`·`pageDate` 를 써요). 빌드는 이 항목이 있는 화면만 자료를 읽어요(자료 모양으로 짐작하지 않음) |
+| `notice` | | 고지 종류: `general`(늘 붙음, 뺄 수 없음) · `device`(기기 안 기록 화면) · `emergency` · `dated` · `revised` · `crisis`(적어도 위기 줄은 `crisisLine` 하나로 **한 번만** 붙어요. 정리 때 notice 에서 빠져요). 날짜가 붙는 두 종류는 아래 표 |
+| `updated` | | 실제 있는 `YYYY-MM-DD`(`2026-02-30` 은 검사 오류, `progress.isDay`). `dated` 고지의 날짜(늘 이것), 사이트맵 lastmod 와 `revised` 고지의 날짜(아래 `lastmod` 가 없거나, 그 자료에서 날짜를 찾지 못할 때) |
+| `lastmod` | | 날짜를 자료에서 읽을 때만: `"kb:<data/kb 이름>:<날짜 경로>"`. 경로는 점으로 이어요. 자료가 배열이면 항목마다 경로를 따라가고(예: 고침 기록 `"kb:changes:date"` = `data/kb/changes.json` 항목들의 `date` 가운데 가장 최근), 배열이 아닌 자료는 그 객체에서 따라가요(예: `"kb:red-flags:source.updated"`). 경로 중간의 배열도 펼쳐 봐요. 실제 있는 `YYYY-MM-DD` 만 세요(`2026-02-30`·시각이 붙은 글자는 건너뜀). 자료가 배열·객체가 아니거나 파일이 없으면 검사 오류, 날짜가 하나도 없으면 경고와 함께 `updated` 를 써요. 이 날짜가 **사이트맵 lastmod 와 `revised` 고지에 함께** 쓰여요(빌드 `tools/lib/assets.cjs` 의 `resolveLastmod`·`resolveNoticeDate` 와 앱 `js/app.js` 가 같은 순수 함수 `js/progress.js` 의 `latestDate`·`pageDate`·`noticeDate` 를 써요). `dated` 고지는 이 날짜를 쓰지 않아요. 빌드는 이 항목이 있는 화면만 자료를 읽어요(자료 모양으로 짐작하지 않음) |
+
+날짜가 붙는 고지 두 종류(K8). 문구는 `js/md.js` 의 `NOTICE`, 날짜 규칙은 `js/progress.js` 의 `noticeDate(종류, 선언, 자료)` 한 곳이에요(앱과 정적 HTML 이 같은 글자).
+
+| 종류 | 문구 | 날짜 | 뜻·쓰는 곳 | 선언 검사 |
+|---|---|---|---|---|
+| `dated` | "YYYY년 M월 D일에 확인한 내용이에요. 그 뒤에 바뀌었을 수 있어요." | 언제나 선언의 `updated`(`lastmod` 를 따르지 않아요) | **사람이 화면 내용을 원천과 대조해 확인한 날.** 화면 내용 전체(표·연락처 모두)를 원천과 다시 확인했을 때만 `updated` 를 올려요. 글 하나를 고쳤다고 올리지 않아요. 지금 `guide`(연락처를 확인한 날) | `updated` 가 꼭 있어야 해요(`lastmod` 로 대신할 수 없음) |
+| `revised` | "YYYY년 M월 D일에 마지막으로 고쳤어요. 그 뒤에 바뀌었을 수 있어요." | 사이트맵과 같은 날: `lastmod` 자료의 가장 최근 날짜 → 없으면(자료를 못 받음·깨짐·날짜 없음) `updated` | **자료에서 구한 "마지막으로 고친 날".** 여러 글에서 모은 화면처럼 사람이 한날 전체를 대조했다고 말할 수 없을 때. 지금 `meds`(약 글 12편의 가장 최근 고친 날, `kb:meds:updated`)·`red-flags`(원천 글 부작용 총론의 고친 날, `kb:red-flags:source.updated`) | `updated` 나 `lastmod` 가 있어야 해요. `lastmod` 만 있으면 경고(자료를 못 받으면 날짜가 빠지니 `updated` 도 적어요) |
+
+둘을 함께 써도 돼요(일반 → 선언 순서 → 위기 줄). 고친 날을 "확인한 내용"이라고 쓰지 않아요(글 하나만 고쳐도 표 전체를 그날 확인한 것처럼 보이지 않게).
 
 `node tools/build-kb.cjs` 가 선언을 모두 검사해요(규칙 위반·중복·summary 초과·깨진 JSON·없는 data 파일·`lastmod` 가 가리키는 자료 없음 → 종료 코드 1). 형식 한 쪽 요약은 `data/pages/README.md`.
 
@@ -92,9 +101,9 @@
 ### 2-3. 앱이 하는 일(순서)
 1. `data/pages.js`(빌드가 만든 `JHB.pages`)를 `app.js` 보다 먼저 실어요. `route()` 는 기존 화면을 다 본 뒤 `JHB.pages` 에 있는 id 면 특집 화면으로 가요(그래서 "그런 문서가 없어요"가 깜빡이지 않아요).
 2. 제목·왼쪽 목차를 그리고, `#app` 에 정적 내용(`.fp-body[data-page=id]`)이 있으면 그대로 둔 채, 없으면 "화면을 불러오고 있어요."를 보인 채 기다려요(이 자리 문구는 `jhb:page` 를 보내지 않아요).
-3. `css/pages/<id>.css`·`js/pages/<id>.js` 를 `JHB.app.load()` 로 받고, 스크립트가 실행된 뒤 `registerPage` 가 불렸는지 봐요. 등록이 없으면(문법 오류·최상위 예외) 바로 실패해요. `data` 의 kb 파일도 받아요. `notice` 에 `dated` 가 있고 `lastmod` 가 있으면 그 자료도 함께 받아요(받지 못하거나 3초 안에 오지 않아도 실패가 아니고, 그때 날짜는 `updated`. 늦게 와도 이미 그린 날짜는 바꾸지 않아요). 10초가 넘거나 파일을 받지 못하면 실패예요.
+3. `css/pages/<id>.css`·`js/pages/<id>.js` 를 `JHB.app.load()` 로 받고, 스크립트가 실행된 뒤 `registerPage` 가 불렸는지 봐요. 등록이 없으면(문법 오류·최상위 예외) 바로 실패해요. `data` 의 kb 파일도 받아요. `notice` 에 `revised` 가 있고 `lastmod` 가 있으면 그 자료도 함께 받아요(`js/app.js` 의 `noticeJob`, 고를 자료는 `progress.noticeRef`. 받지 못하거나 3초(`NOTICE_WAIT`) 안에 오지 않아도 실패가 아니고, 그때 날짜는 `updated`. 늦게 와도 이미 그린 날짜는 바꾸지 않아요). `dated` 는 자료를 기다리지 않아요. 10초가 넘거나 파일을 받지 못하면 실패예요.
 4. `show([빵부스러기, h1.page-title, p.page-lead, div.fp-body[data-page=id], div.fp-notices])`(여기서 `jhb:page` 한 번) → `page.render(mount, ctx)` → `window` 에 `jhb:pageready`.
-5. **고지는 장치가 강제로 붙여요.** `notice` 종류마다 한 줄(`general` 은 늘 맨 앞) + 위기 줄 한 줄. 화면 작성자가 뺄 수 없어요. `dated` 의 날짜는 `js/progress.js` 의 `pageDate(선언, 자료)`(사이트맵·정적 HTML 과 같은 규칙, 2-1 의 `lastmod`)예요. 자료를 3번에서 미리 받아 두니 고지가 그려진 뒤 날짜가 바뀌지 않아요.
+5. **고지는 장치가 강제로 붙여요.** `notice` 종류마다 한 줄(`general` 은 늘 맨 앞) + 위기 줄 한 줄. 화면 작성자가 뺄 수 없어요. 날짜는 `js/progress.js` 의 `noticeDate(종류, 선언, 자료)`(정적 HTML 과 같은 규칙, 2-1 의 고지 표): `dated` 는 선언의 `updated`, `revised` 는 `pageDate(선언, 자료)`(사이트맵과 같은 날). 자료를 3번에서 미리 받아 두니 고지가 그려진 뒤 날짜가 바뀌지 않아요. 실패 안내와 함께 그릴 때(자료 404 등)도 고지는 그대로 붙고, 날짜는 `updated` 예요.
 6. 실패 안내는 원인에 따라 달라요(정적 내용이 있으면 그대로 남기고 그 아래에):
    - 파일을 받지 못함·시간 초과: "화면을 불러오지 못했어요(…). 인터넷 연결을 확인하고 새로고침해 주세요. 첫 화면 · 찾기"
    - 등록 안 됨·`render`/`staticHtml` 예외(코드 문제): "화면을 그리는 중에 문제가 생겼어요. 새로고침해 보거나 첫 화면 · 찾기로 가세요."
@@ -107,7 +116,7 @@
 ### 2-4. 빌드가 하는 일
 - `build-gen`: `tools/gen/*.cjs`(생성기)를 이름순으로 돌려요. 생성기는 글(`content/`)에서 화면 데이터를 뽑아 `data/kb/<이름>.json` 을 써요(인자 없이 실행, 같은 입력이면 같은 출력, 실패하면 종료 코드 1). 생성된 json 은 손으로 고치지 않아요. 개발 서버는 생성기를 돌리지 않으니 미리 보려면 `node tools/gen/<이름>.cjs` 를 직접 돌려요. 지금 있는 생성기 두 개는 2-6.
 - `build-kb`: 선언 검사 → `data/pages.js`(묶음 안내→지식→도구→기록, 그 안에서 order·id 순, 항목마다 `hasJs`·`hasCss`).
-- `build-pages`: 선언마다 `<id>/index.html`(제목·설명·robots·canonical, 본문 = 빵부스러기 + h1 + lead + `.fp-body` 안에 `staticHtml(ctx)` + 고지). `index` 화면은 사이트맵에(날짜는 `lastmod` → `updated` → 빌드한 날 순). 정적 고지(`featureNoticesHtml`)의 `dated` 날짜도 같은 `resolveLastmod` 값이라 앱이 다시 그려도 같은 글자예요. `staticHtml` 에서 예외가 나면 어느 화면인지 알리고 멈춰요. 선언이 사라진 화면의 옛 폴더(빌드가 만든 `index.html` 하나만 든 폴더)는 지워요.
+- `build-pages`: 선언마다 `<id>/index.html`(제목·설명·robots·canonical, 본문 = 빵부스러기 + h1 + lead + `.fp-body` 안에 `staticHtml(ctx)` + 고지). `index` 화면은 사이트맵에(날짜는 `lastmod` → `updated` → 빌드한 날 순). 정적 고지(`featureNoticesHtml`)의 날짜는 `assets.resolveNoticeDate(선언, 종류)`(앱과 같은 `progress.noticeDate`: `dated` = `updated`, `revised` = 사이트맵과 같은 `resolveLastmod` 값)라 앱이 다시 그려도 같은 글자예요. `staticHtml` 에서 예외가 나면 어느 화면인지 알리고 멈춰요. 선언이 사라진 화면의 옛 폴더(빌드가 만든 `index.html` 하나만 든 폴더)는 지워요.
   - 분류 글 순서는 앱과 같은 `js/paths.js` 의 `sectionArticles(articles, id)` 한 곳(order 오름차순, 없거나 0 이면 맨 뒤 → 제목 가나다). 빌드에도 앱에도 정렬 규칙 사본이 없어요(`tests/core.test.cjs` K3-7·K5-4).
   - 분류 `s/<id>/`: `data/kb/groups.json` 이 있으면 `js/ui/hub.js` 의 `arrange()` 를 그대로 써서 앱과 같은 "먼저 읽을 글"·묶음 제목·글 순서로 그려요(hub 모듈과 같은 마크업 `.hb`, 같은 css). 없는 slug 는 건너뛰고 빠진 글은 "그 밖의 글". 자료가 없거나 `js/ui/hub.js` 가 없으면 평평한 목록(빌드는 hub 모듈 없이도 멈추지 않아요). 머리 문장은 앱과 같은 "설명. 문서 N개."
   - 읽기 코스 `courses/`: 머리 문장은 앱(`coursesPage`)과 같아요. 코스 수(`data/courses.js` 에서 셈)는 설명(meta description)에만 넣어요.
@@ -174,9 +183,13 @@
 - `points:` 목록(2~4줄)이 있으면 `lead` 맨 앞에 `section.keypoints`(제목 "핵심 3가지", 줄 수가 3이 아니면 "핵심 정리"). `위기` 태그 글이면 상자 끝에 "지금 힘들면 109 · 1577-0199".
 - `tags` 에 `응급` 이 있으면 위기 배너 자리 근처에 `div.emergency`(role=note, 119 tel 링크, 경고 노랑 계열). `위기` 와 함께면 둘 다.
 - 정적 문서 HTML 에도 위기 배너, 응급 줄, 핵심 3가지, 근거·읽는 시간·고친 날 한 줄(`p.doc-meta-s`: 근거 칩 · "약 N분" · "2026.10.25 고침" · `reviewed` 가 있으면 "출처 확인 2026.11.14". 앱의 휴대폰 머리 줄 `.doc-meta-m` 과 같은 글자, `md.docMetaText`·`md.docMetaHtml`), 문서 고지(`p.disclaimer`), 인쇄용 한 줄(`p.prt-static`)이 들어가요.
-- 본문 전화번호: `**109**` 처럼 굵게 싼 공공 번호(109·112·119·129·13xx 등)와 `1577-0199` 꼴(15xx~18xx-xxxx)은 `tel:` 링크가 돼요. "109명", "제119조", 연도 범위("1650-1750 사이", "1990-2017년"), ISSN·ISBN 뒤 번호, DOI 속 숫자, 링크·코드 안은 그대로예요.
+- 본문 전화번호: `**109**` 처럼 굵게 싼 공공 번호(109·112·119·129·13xx 등)와 `1577-0199` 꼴(15xx~18xx-xxxx)은 `tel:` 링크가 돼요. "109명", "제119조", 연도 범위("1650-1750 사이", "1990-2017년"), ISSN·ISBN 뒤 번호, DOI 속 숫자, 링크·코드 안은 그대로예요. 규칙은 `js/md.js` 의 `telLinks` 한 곳이에요:
+  - 굵게 싼 짧은 번호 뒤에 단위가 붙으면 번호가 아니에요(`TEL_UNITS`: 명·개·년·조·항·호·세·살·%·번째·만·천·억·원·회·건·곳·일·시간·분·위·차·쪽·mg·kg·ml·cm 등). 주·점은 붙여 쓴 것만("**12**주", "**120**점". "**109** 주 7일"처럼 띄우면 번호).
+  - 15xx~18xx-xxxx 꼴은 굵게 싸지 않아도 링크예요. 앞 글자가 숫자·영문·`-./`(주소·DOI 속 숫자), 뒤가 숫자·`-`·"년"이면 아니에요.
+  - 연도 범위 예외(굵게 싸지 않았고, 뒤 묶음이 1500~2099 이면서 앞 묶음보다 클 때만): 뒤에 사이·까지·년대·세기·에 걸쳐가 오거나, 경·무렵·동안·년간이 낱말로 끝날 때("1800-1900경에"는 범위, "경기·경찰·동안구"처럼 낱말의 일부면 아님. "에" 하나만으로는 범위로 보지 않음), 앞에 년·~ 가 있을 때. 그리고 괄호 속 생몰·시기 "(1820-1899)"(두 해 차이 110 이하, 바로 뒤 `)`)는 범위인데, 번호 바로 앞에 전화·상담·문의·번호·센터·연락처·ARS·☎ 가 붙어 있으면 번호예요("상담(1588-1600)"). 뜻이 넓은 대표·안내·연락은 괄호 안에 그 낱말 하나만 있을 때("(대표 1588-1600)")나, 바로 앞에 붙고 앞 묶음이 1700 보다 작을 때("대표(1544-1600)")만 번호예요(그래서 "연구 안내(1856-1926)"는 생몰년).
+  - 굵게 싼 번호(`**1588-1600**`)는 늘 링크예요.
 - 콜아웃(`::: 종류 제목`)은 `div.callout.callout-<종류>[role=note][aria-label=제목]` 이에요(예전 `aside` 아님, 클래스는 같음).
-- 글에서 특집 화면으로 가는 링크는 `[미리 써 두는 종이](#/plan)` 처럼 `#/<화면 id>` 로 써요(글은 `#/a/<slug>`). 앱(화면에 붙는 `#/…` 링크)과 빌드(`P.rewriteHtml`)가 `js/paths.js` 의 `hashToPath` 로 `plan/` 같은 실제 경로로 바꾸고, 뒤의 조각은 경로 뒤로 옮겨요(`#/about#privacy` → `about/#privacy`).
+- 글에서 특집 화면으로 가는 링크는 `[미리 써 두는 종이](#/plan)` 처럼 `#/<화면 id>` 로 써요(글은 `#/a/<slug>`). 앱(화면에 붙는 `#/…` 링크)과 빌드(`P.rewriteHtml`)가 `js/paths.js` 의 `hashToPath` 로 `plan/` 같은 실제 경로로 바꾸고, 뒤의 조각은 경로 뒤로 옮겨요(`#/about#privacy` → `about/#privacy`). 미리 써 두는 종이는 `#/plan#safety-card`(→ `plan/#safety-card`)로 그 양식 탭을 바로 열 수 있고, 화면이 양식을 고른 뒤 `history.replaceState` 로 조각을 걷고 고른 양식을 이 탭의 기록 state(`planForm`)에 둬요(`dropHash`. 경로·쿼리와 state 의 다른 값은 그대로, 기록을 늘리지 않음. 탭을 바꿀 때·처음 그릴 때·이미 그 화면에서 조각만 바뀔 때 모두 이 함수). 그래서 주소창과 이 탭의 뒤로 가기 목록에는 양식 이름이 남지 않고, 새로 고침·뒤로·앞으로 와도 고른 양식이 다시 열려요(state 가 없으면 첫 양식). 조각이 양식 id 일 때만(끝의 `/` 하나는 봐줌) 그렇게 하고, 양식 id 가 아닌 조각(`#app` 등)은 처음 그릴 때도 건드리지 않아요. 한계: 페이지 스크립트가 돌기 전에 브라우저가 확정한 이동이라, 브라우저 전체 방문 기록(예: chrome://history)과 주소창 자동 완성에는 `plan/#safety-card` 가 남을 수 있어요(이 탭의 목록은 바뀌어도 그쪽은 페이지가 지울 수 없어요). 이미 그 화면에서 주소창에 조각을 직접 바꾸면 브라우저가 쌓은 기록 하나가 남아 뒤로 가기 목록에 `plan/` 가 하나 늘어요. 그 기록의 state 에 앞 양식이 있어서 뒤로 가면 앞 양식 탭으로 돌아가요(`popstate`). 흔적을 아예 없애려면 글 링크에서 조각을 빼고 양식 선택을 sessionStorage 로 한 번만 넘기는 방식이 다음 판 후보예요.
 
 ## 4. 공개 API: `JHB.app`
 
@@ -215,7 +228,7 @@
 | **`notFound()`** | "그런 문서가 없어요" 화면 |
 | **`onCleanup(fn)`** | 다음 `show()` 직전에 한 번 불림 |
 | **`slot(name)`**, **`mount(slotName, node, order)`** | 문서 화면 확장 자리(3장) |
-| **`notice(kind, arg)`** | 공용 고지 DOM(`div.notice.notice-<kind>[role=note]`). `general`(일반 정보·담당 의사와·AI 초안·감수 없음), `crisis`(109·1577-0199·119 tel 링크), `emergency`(몸의 응급 119), `device`("이 기기의 브라우저에만 저장돼요…"), `dated`(arg = 'YYYY-MM-DD' → "○○에 확인한 내용이에요"). 모르는 종류면 null |
+| **`notice(kind, arg)`** | 공용 고지 DOM(`div.notice.notice-<kind>[role=note]`). `general`(일반 정보·담당 의사와·AI 초안·감수 없음), `crisis`(109·1577-0199·119 tel 링크), `emergency`(몸의 응급 119), `device`("이 기기의 브라우저에만 저장돼요…"), `dated`(arg = 'YYYY-MM-DD' → "○○에 확인한 내용이에요". 사람이 원천과 대조해 확인한 날에만), `revised`(arg = 'YYYY-MM-DD' → "○○에 마지막으로 고쳤어요". 고친 날). 날짜가 없거나 꼴이 틀리면 날짜 고지는 null, 모르는 종류면 null |
 | **`privacy`** | 기기 안 기록(6장) |
 | **`reducedMotion()`** | 운영체제의 움직임 줄이기 설정이거나 `<html data-motion="reduce">` 면 true |
 
@@ -225,7 +238,7 @@
 - 코스 이름·진도는 **들어간 코스**(코스 화면을 열었거나 `?course=` 로 글을 연 기록 `jhb.course`)에만 붙어요. 읽은 글이 여러 코스에 겹친다고 코스를 짐작하지 않아요.
 - 들어간 코스의 다음 단계가 위기·응급 태그 글이면 그 글의 제목·slug 를 싣지 않고 `{ kind: 'course', course, article: null, hidden: true, onlyHidden, read, total, reason }` 을 돌려줘요(첫 화면은 제목 없이 코스 화면 링크). 다음 일반 단계로 건너뛰지 않아요(코스 순서 그대로). 남은 단계가 모두 숨길 글이면(`onlyHidden: true`) "코스에 아직 안 연 글이 N개 있어요"로 알려요.
 - 그 밖에는 `{ kind: 'section', article, reason }`(같은 분류에서 아직 안 읽은 다음 글). 위기·응급 글은 제안하지 않고, 기준 글이 위기·응급 글이면 이유 문구에 그 제목을 내지 않아요. `hideTags` 를 주지 않는 옛 호출은 예전 그대로예요.
-- 그 밖의 순수 함수(`JHB.progress`, node 에서도 `require('js/progress.js')`): `planClear`(기록 지우기 계획, 6장), `isReturning`·`homeOrder`·`HOME_ROLES`(첫 화면 순서: 다시 온 사람은 이어서 읽기·코스·오늘의 문서 순), `visibleRecent`(첫 화면 최근 목록에서 위기·응급 글 빼기), `lastmodRef`·`latestDate`·`pageDate`(특집 화면 날짜, 2-1 의 `lastmod`).
+- 그 밖의 순수 함수(`JHB.progress`, node 에서도 `require('js/progress.js')`): `planClear`(기록 지우기 계획, 6장), `isReturning`·`homeOrder`·`HOME_ROLES`(첫 화면 순서: 다시 온 사람은 이어서 읽기·코스·오늘의 문서 순), `visibleRecent`(첫 화면 최근 목록에서 위기·응급 글 빼기), `lastmodRef`·`latestDate`·`pageDate`(특집 화면 날짜, 2-1 의 `lastmod`), `noticeDate(종류, 선언, 자료)`·`noticeRef(선언)`(고지 날짜와 그리기 전에 받을 자료, 2-1 의 고지 표).
 
 ### 4-1. 모듈 공개 API (`JHB.ui.*`)
 모듈이 없으면 그 이름도 없어요. 쓰기 전에 `JHB.ui && JHB.ui.<이름>` 을 확인하고, 화면 코드라면 `DOMContentLoaded` 뒤에 확인해요(위 `load` 참고).
@@ -289,8 +302,10 @@
 | | `jhb.ui.ask.session` | 이 탭의 질문 바구니(기본) | ask | ask |
 | | `jhb.ui.home.role` | 기록 쉼 중에 이 탭에서만 고른 역할 | home | role(모듈이 session 에 더함) |
 | Cache Storage | `jhb-<판>` | 오프라인용 파일과 **열어 본 화면의 HTML**(쿼리를 뗀 주소로). 기록 쉼 중에는 새로 쌓지 않아요. 내 서재에서 읽은 글·최근 읽은 글·읽던 자리를 지우면 열어 본 화면도 함께 지워요 | sw.js·me | — |
-| | `jhb.state` | 서비스 워커가 기록 쉼 여부만 기억하는 곳(글·검색어 없음) | sw.js | — |
+| | `jhb.state` | 서비스 워커가 기록 쉼 여부만 기억하는 곳(글·검색어 없음). 항목 `__jhb-state/paused` 의 값은 `'1'`(쉼)·`'0'`(쉼 아님) 둘 다 남겨요. 판이 바뀌어도 activate 가 지우지 않는 이름이에요 | sw.js | — |
+| | `jhb-<판>` 안의 `__jhb-state/known` | 페이지가 기록 쉼 여부를 한 번이라도 알려 줬다는 표시(값 `'1'`). 상태 항목은 없는데 이 표시는 있으면 "알림을 받은 뒤 상태만 사라짐"으로 보고 모르는 것으로 쳐요 | sw.js | — |
 
+- 서비스 워커의 기록 쉼(`sw.js`): 페이지(`js/app.js` 의 `tellWorker`)가 열릴 때, 쉼을 바꿀 때, 다른 탭에서 쉼이 바뀌었을 때(storage 이벤트) `postMessage({ jhb: 'privacy', paused })` 로 알려요. 쉼이면 워커는 새 캐시 항목을 만들지 않아요(연 화면의 HTML 은 이미 있는 것도 새로 쓰지 않고, 그 밖의 파일은 이미 있는 항목만 새로 받아 둠). 워커가 다시 떠서 메모리 값이 없으면 `jhb.state` 를 읽고, 읽지 못하거나 값이 `'1'`·`'0'` 이 아니거나 `__jhb-state/known` 표시만 남았으면 페이지가 다시 알려 줄 때까지 쉼처럼 다뤄요(보수적 기본값). 한 번도 알림을 받지 않은 워커(처음 설치 직후, 표시도 없음)는 쉼 아님으로 봐요(페이지가 열리자마자 알려 줌).
 - 새 키는 `jhb.ui.<모듈>.<항목>`. 기록 종류를 새로 만들면 **반드시** `JHB.app.privacy.register({ id, label, keys: [...], session: [...] })` 로 등록해 내 서재에서 보이고 지워지게 해요.
 - **정직한 한계**(사용자에게 하는 말도 이렇게): sessionStorage 와 찾기 화면의 `history.state {q, s, at}` 는 "탭을 닫으면 사라진다"고 말하지 않아요. 브라우저의 "닫은 탭 다시 열기"·세션 복원으로 그 탭이 돌아오면 함께 돌아올 수 있어요. 탭의 방문 기록(뒤로 가기 목록)은 웹 페이지가 지울 수 없으니, 함께 쓰는 기기라면 브라우저 방문 기록도 지우라고 안내해요(내 서재의 문구가 기준).
 
@@ -335,7 +350,7 @@
 
 ## 8. 시험하는 법
 
-- **빌드 없이 보기**: `node serve.cjs`(기본 5174, 다른 포트는 `PORT=5175 node serve.cjs`). 개발 서버는 `css/ui.css` 와 `data/pages.js` 를 즉석에서 만들고, 모든 HTML 의 모듈 줄·상단 링크를 지금 파일 기준으로 바꿔 보내요. `<id>/` 폴더가 아직 없어도 `data/pages/<id>.json` 이 있으면 그 주소가 열려요(정적 본문 없이 앱이 그림). 선언 오류는 서버 터미널에 나와요. 개발 서버는 `tools/lib/assets.cjs` 와 그 파일이 불러오는 `js/progress.js` 를 켤 때 한 번 읽어서, 그 파일(선언 정리·검사 규칙·`lastmod` 날짜 규칙)을 고친 뒤에는 서버를 다시 켜야 `data/pages.js` 에 반영돼요(브라우저가 받는 `js/progress.js` 는 새로 고치면 바로 바뀌어서, 그 사이에는 앱과 `data/pages.js` 가 다른 규칙일 수 있어요). 생성기(2-6)는 돌리지 않아요.
+- **빌드 없이 보기**: `node serve.cjs`(기본 5174, 다른 포트는 `PORT=5175 node serve.cjs`). 개발 서버는 `css/ui.css` 와 `data/pages.js` 를 즉석에서 만들고, 모든 HTML 의 모듈 줄·상단 링크를 지금 파일 기준으로 바꿔 보내요. `<id>/` 폴더가 아직 없어도 `data/pages/<id>.json` 이 있으면 그 주소가 열려요(정적 본문 없이 앱이 그림). 선언 오류는 서버 터미널에 나와요. 개발 서버는 `tools/lib/assets.cjs` 와 그 파일이 불러오는 `js/progress.js` 를 켤 때 한 번 읽어서, 그 파일(선언 정리·검사 규칙·`lastmod` 날짜 규칙)을 고친 뒤에는 서버를 다시 켜야 `data/pages.js` 에 반영돼요(브라우저가 받는 `js/progress.js` 는 새로 고치면 바로 바뀌어서, 그 사이에는 앱과 `data/pages.js` 가 다른 규칙일 수 있어요). 새 고지 종류(예: `revised`)처럼 검사 규칙이 넓어진 선언은 다시 켜기 전의 서버가 오류로 보고 `data/pages.js` 에서 빼서, 그 화면이 개발 서버에서 "그런 문서가 없어요"가 될 수 있어요. 생성기(2-6)는 돌리지 않아요.
 - 브라우저 확인: 1280×800 과 390×844 에서 실제로 눌러 보고 콘솔 오류 0, 가로 넘침 0, 밝은·어두운 화면을 확인해요. Playwright 를 여럿이 함께 쓰면 공유 page 를 건드리지 말고 자기 컨텍스트(`browser.newContext({ viewport, serviceWorkers: 'block' })`)를 만들어 쓰고 닫아요.
 - `node tests/run.cjs` 는 깨지지 않아야 해요. 테스트 파일을 불러오다 예외가 나면(모듈 없음·문법 오류·최상위에서 던짐) 그 파일을 FAIL 1건으로 세고 파일 이름과 예외 글을 보여 준 뒤 다음 파일로 넘어가요(마지막 줄에 "불러오지 못한 파일"). 선언 검사만: `node tools/build-kb.cjs`.
 - 전체 빌드(통합 담당): `node tools/build-all.cjs` = check-content → build-gen → build-kb → build-index → build-links → build-ui-css → build-pages(하나라도 실패하면 멈춤).

@@ -4,7 +4,8 @@
    - uiCss()          css/ui.css 내용(css/ui/*.css 이름순으로 이어 붙임)
    - pageDecls()      data/pages/<id>.json 특집 화면 선언 읽기·검사·정리
    - pagesJs(pages)   data/pages.js 내용
-   - resolveLastmod(decl)  사이트맵·dated 고지 날짜(선언의 "lastmod": "kb:<자료>:<날짜 경로>" → 그 자료의 가장 최근 날짜, 없으면 updated)
+   - resolveLastmod(decl)  사이트맵·revised 고지 날짜(선언의 "lastmod": "kb:<자료>:<날짜 경로>" → 그 자료의 가장 최근 날짜, 없으면 updated)
+   - resolveNoticeDate(decl, kind)  고지 날짜(dated = 선언의 updated, revised = resolveLastmod 와 같은 날)
    - kbFiles()        data/kb/*.json 목록, kbCheck() JSON 검사
    - uiScriptsHtml(base), topLinksHtml(pages, base), footLinksHtml(pages, base), applyShellMarkers(html, base, pages)  shell 조각 */
 const fs = require('fs');
@@ -19,7 +20,8 @@ const NAME_RE = /^[a-z0-9][a-z0-9-]*$/;
 const RESERVED = ['a', 's', 'fav', 'glossary', 'about', 'courses', 'course', 'random', 'css', 'js', 'data', 'content', 'docs', 'tools', 'tests', 'notfound'];
 const GROUPS = ['안내', '지식', '도구', '기록'];
 const NAV_PLACES = ['top', 'side', 'home', 'palette'];
-const NOTICE_KINDS = ['general', 'crisis', 'emergency', 'device', 'dated'];
+/* 고지 종류(문구는 js/md.js 의 NOTICE). dated = 사람이 원천과 대조해 확인한 날(선언의 updated), revised = 자료에서 구한 마지막으로 고친 날(K8) */
+const NOTICE_KINDS = ['general', 'crisis', 'emergency', 'device', 'dated', 'revised'];
 const KNOWN_KEYS = ['id', 'title', 'label', 'summary', 'lead', 'group', 'order', 'nav', 'keywords', 'data', 'robots', 'crisisLine', 'notice', 'updated', 'lastmod'];
 const SUMMARY_MAX = 155;
 /* 사이트맵 날짜를 자료에서 읽는 명시 항목: "lastmod": "kb:<data/kb 이름>:<날짜 경로>" (예: "kb:changes:date", "kb:red-flags:source.updated").
@@ -90,9 +92,16 @@ function validateDecl(d, fileId, opts) {
   if (d.crisisLine === false && CRISIS_LINE_OFF_OK.indexOf(d.id) < 0) bad('crisisLine 을 false 로 둘 수 없어요(위기 줄 109·1577-0199·119 는 빠지지 않아요). 꼭 빼야 하면 총괄이 tools/lib/assets.cjs 의 CRISIS_LINE_OFF_OK 에 id 를 더해요');
   if (d.notice != null) {
     if (!Array.isArray(d.notice) || d.notice.some(function (x) { return NOTICE_KINDS.indexOf(x) < 0; })) bad('notice 는 ' + JSON.stringify(NOTICE_KINDS) + ' 의 부분집합이어야 해요');
-    else if (d.notice.indexOf('dated') >= 0 && !d.updated) bad('notice 에 "dated" 를 쓰려면 updated 가 있어야 해요');
+    else {
+      if (d.notice.indexOf('dated') >= 0 && !d.updated) bad('notice 에 "dated" 를 쓰려면 updated 가 있어야 해요(사람이 화면 내용을 원천과 대조해 확인한 날. lastmod 로 대신하지 않아요)');
+      if (d.notice.indexOf('revised') >= 0) {
+        if (!d.updated && !d.lastmod) bad('notice 에 "revised" 를 쓰려면 updated 나 lastmod 가 있어야 해요(마지막으로 고친 날)');
+        else if (!d.updated) warnings.push(where + ': notice 의 "revised" 는 lastmod 자료를 받지 못하면 updated 를 써요. updated 가 없으면 그때 고지 날짜가 빠지니 updated 도 적어 두세요');
+      }
+    }
   }
-  if (d.updated != null && (typeof d.updated !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(d.updated))) bad('updated 는 YYYY-MM-DD 꼴이어야 해요');
+  /* 꼴만이 아니라 실제 있는 날짜여야 해요(2026-02-30 이 고지·사이트맵에 그대로 나가지 않게. lastmod 자료 쪽과 같은 PR.isDay) */
+  if (d.updated != null && !PR.isDay(d.updated)) bad('updated 는 실제 있는 날짜(YYYY-MM-DD)여야 해요');
   if (d.lastmod != null) {
     const lm = typeof d.lastmod === 'string' ? LASTMOD_RE.exec(d.lastmod) : null;
     if (!lm) bad('lastmod 는 "kb:<data/kb 이름>:<날짜 경로>" 꼴이어야 해요(예: "kb:changes:date", "kb:red-flags:source.updated"). 날짜를 직접 적을 때는 updated 를 써요');
@@ -182,14 +191,24 @@ function kbLastmod(name, field, opts) {
   const r = readKb(name, field, opts);
   return r.error ? { error: r.error } : { date: PR.latestDate(r.value, field) };
 }
-/* 정리된 선언(normalizeDecl)의 사이트맵 날짜이자 "○○에 확인한 내용" 고지 날짜:
-   lastmod 가 가리키는 자료의 가장 최근 날짜 → 없으면(자료 없음·깨짐·경로 없음·틀린 날짜) updated → 없으면 ''(사이트맵은 빌드한 날로).
-   앱(js/app.js)도 같은 js/progress.js 의 pageDate 로 고지를 그려요 */
-function resolveLastmod(decl, opts) {
+/* lastmod 가 가리키는 자료의 값(읽지 못하면 undefined: 날짜는 updated 로) */
+function lastmodValue(decl, opts) {
   const ref = PR.lastmodRef(decl && decl.lastmod);
-  let value;
-  if (ref) { const r = readKb(ref.name, ref.path, opts); if (!r.error) value = r.value; }
-  return PR.pageDate(decl, value) || '';
+  if (!ref) return undefined;
+  const r = readKb(ref.name, ref.path, opts);
+  return r.error ? undefined : r.value;
+}
+/* 정리된 선언(normalizeDecl)의 사이트맵 날짜이자 "○○에 마지막으로 고쳤어요"(revised) 고지 날짜:
+   lastmod 가 가리키는 자료의 가장 최근 날짜 → 없으면(자료 없음·깨짐·경로 없음·틀린 날짜) updated → 없으면 ''(사이트맵은 빌드한 날로).
+   앱(js/app.js)도 같은 js/progress.js 의 pageDate 로 revised 고지를 그려요 */
+function resolveLastmod(decl, opts) {
+  return PR.pageDate(decl, lastmodValue(decl, opts)) || '';
+}
+/* 고지 kind 의 날짜(K8, 정적 고지 tools/build-pages.cjs 의 featureNoticesHtml). 규칙은 앱과 같은 js/progress.js 의 noticeDate:
+   dated = 선언의 updated(사람이 원천과 대조해 확인한 날), revised = resolveLastmod 와 같은 날, 그 밖의 종류는 '' */
+function resolveNoticeDate(decl, kind, opts) {
+  const value = kind === 'revised' ? lastmodValue(decl, opts) : undefined; /* dated 는 자료를 읽지 않아요 */
+  return PR.noticeDate(kind, decl, value) || '';
 }
 
 /* ---------- 지식 데이터 ---------- */
@@ -252,7 +271,7 @@ module.exports = {
   LASTMOD_RE: LASTMOD_RE,
   uiOrder: uiOrder, uiModules: uiModules, uiCss: uiCss, uiCssFiles: uiCssFiles,
   validateDecl: validateDecl, normalizeDecl: normalizeDecl, sortPages: sortPages, pageDecls: pageDecls, pagesJs: pagesJs,
-  kbLastmod: kbLastmod, resolveLastmod: resolveLastmod,
+  kbLastmod: kbLastmod, resolveLastmod: resolveLastmod, resolveNoticeDate: resolveNoticeDate,
   kbFiles: kbFiles, kbCheck: kbCheck, pageAssetFiles: pageAssetFiles,
   stripBom: stripBom, uiScriptsHtml: uiScriptsHtml, topLinksHtml: topLinksHtml, footLinksHtml: footLinksHtml, applyShellMarkers: applyShellMarkers
 };

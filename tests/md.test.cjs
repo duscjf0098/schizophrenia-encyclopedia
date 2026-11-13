@@ -130,6 +130,17 @@ test('고정 안내: 핵심 3가지 상자와 위기 줄, 공용 고지', functi
   has(md.emergencyHtml(), '<div class="emergency" role="note"><strong>몸의 응급 신호가 보이면</strong> <a href="tel:119">119</a>');
 });
 
+/* K8: dated = 사람이 원천과 대조해 확인한 날("확인한 내용"), revised = 자료에서 구한 마지막으로 고친 날("마지막으로 고쳤어요") */
+test('K8 고지 문구: revised 는 "마지막으로 고쳤어요", dated 문구는 그대로, 날짜가 없으면 빈 글자', function () {
+  eq(md.noticeHtml('revised', '2026-11-13'), '<div class="notice notice-revised" role="note">2026년 11월 13일에 마지막으로 고쳤어요. 그 뒤에 바뀌었을 수 있어요.</div>');
+  eq(md.noticeHtml('dated', '2026-11-03'), '<div class="notice notice-dated" role="note">2026년 11월 3일에 확인한 내용이에요. 그 뒤에 바뀌었을 수 있어요.</div>');
+  not(md.noticeHtml('revised', '2026-11-13'), '확인', '고친 날을 "확인한 날"이라고 하지 않음');
+  eq(md.noticeHtml('revised'), '');
+  eq(md.noticeHtml('revised', ''), '');
+  eq(md.noticeHtml('revised', '어제'), '');
+  ok(md.NOTICE_KINDS.indexOf('revised') >= 0 && md.NOTICE_KINDS.indexOf('dated') >= 0, '종류 목록');
+});
+
 test('parse(): points 목록은 배열로 읽힌다', function () {
   const r = md.parse('---\ntitle: x\npoints:\n  - 첫째\n  - 둘째\n  - 셋째\n---\n본문');
   eq(r.meta.points, ['첫째', '둘째', '셋째']);

@@ -4,7 +4,7 @@
    문서는 data/toc.js 형식 { slug, section, order, title, tags }, 코스는 { id, title, who, steps: [{slug}] }.
    그 밖에 앱(js/app.js)이 쓰는 순수 함수: 코스 찾기(courseMap·getCourse), 코스 대상 문구(whoText),
    첫 화면 최근 목록 고르기(visibleRecent), 기기 안 기록 지우기 계획(planClear), 첫 화면 순서(isReturning·homeOrder),
-   특집 화면 날짜(lastmodRef·latestDate·pageDate — 빌드 tools/lib/assets.cjs 도 같은 함수를 require 해요),
+   특집 화면 날짜(lastmodRef·latestDate·pageDate·noticeDate·noticeRef — 빌드 tools/lib/assets.cjs 도 같은 함수를 require 해요),
    공용 팝오버 키보드 판정(popTabOut·popLeave).
    테스트는 tests/progress.test.cjs·tests/core.test.cjs·tests/assets.test.cjs */
 (function (root) {
@@ -270,10 +270,11 @@
     return returning ? ['continue', 'courses', 'today', 'recent', 'index', 'terms'] : ['today', 'continue', 'courses', 'recent', 'index', 'terms'];
   }
 
-  /* ---------- 특집 화면 날짜(사이트맵 lastmod 와 "○○에 확인한 내용" 고지, K5-3) ----------
+  /* ---------- 특집 화면 날짜(사이트맵 lastmod 와 "○○에 마지막으로 고쳤어요" 고지, K5-3·K8) ----------
      선언의 "lastmod": "kb:<data/kb 이름>:<날짜 경로>". 경로는 점으로 잇고(예: 'date', 'source.updated'),
      자료가 배열이면 항목마다, 경로 중간의 배열도 펼쳐서 따라가요. 실제 있는 YYYY-MM-DD 가운데 가장 최근 날짜.
-     빌드(tools/lib/assets.cjs 의 resolveLastmod → 사이트맵·정적 고지)와 앱(js/app.js 의 dated 고지)이 이 함수를 함께 써요 */
+     빌드(tools/lib/assets.cjs 의 resolveLastmod → 사이트맵, resolveNoticeDate → 정적 고지)와 앱(js/app.js 의 revised 고지)이 이 함수를 함께 써요.
+     "○○에 확인한 내용"(dated)은 이 날짜를 쓰지 않아요(아래 noticeDate) */
   const LASTMOD_RE = /^kb:([a-z0-9][a-z0-9-]*):([A-Za-z_][A-Za-z0-9_]*(?:\.[A-Za-z_][A-Za-z0-9_]*)*)$/;
   function lastmodRef(s) {
     const m = typeof s === 'string' ? LASTMOD_RE.exec(s) : null;
@@ -311,6 +312,21 @@
     const d = ref && value !== undefined ? latestDate(value, ref.path) : '';
     return d || (decl && typeof decl.updated === 'string' ? decl.updated : '');
   }
+  /* ---------- 특집 화면 고지 날짜(K8) ----------
+     dated   "○○에 확인한 내용이에요": 사람이 화면 내용을 원천과 대조해 확인한 날 = 선언의 updated 만(lastmod 를 따르지 않아요.
+             자료의 고친 날은 확인한 날이 아니에요. 표 전체를 다시 확인했을 때만 updated 를 올려요).
+     revised "○○에 마지막으로 고쳤어요": 자료에서 구한 마지막으로 고친 날 = pageDate(사이트맵 날짜와 같은 날).
+     그 밖의 종류는 날짜가 없어요(''). 앱(js/app.js)과 빌드(tools/lib/assets.cjs 의 resolveNoticeDate → 정적 고지)가 함께 써요 */
+  function noticeDate(kind, decl, value) {
+    if (kind === 'dated') return decl && typeof decl.updated === 'string' ? decl.updated : '';
+    if (kind === 'revised') return pageDate(decl, value);
+    return '';
+  }
+  /* 고지를 그리기 전에 받아 둘 자료: notice 에 revised 가 있고 lastmod 가 맞는 꼴이면 { name, path }, 아니면 null */
+  function noticeRef(decl) {
+    const n = decl && Array.isArray(decl.notice) ? decl.notice : [];
+    return n.indexOf('revised') >= 0 ? lastmodRef(decl.lastmod) : null;
+  }
 
   /* ---------- 공용 팝오버(#pop) 키보드 판정(K5-2, js/app.js 가 DOM 에서 값을 모아 불러요) ----------
      popTabOut: Tab 이 팝오버 밖으로 나가는지. list = 팝오버 안의 포커스 가능한 요소(보이는 순서), active = 지금 포커스,
@@ -338,6 +354,8 @@
     HOME_ROLES: HOME_ROLES, isReturning: isReturning, homeOrder: homeOrder,
     /* K5-3: 특집 화면 날짜(빌드와 앱이 같은 규칙) */
     LASTMOD_RE: LASTMOD_RE, lastmodRef: lastmodRef, isDay: isDay, latestDate: latestDate, pageDate: pageDate,
+    /* K8: 고지 날짜(dated = 선언의 updated, revised = pageDate)와 그리기 전에 받을 자료 */
+    noticeDate: noticeDate, noticeRef: noticeRef,
     /* K5-2: 공용 팝오버 키보드 판정 */
     popTabOut: popTabOut, popLeave: popLeave
   };

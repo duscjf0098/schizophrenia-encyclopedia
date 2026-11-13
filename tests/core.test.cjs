@@ -884,13 +884,15 @@ test('K5-2 app.js: 화면을 바꿀 때(show)는 팝오버를 닫기만 하고 �
   ok(/if \(opts && opts\.nav\) return;\s*\n\s*if \(refocus \|\| inside\) popFocusBack\(a\);/.test(close), 'nav 이면 popFocusBack 앞에서 끝냄');
 });
 
-test('K5-3 app.js: dated 의 lastmod 자료가 멈춰도 화면 전체가 시간 초과로 실패하지 않게 짧게만 기다림', function () {
+test('K5-3·K8 app.js: 고지(revised)의 lastmod 자료가 멈춰도 화면 전체가 시간 초과로 실패하지 않게 짧게만 기다림', function () {
   const src = read('js/app.js');
-  const job = src.slice(src.indexOf('function datedJob('), src.indexOf('function featureNotices('));
+  const job = src.slice(src.indexOf('function noticeJob('), src.indexOf('function featureNotices('));
+  ok(job.length > 0, 'noticeJob 이 있음');
   ok(/Promise\.race\(\[loadData\(ref\.name\)\.catch\(/.test(job), '받기와 기다림 중 먼저 끝나는 쪽');
   ok(/res\(null\)/.test(job), '기다림이 끝나면 null(선언의 updated 로 그림)');
-  const m = /const DATED_WAIT = (\d+);/.exec(src);
+  const m = /const NOTICE_WAIT = (\d+);/.exec(src);
   ok(m && +m[1] > 0 && +m[1] < 10000, '전체 시간 초과(10초)보다 짧음');
+  not(src, 'datedJob', '옛 이름(dated 가 자료를 기다리던 때)이 남지 않음');
 });
 
 test('K5-2 app.js #pop: 닫을 때 포커스가 팝오버 안이었거나 연 요소가 안 보이면 BODY 대신 보이는 곳(본문 제목·#app)으로', function () {

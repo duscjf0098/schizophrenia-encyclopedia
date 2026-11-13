@@ -188,3 +188,16 @@ test('generalItems: 위기 입구는 하단 바에 넣지 않는다(상단 "지�
   const it = MB.generalItems({ guide: {}, me: {} }, '');
   it.forEach(function (x) { not(String(x.href || ''), 'crisis'); not(x.label, '도움'); });
 });
+
+test('바닥 문구의 "번호는 …에 확인한 내용"은 글을 고친 날이 아니라 출처 확인일(reviewed)을 쓴다', function () {
+  eq(NH.footDay({ updated: '2026-11-20', reviewed: '2026-11-14' }), '2026-11-14', '고친 날이 더 뒤여도 확인일');
+  eq(NH.footDay({ updated: '2026-11-20' }), '', '확인일이 없으면 날짜 문구를 붙이지 않는다(고친 날을 확인한 날처럼 말하지 않음)');
+  eq(NH.footDay({ updated: '2026-11-20', reviewed: '' }), '');
+  eq(NH.footDay({ reviewed: 20261114 }), '', '글자가 아니면 쓰지 않는다');
+  eq(NH.footDay(null), '');
+  /* 실제 자료: 위기 상담 전화 글에는 출처 확인일이 있어야 시트 바닥에 날짜가 보인다 */
+  const art = toc.articles.filter(function (a) { return a.slug === 'crisis-hotlines'; })[0];
+  ok(art && /^\d{4}-\d{2}-\d{2}$/.test(String(art.reviewed)), 'crisis-hotlines 글에 reviewed(출처 확인일)가 있어야 해요');
+  eq(NH.footDay(art), art.reviewed);
+  has(md.noticeHtml('dated', NH.footDay(art)), '확인한 내용');
+});

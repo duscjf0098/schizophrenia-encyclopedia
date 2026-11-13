@@ -7,10 +7,11 @@
   "group": "지식",
   "order": 20,
   "nav": ["side", "palette"],
-  "keywords": ["바로 연락할 신호", "응급 신호", "위험 신호", "119", "부작용 응급", "악성 증후군", "심근염", "경련", "열사병", "저나트륨", "물 중독", "변비", "냉장고", "인쇄"],
+  "keywords": ["바로 연락할 신호", "응급 신호", "위험 신호", "119", "부작용 응급", "악성 증후군", "심근염", "경련", "과량 복용", "약을 많이 먹었을 때", "열사병", "저나트륨", "물 중독", "변비", "냉장고", "인쇄"],
   "data": ["red-flags"],
   "robots": "index",
   "crisisLine": true,
-  "notice": ["general", "emergency"],
-  "updated": "2026-11-14"
+  "notice": ["general", "emergency", "revised"],
+  "updated": "2026-11-14",
+  "lastmod": "kb:red-flags:source.updated"
 }

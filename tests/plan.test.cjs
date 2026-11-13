@@ -4,7 +4,7 @@
    - 금지 칸(이름·주민번호·주소·계좌·용량 등)과 미리 채운 값이 없는지, WRAP·사전 의향서 같은 이름이 없는지
    - 저장 함수(js/pages/plan.js 의 lib): 기본 저장 안 함, 켜기(기록 쉼이면 거절)·저장·끄기·전부 지우기, 깨진 값 거르기
    - 떠날 때 확인할 링크 고르기(전화 링크·같은 화면 조각·새 창은 막지 않음)
-   - 소스 금지: fetch(·XMLHttpRequest·speechSynthesis·sendBeacon·location.search·pushState·innerHTML·위기어 검사 */
+   - 소스 금지: fetch(·XMLHttpRequest·speechSynthesis·sendBeacon·pushState·innerHTML·위기어 검사(location.search 는 조각을 걷을 때 주소를 그대로 두는 한 곳만) */
 const fs = require('fs');
 const path = require('path');
 const ROOT = path.join(__dirname, '..');
@@ -159,7 +159,10 @@ test('양식 자료에 WRAP·사전 의향서·사전 진술 이름, 점수·판
 });
 test('소스 금지: 바깥 요청·음성·공유·쿼리 주소·innerHTML·위기어 검사 없음, 저장 키는 jhb.ui.plan.keep·data', function () {
   const src = read('js/pages/plan.js');
-  ['fetch(', 'XMLHttpRequest', 'speechSynthesis', 'sendBeacon', 'navigator.share', 'location.search', 'pushState', 'innerHTML', 'JHB.crisis', 'WebSocket', 'importScripts'].forEach(function (w) { not(src, w, '소스'); });
+  ['fetch(', 'XMLHttpRequest', 'speechSynthesis', 'sendBeacon', 'navigator.share', 'pushState', 'innerHTML', 'JHB.crisis', 'WebSocket', 'importScripts'].forEach(function (w) { not(src, w, '소스'); });
+  /* 쿼리는 읽지 않아요: location.search 는 조각을 걷을 때 주소를 그대로 두는 한 곳(replaceState 의 주소)에만 */
+  eq(src.split('location.search').length - 1, 1, 'location.search 는 한 곳');
+  has(src, "history.replaceState(withForm(history.state, cur), '', location.pathname + location.search)");
   eq(lib.KEYS, { keep: 'jhb.ui.plan.keep', data: 'jhb.ui.plan.data' });
   has(src, "privacy.register({ id: 'plan'", '기록 종류 등록');
   /* K5-1: 코어(js/app.js BASE_KINDS)가 모든 화면에서 같은 값으로 등록. 이 화면의 등록은 같은 값(덮어써도 그대로) */
@@ -320,6 +323,30 @@ test('formFromHash: #<양식 id> 만 받고 나머지는 첫 양식', function (
   eq(lib.formFromHash('#/a/x', FORMS), 'relapse-plan');
   eq(lib.formFromHash('#__proto__', FORMS), 'relapse-plan');
   eq(lib.fragment('safety-card'), '#safety-card');
+  /* 옛 해시 주소를 머리 스크립트가 옮기며 붙이는 끝 '/' 하나는 봐줘요(그래도 양식을 고르고 조각을 걷게) */
+  eq(lib.formFromHash('#safety-card/', FORMS), 'safety-card');
+  eq(lib.formFromHash('#safety-card//', FORMS), 'relapse-plan');
+});
+test('namedForm: 조각이 양식 id 일 때만 그 id, 아니면 ""(#app 같은 화면 안 자리는 양식이 아님)', function () {
+  eq(lib.namedForm('#safety-card', FORMS), 'safety-card');
+  eq(lib.namedForm('#safety-card/', FORMS), 'safety-card');
+  eq(lib.namedForm('#app', FORMS), '');
+  eq(lib.namedForm('', FORMS), '');
+  eq(lib.namedForm('#', FORMS), '');
+  eq(lib.namedForm('#bogus', FORMS), '');
+});
+test('stateForm·withForm: 고른 양식은 기록 state(planForm)에. 다른 값은 지키고, 모르는 값은 무시', function () {
+  eq(lib.stateForm({ planForm: 'safety-card' }, FORMS), 'safety-card');
+  eq(lib.stateForm({ planForm: 'bogus' }, FORMS), '');
+  eq(lib.stateForm({ planForm: '__proto__' }, FORMS), '');
+  eq(lib.stateForm({ planForm: 7 }, FORMS), '');
+  eq(lib.stateForm(null, FORMS), '');
+  eq(lib.stateForm('safety-card', FORMS), '');
+  eq(lib.withForm(null, 'my-info'), { planForm: 'my-info' });
+  eq(lib.withForm({ nh: 1, planForm: 'x' }, 'my-info'), { nh: 1, planForm: 'my-info' }, '"지금 도움" 시트의 nh 는 그대로');
+  eq(lib.withForm('str', 'my-info'), { planForm: 'my-info' });
+  eq(lib.withForm([1], 'my-info'), { planForm: 'my-info' });
+  const st = { nh: 1 }; lib.withForm(st, 'my-info'); eq(st, { nh: 1 }, '받은 state 를 바꾸지 않음');
 });
 
 /* ---------- 떠날 때 확인할 링크 ---------- */
@@ -454,7 +481,40 @@ test('짧은 카드(안전 계획 카드) 종이에는 카드 안에도 일반 �
 test('양식을 바꿀 때 주소에 양식 이름을 새로 남기지 않는다(들어올 때의 조각만 읽음)', function () {
   const src = read('js/pages/plan.js');
   not(src, "location.pathname + fragment(id)");
-  has(src, "history.replaceState(history.state, '', location.pathname)");
+  has(src, "history.replaceState(withForm(history.state, cur), '', location.pathname + location.search)");
+});
+/* K8-2: 글의 링크(#/plan#safety-card → plan/#safety-card)로 들어와도 양식을 고른 뒤 조각을 걷어요.
+   탭을 바꿀 때와 같은 규칙(한 함수 dropHash): replaceState 로 지금 state 를 지키고 방문 기록을 늘리지 않음 */
+test('처음 그릴 때도 양식을 고른 뒤 주소의 조각을 걷는다(탭을 바꿀 때와 같은 함수, 방문 기록을 늘리지 않음)', function () {
+  const src = read('js/pages/plan.js');
+  const body = src.slice(src.indexOf('function render('));
+  const fn = body.slice(body.indexOf('function dropHash('), body.indexOf('}', body.indexOf('function dropHash(')) + 1);
+  ok(fn.length > 20, 'dropHash 가 render 안에 있음');
+  has(fn, 'if (!location.hash && stateForm(history.state, forms) === cur) return;', '조각이 없고 state 가 이미 같으면 아무것도 하지 않음(쓸데없는 replaceState 없음)');
+  has(fn, "history.replaceState(withForm(history.state, cur), '', location.pathname + location.search)", '지금 state 를 지키며 양식을 state 에 두고 조각만 걷음(쿼리는 그대로)');
+  /* 처음: 조각이 양식 id 일 때만 그 양식을 고르고 걷음. 아니면 state 의 양식(새로 고침·뒤로·앞으로) → 첫 양식. 양식이 아닌 조각은 그대로 */
+  has(body, 'var named = namedForm(location.hash, forms);');
+  has(body, 'var cur = named || stateForm(history.state, forms) || ids[0];');
+  ok(/var cur = named \|\| stateForm\(history\.state, forms\) \|\| ids\[0\];\s*\n\s*if \(named\) dropHash\(\);/.test(body), '고른 바로 뒤, 양식 조각일 때만 dropHash()');
+  /* 탭을 바꿀 때도 같은 함수 */
+  const sel = body.slice(body.indexOf('function select('), body.indexOf('function onSwitch('));
+  has(sel, 'dropHash()', '탭을 바꿀 때도 같은 함수');
+  not(sel, 'hash !== false', '조각을 남기는 길이 없음');
+  /* 이미 이 화면에서 조각만 #양식 id 로 바뀔 때(hashchange)도 양식을 고르고 걷음. 양식 id 가 아닌 조각(#app 등)은 그대로 */
+  const oh = body.slice(body.indexOf('function onHash('), body.indexOf('function onStorage('));
+  has(oh, 'var id = namedForm(location.hash, forms);');
+  has(oh, 'if (!id) return;', '양식 id 가 아닌 조각은 건드리지 않음');
+  has(oh, 'if (id !== cur) select(id); else dropHash();');
+  not(oh, 'hash: false');
+  /* 같은 문서 안의 뒤로·앞으로: 그 기록의 state 에 둔 양식으로 */
+  const op = body.slice(body.indexOf('function onPop('), body.indexOf('function onStorage('));
+  has(op, 'var id = stateForm(history.state, forms);');
+  has(op, 'if (id && id !== cur) select(id);');
+  has(body, "root.addEventListener('popstate', onPop);");
+  has(body, "root.removeEventListener('popstate', onPop);", '화면을 떠날 때 풀기');
+  eq((body.match(/history\.replaceState\(/g) || []).length, 1, 'replaceState 는 한 곳');
+  not(src, 'pushState', '방문 기록을 늘리지 않음');
+  ok(!/location\.hash\s*=(?!=)/.test(src), '조각을 새로 쓰지 않음(대입 없음)');
 });
 test('저장 상자 문구: 기본은 저장하지 않는다는 말과 기기 고지를 이어 준다, 띠는 저장 상자 밖에서 붙어 따라온다', function () {
   const src = read('js/pages/plan.js'), css = read('css/pages/plan.css');

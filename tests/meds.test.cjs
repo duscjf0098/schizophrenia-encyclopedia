@@ -126,6 +126,40 @@ test('meds 생성기: 틀린 약 카드는 이유와 함께 실패', function ()
   throwsWith(function () { gen.entryFrom(sample(), 'Bad Slug'); }, 'slug');
   throwsWith(function () { gen.buildFrom([{ slug: 'a', text: sample({ noCard: true }) }]); }, '하나도 없어요');
 });
+/* 규칙 표본(K9): 생성기가 쓰는 넣지 않는 말 목록(검사기 tools/checks/drug-card.cjs 와 같은 것)으로 견본 글의 약 카드를 돌려요.
+   검사기와 판정이 같은지는 tests/checks.test.cjs 의 표본 맞대기가 봐요 */
+test('meds 생성기 규칙 표본: 한글 수 낱알·주·달 간격·끊어도 된다는 다른 꼴은 멈추고, 검사 간격·최고 혈중 농도·이런 분류·부정은 통과', function () {
+  [
+    ['한 알씩 먹어요.', '복용 횟수'], ['두세 알을 먹기도 해요.', '복용 횟수'], ['반 알로 시작해요.', '복용 횟수'],
+    ['일주일에 한 번 맞아요.', '복용 횟수'], ['1주일에 1회 맞아요.', '복용 횟수'], ['격주로 맞는 주사가 있어요.', '복용 횟수'], ['달마다 맞는 주사예요.', '복용 횟수'],
+    ['복용을 멈춰도 돼요.', '끊어도 된다는 말'], ['좋아지면 먹지 않아도 돼요.', '끊어도 된다는 말'], ['이제 그만 복용해도 돼요.', '끊어도 된다는 말'],
+    ['나아지면 끊으셔도 돼요.', '끊어도 된다는 말'], ['졸리면 안 드셔도 괜찮아요.', '끊어도 된다는 말'],
+    ['이런 분께 맞아요.', '권하는 말'], ['가장 좋은 약이에요.', '권하는 말'],
+    /* K9 검수: 앞쪽의 체중·혈당·혈압·진료·수치·혈액 같은 낱말로 복용 횟수·간격을 빼 주지 않아요 */
+    ['체중이 늘면 하루 한 번으로 줄여요.', '복용 횟수'], ['혈당이 오르면 하루 2회로 바꿔요.', '복용 횟수'], ['진료 때 의사가 하루 1번으로 정해요.', '복용 횟수'],
+    ['혈압이 낮으면 저녁에 한 번만 드려요.', '복용 횟수'], ['체중 증가가 흔해서 하루 1회 저녁에.', '복용 횟수'], ['진료를 보며 4주마다 늘려 가요.', '복용 횟수'],
+    ['수치가 안정되면 2주 간격으로 바꿔요.', '복용 횟수'], ['혈액 검사 결과에 따라 한 달에 한 번으로 바꿔요.', '복용 횟수'],
+    ['진료는 한 달에 한 번, 주사도 그때 맞아요.', '복용 횟수'], ['혈액 검사를 하고 하루 세 번', '복용 횟수'], ['체중을 보며 3개월 간격으로 조절해요.', '복용 횟수'],
+    ['혈압이 낮으면 하루 1회로 바꿔요.', '복용 횟수'], ['혈당이 높으면 2주마다 한 번이면 돼요.', '복용 횟수'], ['혈액 검사는 매주, 약은 하루 1번이에요.', '복용 횟수'],
+    ['이틀에 한 번 먹어요.', '복용 횟수'], ['하루 걸러 먹어요.', '복용 횟수'], ['매달 맞아요.', '복용 횟수']
+  ].forEach(function (p) {
+    throwsWith(function () { gen.entryFrom(sample({ rows: { '꼭 알아둘 것': p[0] + '[^1]' } }), 'samplezapine'); }, p[1]);
+  });
+  [
+    '3개월마다 검사해요.', '6개월마다 혈당과 지질을 확인해요.', '처음 18주는 매주 혈액 검사를 해요.', '최고 혈중 농도에 이르는 데 몇 시간 걸려요.',
+    '이런 분류의 약은 졸림이 흔해요.', '좋아져도 스스로 끊어도 된다는 뜻은 아니에요.', '좋아져도 먹지 않아도 되는 것은 아니에요.', '끊어도 되는지는 담당 의사와 상의해요.',
+    /* K9 검수: 검사하는 동작이 뒤에 있거나 검사가 간격의 주어면 통과 */
+    '혈액 검사는 3개월마다 해요.', '1년에 한 번 심전도를 찍어요.', '매달 검사해요.', '이틀에 한 번 체중을 재요.'
+  ].forEach(function (s) {
+    const e = gen.entryFrom(sample({ rows: { '꼭 알아둘 것': s + '[^1]' } }), 'samplezapine');
+    eq(e.rows[8].text, s, '통과하고 칸 글자는 그대로: ' + s);
+  });
+  /* 약 카드처럼 보이는데 제목·수준이 다른 글은 생성기가 예외 없이 건너뛰어요(null) — 그래서 검사기가 07 폴더에서는 오류로 알려요 */
+  ['### 약 카드', '## 약 정보 카드', '## 약카드'].forEach(function (h) {
+    eq(gen.entryFrom(sample().replace('## 약 카드\n', h + '\n'), 'samplezapine'), null, h);
+    ok(card.nearCards(md.parse(sample().replace('## 약 카드\n', h + '\n')).body).length > 0, '검사기는 알아봐요: ' + h);
+  });
+});
 test('meds 생성기: 가나다순, 같은 입력이면 같은 출력', function () {
   const files = [
     { slug: 'zz', text: sample({ title: '할로견본' }) },
@@ -179,9 +213,16 @@ test('meds 자료: 칸 길이 상한 안(가로 넘침 막기)', function () {
   DATA.forEach(function (e) { e.rows.forEach(function (r) { eq(gen.tooLong(r.key, r.text), '', e.slug + ' ' + r.name); }); });
   eq(gen.tooLong('weight', '적은 편~중간 (자료마다 달라요, 외국 허가사항에 QT 경고)'), '');
 });
-test('meds 선언: 고지 날짜(updated)가 약 글의 가장 최근 고친 날보다 앞서지 않는다', function () {
+/* K8: 표는 약 글 12편에서 모은 것이라 사람이 표 전체를 한날 확인했다고 말할 수 없어요(출처 확인일이 없는 글도 있음).
+   그래서 "○○에 확인한 내용"(dated) 대신 "○○에 마지막으로 고쳤어요"(revised) — 날짜는 약 글의 가장 최근 고친 날(자료) */
+test('meds 선언: 고지는 "마지막으로 고쳤어요"(revised)이고 날짜는 약 글의 가장 최근 고친 날, "확인한 내용"(dated)은 쓰지 않는다', function () {
   const latest = DATA.map(function (e) { return e.updated; }).sort().pop();
-  ok(DECL.updated >= latest, 'data/pages/meds.json 의 updated(' + DECL.updated + ')가 약 글의 가장 최근 고친 날(' + latest + ')보다 앞서요. 화면 고지 "○○에 확인한 내용"이 옛 날짜로 남으니 약 카드를 다시 확인하고 updated 를 고쳐요');
+  ok(DECL.notice.indexOf('revised') >= 0, 'revised 고지');
+  ok(DECL.notice.indexOf('dated') < 0, '표 전체를 확인한 날처럼 보이는 dated 를 쓰지 않음');
+  eq(DECL.lastmod, 'kb:meds:updated', '날짜는 자료(약 글의 updated)에서');
+  const n = A.normalizeDecl(DECL, { root: ROOT });
+  eq(A.resolveNoticeDate(n, 'revised', { root: ROOT }), latest, '고지 날짜 = 약 글의 가장 최근 고친 날');
+  eq(A.resolveLastmod(n, { root: ROOT }), latest, '사이트맵 날짜도 같은 날');
 });
 test('meds 자료: 칸 글자가 글의 약 카드 표와 같다(각주 표시만 뺌)', function () {
   DATA.forEach(function (e) {
@@ -438,7 +479,7 @@ test('meds 선언: 지시서 P5 그대로, 검사 통과', function () {
   eq(DECL.group, '지식');
   eq(DECL.nav, ['side', 'home', 'palette']);
   eq(DECL.robots, 'index');
-  eq(DECL.notice, ['general', 'dated']);
+  eq(DECL.notice, ['general', 'revised']);
   eq(DECL.data, ['meds']);
   eq(DECL.crisisLine, true);
   const r = A.validateDecl(DECL, 'meds', { root: ROOT });

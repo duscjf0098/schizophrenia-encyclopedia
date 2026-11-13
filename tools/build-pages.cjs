@@ -111,10 +111,11 @@ function staticCtx(d, data) {
 /* 사이트맵 날짜: 선언의 lastmod("kb:<자료>:<날짜 경로>") → updated → 오늘 */
 function featureLastmod(d, today) { return A.resolveLastmod(d, { root: root }) || today; }
 /* 고지 줄: 앱(js/app.js 의 featureNotices)과 같은 순서·문구 — 선언의 notice 종류마다 한 줄, 그리고 위기 줄(한 번만. crisisLine 이 맡음).
-   "○○에 확인한 내용"(dated)의 날짜는 사이트맵과 같은 규칙(resolveLastmod: lastmod 자료 날짜 → updated). 앱은 js/progress.js 의 같은 pageDate 로 그려요 */
+   고지 날짜는 앱과 같은 js/progress.js 의 noticeDate(A.resolveNoticeDate, K8): "○○에 확인한 내용"(dated)은 선언의 updated,
+   "○○에 마지막으로 고쳤어요"(revised)는 사이트맵과 같은 날(resolveLastmod: lastmod 자료 날짜 → updated) */
 function featureNoticesHtml(d) {
   const kinds = ['general'].concat((d.notice || []).filter(function (k) { return k !== 'general' && k !== 'crisis'; }));
-  return '<div class="fp-notices">' + kinds.map(function (k) { return md.noticeHtml(k, k === 'dated' ? A.resolveLastmod(d, { root: root }) : undefined); }).join('') +
+  return '<div class="fp-notices">' + kinds.map(function (k) { return md.noticeHtml(k, A.resolveNoticeDate(d, k, { root: root })); }).join('') +
     (d.crisisLine !== false ? md.noticeHtml('crisis') : '') + '</div>';
 }
 /* 읽기 코스 머리 문장: 앱(js/app.js 의 coursesPage)과 같은 글자(앱이 다시 그릴 때 문장이 바뀌지 않게). 코스 수는 설명(coursesDesc)에만 */

@@ -153,3 +153,75 @@ test('K5-3 실제 자료: meds 의 사이트맵 날짜는 약 글 최신 updated
   const rf = JSON.parse(A.stripBom(fs.readFileSync(path.join(root, 'data/kb/red-flags.json'), 'utf8')));
   eq(A.kbLastmod('red-flags', 'source.updated', { root: root }), { date: rf.source.updated });
 });
+
+/* ---------- K8 고지 날짜: dated = 선언의 updated(사람이 원천과 대조해 확인한 날), revised = 자료에서 구한 마지막으로 고친 날(사이트맵과 같은 날) ---------- */
+test('K8 noticeDate: dated 는 lastmod 를 따르지 않고 선언의 updated, revised 는 pageDate(사이트맵과 같은 날)', function () {
+  const d = { notice: ['general', 'dated', 'revised'], lastmod: 'kb:meds:updated', updated: '2026-11-01' };
+  const data = [{ updated: '2026-11-10' }, { updated: '2026-11-12' }];
+  eq(PR.noticeDate('dated', d, data), '2026-11-01', 'dated: 자료가 더 최근이어도 선언의 updated');
+  eq(PR.noticeDate('revised', d, data), '2026-11-12', 'revised: 자료에서 구한 가장 최근 날');
+  eq(PR.noticeDate('revised', d, data), PR.pageDate(d, data), 'revised = 사이트맵 날짜 규칙');
+  eq(PR.noticeDate('revised', d, undefined), '2026-11-01', '자료를 아직 못 받았으면 updated');
+  eq(PR.noticeDate('revised', d, [{ updated: 'x' }]), '2026-11-01', '자료에 날짜가 없으면 updated');
+  eq(PR.noticeDate('revised', { updated: '2026-11-03' }, data), '2026-11-03', 'lastmod 가 없으면 updated');
+  eq(PR.noticeDate('revised', { lastmod: 'kb:meds:updated' }, data), '2026-11-12', 'updated 없이 lastmod 만');
+  eq(PR.noticeDate('revised', { lastmod: 'kb:meds:updated' }, undefined), '', '둘 다 없으면 빈 글자(고지가 빠짐)');
+  eq(PR.noticeDate('dated', { lastmod: 'kb:meds:updated' }, data), '', 'dated 는 자료 날짜로 채우지 않음');
+  ['general', 'crisis', 'emergency', 'device', 'nope', undefined].forEach(function (k) { eq(PR.noticeDate(k, d, data), '', String(k)); });
+  eq(PR.noticeDate('dated', null, data), '');
+  eq(PR.noticeDate('revised', null, data), '');
+});
+
+test('K8 noticeRef: 그리기 전에 받을 자료는 고지에 revised 가 있고 lastmod 가 있을 때만', function () {
+  eq(PR.noticeRef({ notice: ['general', 'revised'], lastmod: 'kb:meds:updated' }), { name: 'meds', path: 'updated' });
+  eq(PR.noticeRef({ notice: ['general', 'emergency', 'revised'], lastmod: 'kb:red-flags:source.updated' }), { name: 'red-flags', path: 'source.updated' });
+  eq(PR.noticeRef({ notice: ['general', 'dated'], lastmod: 'kb:meds:updated' }), null, 'dated 는 자료를 기다리지 않음');
+  eq(PR.noticeRef({ notice: ['general'], lastmod: 'kb:changes:date' }), null, '사이트맵만 쓰는 lastmod');
+  eq(PR.noticeRef({ notice: ['general', 'revised'], updated: '2026-11-14' }), null, 'lastmod 가 없으면 받을 것 없음');
+  eq(PR.noticeRef({ notice: ['revised'], lastmod: 'bad' }), null);
+  eq(PR.noticeRef({ lastmod: 'kb:meds:updated' }), null);
+  eq(PR.noticeRef(null), null);
+});
+
+test('K8 고지 종류 목록: 빌드 검사(assets)와 문구(md)가 같은 종류를 안다', function () {
+  const md = require('../js/md.js');
+  eq(A.NOTICE_KINDS.slice().sort(), md.NOTICE_KINDS.slice().sort());
+  ok(A.NOTICE_KINDS.indexOf('revised') >= 0);
+});
+
+test('K8 assets.resolveNoticeDate: 빌드도 같은 규칙(dated = updated, revised = resolveLastmod)', function () {
+  const tmp = kbRoot({ log: JSON.stringify([{ date: '2026-10-25' }, { date: '2026-11-12' }]), broken: '[{' });
+  try {
+    const o = { root: tmp };
+    const both = A.normalizeDecl({ id: 'guide', title: 't', summary: 's', group: '안내', notice: ['dated', 'revised'], lastmod: 'kb:log:date', updated: '2026-11-01' }, o);
+    eq(A.resolveNoticeDate(both, 'dated', o), '2026-11-01', 'dated 는 선언의 updated');
+    eq(A.resolveNoticeDate(both, 'revised', o), '2026-11-12', 'revised 는 자료 날짜');
+    eq(A.resolveNoticeDate(both, 'revised', o), A.resolveLastmod(both, o), 'revised = 사이트맵 날짜');
+    eq(A.resolveNoticeDate(both, 'general', o), '');
+    const gone = A.normalizeDecl({ id: 'guide', title: 't', summary: 's', group: '안내', notice: ['revised'], lastmod: 'kb:nope:date', updated: '2026-11-01' }, o);
+    eq(A.resolveNoticeDate(gone, 'revised', o), '2026-11-01', '자료가 없으면 updated');
+    const bad = A.normalizeDecl({ id: 'guide', title: 't', summary: 's', group: '안내', notice: ['revised'], lastmod: 'kb:broken:date', updated: '2026-11-02' }, o);
+    eq(A.resolveNoticeDate(bad, 'revised', o), '2026-11-02', '깨진 자료면 updated');
+  } finally { fs.rmSync(tmp, { recursive: true, force: true }); }
+});
+
+test('K8 실제 선언: meds·red-flags 는 revised(자료 날짜), guide 는 dated(선언의 updated), 사이트맵 날짜는 그대로', function () {
+  const root = path.join(__dirname, '..'), o = { root: root };
+  function decl(id) { return A.normalizeDecl(JSON.parse(A.stripBom(fs.readFileSync(path.join(root, 'data/pages/' + id + '.json'), 'utf8'))), o); }
+  const meds = decl('meds'), rf = decl('red-flags'), guide = decl('guide');
+  eq(meds.notice, ['general', 'revised']);
+  eq(rf.notice, ['general', 'emergency', 'revised']);
+  eq(guide.notice, ['general', 'dated']);
+  const medsData = JSON.parse(A.stripBom(fs.readFileSync(path.join(root, 'data/kb/meds.json'), 'utf8')));
+  eq(A.resolveNoticeDate(meds, 'revised', o), medsData.map(function (m) { return m.updated; }).sort().pop(), 'meds: 약 글의 가장 최근 고친 날');
+  const rfData = JSON.parse(A.stripBom(fs.readFileSync(path.join(root, 'data/kb/red-flags.json'), 'utf8')));
+  eq(rf.lastmod, 'kb:red-flags:source.updated');
+  eq(A.resolveNoticeDate(rf, 'revised', o), rfData.source.updated, 'red-flags: 원천 글의 표가 고쳐진 날');
+  eq(A.resolveLastmod(rf, o), rfData.source.updated, '사이트맵도 원천 글의 날짜');
+  eq(A.resolveNoticeDate(guide, 'dated', o), guide.updated, 'guide: 연락처를 확인한 날(선언)');
+  /* 사이트맵 날짜 규칙은 바뀌지 않음: lastmod → updated */
+  ['meds', 'red-flags', 'guide', 'changes'].forEach(function (id) {
+    const d = decl(id);
+    eq(A.resolveLastmod(d, o), PR.pageDate(d, d.lastmod ? JSON.parse(A.stripBom(fs.readFileSync(path.join(root, 'data/kb/' + PR.lastmodRef(d.lastmod).name + '.json'), 'utf8'))) : undefined), id);
+  });
+});

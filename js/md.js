@@ -287,9 +287,12 @@
     crisis: function () { return '힘든 생각이 들면 자살예방상담 ' + telA('109') + ', 정신건강위기상담 ' + telA('1577-0199') + '에 24시간 전화할 수 있어요. ' + SMS_LINE + ' 당장 위험하면 ' + telA('119') + '에 전화하세요.'; },
     emergency: function () { return '<strong>몸의 응급 신호가 보이면</strong> ' + telA('119') + '에 전화하거나 응급실로 가세요. 약 때문인지 헷갈려도 먼저 연락하는 게 안전해요.'; },
     device: function () { return '이 기기의 브라우저에만 저장돼요. 어디로도 보내지 않아요. 같은 기기를 쓰는 사람이 볼 수 있어요.'; },
-    dated: function (arg) { const d = fmtDay(arg); return d ? d + '에 확인한 내용이에요. 그 뒤에 바뀌었을 수 있어요.' : ''; }
+    /* dated: 사람이 화면 내용을 원천과 대조해 확인한 날(특집 화면은 선언의 updated). revised: 자료에서 구한 마지막으로 고친 날(K8).
+       고친 날을 "확인한 내용"이라고 하지 않아요(글 하나만 고쳐도 표 전체를 그날 확인한 것처럼 보이지 않게) */
+    dated: function (arg) { const d = fmtDay(arg); return d ? d + '에 확인한 내용이에요. 그 뒤에 바뀌었을 수 있어요.' : ''; },
+    revised: function (arg) { const d = fmtDay(arg); return d ? d + '에 마지막으로 고쳤어요. 그 뒤에 바뀌었을 수 있어요.' : ''; }
   };
-  /* 공용 고지 한 줄. kind: general | crisis | emergency | device | dated(arg = 'YYYY-MM-DD'). 모르는 종류거나 날짜가 없으면 '' */
+  /* 공용 고지 한 줄. kind: general | crisis | emergency | device | dated·revised(arg = 'YYYY-MM-DD'). 모르는 종류거나 날짜가 없으면 '' */
   function noticeHtml(kind, arg) {
     const f = Object.prototype.hasOwnProperty.call(NOTICE, kind) ? NOTICE[kind] : null;
     const body = f ? f(arg) : '';

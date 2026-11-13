@@ -100,8 +100,8 @@
   .pg-red-flags-call { min-width: 0; min-height: 0; padding: 0; background: none; color: var(--ink); font-size: 26pt; }
   .pg-red-flags-ico { width: 20pt; height: 20pt; }
   .pg-red-flags-wrap { margin-top: 3mm; }
-  /* 줄 간격 1.35·칸 위아래 1.2mm: 신호가 10줄(과량 복용 줄을 더함)이 되어도 A4·US Letter 한 장에 여유 있게(글자 9.5pt 는 그대로) */
-  .pg-red-flags-table { font-size: 9.5pt; line-height: 1.35; }
+  /* 줄 간격 1.3·칸 위아래 1.2mm: 신호가 10줄(과량 복용 줄을 더함)이고 고지가 한 줄 늘어도(마지막으로 고친 날) A4·US Letter 한 장에 여유 있게(글자 9.5pt 는 그대로) */
+  .pg-red-flags-table { font-size: 9.5pt; line-height: 1.3; }
   .pg-red-flags-table th { padding: 1.2mm 2.5mm 1.2mm 0; border-bottom: 1pt solid var(--ink); font-size: 9pt; color: var(--ink); }
   .pg-red-flags-table td { padding: 1.2mm 2.5mm 1.2mm 0; border-bottom: .5pt solid var(--rule-2); }
   .pg-red-flags-table td.pg-red-flags-act { padding-left: 2mm; border-left-width: 1.5pt; color: var(--ink); }
@@ -116,8 +116,8 @@
   .pg-red-flags-tools, .pg-red-flags-src { display: none; }
   .pg-red-flags-from { max-width: none; margin: 1.5mm 0 0; font-size: 8pt; line-height: 1.4; }
   .pg-red-flags-prt { display: block; margin: 1mm 0 0; font-size: 8pt; line-height: 1.4; color: var(--muted); overflow-wrap: anywhere; }
-  #app:has(> .fp-body[data-page="red-flags"]) > .fp-notices { max-width: none; margin-top: 3mm; gap: 1.2mm; }
-  #app:has(> .fp-body[data-page="red-flags"]) > .fp-notices > .notice { padding: 1.4mm 3mm; font-size: 8pt; line-height: 1.42; }
+  #app:has(> .fp-body[data-page="red-flags"]) > .fp-notices { max-width: none; margin-top: 3mm; gap: 1mm; }
+  #app:has(> .fp-body[data-page="red-flags"]) > .fp-notices > .notice { padding: 1mm 3mm; font-size: 8pt; line-height: 1.42; }
   /* 위기 줄(109·1577-0199·119)은 냉장고에서 멀리서도 읽히게 크게, 번호는 굵게 */
   #app:has(> .fp-body[data-page="red-flags"]) > .fp-notices > .notice-crisis { font-size: 10.5pt; line-height: 1.4; color: var(--ink); }
   #app:has(> .fp-body[data-page="red-flags"]) > .fp-notices > .notice-crisis a { font-weight: 800; }

@@ -130,14 +130,34 @@
   function clearAll(store) { store.remove(KEYS.data); store.remove(KEYS.keep); }
   function disable(store) { clearAll(store); }
 
-  /* 조각(#)에는 양식 id 만. 모르는 값이면 첫 양식 */
-  function formFromHash(hash, forms) {
+  /* 조각이 양식 id 를 가리키면 그 id, 아니면 ''. 끝의 '/' 하나는 봐줘요(옛 해시 주소 #/plan#safety-card 를
+     머리 스크립트가 plan/#safety-card/ 로 옮기는 경우. 그래도 양식을 고르고 조각을 걷게) */
+  function namedForm(hash, forms) {
     var h = String(hash || '');
     if (h.charAt(0) === '#') h = h.slice(1);
+    if (h.charAt(h.length - 1) === '/') h = h.slice(0, -1);
     var ids = formList(forms).map(function (f) { return f.id; });
-    return h && /^[a-z][a-z0-9-]*$/.test(h) && ids.indexOf(h) >= 0 ? h : (ids[0] || '');
+    return h && /^[a-z][a-z0-9-]*$/.test(h) && ids.indexOf(h) >= 0 ? h : '';
+  }
+  /* 조각(#)에는 양식 id 만. 모르는 값이면 첫 양식 */
+  function formFromHash(hash, forms) {
+    var ids = formList(forms).map(function (f) { return f.id; });
+    return namedForm(hash, forms) || (ids[0] || '');
   }
   function fragment(id) { return '#' + id; }
+  /* 이 탭의 기록 state 에 둔 양식 id(planForm). 모르는 값·state 가 객체가 아니면 '' */
+  function stateForm(st, forms) {
+    var id = st && typeof st === 'object' && typeof st.planForm === 'string' ? st.planForm : '';
+    var ids = formList(forms).map(function (f) { return f.id; });
+    return id && ids.indexOf(id) >= 0 ? id : '';
+  }
+  /* 고른 양식을 state 에 더한 새 state(다른 값은 그대로: "지금 도움" 시트의 nh 등). 객체가 아닌 state 는 새 객체로 */
+  function withForm(st, id) {
+    var next = {}, k;
+    if (st && typeof st === 'object' && !Array.isArray(st)) for (k in st) if (Object.prototype.hasOwnProperty.call(st, k)) next[k] = st[k];
+    next.planForm = id;
+    return next;
+  }
 
   /* 링크를 눌렀을 때 떠나기 전에 확인할지: 'guard' 확인, 'tel' 전화·문자(막지 않고 떠날 때 확인도 건너뜀), 'pass' 그대로 */
   function leaveKind(o) {
@@ -238,7 +258,7 @@
     TELS_CHECKED: TELS_CHECKED, TELS_SOURCES: TELS_SOURCES, TEL_SKIP_MS: TEL_SKIP_MS, GO_SKIP_MS: GO_SKIP_MS,
     normText: normText, clean: clean, sig: sig, hasInput: hasInput, isDirty: isDirty,
     load: load, tidy: tidy, save: save, enable: enable, disable: disable, clearAll: clearAll,
-    formFromHash: formFromHash, fragment: fragment, leaveKind: leaveKind, clickKind: clickKind, skipGate: skipGate,
+    formFromHash: formFromHash, namedForm: namedForm, stateForm: stateForm, withForm: withForm, fragment: fragment, leaveKind: leaveKind, clickKind: clickKind, skipGate: skipGate,
     formSig: formSig, merge: merge, tabLabel: tabLabel, titleOf: titleOf,
     sheet: sheet, fmtDay: fmtDay, fmtSaved: fmtSaved
   };
@@ -286,7 +306,18 @@
     var values = JSON.parse(JSON.stringify(first.values));  /* 화면에 적은 것(메모리에만. 저장은 버튼으로) */
     /* base: 이 탭이 마지막으로 맞춘 저장값(켜짐일 때). 다른 탭과 양식 단위로 합칠 때 써요 */
     var keep = first.keep, base = keep ? clean(first.values, forms) : {}, savedSig = keep ? sig(base, forms) : '', savedAt = first.at;
-    var cur = formFromHash(location.hash, forms);
+    /* 고른 양식은 주소가 아니라 이 탭의 기록 state(planForm)에 둬요: 주소창과 이 탭의 뒤로 가기 목록에 양식 이름
+       ("안전 계획 카드")이 남지 않고, 새로 고침·뒤로·앞으로 와도 같은 양식이 열려요. 남은 조각도 함께 걷어요(경로·쿼리는 그대로).
+       새 기록을 쌓지 않게 replaceState, 지금 state 의 다른 값은 그대로. 탭을 바꿀 때(select)·처음 그릴 때·조각만 바뀔 때가 같은 함수(K8-2) */
+    function dropHash() {
+      if (!location.hash && stateForm(history.state, forms) === cur) return;
+      try { history.replaceState(withForm(history.state, cur), '', location.pathname + location.search); } catch (err) { }
+    }
+    /* 글의 링크(#/plan#safety-card → plan/#safety-card)로 들어오면 그 양식을 고른 뒤 조각을 걷어요.
+       조각이 양식 id 가 아니면(#app 같은 화면 안 자리) 건드리지 않고, state 에 둔 양식(새로 고침·뒤로·앞으로) → 첫 양식 */
+    var named = namedForm(location.hash, forms);
+    var cur = named || stateForm(history.state, forms) || ids[0];
+    if (named) dropHash();
     var dirty = false, gate = skipGate(), leaveHref = '', leaveFrom = null, leaveBack = null, clearFrom = null;
 
     function artTitle(slug) { var a = arts[slug]; return a && a.title ? a.title : slug; }
@@ -576,11 +607,8 @@
       cur = id;
       paintTabs();
       if (changed) buildPanel();
-      if (opts.hash !== false && location.hash) {
-        /* 양식을 바꿀 때는 주소에 양식 이름을 새로 남기지 않아요(방문 기록·주소창 자동 완성에 "안전 계획 카드"가 남지 않게).
-           들어올 때 붙어 온 조각(#양식 id)만 읽고, 바꾸면 조각을 걷어요. 새 기록을 쌓지 않게 replaceState */
-        try { history.replaceState(history.state, '', location.pathname); } catch (err) { }
-      }
+      /* 양식을 바꿀 때는 주소에 양식 이름을 새로 남기지 않아요. 남아 있는 조각도 걷어요(dropHash) */
+      dropHash();
       if (opts.focusTab) { var b = document.getElementById('pg-plan-tab-' + id); if (b) b.focus(); }
     }
     function onSwitch() {
@@ -743,9 +771,18 @@
       if (!askClear.hidden && askClear.contains(e.target)) { e.preventDefault(); closeClear(true); }
       else if (!askOn.hidden && askOn.contains(e.target)) { e.preventDefault(); askOn.hidden = true; sw.focus(); }
     }
+    /* 이미 이 화면에 있을 때 조각이 #양식 id 로 바뀌면(주소창에 직접 치는 등) 그 양식을 고르고 조각을 걷어요(처음 그릴 때와 같은 규칙).
+       양식 id 가 아닌 조각(#app 같은 화면 안 자리)은 건드리지 않아요. 이때 브라우저가 이미 쌓은 기록 하나는 페이지가 지울 수 없어
+       뒤로 가기 목록에 같은 주소(plan/)가 하나 늘어요. 그 기록의 state 에 앞 양식이 있으니 뒤로 가면 앞 양식으로 돌아가요(onPop) */
     function onHash() {
-      var id = formFromHash(location.hash, forms);
-      if (location.hash === fragment(id) && id !== cur) select(id, { hash: false });
+      var id = namedForm(location.hash, forms);
+      if (!id) return;
+      if (id !== cur) select(id); else dropHash();
+    }
+    /* 같은 문서 안에서 뒤로·앞으로(state 만 다른 plan/ 기록): 그 기록에 둔 양식으로 돌아가요 */
+    function onPop() {
+      var id = stateForm(history.state, forms);
+      if (id && id !== cur) select(id);
     }
     function onStorage(e) { if (!e.key || e.key.indexOf('jhb.ui.plan.') === 0 || e.key.indexOf('jhb.privacy.') === 0) resync(); }
     function onPrivacy() { resync(); }
@@ -770,6 +807,7 @@
     if (dlg) dlg.addEventListener('close', function () { var n = backTarget(); if (n && !dlg.contains(document.activeElement) && document.activeElement === document.body) { try { n.focus(); } catch (err) { } } });
     document.addEventListener('click', onDocClick, true);
     root.addEventListener('hashchange', onHash);
+    root.addEventListener('popstate', onPop);
     root.addEventListener('storage', onStorage);
     root.addEventListener('jhb:privacy', onPrivacy);
     root.addEventListener('pageshow', onShow);
@@ -783,6 +821,7 @@
       document.removeEventListener('click', onDocClick, true);
       root.removeEventListener('beforeunload', onBeforeUnload);
       root.removeEventListener('hashchange', onHash);
+      root.removeEventListener('popstate', onPop);
       root.removeEventListener('storage', onStorage);
       root.removeEventListener('jhb:privacy', onPrivacy);
       root.removeEventListener('pageshow', onShow);

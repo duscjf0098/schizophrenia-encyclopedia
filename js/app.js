@@ -439,7 +439,7 @@
   }
   /* data/kb/<name>.json */
   const kbCache = {};
-  const kbDone = {}; /* 받은 자료 값(이름 → JSON). dated 고지 날짜가 곧바로 꺼내 써요 */
+  const kbDone = {}; /* 받은 자료 값(이름 → JSON). revised 고지 날짜가 곧바로 꺼내 써요 */
   function loadData(name) {
     name = String(name || '');
     if (!/^[a-z0-9][a-z0-9-]*$/.test(name)) return Promise.reject(new Error('잘못된 데이터 이름: ' + name));
@@ -449,7 +449,7 @@
       kbCache[name] = fetch(BASE + 'data/kb/' + name + '.json', { cache: 'no-cache' }).then(function (r) {
         if (!r.ok) throw dataError('HTTP ' + r.status + ': data/kb/' + name + '.json');
         return r.json().catch(function () { throw dataError('JSON 오류: data/kb/' + name + '.json'); });
-      }).then(function (v) { kbDone[name] = v; return v; }); /* 받은 값을 바로 꺼내 쓸 수 있게(dated 고지 날짜) */
+      }).then(function (v) { kbDone[name] = v; return v; }); /* 받은 값을 바로 꺼내 쓸 수 있게(revised 고지 날짜) */
       kbCache[name].catch(function () { delete kbCache[name]; });
     }
     return kbCache[name];
@@ -470,29 +470,31 @@
   }
   /* 공용 고지 DOM (문구는 js/md.js 의 noticeHtml 과 같다) */
   function notice(kind, arg) { return fromHtml(md.noticeHtml(kind, arg)); }
-  /* "○○에 확인한 내용"(dated) 날짜: 사이트맵과 같은 규칙(js/progress.js 의 pageDate — 빌드 tools/lib/assets.cjs 의 resolveLastmod 도 같은 함수).
-     선언에 lastmod("kb:<자료>:<날짜 경로>")가 있으면 그 자료에서 구한 날짜, 자료를 아직 못 받았거나 날짜가 없으면 선언의 updated.
-     자료는 datedJob 이 그리기 전에 받아 두므로(featurePage) 고지가 그려진 뒤 날짜가 바뀌지 않는다 */
-  function datedDay(d) {
-    const ref = PRG.lastmodRef ? PRG.lastmodRef(d.lastmod) : null;
-    if (!PRG.pageDate) return d.updated;
-    return PRG.pageDate(d, ref && Object.prototype.hasOwnProperty.call(kbDone, ref.name) ? kbDone[ref.name] : undefined);
+  /* 고지 날짜(K8): 규칙은 js/progress.js 의 noticeDate 한 곳(빌드 tools/lib/assets.cjs 의 resolveNoticeDate → 정적 고지도 같은 함수).
+     - "○○에 확인한 내용"(dated): 선언의 updated(사람이 화면 내용을 원천과 대조해 확인한 날). 자료를 보지 않아요.
+     - "○○에 마지막으로 고쳤어요"(revised): 사이트맵과 같은 날. lastmod("kb:<자료>:<날짜 경로>") 자료에서 구한 날짜,
+       자료를 아직 못 받았거나 날짜가 없으면 선언의 updated. 자료는 noticeJob 이 그리기 전에 받아 두므로(featurePage) 고지가 그려진 뒤 날짜가 바뀌지 않는다.
+     그 밖의 종류는 날짜가 없어요 */
+  function noticeDay(d, kind) {
+    if (!PRG.noticeDate) return kind === 'dated' || kind === 'revised' ? d.updated : undefined; /* 옛 progress.js 가 캐시에 남은 기기 */
+    const ref = PRG.lastmodRef(d.lastmod);
+    return PRG.noticeDate(kind, d, ref && Object.prototype.hasOwnProperty.call(kbDone, ref.name) ? kbDone[ref.name] : undefined);
   }
-  /* dated 고지에 lastmod 가 있으면 그 자료를 받는 일(실패해도 화면은 그린다: updated 로).
-     응답 없이 멈춰도 화면 전체가 10초 시간 초과로 실패하지 않게 DATED_WAIT 뒤에는 기다리지 않아요(그 뒤에 와도 이미 그린 날짜는 바꾸지 않음) */
-  const DATED_WAIT = 3000;
-  function datedJob(d) {
-    const ref = (d.notice || []).indexOf('dated') >= 0 && PRG.lastmodRef ? PRG.lastmodRef(d.lastmod) : null;
+  /* revised 고지에 lastmod 가 있으면 그 자료를 받는 일(실패해도 화면은 그린다: updated 로).
+     응답 없이 멈춰도 화면 전체가 10초 시간 초과로 실패하지 않게 NOTICE_WAIT 뒤에는 기다리지 않아요(그 뒤에 와도 이미 그린 날짜는 바꾸지 않음) */
+  const NOTICE_WAIT = 3000;
+  function noticeJob(d) {
+    const ref = PRG.noticeRef ? PRG.noticeRef(d) : null;
     if (!ref) return null;
     let t = 0;
-    const give = new Promise(function (res) { t = setTimeout(function () { res(null); }, DATED_WAIT); });
+    const give = new Promise(function (res) { t = setTimeout(function () { res(null); }, NOTICE_WAIT); });
     return Promise.race([loadData(ref.name).catch(function () { return null; }), give])
       .then(function (v) { clearTimeout(t); return v; });
   }
   function featureNotices(d) {
     /* 일반 고지는 뺄 수 없고 늘 맨 앞. 위기 줄은 crisisLine 하나로만(notice 의 'crisis' 와 겹쳐 두 번 붙지 않게) */
     const kinds = ['general'].concat((d.notice || []).filter(function (k) { return k !== 'general' && k !== 'crisis'; }));
-    const list = kinds.map(function (k) { return notice(k, k === 'dated' ? datedDay(d) : undefined); });
+    const list = kinds.map(function (k) { return notice(k, noticeDay(d, k)); });
     if (d.crisisLine !== false || (d.notice || []).indexOf('crisis') >= 0) list.push(notice('crisis'));
     return el('div.fp-notices', null, list);
   }
@@ -516,7 +518,7 @@
       }) : Promise.resolve(registered[id] || null),
       Promise.all((d.data || []).map(function (n) { return loadData(n).then(function (v) { return [n, v]; }); })),
       d.hasCss ? load('css/pages/' + id + '.css').catch(function () { return null; }) : null, /* 스타일이 없어도 그린다 */
-      datedJob(d) /* "○○에 확인한 내용" 날짜의 자료(K5-3). 받지 못해도 그린다 */
+      noticeJob(d) /* "○○에 마지막으로 고쳤어요"(revised) 날짜의 자료(K5-3·K8). 받지 못해도 그린다 */
     ];
     Promise.race([Promise.all(jobs), timeout]).then(function (res) {
       clearTimeout(timer);

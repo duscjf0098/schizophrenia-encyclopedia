@@ -39,6 +39,19 @@ test('선언 검사: summary 155자, group 값, nav·notice·robots 값', functi
   ok(errs(good({ nav: ['footer'] })).length > 0);
   ok(errs(good({ notice: ['legal'] })).length > 0);
   ok(errs(good({ notice: ['dated'] })).some(function (e) { return e.indexOf('updated') >= 0; }), 'dated 는 updated 가 있어야');
+  ok(errs(good({ notice: ['dated'], lastmod: 'kb:changes:date' })).some(function (e) { return e.indexOf('updated') >= 0; }), 'dated 는 lastmod 로 대신할 수 없음(K8)');
+  /* K8: revised(마지막으로 고친 날)는 updated 나 lastmod 가 있어야 */
+  ok(errs(good({ notice: ['revised'] })).some(function (e) { return e.indexOf('revised') >= 0; }), 'revised 는 updated 나 lastmod 가 있어야');
+  eq(errs(good({ notice: ['revised'], updated: '2026-11-14' })), []);
+  eq(errs(good({ notice: ['revised'], lastmod: 'kb:changes:date' })), []);
+  ok(A.validateDecl(good({ notice: ['revised'], lastmod: 'kb:changes:date' }), 'guide').warnings.some(function (w) { return w.indexOf('updated') >= 0; }), 'lastmod 만 있으면 경고(자료를 못 받으면 날짜가 빠짐)');
+  eq(A.validateDecl(good({ notice: ['revised'], lastmod: 'kb:changes:date', updated: '2026-11-14' }), 'guide').warnings, []);
+  eq(errs(good({ notice: ['general', 'dated', 'revised'], updated: '2026-11-14' })), [], '둘을 함께 써도 돼요');
+  /* updated 는 꼴만이 아니라 실제 날짜여야(고지 "2026년 2월 30일에 …"·사이트맵에 그대로 나가지 않게) */
+  ok(errs(good({ updated: '2026-02-30' })).some(function (e) { return e.indexOf('updated') >= 0; }), '없는 날짜(2월 30일)는 오류');
+  ok(errs(good({ updated: '2026-13-01' })).some(function (e) { return e.indexOf('updated') >= 0; }), '없는 달은 오류');
+  ok(errs(good({ notice: ['dated'], updated: '2026-00-10' })).some(function (e) { return e.indexOf('updated') >= 0; }), 'dated 날짜도 실제 날짜만');
+  eq(errs(good({ updated: '2028-02-29' })), [], '윤날은 통과');
   ok(errs(good({ robots: 'nofollow' })).length > 0);
   ok(errs(good({ data: ['Bad Name'] })).length > 0);
   ok(A.validateDecl(good({ extra: 1 }), 'guide').warnings.length === 1, '모르는 항목은 경고');
@@ -354,31 +367,48 @@ test('특집 화면 사이트맵 날짜: lastmod 를 풀고, 없으면 updated, 
   ok(/^\d{4}-\d{2}-\d{2}$/.test(v) && v !== '2000-01-01' && v !== '2099-01-01', v);
 });
 
-/* K5-3: "○○에 확인한 내용" 고지(dated)는 사이트맵 날짜와 같은 규칙(lastmod 가 있으면 자료에서 구한 날짜) */
-test('K5-3 정적 고지: dated 날짜는 사이트맵 날짜와 같고(lastmod 가 있으면 자료 날짜), 없으면 선언의 updated', function () {
+/* K8: "○○에 확인한 내용"(dated)은 선언의 updated(사람이 원천과 대조해 확인한 날)만, "○○에 마지막으로 고쳤어요"(revised)는 사이트맵과 같은 날짜 */
+test('K8 정적 고지: dated 는 선언의 updated(lastmod 를 따르지 않음), revised 는 사이트맵 날짜(lastmod 자료 → updated)', function () {
   eq(typeof B.featureNoticesHtml, 'function', 'build-pages 가 고지 함수를 내보냄');
-  const lm = A.normalizeDecl(good({ id: 'changes', notice: ['general', 'dated'], lastmod: 'kb:changes:date', updated: '2000-01-01' }));
+  const lm = A.normalizeDecl(good({ id: 'changes', notice: ['general', 'dated', 'revised'], lastmod: 'kb:changes:date', updated: '2000-01-01' }));
   const day = A.resolveLastmod(lm);
+  ok(day && day !== '2000-01-01', '자료 날짜: ' + day);
   const html = B.featureNoticesHtml(lm);
-  has(html, md.noticeHtml('dated', day), '자료 날짜로 그린 고지');
-  not(html, '2000년 1월 1일', '선언의 updated 가 아님');
-  eq(B.featureLastmod(lm, '2099-01-01'), day, '사이트맵과 같은 날짜');
+  has(html, md.noticeHtml('dated', '2000-01-01'), 'dated: 선언의 updated');
+  has(html, md.noticeHtml('revised', day), 'revised: 자료 날짜');
+  not(html, md.noticeHtml('dated', day), 'dated 를 자료 날짜로 그리지 않음');
+  eq(B.featureLastmod(lm, '2099-01-01'), day, 'revised 는 사이트맵과 같은 날짜');
   const plain = A.normalizeDecl(good({ notice: ['general', 'dated'], updated: '2026-11-03' }));
   has(B.featureNoticesHtml(plain), md.noticeHtml('dated', '2026-11-03'));
+  const rev = A.normalizeDecl(good({ notice: ['general', 'revised'], updated: '2026-11-04' }));
+  has(B.featureNoticesHtml(rev), md.noticeHtml('revised', '2026-11-04'), 'lastmod 가 없으면 revised 도 updated');
+  not(B.featureNoticesHtml(rev), '확인한 내용');
   /* 고지 순서: 일반 → 선언 순서 → 위기 줄 한 번 */
-  const parts = B.featureNoticesHtml(plain).match(/notice-[a-z]+/g);
-  eq(parts, ['notice-general', 'notice-dated', 'notice-crisis']);
+  eq(B.featureNoticesHtml(plain).match(/notice-[a-z]+/g), ['notice-general', 'notice-dated', 'notice-crisis']);
+  eq(B.featureNoticesHtml(lm).match(/notice-[a-z]+/g), ['notice-general', 'notice-dated', 'notice-revised', 'notice-crisis']);
+  eq(B.featureNoticesHtml(A.normalizeDecl(good({ notice: ['emergency', 'revised', 'general'], updated: '2026-11-04' }))).match(/notice-[a-z]+/g),
+    ['notice-general', 'notice-emergency', 'notice-revised', 'notice-crisis']);
 });
 
-test('K5-3 앱: dated 고지는 progress.pageDate(선언, 자료)로 그리고, lastmod 자료를 그리기 전에 함께 받는다', function () {
+test('K8 앱: 고지 날짜는 progress.noticeDate(종류, 선언, 자료)로 그리고, revised 의 lastmod 자료를 그리기 전에 함께 받는다', function () {
   const app = fs.readFileSync(path.join(__dirname, '..', 'js', 'app.js'), 'utf8');
   const fn = app.slice(app.indexOf('function featureNotices('), app.indexOf('function featureHead('));
-  has(fn, "k === 'dated' ? datedDay(d)", 'dated 고지의 날짜');
-  not(fn, "k === 'dated' ? d.updated", '선언 updated 를 바로 쓰지 않음');
-  has(app, 'PRG.pageDate(d, ');
-  has(app, 'PRG.lastmodRef(d.lastmod)');
+  has(fn, 'notice(k, noticeDay(d, k))', '고지마다 같은 함수로 날짜');
+  not(fn, 'd.updated', '선언 updated 를 바로 쓰지 않음');
+  const day = app.slice(app.indexOf('function noticeDay('), app.indexOf('function noticeJob('));
+  has(day, 'PRG.noticeDate(kind, d, ');
+  has(day, 'PRG.lastmodRef(d.lastmod)');
+  const job = app.slice(app.indexOf('function noticeJob('), app.indexOf('function featureNotices('));
+  has(job, 'PRG.noticeRef(d)', '받을 자료는 revised 고지가 정함(dated 는 기다리지 않음)');
+  not(job, "indexOf('dated')");
   const fp = app.slice(app.indexOf('function featurePage('), app.indexOf('function drawFeature('));
-  has(fp, 'datedJob(d)', '그리기 전에 lastmod 자료를 받음(그린 뒤 날짜가 바뀌지 않게)');
+  has(fp, 'noticeJob(d)', '그리기 전에 lastmod 자료를 받음(그린 뒤 날짜가 바뀌지 않게)');
+  /* 빌드 쪽도 같은 순수 함수 */
+  const lib = fs.readFileSync(path.join(__dirname, '..', 'tools', 'lib', 'assets.cjs'), 'utf8');
+  has(lib, 'PR.noticeDate(kind, decl, value)');
+  const bp = fs.readFileSync(path.join(__dirname, '..', 'tools', 'build-pages.cjs'), 'utf8');
+  const sfn = bp.slice(bp.indexOf('function featureNoticesHtml('), bp.indexOf('const COURSES_LEAD'));
+  has(sfn, 'A.resolveNoticeDate(d, k, { root: root })');
 });
 
 /* ---------- 틀(tools/shell.html): 바닥글 위기 줄·인쇄용 한 줄 스타일·첫 화면 자리 표시 ---------- */

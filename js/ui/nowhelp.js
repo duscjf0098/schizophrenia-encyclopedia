@@ -87,7 +87,10 @@
     const m = /^#(h-\d+)$/.exec(String(h || ''));
     return m ? m[1] : null;
   }
-  const pure = { parseTel: parseTel, pickSheet: pickSheet, findAltSection: findAltSection, isPlainClick: isPlainClick, linkGuard: linkGuard, closeOnPage: closeOnPage, sectionHash: sectionHash, LINK_ORDER: LINK_ORDER, GUARD_MS: GUARD_MS };
+  /* 시트 바닥의 "번호는 ○○에 확인한 내용이에요"에 쓰는 날: 글을 고친 날(updated)이 아니라 출처 확인일(reviewed).
+     확인일이 없으면 날짜 문구를 붙이지 않는다(고친 날을 확인한 날처럼 말하지 않으려고) */
+  function footDay(art) { return art && typeof art.reviewed === 'string' ? art.reviewed : ''; }
+  const pure = { parseTel: parseTel, pickSheet: pickSheet, findAltSection: findAltSection, isPlainClick: isPlainClick, linkGuard: linkGuard, closeOnPage: closeOnPage, sectionHash: sectionHash, footDay: footDay, LINK_ORDER: LINK_ORDER, GUARD_MS: GUARD_MS };
   if (typeof module !== 'undefined' && module.exports) { module.exports = pure; return; }
 
   /* ================= 브라우저 ================= */
@@ -182,9 +185,11 @@
   function footText() {
     const art = A.bySlug && A.bySlug[ALT_SLUG];
     let dated = '';
-    if (art && art.updated && A.md && A.md.noticeHtml) {
-      const t = document.createElement('template'); t.innerHTML = A.md.noticeHtml('dated', art.updated);
-      dated = '번호는 ' + t.content.textContent.trim();
+    const day = footDay(art);
+    if (day && A.md && A.md.noticeHtml) {
+      const t = document.createElement('template'); t.innerHTML = A.md.noticeHtml('dated', day);
+      const s = t.content.textContent.trim();
+      if (s) dated = '번호는 ' + s;
     }
     return '일반 정보예요. 진단과 치료는 담당 의사와 상의해 주세요. AI가 공개 자료로 초안을 썼고 전문가 감수는 받지 않았어요.' + (dated ? ' ' + dated : '');
   }

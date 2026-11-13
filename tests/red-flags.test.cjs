@@ -341,10 +341,30 @@ test('선언: 지식 묶음, 왼쪽 목차·팔레트, 검색 노출, 일반·�
   eq(DECL.group, '지식');
   eq(DECL.nav, ['side', 'palette']);
   eq(DECL.robots, 'index');
-  eq(DECL.notice, ['general', 'emergency']);
+  eq(DECL.notice, ['general', 'emergency', 'revised']);
   ok(DECL.crisisLine !== false);
   eq(DECL.data, ['red-flags']);
   ok(DECL.summary.length <= A.SUMMARY_MAX);
+});
+
+/* K8: 원천 글(부작용 총론)의 표가 고쳐진 날을 "○○에 마지막으로 고쳤어요"로. 사이트맵 날짜도 같은 날 */
+test('선언(K8): lastmod 는 원천 글의 고친 날(source.updated), 고지는 revised, 검사 오류·경고 0', function () {
+  eq(DECL.lastmod, 'kb:red-flags:source.updated');
+  const r = A.validateDecl(DECL, 'red-flags', { root: ROOT });
+  eq(r.errors, []);
+  eq(r.warnings, []);
+  const n = A.normalizeDecl(DECL, { root: ROOT });
+  eq(A.resolveNoticeDate(n, 'revised', { root: ROOT }), DATA.source.updated, '고지 날짜 = 부작용 총론의 고친 날');
+  eq(A.resolveLastmod(n, { root: ROOT }), DATA.source.updated, '사이트맵 날짜도 같은 날');
+  ok(DECL.notice.indexOf('dated') < 0, '"확인한 내용"이라고 하지 않음(글을 고친 날이지 표를 원천과 대조한 날이 아님)');
+});
+
+test('선언(K8): 과량 복용 줄을 찾을 말(keywords), lead 는 글의 표 앞 문장 그대로', function () {
+  ok(DECL.keywords.indexOf('과량 복용') >= 0, '과량 복용');
+  ok(DECL.keywords.indexOf('약을 많이 먹었을 때') >= 0, '약을 많이 먹었을 때');
+  eq(new Set(DECL.keywords).size, DECL.keywords.length, '같은 말 두 번 없음');
+  ok(DATA.rows.some(function (r) { return /과량/.test(r.sign + ' ' + r.state); }), '표에 과량 복용 줄이 있음');
+  eq(DECL.lead, DATA.intro);
 });
 
 test('스타일: 붉은 경고색·경고 기호 없음, 색은 토큰만, 선택자는 .pg-red-flags- 또는 이 화면 범위', function () {
