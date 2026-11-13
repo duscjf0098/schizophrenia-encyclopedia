@@ -56,7 +56,7 @@ sources:
 node tools/build-all.cjs
 ```
 
-`build-all.cjs` 는 아래를 차례로 돌리고 하나라도 실패하면 멈춘다: check-content → build-kb → build-index → build-links → build-ui-css → build-pages.
+`build-all.cjs` 는 아래를 차례로 돌리고 하나라도 실패하면 멈춘다: check-content → build-gen → build-kb → build-index → build-links → build-ui-css → build-pages.
 
 - `check-content.cjs`: 필수 항목, 출처·각주 범위, 금지 표현(용량 지시, 임의 중단 권유, 옛 병명, "조현병 환자", 단정적 완치), 위기 글의 109·1577-0199, 600자 미만 검사.
 - `build-kb.cjs`: 특집 화면 선언(`data/pages/*.json`)·지식 데이터(`data/kb/*.json`) 검사, `data/pages.js` 생성.

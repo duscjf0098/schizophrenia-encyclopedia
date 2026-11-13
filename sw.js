@@ -3,7 +3,7 @@
      저장할 때는 쿼리를 뗀 주소(origin + pathname)를 키로 쓴다. 옛 주소 search/?q=… 의 검색어가 캐시에 남지 않게(R1).
      activate 때 남은 캐시에서 쿼리가 붙은 항목을 지운다.
    - 그 밖의 파일: 캐시 먼저, 뒤에서 네트워크로 갱신. */
-const BUILD = '2026-11-13-251-mwf6rj9q';
+const BUILD = '2026-11-13-284-mwf6uqlk';
 const PRECACHE = 'data/precache.json';
 let CACHE = 'jhb-' + BUILD;
 

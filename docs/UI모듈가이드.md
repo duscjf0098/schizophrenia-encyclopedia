@@ -102,6 +102,7 @@
    - 정적 내용이 있던 화면은 실제 화면을 그릴 때 스크롤 위치를 그대로 둬요.
 
 ### 2-4. 빌드가 하는 일
+- `build-gen`: `tools/gen/*.cjs`(생성기)를 이름순으로 돌려요. 생성기는 글(`content/`)에서 화면 데이터를 뽑아 `data/kb/<이름>.json` 을 써요(인자 없이 실행, 같은 입력이면 같은 출력, 실패하면 종료 코드 1). 생성된 json 은 손으로 고치지 않아요. 개발 서버는 생성기를 돌리지 않으니 미리 보려면 `node tools/gen/<이름>.cjs` 를 직접 돌려요.
 - `build-kb`: 선언 검사 → `data/pages.js`(묶음 안내→지식→도구→기록, 그 안에서 order·id 순, 항목마다 `hasJs`·`hasCss`).
 - `build-pages`: 선언마다 `<id>/index.html`(제목·설명·robots·canonical, 본문 = 빵부스러기 + h1 + lead + `.fp-body` 안에 `staticHtml(ctx)` + 고지). `index` 화면은 사이트맵에. `staticHtml` 에서 예외가 나면 어느 화면인지 알리고 멈춰요. 선언이 사라진 화면의 옛 폴더(빌드가 만든 `index.html` 하나만 든 폴더)는 지워요.
 - `build-index`: 프리캐시에 `data/pages.js`, `js/pages/*.js`, `css/pages/*.css`, `data/kb/*.json`, 모든 `js/ui/*.js` 를 넣어요(오프라인에서도 열림).
@@ -234,4 +235,4 @@
 - **빌드 없이 보기**: `node serve.cjs`(기본 5174, 다른 포트는 `PORT=5175 node serve.cjs`). 개발 서버는 `css/ui.css` 와 `data/pages.js` 를 즉석에서 만들고, 모든 HTML 의 모듈 줄·상단 링크를 지금 파일 기준으로 바꿔 보내요. `<id>/` 폴더가 아직 없어도 `data/pages/<id>.json` 이 있으면 그 주소가 열려요(정적 본문 없이 앱이 그림). 선언 오류는 서버 터미널에 나와요.
 - 브라우저 확인: 1280×800 과 390×844 에서 실제로 눌러 보고 콘솔 오류 0, 가로 넘침 0, 밝은·어두운 화면을 확인해요. Playwright 를 여럿이 함께 쓰면 공유 page 를 건드리지 말고 자기 컨텍스트(`browser.newContext({ viewport, serviceWorkers: 'block' })`)를 만들어 쓰고 닫아요.
 - `node tests/run.cjs` 는 깨지지 않아야 해요. 선언 검사만: `node tools/build-kb.cjs`.
-- 전체 빌드(통합 담당): `node tools/build-all.cjs` = check-content → build-kb → build-index → build-links → build-ui-css → build-pages(하나라도 실패하면 멈춤).
+- 전체 빌드(통합 담당): `node tools/build-all.cjs` = check-content → build-gen → build-kb → build-index → build-links → build-ui-css → build-pages(하나라도 실패하면 멈춤).
