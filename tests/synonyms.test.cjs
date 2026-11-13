@@ -96,8 +96,34 @@ test('slug 는 최대 8개, terms 는 중복 없음', function () {
   ok(S.expand(M, '약 부작용 때문에 살이 쪄요').slugs.length <= 8);
 });
 
-test('데이터: 항목 200~350개, say 2글자 이상, 모든 slug 가 toc 에 있고 모든 term 이 사전에 있다', function () {
-  ok(SYN.length >= 200 && SYN.length <= 350, '항목 수 ' + SYN.length);
+test('낱말 경계(M3): say 는 질의의 낱말 시작에서만, 두 글자 say 는 질의 낱말 전체(조사·어미를 뗀 꼴 포함)와 같을 때만', function () {
+  ok(slugsOf('장애인 등록').indexOf('faq-love-marriage') < 0 && slugsOf('장애인 등록').indexOf('dating-marriage') < 0, "'장애인' 속 '애인' 아님");
+  eq(slugsOf('장애인 등록')[0], 'disability-registration');
+  ok(slugsOf('임신 약').indexOf('new-drugs') < 0, "'임신 약' 을 붙인 '임신약' 속 '신약' 아님");
+  ok(slugsOf('지연성 운동장애').indexOf('exercise') < 0, "'운동장애' 의 '운동' 아님(두 글자 say)");
+  ok(slugsOf('자살').indexOf('housing-independent-living') < 0 && slugsOf('자살').indexOf('faq-living-alone') < 0, "'자살' 이 '혼자 살' 속에 들어가지 않음");
+  eq(first('운동'), 'exercise', '두 글자 say 는 낱말 전체와 같으면 그대로');
+  eq(first('살쪄요'), 'faq-weight-gain', '두 글자 say 에 어미가 붙어도(살쪄 + 요)');
+  ok(slugsOf('약값이 걱정').indexOf('drug-costs-coverage') >= 0, '약값 + 이');
+  eq(first('EPS'), 'eps');
+  eq(first('eps가 뭐야'), 'eps', '영문 약어 뒤에 한글 조사');
+  eq(first('장기지속형lai'), 'lai', '영문 약어 앞이 한글');
+});
+
+test('느슨한 일치(loose): 낱말 순서·조사가 달라도, 앞 두 낱말 구절도 — expand 결과는 바꾸지 않는다', function () {
+  function loose(q) { return S.loose(M, q).slugs.map(function (s) { return s.slug; }); }
+  ok(loose('깜빡하고 약').indexOf('missed-dose') >= 0, "'약 깜빡' ↔ '깜빡하고 약'");
+  eq(slugsOf('깜빡하고 약'), [], 'expand 는 그대로(빈 결과)');
+  ok(loose('누가 나를 감시해').slice(0, 3).indexOf('persecutory-delusion') >= 0, "'누가 나를 해치' 의 앞 구절");
+  eq(loose('환청'), [], '한 낱말 질의는 느슨한 일치 없음');
+  eq(loose('김치찌개 레시피'), []);
+  const m = S.build([{ say: ['가나 다라 마바'], slugs: ['x'] }]);
+  eq(S.loose(m, '가나 다라 사아').slugs.map(function (s) { return s.slug; }), ['x'], '앞 두 낱말(4자)');
+  eq(S.loose(m, '가 다라').slugs, [], '짧은 구절은 아님');
+});
+
+test('데이터: 항목 200~400개, say 2글자 이상, 모든 slug 가 toc 에 있고 모든 term 이 사전에 있다', function () {
+  ok(SYN.length >= 200 && SYN.length <= 400, '항목 수 ' + SYN.length);
   const slugSet = new Set(TOC.map(function (a) { return a.slug; }));
   const termSet = new Set(GLOSS.map(function (g) { return g.term; }));
   const badSlug = [], badTerm = [], badSay = [];

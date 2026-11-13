@@ -273,9 +273,9 @@ test('팔레트: 위기 줄의 전화는 줄 안 버튼(a[href^=tel:])으로만,
     return row ? { text: row.textContent, tels: row.querySelectorAll('a.pal-tel').map(function (a) { return a.getAttribute('href'); }), watch: row.classList.contains('pal-watch'), tab: row.querySelectorAll('a.pal-tel').every(function (a) { return a.tabIndex === 0; }) } : null;
   }
   const hi = line('죽고 싶어'), hm = line('죽이고 싶어'), w = line('자살률');
-  eq(hi.tels, ['tel:109']); has(hi.text, '109'); ok(!hi.watch); ok(hi.tab, 'Tab 으로 닿는 전화 버튼');
+  eq(hi.tels, ['tel:109', 'tel:1577-0199', 'tel:119']); has(hi.text, '109'); ok(!hi.watch); ok(hi.tab, 'Tab 으로 닿는 전화 버튼');
   eq(hm.tels, ['tel:112', 'tel:119']); has(hm.text, '지금 위험하면 112 · 119');
-  eq(w.tels, ['tel:109']); ok(w.watch, 'watch 는 차분한 줄'); has(w.text, '도움이 필요하면 109 · 1577-0199');
+  eq(w.tels, ['tel:109', 'tel:1577-0199']); ok(w.watch, 'watch 는 차분한 줄'); has(w.text, '도움이 필요하면 109 · 1577-0199');
   eq(line('twin studies'), null);
   eq(line('환청'), null);
 });
@@ -343,7 +343,7 @@ test('팔레트: #q 에 포커스만으로는 열지 않고, 글자·클릭·Ent
   ok(t.P.isOpen(), 'Ctrl+K 로 열림');
 });
 
-test('팔레트: #q 에서 한글을 조합하는 동안에는 포커스를 옮기지 않고, 멈추면 조합한 값 그대로 넘긴다(ㅎ환청 방지)', function () {
+test('팔레트: #q 에서 한글을 조합하는 동안에는 멈춰도 넘기지 않고, 조합이 끝난 뒤 멈추면 조합한 값 그대로 넘긴다(ㅎ환청 방지)', function () {
   const t = loadPalette();
   t.q.focus();
   /* 조합 시작: 첫 자모가 들어와도 열지 않는다 */
@@ -360,8 +360,13 @@ test('팔레트: #q 에서 한글을 조합하는 동안에는 포커스를 옮�
   t.q.value = '환청'; t.doc.fire(t.q, 'input', { isComposing: true });
   t.tick(300);
   ok(!t.P.isOpen(), '치는 중(500ms 안)에는 열지 않음');
+  t.tick(600);
+  ok(!t.P.isOpen(), '조합 중에는 멈춰도 넘기지 않음'); ok(t.doc.activeElement === t.q, '조합 중 포커스는 #q 에');
+  t.doc.fire(t.q, 'compositionend');
   t.tick(300);
-  ok(t.P.isOpen(), '멈추면 연다'); eq(t.input().value, '환청'); eq(t.q.value, '');
+  ok(!t.P.isOpen(), '조합이 끝난 직후(500ms 안)에는 열지 않음');
+  t.tick(300);
+  ok(t.P.isOpen(), '조합이 끝나고 멈추면 연다'); eq(t.input().value, '환청'); eq(t.q.value, '');
   /* 조합 직후의 조합 아닌 input 도 IME 로 본다 */
   const u = loadPalette(); u.q.focus();
   u.doc.fire(u.q, 'compositionstart'); u.q.value = '약'; u.doc.fire(u.q, 'compositionend');
@@ -375,7 +380,8 @@ test('팔레트: #q 에서 한글을 조합하는 동안에는 포커스를 옮�
   ok(!w.P.isOpen(), '조합 중 Enter 로 열림');
   w.doc.fire(w.q, 'compositionend');
   w.doc.fire(w.q, 'keydown', { key: 'Enter', keyCode: 13 });
-  ok(w.P.isOpen(), '조합 뒤 Enter 로 열림'); eq(w.input().value, '망상');
+  /* 조합이 끝난 뒤의 Enter 는 넘기면서 고른 줄을 바로 실행한다(목록을 한 번 더 누르게 하지 않음) */
+  eq(w.calls, [['search', '망상']], '조합 뒤 Enter 는 바로 실행'); ok(!w.P.isOpen(), '실행한 뒤에는 닫힘');
   /* 넘기기 전에 다른 곳으로 가면(Tab) 열지 않는다 */
   const x = loadPalette(); x.q.focus();
   x.doc.fire(x.q, 'compositionstart'); x.q.value = '환'; x.doc.fire(x.q, 'input', { isComposing: true }); x.doc.fire(x.q, 'compositionend');
