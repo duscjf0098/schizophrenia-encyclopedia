@@ -19,13 +19,15 @@ sources:
   - 국립정신건강센터 | 국가정신건강정보포털 · 질환별 정보 · 조현병 | 2026 | https://www.mentalhealth.go.kr/portal/disease/diseaseDetail.do?dissId=26
   - American Psychiatric Association | APA releases new practice guideline on treatment of patients with schizophrenia (보도자료) | 2020 | https://www.psychiatry.org/news-room/news-releases/apa-releases-new-practice-guideline-on-treatment-o
   - NICE | Psychosis and schizophrenia in adults: prevention and management (Clinical guideline CG178) · 1.3.6 Starting antipsychotic medication | 2014 | https://www.nice.org.uk/guidance/cg178/chapter/Recommendations
-  - U.S. FDA / DailyMed | CLOZARIL (clozapine) tablets, prescribing information (Revised 6/2025) · Boxed Warning, 5.1 Severe Neutropenia, 5.4 Seizures, 5.5 Myocarditis, 5.7 Gastrointestinal Hypomotility, 5.9 QT Interval Prolongation, 5.11 Neuroleptic Malignant Syndrome, 10 Overdosage, 17 Patient Counseling Information, Medication Guide | 2025 | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=90876802-0e3a-44c9-9ff7-1754dfbe736a&type=display
+  - U.S. FDA / DailyMed | CLOZARIL (clozapine) tablets, prescribing information (Revised 6/2025) · Boxed Warning, 5.1 Severe Neutropenia, 5.4 Seizures, 5.5 Myocarditis, 5.7 Gastrointestinal Hypomotility, 5.9 QT Interval Prolongation, 5.11 Neuroleptic Malignant Syndrome, 7.1 Potential for Other Drugs to Affect CLOZARIL, 10 Overdosage, 17 Patient Counseling Information, Medication Guide | 2025 | https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=90876802-0e3a-44c9-9ff7-1754dfbe736a&type=display
   - Tse L 외 | Neuroleptic malignant syndrome: a review from a clinically oriented perspective (Current Neuropharmacology) | 2015 | https://doi.org/10.2174/1570159X13999150424113345
   - Rethink Mental Illness | Mental health medication and hot weather | 2026 | https://www.rethink.org/advice-and-information/living-with-mental-illness/medications/mental-health-medication-and-hot-weather-staying-safe-during-heatwaves/
   - Capinha M 외 | Drug-induced hyponatremia: insights into pharmacological mechanisms and clinical practice management (Journal of Clinical Medicine) | 2025 | https://doi.org/10.3390/jcm14186584
   - Peritogiannis V, Rizos DV | Catatonia associated with hyponatremia: case report and brief review of the literature (Clinical Practice & Epidemiology in Mental Health) | 2021 | https://doi.org/10.2174/1745017902117010026
   - Haddad PM, Anderson IM | Antipsychotic-related QTc prolongation, torsade de pointes and sudden death (Drugs) | 2002 | https://doi.org/10.2165/00003495-200262110-00006
   - NHS | Heat exhaustion and heatstroke · Call 999 | 2026 | https://www.nhs.uk/conditions/heat-exhaustion-heatstroke/
+  - NHS | Poisoning · Call 999 or go to A&E, While you're waiting for medical help, Symptoms of poisoning | 2025 | https://www.nhs.uk/conditions/poisoning/
+  - 질병관리청 | 온열질환 홍보물 게시글의 첨부 파일 「폭염대비와 온열질환 예방을 위한 건강수칙 바로 알기 소책자.pdf」(2026년 4월 발행) · 13쪽 3-2 열사병은 어떻게 조치해야 하나요?, 15쪽 5 열사병·열탈진은 어떻게 다른가요? | 2026 | https://www.kdca.go.kr/bbs/kdca/263/310073/artclView.do
 ---
 ## 한 문장으로
 
@@ -43,11 +45,14 @@ sources:
 | 클로자핀을 먹는 중 열이나 오한, 독감 같은 몸살, 목 아픔, 입안이 헐거나 궤양이 생김[^9] | 호중구 감소(무과립구증) | 오늘 안에 담당 의사나 병원에 연락. 미루지 말고 바로 전화하고, 연락이 닿지 않으면 응급실이나 119. 혈액 검사로 확인해요 | [클로자핀](#/a/clozapine) |
 | 클로자핀을 먹는 중 며칠째 대변이 없고, 배가 부풀거나 아프고, 메스껍거나 토함[^9] | 장 운동 저하(장폐색) | 오늘 안에 담당 의사나 병원에 연락. 연락이 닿지 않으면 응급실이나 119 | [클로자핀](#/a/clozapine) |
 | 경련(발작)을 함[^9][^11][^12] | 경련 발작 | 바로 119 | [클로자핀](#/a/clozapine) |
-| 더운 날 정신이 흐려지거나 비틀거림, 몸이 매우 뜨거움, 맥박이나 숨이 아주 빠름, 쓰러지거나 유난히 졸림, 시원한 곳에서 물을 마시며 30분쯤 쉬어도 나아지지 않음[^11][^15] | 열사병 | 바로 119. 기다리는 동안 시원한 곳에서 몸을 식혀요 | [더위와 약](#/a/heat-and-medication) |
+| 깨워도 잘 깨지 않거나 몹시 혼란스러움, 숨이 얕거나 힘듦. 또는 약을 정해진 것보다 훨씬 많이 먹었거나 그런 것 같음(실수로라도)[^9][^16] | 과량 복용이나 약 기운이 지나침 | 바로 119. 많이 먹었다면 아직 아무렇지 않아도 기다리지 않아요. 남은 약 봉투와 먹는 약 이름을 챙겨요[^16] | [심장과 약](#/a/heart-and-antipsychotics), [위기 상담 전화](#/a/crisis-hotlines) |
+| 더운 날 정신이 흐려지거나 비틀거림, 몸이 매우 뜨거움, 맥박이나 숨이 아주 빠름, 쓰러지거나 유난히 졸림, 시원한 곳에서 물을 마시며 30분쯤 쉬어도 나아지지 않음[^11][^15] | 열사병 | 바로 119. 기다리는 동안 시원한 곳에서 몸을 식혀요. 정신이 흐리거나 없으면 물이나 음료를 먹이지 않아요[^17] | [더위와 약](#/a/heat-and-medication) |
 | 물을 아주 많이 마신 뒤 토함, 숨쉬기 힘듦, 비틀거려 제대로 걷지 못함, 심한 혼란, 깨워도 잘 깨지 않을 만큼 깊은 졸음, 경련[^12][^13] | 물 중독(심한 저나트륨) | 바로 119 | [물을 너무 많이 마실 때](#/a/polydipsia-hyponatremia) |
 | 물을 많이 마신 뒤 두통, 토하지 않는 메스꺼움, 새로 생긴 멍함[^12][^13] | 저나트륨 | 오늘 안에 담당 의사나 병원에 연락. 미루지 말고 바로 전화해 피검사로 나트륨을 재요. 연락이 닿지 않으면 응급실, 헷갈림이 심해지면 119 | [물을 너무 많이 마실 때](#/a/polydipsia-hyponatremia) |
 
 약을 스스로 끊지 말고 먼저 연락하세요. 약에 관한 판단은 의료진이 해요.
+
+이 표만 [바로 연락할 신호 한 장](#/red-flags)에서 따로 보고, 종이 한 장으로 인쇄해 눈에 띄는 곳에 붙여 둘 수 있어요.
 
 ::: warn 119에 연락할 때
 - "항정신병약을 먹는 사람"이라는 것과 먹는 약 이름을 알려요.
@@ -55,9 +60,9 @@ sources:
 - 약을 어떻게 할지는 혼자 정하지 말고 응급실 의료진과 정해요.
 :::
 
-약을 정해진 것보다 훨씬 많이 먹었다면 실수였더라도 기다리지 말고 바로 119예요. 클로자핀 허가사항은 너무 많이 먹었을 때 빠른 맥박, 부정맥, 경련 같은 일이 생길 수 있다고 적어요.[^9] 남은 약 봉투를 챙겨 가요. 일부러 먹었다면 [위기 상담 전화](#/a/crisis-hotlines)도 함께 봐요. 자세한 내용은 [심장과 약](#/a/heart-and-antipsychotics)에 있어요.
+약을 정해진 것보다 훨씬 많이 먹었다면 실수였더라도 기다리지 말고 바로 119예요. 클로자핀 허가사항은 너무 많이 먹었을 때 빠른 맥박, 부정맥, 경련 같은 일이 생길 수 있다고 적어요.[^9] 남은 약 봉투를 챙겨 가요.[^16] 일부러 먹었다면 [위기 상담 전화](#/a/crisis-hotlines)도 함께 봐요. 자세한 내용은 [심장과 약](#/a/heart-and-antipsychotics)에 있어요.
 
-표의 신호는 미국 클로자핀 허가사항과 환자용 안내문, 악성 증후군 종설, 영국 정신건강 단체 Rethink의 더위 안내와 영국 국민보건서비스(NHS)의 열사병 안내, 약물성 저나트륨 종설과 정신증의 저나트륨 증례 고찰에 실린 증상을 옮긴 거예요.[^9][^10][^11][^12][^13][^15] 심장 행의 증상 낱말은 허가사항에서 옮겼어요. QT 연장과 위험한 부정맥은 클로자핀만이 아니라 여러 항정신병약에서 생길 수 있고, 그 정도는 약마다 달라요.[^14] 각 상태의 자세한 설명과 근거는 '자세한 글'에 있어요.
+표의 신호는 미국 클로자핀 허가사항과 환자용 안내문, 악성 증후군 종설, 영국 정신건강 단체 Rethink의 더위 안내와 영국 국민보건서비스(NHS)의 열사병·중독 안내, 약물성 저나트륨 종설과 정신증의 저나트륨 증례 고찰에 실린 증상을 옮긴 거예요.[^9][^10][^11][^12][^13][^15][^16] 열사병 줄의 기다리는 동안 할 일은 질병관리청의 온열질환 건강수칙 소책자를 따랐어요.[^17] 심장 행의 증상 낱말은 허가사항에서 옮겼어요. QT 연장과 위험한 부정맥은 클로자핀만이 아니라 여러 항정신병약에서 생길 수 있고, 그 정도는 약마다 달라요.[^14] 각 상태의 자세한 설명과 근거는 '자세한 글'에 있어요.
 
 ## 부작용의 8가지 갈래
 

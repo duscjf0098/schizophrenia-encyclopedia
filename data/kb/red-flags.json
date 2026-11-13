@@ -115,9 +115,30 @@
       ]
     },
     {
+      "sign": "깨워도 잘 깨지 않거나 몹시 혼란스러움, 숨이 얕거나 힘듦. 또는 약을 정해진 것보다 훨씬 많이 먹었거나 그런 것 같음(실수로라도)",
+      "state": "과량 복용이나 약 기운이 지나침",
+      "action": "바로 119. 많이 먹었다면 아직 아무렇지 않아도 기다리지 않아요. 남은 약 봉투와 먹는 약 이름을 챙겨요",
+      "lead": "바로 119",
+      "kind": "119",
+      "links": [
+        {
+          "slug": "heart-and-antipsychotics",
+          "title": "심장과 약"
+        },
+        {
+          "slug": "crisis-hotlines",
+          "title": "위기 상담 전화"
+        }
+      ],
+      "refs": [
+        9,
+        16
+      ]
+    },
+    {
       "sign": "더운 날 정신이 흐려지거나 비틀거림, 몸이 매우 뜨거움, 맥박이나 숨이 아주 빠름, 쓰러지거나 유난히 졸림, 시원한 곳에서 물을 마시며 30분쯤 쉬어도 나아지지 않음",
       "state": "열사병",
-      "action": "바로 119. 기다리는 동안 시원한 곳에서 몸을 식혀요",
+      "action": "바로 119. 기다리는 동안 시원한 곳에서 몸을 식혀요. 정신이 흐리거나 없으면 물이나 음료를 먹이지 않아요",
       "lead": "바로 119",
       "kind": "119",
       "links": [
@@ -128,7 +149,8 @@
       ],
       "refs": [
         11,
-        15
+        15,
+        17
       ]
     },
     {
@@ -170,7 +192,7 @@
     {
       "n": 9,
       "org": "U.S. FDA / DailyMed",
-      "title": "CLOZARIL (clozapine) tablets, prescribing information (Revised 6/2025) · Boxed Warning, 5.1 Severe Neutropenia, 5.4 Seizures, 5.5 Myocarditis, 5.7 Gastrointestinal Hypomotility, 5.9 QT Interval Prolongation, 5.11 Neuroleptic Malignant Syndrome, 10 Overdosage, 17 Patient Counseling Information, Medication Guide",
+      "title": "CLOZARIL (clozapine) tablets, prescribing information (Revised 6/2025) · Boxed Warning, 5.1 Severe Neutropenia, 5.4 Seizures, 5.5 Myocarditis, 5.7 Gastrointestinal Hypomotility, 5.9 QT Interval Prolongation, 5.11 Neuroleptic Malignant Syndrome, 7.1 Potential for Other Drugs to Affect CLOZARIL, 10 Overdosage, 17 Patient Counseling Information, Medication Guide",
       "year": "2025",
       "url": "https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=90876802-0e3a-44c9-9ff7-1754dfbe736a&type=display"
     },
@@ -215,6 +237,20 @@
       "title": "Heat exhaustion and heatstroke · Call 999",
       "year": "2026",
       "url": "https://www.nhs.uk/conditions/heat-exhaustion-heatstroke/"
+    },
+    {
+      "n": 16,
+      "org": "NHS",
+      "title": "Poisoning · Call 999 or go to A&E, While you're waiting for medical help, Symptoms of poisoning",
+      "year": "2025",
+      "url": "https://www.nhs.uk/conditions/poisoning/"
+    },
+    {
+      "n": 17,
+      "org": "질병관리청",
+      "title": "온열질환 홍보물 게시글의 첨부 파일 「폭염대비와 온열질환 예방을 위한 건강수칙 바로 알기 소책자.pdf」(2026년 4월 발행) · 13쪽 3-2 열사병은 어떻게 조치해야 하나요?, 15쪽 5 열사병·열탈진은 어떻게 다른가요?",
+      "year": "2026",
+      "url": "https://www.kdca.go.kr/bbs/kdca/263/310073/artclView.do"
     }
   ]
 }

@@ -143,7 +143,7 @@ test('실제 글: 부작용 총론의 표를 오류 없이 읽고, 생성물(dat
   const r = G.run(ROOT);
   eq(r.errors, []);
   eq(r.data.source.slug, 'side-effects-overview');
-  ok(r.data.rows.length >= 8, '신호가 8줄 이상: ' + r.data.rows.length);
+  ok(r.data.rows.length >= 10, '신호가 10줄 이상: ' + r.data.rows.length);
   eq(G.serialize(DATA), G.serialize(r.data), '생성물이 낡았거나 손으로 고쳤어요 — node tools/gen/red-flags.cjs');
   eq(read('data/kb/red-flags.json'), G.serialize(r.data), '파일 글자 그대로');
 });
@@ -173,9 +173,21 @@ test('실제 자료: 자세한 글 slug 는 모두 실제 글, 근거 번호는 
   ok(SLUGS.has(DATA.source.slug), '원천 글');
 });
 
-test('실제 자료: 주요 응급 신호가 빠지지 않았다(악성 증후군·심장·심근염·호중구·장·경련·열사병·저나트륨)', function () {
+test('실제 자료: 주요 응급 신호가 빠지지 않았다(악성 증후군·심장·심근염·호중구·장·경련·과량 복용·열사병·저나트륨)', function () {
   const states = DATA.rows.map(function (r) { return r.state; }).join(' / ');
-  ['신경이완제 악성 증후군', '심장', '심근염', '호중구', '장', '경련', '열사병', '저나트륨'].forEach(function (w) { has(states, w, '의심되는 상태'); });
+  ['신경이완제 악성 증후군', '심장', '심근염', '호중구', '장', '경련', '과량 복용', '열사병', '저나트륨'].forEach(function (w) { has(states, w, '의심되는 상태'); });
+  /* 과량 복용 줄은 실수여도 바로 119, 챙길 것은 약 봉투·약 이름까지만(양·약 종류 없음). 열사병 줄은 정신이 흐리면 물을 먹이지 않음 */
+  const over = DATA.rows.filter(function (r) { return r.state.indexOf('과량 복용') >= 0; })[0];
+  eq(over.kind, '119', '과량 복용 줄');
+  has(over.sign, '실수로라도');
+  has(over.action, '약 봉투');
+  ok(!/\d/.test((over.sign + over.action).replace(/\b119\b/g, '')), '과량 복용 줄에 119 말고 숫자(양) 없음: ' + over.sign + ' / ' + over.action);
+  /* 클로자핀 글의 "깨워도 잘 깨지 않거나 몹시 혼란스러움 → 바로 119"는 조건 없이 혼자 서는 신호(많이 먹었거나 물을 마셨다는 앞말이 붙지 않음) */
+  ok(DATA.rows.some(function (r) { return r.kind === '119' && r.sign.indexOf('깨워도 잘 깨지 않거나 몹시 혼란스러움') === 0; }), '깨워도 잘 깨지 않음·몹시 혼란이 첫머리에 오는 바로 119 줄');
+  /* 일부러 먹었을 때 갈 길: 과량 복용 줄의 자세한 글에 위기 상담 전화 */
+  ok(over.links.some(function (l) { return l.slug === 'crisis-hotlines'; }), '과량 복용 줄 자세한 글에 위기 상담 전화');
+  const heat = DATA.rows.filter(function (r) { return r.state === '열사병'; })[0];
+  has(heat.action, '먹이지 않아요', '열사병 줄 할 일');
 });
 
 /* 화면·자료 어디에도 쓰지 않는 말: 판정형("당신은 ○○예요", "위험해요", "입원해야"), 안심시키는 행, 용량·중단, 글 검사기 금지 표현 */

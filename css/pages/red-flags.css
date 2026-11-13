@@ -100,9 +100,10 @@
   .pg-red-flags-call { min-width: 0; min-height: 0; padding: 0; background: none; color: var(--ink); font-size: 26pt; }
   .pg-red-flags-ico { width: 20pt; height: 20pt; }
   .pg-red-flags-wrap { margin-top: 3mm; }
-  .pg-red-flags-table { font-size: 9.5pt; line-height: 1.4; }
+  /* 줄 간격 1.35·칸 위아래 1.2mm: 신호가 10줄(과량 복용 줄을 더함)이 되어도 A4·US Letter 한 장에 여유 있게(글자 9.5pt 는 그대로) */
+  .pg-red-flags-table { font-size: 9.5pt; line-height: 1.35; }
   .pg-red-flags-table th { padding: 1.2mm 2.5mm 1.2mm 0; border-bottom: 1pt solid var(--ink); font-size: 9pt; color: var(--ink); }
-  .pg-red-flags-table td { padding: 1.5mm 2.5mm 1.5mm 0; border-bottom: .5pt solid var(--rule-2); }
+  .pg-red-flags-table td { padding: 1.2mm 2.5mm 1.2mm 0; border-bottom: .5pt solid var(--rule-2); }
   .pg-red-flags-table td.pg-red-flags-act { padding-left: 2mm; border-left-width: 1.5pt; color: var(--ink); }
   .pg-red-flags-k-119 .pg-red-flags-lead { color: var(--ink); }
   .pg-red-flags-c1 { width: 36%; }
