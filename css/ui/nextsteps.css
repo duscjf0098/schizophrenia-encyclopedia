@@ -1,0 +1,59 @@
+/* 글 끝 "다음 걸음"·"이 주제의 자주 묻는 질문"과 접힌 "이 문서를 가리키는 문서" (js/ui/nextsteps.js) — 접두어 .ns-
+   글자 크기는 본문 글자 크기(--fs-body)를 따라가요: 설정에서 글자를 키우면 본문 끝 길 안내도 함께 커져요
+   (기본 17px 에서 제목 16px·요약 14px·분류 12.5px 쯤) */
+.ns-wrap { display: grid; gap: 26px; }
+.ns-h { font-family: var(--serif); font-size: max(18px, calc(var(--fs-body) + 1px)); font-weight: 700; line-height: 1.4; margin: 0; padding-bottom: 8px; border-bottom: 1px solid var(--rule); }
+.ns-h:focus { outline: none; }
+.ns-h:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+
+/* 다음 걸음: 분류 색 막대 + 제목·요약·분류, 한 줄에 한 편(엄지로 누르기 쉬운 높이) */
+.ns-list { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; }
+.ns-a { display: flex; align-items: stretch; gap: 12px; min-height: 44px; box-sizing: border-box; padding: 12px 14px; border: 1px solid var(--rule); border-radius: 10px; background: var(--paper-3); color: var(--ink); text-decoration: none; transition: border-color .15s ease; }
+.ns-a .spine { width: 4px; height: auto; align-self: stretch; border-radius: 2px; vertical-align: 0; }
+.ns-a:hover { border-color: var(--accent); }
+.ns-a:hover .ns-t { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+.ns-tx { display: grid; gap: 3px; min-width: 0; }
+.ns-t { font-weight: 650; font-size: calc(var(--fs-body) - 1px); line-height: 1.45; }
+.ns-s { font-size: calc(var(--fs-body) * .82); color: var(--ink-2); line-height: 1.55; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.ns-m { font-size: calc(var(--fs-body) * .74); color: var(--muted); line-height: 1.5; }
+
+/* 역할 한 줄과 고른 근거: 작게, 흐린 글씨 */
+.ns-foot { margin-top: 10px; font-size: calc(var(--fs-body) * .77); color: var(--muted); line-height: 1.65; }
+.ns-foot p { margin: 0; }
+.ns-change { display: inline-block; padding: 11px 4px; margin: -11px -4px; color: var(--accent); font-weight: 650; text-decoration: underline; text-underline-offset: 3px; }
+.ns-change:hover { color: var(--accent-2); }
+
+/* 이 주제의 자주 묻는 질문: 질문 + 답의 첫 문장 */
+.ns-qs { list-style: none; margin: 4px 0 0; padding: 0; }
+.ns-qs li + li { border-top: 1px solid var(--rule); }
+.ns-q { display: flex; align-items: baseline; gap: 10px; min-height: 44px; box-sizing: border-box; padding: 11px 4px; color: var(--ink-2); font-size: calc(var(--fs-body) * .88); line-height: 1.5; text-decoration: none; }
+.ns-qm { flex: none; font-family: var(--serif); font-weight: 700; font-size: calc(var(--fs-body) * .82); color: var(--accent); }
+.ns-qx { display: grid; gap: 2px; min-width: 0; }
+.ns-qa { font-size: calc(var(--fs-body) * .78); color: var(--muted); line-height: 1.55; }
+.ns-q:hover .ns-qt { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+
+/* 접힌 "이 문서를 가리키는 문서" */
+.ns-fold { margin-top: 28px; }
+.ns-fold-s { display: flex; align-items: center; gap: 8px; min-height: 44px; list-style: none; cursor: pointer; border-bottom: 1px solid var(--rule); border-radius: 2px; }
+.ns-fold-s::-webkit-details-marker { display: none; }
+.ns-fold-s::marker { content: ""; }
+.ns-fold-s::after { content: ""; flex: none; width: 7px; height: 7px; margin: -4px 8px 0 auto; border-right: 1.6px solid var(--muted); border-bottom: 1.6px solid var(--muted); transform: rotate(45deg); transition: transform .15s ease; }
+.ns-fold[open] > .ns-fold-s::after { margin-top: 4px; transform: rotate(225deg); }
+.ns-fold-s:hover .ns-fold-h { color: var(--accent); }
+.ns-fold-h { font-family: var(--serif); font-size: 18px; font-weight: 700; line-height: 1.4; margin: 0; padding: 8px 0; }
+.ns-fold > .backlinks { margin-top: 0; padding-bottom: 4px; }
+
+/* 움직임 줄이기: 설정에서 고른 것과 운영체제 설정 모두(전역 규칙은 ::after 에 닿지 않아요) */
+:root[data-motion="reduce"] .ns-a, :root[data-motion="reduce"] .ns-fold-s::after { transition: none; }
+@media (prefers-reduced-motion: reduce) {
+  .ns-a, .ns-fold-s::after { transition: none; }
+}
+@media (max-width: 760px) {
+  .ns-a { padding: 12px; gap: 10px; }
+  .ns-t { font-size: calc(var(--fs-body) - 1.5px); }
+  .ns-s { font-size: calc(var(--fs-body) * .8); }
+}
+/* 종이에는 화면용 길 안내를 싣지 않아요(접힌 목록은 제목만 남아 헷갈리니 함께 숨김) */
+@media print {
+  .ns-wrap, .ns-fold { display: none !important; }
+}

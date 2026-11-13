@@ -1,13 +1,90 @@
 /* home: 쓰는 사람에 맞춰 바뀌는 첫 화면. 선택자는 .hm- 로 시작한다(토큰은 css/style.css). */
 
-/* 어디서 시작할까요? 세 갈래 카드 */
-.hm-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
-.hm-card { --h: 250; position: relative; display: grid; gap: 6px; align-content: start; padding: 18px 44px 18px 18px; border: 1px solid var(--rule); border-left: 4px solid hsl(var(--h) var(--spine-s) var(--spine-l)); border-radius: 12px; background: var(--paper-3); color: var(--ink); min-height: 112px; transition: border-color .15s, transform .15s, box-shadow .15s; }
+/* 역할 자리가 들어오기 전 빈자리: home.js 가 머리 끝에 역할 자리를 끼우면서 아래 묶음이 밀리지 않게(CLS).
+   코어가 그린 첫 화면(.portal)에 data-hm 이 붙기 전까지만 있고, 처음 온 사람(카드 4장) 높이에 맞춘다.
+   셸이 html[data-hm-start="line"](역할을 골랐거나 읽은 기록이 있음)을 미리 달아 주면 한 줄 높이로 줄인다 */
+.portal:not([data-hm]) > .portal-head::after { content: ''; display: block; height: var(--hm-reserve, 0px); }
+.portal:not([data-hm]) { --hm-reserve: 218px; }
+html[data-hm-start="line"] .portal:not([data-hm]) { --hm-reserve: 72px; }
+
+/* 역할 자리: 첫 화면 머리 안 끝(책꽂이 위) */
+.hm-role { margin-top: 22px; }
+.hm-role-h { font-family: var(--serif); font-weight: 700; font-size: 19px; line-height: 1.35; color: var(--ink); margin: 0 0 12px; }
+.hm-role-h:focus { outline: none; }
+.hm-role-h:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+/* 고른 역할·접힌 상태의 한 줄 */
+.hm-role-line { display: flex; align-items: center; gap: 12px; padding: 6px 6px 6px 16px; border: 1px solid var(--rule); border-radius: 12px; background: var(--paper-2); }
+.hm-role-now { flex: 1 1 auto; min-width: 0; font-size: 15px; line-height: 1.5; color: var(--ink-2); }
+.hm-role-now b { color: var(--ink); font-weight: 700; }
+.hm-role-tab { font-size: 13.5px; color: var(--ink-2); }
+.hm-role-text { flex: 1 1 auto; min-width: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 12px; }
+.hm-role-h-s { margin: 0; font-size: 16.5px; }
+/* --paper-2 위의 작은 글자라 --muted(4.39:1) 대신 --ink-2 로 대비 4.5:1 이상 */
+.hm-role-sub { font-size: 13.5px; line-height: 1.5; color: var(--ink-2); }
+.hm-role-btn { flex: none; margin-left: auto; height: 36px; padding: 0 16px; border-radius: 9px; border: 1px solid var(--rule-2); background: var(--paper-3); color: var(--accent); font-size: 14px; font-weight: 650; }
+.hm-role-btn:hover { border-color: var(--accent); background: var(--accent-soft); }
+.hm-role-btn[aria-expanded="true"] { background: var(--accent-soft); border-color: var(--accent); }
+.hm-role-panel { margin-top: 10px; }
+.hm-role-alt { margin: 10px 0 0; font-size: 13.5px; line-height: 1.6; color: var(--ink-2); }
+.hm-role-alt a { color: var(--accent); font-weight: 650; text-decoration: underline; text-underline-offset: 2px; }
+.hm-role-note { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; margin: 6px 0 0; font-size: 13px; line-height: 1.6; color: var(--muted); }
+.hm-role-clear { min-height: 32px; padding: 0 10px; border-radius: 8px; color: var(--ink-2); font-size: 13px; text-decoration: underline; text-underline-offset: 2px; }
+.hm-role-clear:hover { background: var(--paper-2); color: var(--ink); }
+
+/* 네 갈래 카드 */
+.hm-cards { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.hm-card { --h: 250; position: relative; display: grid; gap: 4px; align-content: start; padding: 14px 32px 14px 14px; border: 1px solid var(--rule); border-left: 4px solid hsl(var(--h) var(--spine-s) var(--spine-l)); border-radius: 12px; background: var(--paper-3); color: var(--ink); min-height: 100px; transition: border-color .15s, box-shadow .15s; }
 .hm-card:hover { border-color: var(--accent); border-left-color: hsl(var(--h) var(--spine-s) var(--spine-l)); box-shadow: 0 4px 16px rgba(20, 24, 40, .06); }
-.hm-card:hover .hm-card-go { color: var(--accent); transform: translateX(3px); }
-.hm-card-t { font-family: var(--serif); font-weight: 700; font-size: 19px; line-height: 1.3; }
-.hm-card-d { font-size: 14px; color: var(--ink-2); line-height: 1.6; }
-.hm-card-go { position: absolute; right: 16px; top: 16px; font-size: 20px; color: var(--muted); transition: transform .15s, color .15s; }
+.hm-card:hover .hm-card-go { color: var(--accent); }
+.hm-card[aria-current="true"] { background: var(--accent-soft); }
+.hm-card-t { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; font-family: var(--serif); font-weight: 700; font-size: 17.5px; line-height: 1.3; }
+.hm-card-now { font-family: var(--sans); font-size: 12px; font-weight: 650; line-height: 20px; padding: 0 7px; border-radius: 999px; border: 1px solid var(--accent); color: var(--accent); }
+.hm-card-d { font-size: 13.5px; color: var(--ink-2); line-height: 1.55; }
+.hm-card-go { position: absolute; right: 12px; top: 13px; font-size: 18px; color: var(--muted); transition: color .15s; }
+
+/* 차분한 두 입구: 같은 높이·같은 무게(책꽂이 아래). 휴대폰에서도 한 줄에 두 칸이라 한 화면에 함께 보인다 */
+.hm-doors { margin-top: 26px; }
+.hm-doors-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.hm-doors-list > li { display: flex; }
+.hm-doors-list > li:only-child { grid-column: 1 / -1; }
+.hm-door { flex: 1; display: flex; flex-wrap: wrap; align-items: center; gap: 2px 12px; min-height: 52px; padding: 10px 16px; border: 1px solid var(--rule); border-left: 3px solid var(--accent); border-radius: 0 12px 12px 0; background: var(--paper-2); color: var(--ink); }
+.hm-door:hover { border-color: var(--accent); background: var(--accent-soft); }
+.hm-door-k { font-size: 14.5px; color: var(--ink-2); }
+.hm-door-go { margin-left: auto; display: inline-flex; align-items: center; gap: 6px; font-size: 15px; font-weight: 700; color: var(--accent); white-space: nowrap; }
+.hm-door-ar { font-weight: 400; }
+/* 인쇄 전용 위기 고지(화면에서는 숨김: 화면의 위기 입구는 상단 버튼과 이 줄뿐) */
+.hm-doors-print { display: none; }
+
+/* 살펴보기(nav 에 home 이 있는 특집 화면) */
+.hm-xp-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.hm-xp-list > li { display: flex; }
+.hm-xp-list > li:only-child { grid-column: 1 / -1; }
+.hm-xp { flex: 1; display: grid; gap: 4px; align-content: start; padding: 14px 16px; border: 1px solid var(--rule); border-radius: 12px; background: var(--paper-3); color: var(--ink); }
+.hm-xp:hover { border-color: var(--accent); }
+.hm-xp-t { font-family: var(--serif); font-weight: 700; font-size: 17px; line-height: 1.35; }
+.hm-xp-d { font-size: 14px; color: var(--ink-2); line-height: 1.6; }
+
+/* 최근에 읽은 문서: 제목 줄(제목 h2 + 가리기 버튼), 접어 둔 위기·응급 글, 기록 쉼 안내 */
+.hm-recent-head { display: flex; align-items: center; gap: 12px; margin: 40px 0 14px; padding-bottom: 8px; border-bottom: 1px solid var(--rule); }
+.hm-recent-head > .h-sec { flex: 1 1 auto; min-width: 0; margin: 0; padding: 0; border: 0; }
+.hm-recent-btn { flex: none; margin-left: auto; height: 32px; padding: 0 10px; border-radius: 8px; font-family: var(--sans); font-weight: 500; font-size: 14px; color: var(--accent); }
+.hm-recent-btn:hover { background: var(--paper-2); text-decoration: underline; }
+.hm-recent-hidden { font-size: 14px; line-height: 1.6; color: var(--ink-2); padding: 4px 2px; }
+.hm-sens { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; padding: 10px 4px; border-bottom: 1px solid var(--rule); font-size: 14px; line-height: 1.6; color: var(--ink-2); }
+.hm-sens-btn { min-height: 32px; padding: 0 10px; border-radius: 8px; color: var(--accent); font-size: 14px; font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
+.hm-sens-btn:hover { background: var(--paper-2); }
+.hm-paused { margin: 0 0 12px; padding: 8px 12px; border: 1px dashed var(--rule-2); border-radius: 10px; font-size: 13.5px; line-height: 1.6; color: var(--ink-2); }
+.hm-paused a { color: var(--accent); font-weight: 650; text-decoration: underline; text-underline-offset: 2px; }
+.hm-paused-box { margin-top: 32px; }
+.hm-paused-box .hm-paused { margin: 0; }
+
+/* 기록 가리기(.hm-veil): 이어서 읽기 본문, 코스 진행, 읽음 표시를 함께 가린다 */
+.hm-veil-note { display: none; font-size: 14px; line-height: 1.6; color: var(--ink-2); padding: 4px 2px; }
+.hm-veil [data-sec="continue"] .hm-veil-note { display: block; }
+.hm-veil [data-sec="continue"] .continue { display: none; }
+.hm-veil [data-sec="courses"] .course .bar,
+.hm-veil [data-sec="courses"] .course .bar-label { visibility: hidden; }
+.hm-veil .read-mark { display: none; }
 
 /* 새로 올라온 글 */
 .hm-new-date { margin-left: auto; font-family: var(--sans); font-weight: 500; font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
@@ -21,9 +98,39 @@
 .hm-install-x { margin-left: auto; width: 36px; height: 36px; border-radius: 9px; color: var(--muted); font-size: 20px; line-height: 1; }
 .hm-install-x:hover { background: var(--paper-3); color: var(--ink); }
 
+@media (max-width: 980px) {
+  .hm-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .portal:not([data-hm]) { --hm-reserve: 328px; }
+}
 @media (max-width: 760px) {
-  .hm-cards { grid-template-columns: minmax(0, 1fr); }
-  .hm-card { min-height: 0; padding: 16px 44px 16px 16px; }
+  .hm-role { margin-top: 18px; }
+  .hm-role-h { font-size: 18px; margin-bottom: 10px; }
+  .hm-role-h-s { font-size: 16px; }
+  .hm-role-line { padding: 4px 4px 4px 14px; }
+  .hm-role-btn { height: 44px; padding: 0 16px; }
+  .hm-role-clear { min-height: 44px; }
+  /* 휴대폰: 한 손으로 누르기 쉬운 한 줄씩 */
+  .hm-cards { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .hm-card { min-height: 0; gap: 2px; padding: 11px 36px 11px 14px; }
+  .hm-card-t { font-size: 17px; }
+  .hm-card-d { font-size: 13.5px; }
+  .hm-card-go { top: 50%; margin-top: -13px; right: 14px; }
+  .portal:not([data-hm]) { --hm-reserve: 411px; }
+  html[data-hm-start="line"] .portal:not([data-hm]) { --hm-reserve: 72px; }
+  .hm-doors { margin-top: 18px; }
+  .hm-doors-list { gap: 8px; }
+  .hm-door { flex-direction: column; align-items: flex-start; justify-content: center; gap: 0; min-height: 56px; padding: 8px 12px; }
+  .hm-door-k { font-size: 13.5px; }
+  .hm-door-go { margin-left: 0; }
+  .hm-xp-list { grid-template-columns: minmax(0, 1fr); }
+  .hm-recent-btn { height: 44px; }
+  .hm-sens-btn { min-height: 44px; }
   .hm-install { margin-top: 24px; }
   .hm-install-x { width: 44px; height: 44px; }
+}
+@media print {
+  /* 역할(기기 안 기록)과 화면용 버튼·카드는 종이에 남기지 않는다. 두 입구 대신 번호가 든 위기 고지 한 줄 */
+  .hm-role, .hm-doors-list, .hm-recent-btn, .hm-sens-btn, .hm-install { display: none !important; }
+  .hm-doors-print { display: block !important; }
+  .portal-head::after { display: none !important; }
 }

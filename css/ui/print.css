@@ -1,0 +1,144 @@
+/* 인쇄 모듈(js/ui/print.js): 문서 화면의 "인쇄" 버튼과 모든 화면의 인쇄 모양.
+   화면: .prt-btn 은 기존 .btn 과 같은 모양. 인쇄용 머리·꼬리(.prt-head, .prt-foot)는 화면에서 숨김.
+   인쇄(@media print): 밝은 색 강제(어두운 화면에서도), 상단 바·목차·여백·하단 바·모듈 장치 숨김, 접힌 차례·소절 펴기,
+   출처 링크 뒤 주소, 표·콜아웃이 쪽 사이에서 잘리지 않게.
+   싣는 순서: css/style.css 다음에 css/ui.css(모듈 css 를 이름순으로 이어 붙임)가 실려요. 그래서 style.css 의 @media print 는 이 파일이 이기지만,
+   ui.css 안에서는 이름이 뒤인 모듈(reading·settings·shelf·sticky·trust …)이 같은 특이도면 이겨요. 그런 곳은 특이도를 높여 둬요.
+   특집 화면(길잡이·질문 바구니·종이 양식)의 인쇄 모양은 각 화면 css 가 맡고, 여기 규칙(색 강제·크롬 숨김)을 함께 써요.
+   인쇄 토큰은 특이도 (0,2,1) 로 정해요. style.css 의 어두운 화면 선택자(0,2,0)는 이기고, 특집 화면이
+   :root:has(.fp-body[data-page="…"])(0,3,0) 처럼 더 구체적인 선택자로 자기 인쇄 토큰을 정하면 그쪽이 이겨요(!important 를 쓰지 않아요).
+   모듈이 문서 자리에 끼운 상자: 인쇄에서 after-body·end·margin 자리는 숨기고 lead 자리는 남겨요.
+   바꾸려면 상자에 data-print="keep"(남김) 또는 data-print="hide"(숨김). */
+
+.prt-head, .prt-foot { display: none; }
+/* 인쇄 버튼은 한 줄로, 정보 상자 줄에서는 글자만큼만 차지해요. 칸을 똑같이 셋으로 나누면 공유 버튼이 "주소 복사됨"으로
+   바뀔 때 두 줄로 넘쳐서, 옆 버튼(코어)은 건드리지 않고 이 버튼이 덜 차지해요 */
+.prt-btn { white-space: nowrap; }
+.infobox-actions .prt-btn { flex: 0 0 auto; padding: 0 12px; }
+
+@media print {
+  @page { margin: 16mm 15mm 18mm; }
+
+  /* ---------- 밝은 색 강제: 어두운 화면(운영체제 설정이든 직접 고른 것이든)에서도 흰 종이에 먹색 글자 ---------- */
+  html:root:not([data-print-tokens="own"]) {
+    color-scheme: light;
+    --paper: #ffffff;
+    --paper-2: #f4f4f2;
+    --paper-3: #ffffff;
+    --ink: #111418;
+    --ink-2: #30353d;
+    --muted: #555b64;
+    --rule: #d0d3d0;
+    --rule-2: #9ea3a3;
+    --accent: #3a3591;
+    --accent-2: #2e2a78;
+    --accent-soft: #ecebfa;
+    --accent-ink: #ffffff;
+    --mark: #fff0a6;
+    --bad: #9b1c14;
+    --bad-soft: #fdeceb;
+    --warn: #7d4605;
+    --warn-soft: #fdf3e2;
+    --ok: #1a6634;
+    --ok-soft: #e8f5ec;
+    --spine-s: 38%;
+    --spine-l: 56%;
+    --shadow-pop: none;
+  }
+
+  /* ---------- 본문 글자 크기: 보기 설정을 따르되 종이에 맞게 줄여요(아주 크게 25px 가 그대로 오면 쪽수가 두 배 가까이 늘어요).
+     작게 10.5pt · 보통 11.5pt · 크게 12pt · 더 크게·아주 크게 13pt. settings.css 의 :root[data-fs](0,2,0)보다 구체적인 (0,2,1) */
+  html:root:not([data-fs]), html:root[data-fs="m"] { --fs-body: 11.5pt; }
+  html:root[data-fs="s"] { --fs-body: 10.5pt; }
+  html:root[data-fs="l"] { --fs-body: 12pt; }
+  html:root[data-fs="xl"], html:root[data-fs="xxl"] { --fs-body: 13pt; }
+  html, body { background: #ffffff !important; color: var(--ink) !important; }
+  body { margin: 0 !important; padding: 0 !important; }
+
+  /* ---------- 크롬 숨김 ----------
+     body 바로 아래에는 본문 틀(.shell)과 바닥글만 남겨요. 상단 바·진행 막대·건너뛰기·팝오버와
+     모듈이 body 에 붙인 하단 바·시트·토스트·안내 띠는 이름을 몰라도 모두 숨겨요. */
+  body > :not(.shell):not(.sitefoot) { display: none !important; }
+  .sidenav, .scrim, .doc-margin, .rd-bar, .prt-btn, .doc-meta-m .acts,
+  .course-nav, .backlinks, .see-also, .pager,
+  .doc-slot[data-slot="after-body"] > :not([data-print="keep"]),
+  .doc-slot[data-slot="end"] > :not([data-print="keep"]),
+  .doc-slot[data-slot="margin"],
+  [data-print="hide"],
+  .prt-head + .crumb { display: none !important; }
+  /* 찾기 입력 줄: 화면에는 "찾는 말은 이 기기 안에서만"이라고 적혀 있으니, 입력한 말이 종이·PDF 로 기기 밖에 남지 않게 숨겨요 */
+  #app .searchbar, #app input[type="search"] { display: none !important; }
+  .doc-slot[data-slot="after-body"], .doc-slot[data-slot="end"] { margin: 0 !important; }
+
+  /* ---------- 틀: 한 단으로 ---------- */
+  .shell { display: block !important; max-width: none !important; margin: 0 !important; padding: 0 !important; }
+  main, #app { padding: 0 !important; min-height: 0 !important; }
+  .doc, .doc-main { display: block !important; max-width: none !important; }
+  .page-title { color: var(--ink); }
+
+  /* ---------- 인쇄 머리와 꼬리(js/ui/print.js 가 끼움) ---------- */
+  .prt-head { display: flex !important; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 2px 16px; margin: 0 0 14px; padding: 0 0 8px; border-bottom: 1px solid var(--rule-2); font-size: 9.5pt; line-height: 1.5; color: var(--ink-2); break-after: avoid; break-inside: avoid; }
+  .prt-site { font-family: var(--serif); font-weight: 700; color: var(--ink); }
+  .prt-date { color: var(--muted); white-space: nowrap; }
+  .prt-url { flex: 1 1 100%; color: var(--muted); word-break: break-all; overflow-wrap: anywhere; }
+  .prt-tel { flex: 1 1 100%; margin-top: 2px; color: var(--ink); font-weight: 650; }
+  .prt-foot { display: block !important; margin-top: 10px; break-inside: avoid; }
+
+  /* 바닥 고지(일반 정보·AI 초안·감수 없음·109·1577-0199): style.css 는 숨기지만 인쇄물에도 남겨요(자바스크립트가 없어도).
+     문서 꼬리가 있는 문서 화면과 고지 줄(.fp-notices)이 있는 특집 화면에서는 같은 고지를 겹쳐 싣지 않아요. */
+  html body > footer.sitefoot { display: block !important; margin-top: 18px; border-top: 1px solid var(--rule-2); background: none !important; break-inside: avoid; }
+  html body > footer.sitefoot .sitefoot-inner { max-width: none; padding: 10px 0 0; font-size: 9.5pt; }
+  html.prt-doc body > .sitefoot { display: none !important; }
+
+  /* ---------- 문서 머리 한 줄과 차례: 종이 폭과 상관없이 보이게 ---------- */
+  .doc-meta-m { display: flex !important; flex-wrap: wrap; gap: 4px 14px; align-items: center; margin-top: 10px; font-size: 10pt; color: var(--muted); }
+  .toc-m { display: block !important; margin: 14px 0 0; padding: 8px 12px; border: 1px solid var(--rule); border-radius: 8px; font-size: 10pt; break-inside: avoid; }
+  .toc-m summary { display: block; list-style: none; padding: 0; font-weight: 700; color: var(--ink-2); cursor: auto; }
+  .toc-m summary::-webkit-details-marker { display: none; }
+  .toc-m ol { margin: 4px 0 0; padding: 0 0 0 22px; }
+  .toc-m li { margin: 2px 0; }
+  .toc-m li.l3 { margin-left: 14px; list-style: circle; }
+
+  /* ---------- 접힌 것 펴기 ---------- */
+  /* 요약 보기로 접힌 소절: 숨긴 문단을 보이고, 접기 제목은 보통 소제목으로 */
+  html .body .rd-hidden { display: revert !important; } /* reading.css(이름순으로 뒤에 실림)의 .rd-hidden 숨김을 특이도로 이겨요 */
+  html .body h2.rd-fold { display: block; color: var(--ink); cursor: auto; margin: 1.9em 0 .55em; padding-bottom: .35em; border-bottom: 1px solid var(--rule); }
+  html .body h2.rd-fold::after { content: none; display: none; }
+
+  /* ---------- 본문 ---------- */
+  .body .term { text-decoration: none !important; background: none !important; cursor: auto; }
+  .body img { max-width: 100% !important; height: auto; }
+  .body .tbl { overflow: visible !important; }
+  .body table { width: 100%; font-size: .86em; }
+  .body th { white-space: normal !important; }
+  .body thead { display: table-header-group; }
+  .body p, .body li { orphans: 3; widows: 3; }
+  .body h2, .body h3, .sources h2, .keypoints-h { break-after: avoid; }
+
+  /* 표·콜아웃·위기 안내가 쪽 사이에서 잘리지 않게(한 쪽보다 길면 브라우저가 어쩔 수 없이 나눠요. 그때도 줄은 안 갈라요) */
+  .body .tbl, .body table, .body tr, .body blockquote, .body pre, .body img, .body figure,
+  .callout, .crisis, .emergency, .keypoints, .notice, .disclaimer { break-inside: avoid; }
+
+  /* ---------- 출처 링크 뒤에 주소 ---------- */
+  .sources { margin-top: 26px; }
+  .sources a { color: var(--ink) !important; text-decoration: none; }
+  .sources a[href^="http"]::after,
+  .body a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    display: inline; margin: 0; font-size: inherit; font-weight: 400; vertical-align: baseline; opacity: 1;
+    color: var(--ink-2); text-decoration: none; word-break: break-all; overflow-wrap: anywhere;
+  }
+  .disclaimer { border: 1px solid var(--rule); }
+}
+
+/* 고지 줄이 있는 특집 화면에서는 바닥 고지를 겹쳐 싣지 않아요(:has 를 모르는 브라우저에서는 이 규칙만 빠지고 바닥글이 한 번 더 실려요) */
+@media print {
+  body:has(.fp-notices) > .sitefoot { display: none !important; }
+}
+/* 접힌 차례(details)를 자바스크립트 없이도 펴요(지원 브라우저). 모르는 브라우저에서는 이 규칙만 빠지고 print.js 가 폅니다 */
+@media print {
+  #app article.doc details.toc-m::details-content,
+  #app article.doc .body details::details-content { content-visibility: visible; display: block; }
+  /* 펼쳐 싣는 본문 details 의 표시도 열린 모양으로(js 의 details() 와 같은 범위만) */
+  #app article.doc .body details > summary { list-style-type: disclosure-open; }
+}

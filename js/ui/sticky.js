@@ -51,6 +51,8 @@
       const a = el('a', { href: '#' + t.id, class: t.level === 3 ? 'l3' : '', 'data-h': t.id }, [t.text]);
       a.addEventListener('click', function (e) {
         e.preventDefault(); closeMenu(false);
+        /* 요약 보기로 접힌 소절이면 먼저 편다 */
+        if (JHB.ui && JHB.ui.reading && JHB.ui.reading.reveal) JHB.ui.reading.reveal(t.id);
         const n = document.getElementById(t.id);
         if (n) { n.scrollIntoView({ behavior: reduce() ? 'auto' : 'smooth', block: 'start' }); n.setAttribute('tabindex', '-1'); setTimeout(function () { n.focus({ preventScroll: true }); }, reduce() ? 30 : 400); }
       });

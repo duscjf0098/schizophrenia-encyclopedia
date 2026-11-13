@@ -1,0 +1,76 @@
+/* css/ui/nowhelp.css — "지금 도움" 시트. 넓은 화면은 가운데 대화상자, 휴대폰(.nh-phone)은 아래에서 올라오는 시트.
+   색은 차분하게: 종이 바탕 + 강조색(보라) 번호. 빨간 바탕·경고 아이콘을 쓰지 않아요.
+   글자는 앱의 글자 크기 설정(--fs-body)을 따라 em 으로 커져요(번호는 너무 커져 넘치지 않게 상한). */
+html.nh-lock { overflow: hidden; }
+html.nh-lock.nh-gutter { scrollbar-gutter: stable; }
+.nh-scrim { position: fixed; inset: 0; z-index: 110; background: rgba(10, 12, 20, .38); touch-action: none; }
+.nh-sheet { position: fixed; z-index: 111; top: calc(var(--top-h) + 20px); left: 50%; transform: translateX(-50%); width: min(460px, calc(100vw - 32px)); max-height: calc(100vh - var(--top-h) - 40px); display: flex; flex-direction: column; background: var(--paper-3); color: var(--ink); border: 1px solid var(--rule-2); border-radius: 16px; box-shadow: var(--shadow-pop); outline: none; font-size: var(--fs-body, 17px); }
+.nh-sheet[hidden], .nh-scrim[hidden] { display: none; }
+.nh-head { display: flex; align-items: center; gap: 8px; padding: 12px 10px 4px 20px; flex: none; }
+.nh-title { margin: 0; flex: 1; min-width: 0; font-family: var(--serif); font-size: 1.12em; font-weight: 700; line-height: 1.4; color: var(--ink); word-break: keep-all; }
+.nh-title:focus { outline: none; }
+.nh-x { flex: none; width: 44px; height: 44px; display: grid; place-items: center; border-radius: 10px; color: var(--muted); font-size: 24px; line-height: 1; }
+.nh-x:hover { background: var(--paper-2); color: var(--ink); }
+.nh-body { padding: 0 16px 16px; overflow: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
+.nh-lead { margin: 0 4px 12px; color: var(--ink-2); font-size: .88em; line-height: 1.6; word-break: keep-all; }
+
+/* 전화 줄 */
+/* 줄의 최소 폭이 번호+이름 한 덩어리로 커지지 않게(큰 글자에서 번호가 잘리던 문제) */
+.nh-tels { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; }
+.nh-tel { margin: 0; min-width: 0; }
+.nh-what { display: flex; flex-direction: column; gap: 1px; min-width: 0; flex: 1; }
+.nh-name { font-size: .88em; font-weight: 650; color: var(--ink); line-height: 1.4; word-break: keep-all; overflow-wrap: anywhere; }
+.nh-note { font-size: .76em; color: var(--muted); line-height: 1.4; }
+.nh-num { font-variant-numeric: tabular-nums; font-weight: 750; color: var(--accent); white-space: nowrap; letter-spacing: .01em; }
+.nh-ic { flex: none; display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); }
+.nh-ic svg { display: block; }
+
+/* 넓은 화면: 이름 · 큰 번호(글자) · 번호 복사 */
+.nh-wide { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; padding: 10px 10px 10px 16px; border: 1px solid var(--rule); border-radius: 12px; background: var(--paper); }
+/* 이름 칸이 6.5em 보다 좁아지면 번호·복사가 다음 줄로(큰 글자에서 이름이 글자마다 끊기지 않게) */
+.nh-wide .nh-what { flex: 1 1 6.5em; }
+.nh-wide .nh-num { margin-left: auto; font-size: min(1.53em, 34px); line-height: 1.2; padding: 2px 4px; user-select: all; }
+.nh-copy { flex: none; min-height: 44px; padding: 0 14px; border: 1px solid var(--rule-2); border-radius: 999px; background: var(--paper-3); color: var(--ink-2); font-size: .8em; font-weight: 600; white-space: nowrap; }
+.nh-copy:hover { border-color: var(--accent); color: var(--accent); }
+.nh-copy.nh-done { border-color: var(--ok); color: var(--ok); }
+
+/* 휴대폰: 줄 전체가 전화 버튼 */
+.nh-call { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 12px; min-height: 60px; padding: 10px 16px 10px 12px; border: 1px solid var(--rule-2); border-radius: 14px; background: var(--paper); color: var(--ink); -webkit-tap-highlight-color: transparent; }
+.nh-call .nh-what { flex: 1 1 7em; }
+.nh-call .nh-num { margin-left: auto; font-size: min(1.3em, 28px); }
+.nh-call:hover, .nh-call:active { background: var(--accent-soft); border-color: var(--accent); }
+
+/* 글 링크 */
+.nh-links { list-style: none; margin: 14px 0 0; padding: 6px 0 0; border-top: 1px solid var(--rule); }
+.nh-links li { margin: 0; }
+.nh-link { display: flex; align-items: center; gap: 10px; min-height: 48px; padding: 8px 8px 8px 6px; border-radius: 10px; color: var(--ink); font-size: .88em; line-height: 1.45; }
+.nh-link:hover { background: var(--paper-2); }
+.nh-link .nh-ic { width: 24px; height: 24px; background: none; color: var(--muted); margin-left: auto; }
+.nh-lt { min-width: 0; word-break: keep-all; }
+.nh-ls { display: block; font-size: .87em; color: var(--muted); }
+.nh-alt .nh-lt { color: var(--accent); font-weight: 650; }
+.nh-alt .nh-ls { font-weight: 400; }
+/* 맨 아래 작은 고지(번호를 가리지 않게 끝에) */
+.nh-foot { margin: 12px 4px 0; padding-top: 10px; border-top: 1px solid var(--rule); color: var(--muted); font-size: .72em; line-height: 1.55; word-break: keep-all; }
+.nh-ghost { position: fixed; left: -9999px; top: 0; width: 1px; height: 1px; opacity: 0; }
+
+/* 휴대폰(좁은 화면이나 터치 기기): 아래에서 올라오는 시트, 엄지가 닿는 아래쪽에 전화 줄 */
+.nh-sheet.nh-phone { top: auto; bottom: 0; left: 0; right: 0; transform: none; width: auto; max-width: 560px; margin: 0 auto; max-height: 88vh; max-height: 88dvh; border-radius: 18px 18px 0 0; border-bottom: 0; padding-bottom: env(safe-area-inset-bottom, 0px); }
+.nh-phone .nh-head { padding: 10px 8px 2px 20px; }
+.nh-phone .nh-head::before { content: ""; position: absolute; top: 6px; left: 50%; width: 36px; height: 4px; margin-left: -18px; border-radius: 2px; background: var(--rule-2); }
+.nh-phone .nh-body { padding: 0 12px 14px; }
+/* 아주 좁은 휴대폰(360px 이하): 아이콘을 빼서 이름과 번호가 한 줄에 */
+@media (max-width: 360px) {
+  .nh-call { column-gap: 10px; padding: 10px 12px; }
+  .nh-call .nh-ic { display: none; }
+  .nh-call .nh-num { font-size: min(1.18em, 24px); }
+}
+
+/* 움직임: 움직임 줄이기(운영체제·앱 설정)에서는 없음 */
+.nh-sheet.nh-anim { animation: nh-in .18s ease; }
+.nh-sheet.nh-anim.nh-phone { animation: nh-up .22s ease; }
+@keyframes nh-in { from { opacity: 0; transform: translate(-50%, 8px); } to { opacity: 1; transform: translateX(-50%); } }
+@keyframes nh-up { from { opacity: .4; transform: translateY(28px); } to { opacity: 1; transform: none; } }
+:root[data-motion="reduce"] .nh-sheet { animation: none !important; }
+@media (prefers-reduced-motion: reduce) { .nh-sheet { animation: none !important; } }
+@media print { .nh-sheet, .nh-scrim { display: none !important; } html.nh-lock { overflow: visible; } }

@@ -1,0 +1,47 @@
+/* 믿음 장치(js/ui/trust.js): 출처 확인일 상자와 "이 글의 고친 내역". 선택자는 .trust- 접두어, 색은 토큰만.
+   넓은 화면은 여백(margin) 자리의 상자, 여백이 숨는 1080px 이하와 인쇄는 글 끝(end) 자리의 상자(.trust-rev-m). */
+.trust-rev { padding: 12px 14px; border: 1px solid var(--rule); border-radius: 12px; background: var(--paper-3); font-size: 13.5px; line-height: 1.6; }
+.trust-rev-line { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 12px; }
+.trust-rev-k { color: var(--muted); }
+.trust-rev-d { font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; }
+.trust-rev-def { margin-top: 6px; font-size: 12.5px; line-height: 1.6; color: var(--muted); }
+.trust-jump { display: block; width: 100%; min-height: 32px; margin-top: 10px; padding: 8px 0 0; border-top: 1px solid var(--rule); text-align: left; font-size: 13px; font-weight: 600; color: var(--accent); }
+.trust-jump:hover { text-decoration: underline; text-underline-offset: 3px; }
+.trust-rev-jump { padding: 6px 14px; }
+.trust-rev-jump .trust-jump { margin-top: 0; padding-top: 0; border-top: 0; }
+
+.trust-end { display: grid; gap: 12px; }
+.trust-end > * + * { margin-top: 0; }
+.trust-hist { border: 1px solid var(--rule); border-radius: 10px; font-size: 14.5px; }
+/* 펼침 표시(▸)는 문서 차례(.toc-m)처럼 기본 표시를 그대로 써요 */
+.trust-hist > summary { min-height: 44px; padding: 11px 14px; cursor: pointer; font-weight: 600; color: var(--ink-2); }
+.trust-hist > summary:hover { color: var(--ink); }
+.trust-hist-n { margin-left: 8px; font-size: 13.5px; font-weight: 500; color: var(--muted); }
+.trust-hist-list { list-style: none; margin: 0; padding: 0 14px 4px; }
+.trust-hist-item { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; padding: 10px 0; border-top: 1px solid var(--rule); }
+.trust-hist-d { font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.trust-kind { padding: 0 8px; border: 1px solid currentColor; border-radius: 999px; font-size: 12px; font-weight: 600; line-height: 1.6; white-space: nowrap; }
+.trust-k-new { color: var(--ok); }
+.trust-k-enrich { color: var(--accent); }
+.trust-k-fix { color: var(--ink-2); background: var(--paper-2); border-color: var(--rule-2); }
+.trust-k-feature { color: var(--muted); border-style: dashed; }
+.trust-hist-w { flex: 1 1 16em; min-width: 0; line-height: 1.6; color: var(--ink-2); }
+.trust-hist-foot { padding: 6px 14px 10px; border-top: 1px solid var(--rule); font-size: 13.5px; color: var(--muted); }
+.trust-hist-foot a { display: inline-block; padding: 6px 0; color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+
+@media (max-width: 760px) {
+  .trust-hist-foot a { display: inline-flex; align-items: center; min-height: 44px; padding: 0; }
+}
+/* 넓은 화면에서는 여백 상자가 보이니 글 끝의 같은 줄은 숨겨요(인쇄에서는 여백이 숨으니 남겨요) */
+@media screen and (min-width: 1081px) {
+  .trust-rev-m { display: none; }
+  .trust-end:not(:has(.trust-hist)) { display: none; }
+  /* 좁은 화면에서 넓은 화면으로 바뀌어 보일 것 없는 글 끝 상자만 남았으면, 그 자리의 빈 간격(28px)도 없애요 */
+  .doc-slot[data-slot="end"]:not(:has(> :not(.trust-end))):not(:has(.trust-hist)) { display: none; }
+}
+/* 종이에는 출처 확인 줄만(접힌 내역·이동 버튼은 빼요) */
+@media print {
+  .trust-jump, .trust-hist { display: none; }
+  .trust-end:not(:has(.trust-rev-m)) { display: none; }
+  .trust-rev { break-inside: avoid; }
+}

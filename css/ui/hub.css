@@ -1,0 +1,63 @@
+/* hub — 분류 화면 소묶음(js/ui/hub.js). 선택자는 .hb- 로 시작한다(토큰은 css/style.css). */
+.hb { margin-top: 18px; }
+
+/* 4·5·10·11 분류의 차분한 한 줄 */
+.hb-help { margin: 0 0 16px; padding: 8px 14px; max-width: 62ch; border-left: 3px solid var(--accent); border-radius: 0 10px 10px 0; background: var(--paper-2); font-size: 14.5px; line-height: 1.6; color: var(--ink-2); }
+.hb-help a { display: inline-block; padding: 4px 0; color: var(--ink); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+.hb-help a:hover { color: var(--accent); }
+
+/* 먼저 읽을 글 */
+.hb-first { max-width: 760px; padding: 12px 18px 4px; border: 1px solid var(--rule); border-radius: 12px; background: var(--paper-3); }
+.hb-first-h { font-family: var(--sans); font-size: 13.5px; font-weight: 700; color: var(--accent); margin: 0 0 2px; }
+.hb-first ol { list-style: none; margin: 0; padding: 0; counter-reset: hbf; }
+.hb-first li { counter-increment: hbf; border-top: 1px solid var(--rule); }
+.hb-first li:first-child { border-top: 0; }
+.hb-first a { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 2px 12px; align-items: start; min-height: 44px; padding: 10px 0; color: var(--ink); }
+.hb-first a::before { content: counter(hbf); grid-row: 1 / span 2; width: 24px; height: 24px; margin-top: 1px; border-radius: 50%; border: 1.5px solid var(--rule-2); display: grid; place-items: center; font-family: var(--serif); font-weight: 700; font-size: 13px; color: var(--muted); background: var(--paper); }
+.hb-t { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; font-weight: 650; font-size: 16px; line-height: 1.45; }
+.hb-first a:hover .hb-t { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+.hb-s { grid-column: 2; font-size: 14px; color: var(--ink-2); line-height: 1.55; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+/* 묶음 건너뛰기 */
+.hb-jump { display: flex; flex-wrap: wrap; gap: 6px; margin: 18px 0 2px; }
+.hb-jump a { display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 4px 12px; border: 1px solid var(--rule-2); border-radius: 999px; background: var(--paper-3); font-size: 14px; line-height: 1.3; color: var(--ink-2); }
+.hb-jump a:hover { border-color: var(--accent); color: var(--accent); }
+.hb-jump .n { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+/* 묶음 */
+.hb-group { margin-top: 28px; }
+.hb-gh { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 12px; padding-bottom: 8px; font-family: var(--serif); font-weight: 700; font-size: 19px; line-height: 1.35; }
+.hb-gn { font-family: var(--sans); font-size: 13px; font-weight: 500; color: var(--muted); font-variant-numeric: tabular-nums; }
+.hb-extra .hb-gh { color: var(--ink-2); }
+.hb-rows .row a { padding: 12px 4px; }
+
+@media (max-width: 760px) {
+  .hb { margin-top: 14px; }
+  .hb-first { padding: 10px 14px 2px; }
+  .hb-jump a { min-height: 44px; padding: 4px 12px; }
+  .hb-help a { padding: 10px 0; }
+  /* 먼저 읽을 글의 요약은 아래 묶음의 같은 행에도 있으니 휴대폰에서는 제목만 */
+  .hb-first .hb-s { display: none; }
+  .hb-first a { gap: 0 12px; padding: 8px 0; align-items: center; }
+  .hb-first a::before { grid-row: auto; margin-top: 0; }
+  /* 키보드로 내려갈 때 포커스가 하단 바(약 63px) 밑에 숨지 않게 */
+  .hb a { scroll-margin-bottom: 72px; }
+  .hb-group { margin-top: 24px; }
+  .hb-gh { font-size: 18px; }
+  /* 행 간소화: 제목 줄 오른쪽에 근거·읽음, 요약은 한 줄 */
+  .hb-rows .row a { grid-template-columns: minmax(0, 1fr) auto; gap: 2px 10px; padding: 10px 2px; min-height: 44px; }
+  .hb-rows .row-t { font-size: 16px; line-height: 1.4; }
+  .hb-rows .row-s { grid-column: 1 / -1; -webkit-line-clamp: 1; font-size: 13.5px; line-height: 1.5; }
+  .hb-rows .row-m { grid-column: 2; grid-row: 1; align-self: start; flex-direction: row; align-items: center; gap: 6px; padding-top: 1px; }
+  .hb-rows .row-m:empty { display: none; }
+  .hb-rows .ev { font-size: 11.5px; padding: 1px 7px; gap: 4px; }
+  .hb-rows .ev::before { width: 5px; height: 5px; }
+}
+/* 손가락으로 누르는 화면(넓은 태블릿·터치 노트북 포함): 칩도 44px */
+@media (pointer: coarse) {
+  .hb-jump a { min-height: 44px; }
+  .hb-help a { padding: 10px 0; }
+}
+@media print {
+  .hb-jump { display: none; }
+}

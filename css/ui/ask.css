@@ -1,0 +1,19 @@
+/* 진료 질문 바구니 모듈(js/ui/ask.js): 글의 '담당 의사에게 물어볼 것' 항목 옆 "담기" 버튼과 그 아래 안내 줄. 선택자는 .ask- 로 시작해요. */
+/* 크기는 em: 글자 크기 설정(--fs-body)을 따라 버튼과 겉 높이가 함께 커져요(기본 17px 에서 13.5px·30px) */
+.body .ask-add { position: relative; display: inline-flex; align-items: center; gap: .3em; height: 2.22em; padding: 0 .8em 0 .65em; margin-left: 2px; border: 1px solid var(--rule-2); border-radius: 999px; background: var(--paper-3); color: var(--ink-2); font-family: var(--sans); font-size: .8em; font-weight: 650; line-height: 1; vertical-align: 1px; white-space: nowrap; cursor: pointer; }
+/* 줄 사이를 넘지 않는 만큼 누르는 자리를 넓혀요(겉모양은 그대로) */
+.body .ask-add::before { content: ""; position: absolute; inset: -6px -5px; }
+.body .ask-add:hover { border-color: var(--accent); color: var(--accent); }
+.body .ask-add.on { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+.ask-ico { display: inline-block; min-width: .9em; text-align: center; font-weight: 800; }
+.ask-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 12px; margin: 12px 0 6px; padding: 10px 14px; border-radius: 10px; background: var(--paper-2); font-size: 14.5px; line-height: 1.55; color: var(--ink-2); }
+.ask-bar[hidden] { display: none; }
+.ask-bar-go { display: inline-flex; align-items: center; min-height: 36px; color: var(--accent); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+.ask-bar-where { flex-basis: 100%; font-size: 13px; color: var(--muted); }
+@media (max-width: 760px) {
+  .body .ask-add { height: 2.3em; font-size: .83em; }
+  .ask-bar-go { min-height: 44px; }
+}
+@media print {
+  .ask-add, .ask-bar { display: none !important; }
+}

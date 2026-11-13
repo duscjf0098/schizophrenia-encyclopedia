@@ -1,0 +1,193 @@
+{
+  "what-is-schizophrenia": {
+    "self": ["first-episode", "diagnosis-emotions", "psychoeducation"],
+    "family": ["family-first-steps", "myths", "leap-communication"],
+    "near": ["for-friends", "myths", "for-coworkers-managers"],
+    "any": ["causes-overview", "prognosis", "myths", "faq-split-personality"]
+  },
+  "psychosis-what-is": {
+    "self": ["first-episode", "mental-health-center", "vs-substance-induced"],
+    "family": ["family-first-steps", "first-episode", "mental-health-center"],
+    "any": ["what-is-schizophrenia", "first-episode", "vs-brief-psychotic", "faq-early-signs"]
+  },
+  "auditory-hallucination": {
+    "self": ["living-with-voices", "positive-self-help", "cbtp"],
+    "family": ["family-during-symptoms", "leap-communication", "mental-health-center"],
+    "near": ["for-friends", "leap-communication", "myths"],
+    "any": ["hallucination-overview", "living-with-voices", "voices-across-cultures", "faq-voices-persist"]
+  },
+  "persecutory-delusion": {
+    "self": ["positive-self-help", "cbtp", "sleep"],
+    "family": ["leap-communication", "family-during-symptoms", "mental-health-center"],
+    "near": ["for-friends", "leap-communication", "myths"],
+    "any": ["delusion-overview", "cbtp", "leap-communication", "faq-checking-thoughts"]
+  },
+  "suicide-warning-signs": {
+    "self": ["crisis-hotlines", "mental-health-center", "recovery"],
+    "family": ["crisis-hotlines", "emergency-response", "caregiver-burnout"],
+    "near": ["crisis-hotlines", "for-friends", "mental-health-center"],
+    "any": ["crisis-hotlines", "mental-health-center", "recovery"]
+  },
+  "crisis-hotlines": {
+    "self": ["mental-health-center", "relapse-prevention-plan", "peer-support"],
+    "family": ["emergency-response", "family-during-symptoms", "mental-health-center"],
+    "near": ["for-friends", "mental-health-center", "emergency-response"],
+    "any": ["emergency-response", "mental-health-center", "psychiatric-emergency-system"]
+  },
+  "emergency-response": {
+    "self": ["admission-types", "relapse-prevention-plan", "recovery"],
+    "family": ["admission-types", "psychiatric-emergency-system", "caregiver-burnout"],
+    "near": ["crisis-hotlines", "for-friends", "mental-health-center"],
+    "any": ["crisis-hotlines", "admission-types", "mental-health-center", "faq-forced-admission"]
+  },
+  "family-first-steps": {
+    "family": ["leap-communication", "family-intervention", "caregiver-burnout"],
+    "near": ["for-friends", "leap-communication", "myths"],
+    "any": ["leap-communication", "mental-health-center", "family-intervention", "faq-whose-fault"]
+  },
+  "family-during-symptoms": {
+    "family": ["emergency-response", "leap-communication", "caregiver-burnout"],
+    "near": ["for-friends", "crisis-hotlines", "leap-communication"],
+    "any": ["emergency-response", "leap-communication", "mental-health-center", "faq-family-refuses"]
+  },
+  "leap-communication": {
+    "family": ["family-during-symptoms", "insight", "family-intervention"],
+    "near": ["for-friends", "insight", "stigma-self-stigma"],
+    "any": ["insight", "family-intervention", "shared-decision-making", "faq-family-refuses"]
+  },
+  "insight": {
+    "self": ["shared-decision-making", "cbtp", "psychoeducation"],
+    "family": ["leap-communication", "shared-decision-making", "family-intervention"],
+    "any": ["leap-communication", "shared-decision-making", "psychoeducation", "faq-family-refuses"]
+  },
+  "first-episode": {
+    "self": ["antipsychotic-basics", "diagnosis-emotions", "psychoeducation"],
+    "family": ["family-first-steps", "leap-communication", "family-intervention"],
+    "near": ["for-friends", "myths", "recovery"],
+    "any": ["recovery", "prognosis", "antipsychotic-basics", "faq-cure"]
+  },
+  "diagnosis-emotions": {
+    "self": ["stigma-self-stigma", "peer-support", "recovery"],
+    "family": ["family-grief", "family-first-steps", "caregiver-burnout"],
+    "any": ["recovery", "peer-support", "stigma-self-stigma"]
+  },
+  "prodrome": {
+    "self": ["mental-health-center", "early-detection", "sleep"],
+    "family": ["family-first-steps", "mental-health-center", "early-detection"],
+    "near": ["for-teachers", "for-friends", "mental-health-center"],
+    "any": ["early-detection", "first-episode", "mental-health-center", "faq-early-signs"]
+  },
+  "acute-phase": {
+    "self": ["hospital-day-hospital", "antipsychotic-basics", "recovery"],
+    "family": ["family-during-symptoms", "emergency-response", "admission-types"],
+    "any": ["admission-types", "hospital-day-hospital", "stable-phase"]
+  },
+  "relapse-signs": {
+    "self": ["relapse-prevention-plan", "symptom-diary-tools", "after-relapse"],
+    "family": ["family-during-symptoms", "relapse-prevention-plan", "emergency-response"],
+    "any": ["relapse-prevention-plan", "after-relapse", "symptom-diary-tools", "faq-relapse-or-not"]
+  },
+  "relapse-prevention-plan": {
+    "self": ["symptom-diary-tools", "medication-adherence", "daily-rhythm"],
+    "family": ["family-intervention", "family-during-symptoms", "caregiver-burnout"],
+    "any": ["symptom-diary-tools", "medication-adherence", "crisis-hotlines"]
+  },
+  "after-relapse": {
+    "self": ["relapse-prevention-plan", "recovery", "peer-support"],
+    "family": ["caregiver-burnout", "family-intervention", "relapse-prevention-plan"],
+    "any": ["relapse-prevention-plan", "recovery", "peer-support"]
+  },
+  "recovery": {
+    "self": ["lived-experience-lessons", "peer-support", "supported-employment"],
+    "family": ["family-intervention", "caregiver-burnout", "recovery-commonalities"],
+    "any": ["recovery-commonalities", "lived-experience-lessons", "peer-support", "faq-recovery-real"]
+  },
+  "antipsychotic-basics": {
+    "self": ["managing-side-effects", "medication-adherence", "side-effects-overview"],
+    "family": ["medication-adherence", "shared-decision-making", "managing-side-effects"],
+    "any": ["side-effects-overview", "second-generation", "medication-adherence", "faq-lifelong-medication"]
+  },
+  "side-effects-overview": {
+    "self": ["managing-side-effects", "metabolic-side-effects", "eps"],
+    "family": ["managing-side-effects", "shared-decision-making", "metabolic-side-effects"],
+    "any": ["managing-side-effects", "metabolic-side-effects", "eps", "faq-dull-feeling"]
+  },
+  "managing-side-effects": {
+    "self": ["shared-decision-making", "symptom-diary-tools", "switching-reducing-stopping"],
+    "any": ["shared-decision-making", "side-effects-overview", "symptom-diary-tools", "faq-weight-gain"]
+  },
+  "medication-adherence": {
+    "self": ["missed-dose", "lai", "managing-side-effects"],
+    "family": ["shared-decision-making", "insight", "lai"],
+    "any": ["missed-dose", "lai", "shared-decision-making", "faq-stop-when-well"]
+  },
+  "switching-reducing-stopping": {
+    "self": ["shared-decision-making", "relapse-signs", "relapse-prevention-plan"],
+    "family": ["shared-decision-making", "relapse-signs", "family-during-symptoms"],
+    "any": ["shared-decision-making", "relapse-signs", "medication-adherence", "faq-stop-when-well"]
+  },
+  "lai": {
+    "self": ["medication-adherence", "shared-decision-making", "drug-costs-coverage"],
+    "any": ["medication-adherence", "shared-decision-making", "drug-costs-coverage", "faq-injection-or-pill"]
+  },
+  "clozapine": {
+    "self": ["clozapine-hypersalivation", "drug-level-test", "managing-side-effects"],
+    "any": ["treatment-resistant", "clozapine-hypersalivation", "managing-side-effects"]
+  },
+  "treatment-resistant": {
+    "self": ["clozapine", "cbtp", "living-with-voices"],
+    "any": ["clozapine", "cbtp", "ect", "faq-voices-persist"]
+  },
+  "admission-types": {
+    "self": ["hospital-stay-life", "habeas-corpus-relief", "first-month-after-discharge"],
+    "family": ["guardian-duties", "hospital-day-hospital", "first-month-after-discharge"],
+    "any": ["hospital-stay-life", "mental-health-welfare-act", "habeas-corpus-relief", "faq-forced-admission"]
+  },
+  "hospital-day-hospital": {
+    "family": ["admission-types", "guardian-duties", "first-month-after-discharge"],
+    "any": ["hospital-stay-life", "first-month-after-discharge", "admission-types"]
+  },
+  "hospital-stay-life": {
+    "self": ["first-month-after-discharge", "habeas-corpus-relief", "peer-support"],
+    "family": ["guardian-duties", "first-month-after-discharge", "caregiver-burnout"],
+    "any": ["first-month-after-discharge", "admission-types", "hospital-day-hospital"]
+  },
+  "first-month-after-discharge": {
+    "self": ["medication-adherence", "daily-rhythm", "relapse-prevention-plan"],
+    "family": ["family-intervention", "caregiver-burnout", "relapse-signs"],
+    "any": ["relapse-prevention-plan", "mental-health-center", "case-management-act", "faq-after-discharge"]
+  },
+  "mental-health-center": {
+    "self": ["case-management-act", "rehab-facilities", "peer-support"],
+    "family": ["advocacy-groups", "family-intervention", "caregiver-burnout"],
+    "any": ["case-management-act", "rehab-facilities", "peer-support"]
+  },
+  "caregiver-burnout": {
+    "family": ["advocacy-groups", "family-intervention", "family-care-leave"],
+    "any": ["advocacy-groups", "family-grief", "family-intervention"]
+  },
+  "for-friends": {
+    "near": ["leap-communication", "myths", "stigma-self-stigma"],
+    "any": ["leap-communication", "myths", "crisis-hotlines", "faq-dangerous"]
+  },
+  "for-teachers": {
+    "near": ["adolescent-onset", "prodrome", "mental-health-center"],
+    "any": ["adolescent-onset", "prodrome", "mental-health-center", "faq-early-signs"]
+  },
+  "for-coworkers-managers": {
+    "near": ["coping-at-work", "supported-employment", "disclosure"],
+    "any": ["coping-at-work", "disclosure", "supported-employment", "faq-tell-employer"]
+  },
+  "myths": {
+    "near": ["for-friends", "stigma-self-stigma", "recovery"],
+    "any": ["stigma-self-stigma", "prognosis", "recovery", "faq-dangerous", "faq-split-personality"]
+  },
+  "causes-overview": {
+    "family": ["genetics", "family-first-steps", "genetic-counseling"],
+    "any": ["genetics", "stress-management", "social-factors", "faq-whose-fault", "faq-stress-cause"]
+  },
+  "physical-health": {
+    "self": ["diet-exercise", "other-medical-care", "metabolic-side-effects"],
+    "any": ["metabolic-side-effects", "diet-exercise", "life-expectancy"]
+  }
+}

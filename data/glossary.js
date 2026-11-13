@@ -1,5 +1,10 @@
 /* 조현병 백과 · 용어 사전 (손으로 관리). related = 글 slug, 가장 자세한 글이 먼저.
-   정렬은 앱이 가나다순으로 한다. 여기서는 카테고리별로 묶어 둔다. */
+   정렬은 앱이 가나다순으로 한다. 여기서는 카테고리별로 묶어 둔다.
+   형식: { term, en?, def(160자 이하), related: [slug 1~3개], inline?: false, standalone?: true }
+   inline: false = 아주 흔한 말(도파민·위약·낙인). 용어 사전 화면과 검색에는 나오지만 본문 밑줄(js/gloss.js)에서는 빠진다.
+   문서당 밑줄 한도를 흔한 말이 먼저 차지하지 않게 하려는 것이라 소수(10개 이하)에만 단다.
+   standalone: true = 다른 낱말 속에 들어가 뜻이 달라지는 짧은 용어(조증 ← 통합실조증). 바로 앞에 한글이 붙어 있으면 밑줄을 달지 않는다.
+   기존 항목의 term 글자는 바꾸지 않는다(본문 밑줄이 term 글자로 찾는다). */
 window.JHB = window.JHB || {};
 JHB.glossary = [
   /* ───────── 증상 ───────── */
@@ -89,10 +94,10 @@ JHB.glossary = [
   { term: '약물 유발 파킨슨증', en: 'drug-induced parkinsonism', def: '항정신병약 때문에 뻣뻣함, 느려짐, 손 떨림, 표정 없음이 생기는 부작용. 음성 증상·우울과 헷갈리기 쉬움.', related: ['eps', 'primary-secondary-negative'] },
   { term: '정좌불능', en: 'akathisia', def: '속에서 안달이 나 가만히 있지 못하고 다리를 계속 움직이게 되는 부작용. 아카티시아라고도 하며 불안·초조로 오해되기 쉬움.', related: ['eps', 'aripiprazole'] },
   { term: '지연성 운동장애', en: 'tardive dyskinesia (TD)', def: '약을 오래 쓴 뒤 생길 수 있는 입·혀·턱의 반복적인 불수의 움직임. 되돌리기 어려울 수 있어 AIMS로 정기 확인함. 지연성 운동이상이라고도 함.', related: ['eps', 'first-generation'] },
-  { term: '신경이완제 악성 증후군', en: 'neuroleptic malignant syndrome (NMS)', def: '항정신병약 복용 중 고열과 온몸이 굳는 증상이 나타나는 드물지만 위험한 상태. 악성 긴장증과 거의 구분되지 않으며 응급.', related: ['catatonia', 'eps'] },
+  { term: '신경이완제 악성 증후군', en: 'neuroleptic malignant syndrome (NMS)', def: '항정신병약 복용 중 고열과 온몸이 굳는 증상이 나타나는 드물지만 위험한 상태. 악성 긴장증과 거의 구분되지 않으며 응급.', related: ['neuroleptic-malignant-syndrome', 'catatonia', 'eps'] },
   { term: '대사증후군', en: 'metabolic syndrome', def: '복부 비만·혈압·혈당·지질 이상이 겹친 상태. 조현병이 있는 사람에게 흔하며 약 부작용과 생활 습관이 함께 관여함.', related: ['metabolic-side-effects', 'physical-health', 'diet-exercise'] },
   { term: '고프로락틴혈증', en: 'hyperprolactinemia', def: '항정신병약이 도파민을 막아 프로락틴이 올라가는 부작용. 월경 중단, 젖 분비, 성기능 저하, 뼈 약화가 생길 수 있음.', related: ['hyperprolactinemia'] },
-  { term: 'QT 연장', en: 'QTc prolongation', def: '심전도의 QT 간격이 길어지는 심장 부작용. 지프라시돈·아미설프리드 같은 일부 약에서 더 두드러짐.', related: ['side-effects-overview', 'ziprasidone', 'amisulpride'] },
+  { term: 'QT 연장', en: 'QTc prolongation', def: '심전도의 QT 간격이 길어지는 심장 부작용. 늘리는 정도는 약마다 다르며, 지프라시돈·아미설프리드 같은 일부 약에서 더 두드러짐.', related: ['heart-and-antipsychotics', 'ziprasidone', 'amisulpride'] },
   { term: '항콜린 부작용', en: 'anticholinergic side effects', def: '입마름·변비·시야 흐림·배뇨 곤란·기억력 저하를 묶어 부르는 부작용. 여러 약의 이런 작용이 쌓인 정도를 항콜린 부담이라 함.', related: ['sedation-anticholinergic'] },
   { term: '무과립구증', en: 'agranulocytosis', def: '감염과 싸우는 백혈구(호중구)가 급격히 줄어드는 부작용. 클로자핀을 쓸 때 정기 혈액검사를 하는 이유.', related: ['clozapine'] },
   { term: '메트포르민', en: 'metformin', def: '당뇨약. 항정신병약으로 늘어난 체중과 인슐린 저항성을 줄이는 보조 약으로 메타분석 근거가 있음.', related: ['metabolic-side-effects', 'adjunct-medications'] },
@@ -219,4 +224,62 @@ JHB.glossary = [
   { term: '치료필요수', en: 'number needed to treat (NNT)', def: '한 사람에게서 원하는 효과를 더 얻기 위해 치료해야 하는 사람 수. 작을수록 효과가 큰 치료라는 뜻.', related: ['arts-music-therapy'] },
   { term: '예술 치료', en: 'arts therapies', def: '그림, 음악, 춤, 연극 같은 창작 활동을 훈련받은 치료사와 치료 관계 안에서 하는 비약물 치료. 음성 증상을 위해 고려하도록 권고한 지침이 있음.', related: ['arts-music-therapy', 'negative-treatment-latest'] },
   { term: '한국 조기 정신증 코호트 연구(KEPS)', en: 'Korean Early Psychosis Cohort Study (KEPS)', def: '조현병 스펙트럼·정신병적 장애의 첫 삽화 당사자를 2년 이상 추적하는 국내 전향적 관찰 연구. 2017년에 설계가 발표됨.', related: ['korea-research-landscape', 'first-episode'] },
+
+  /* ───────── 2026-11-14 추가: 본문에 자주 나오는 말 ───────── */
+  { term: '도파민', en: 'dopamine', def: '신경세포 사이에서 신호를 전하는 물질의 하나. 움직임·동기·보상·학습에 관여하고, "이것은 중요하다"는 표시를 붙이는 역할을 함.', related: ['dopamine-hypothesis', 'dopamine-evolution'], inline: false },
+  { term: 'D2 수용체', en: 'dopamine D2 receptor', def: '도파민이 달라붙는 자리의 하나. 널리 쓰이는 항정신병약은 대부분 이 수용체를 막거나 조절해 환각·망상의 힘을 뺌.', related: ['antipsychotic-basics', 'dopamine-hypothesis'] },
+  { term: '선조체', en: 'striatum', def: '피질 아래 뇌 깊은 곳의 부위. 양성 증상은 이곳에서 도파민이 지나치게 만들어지는 것과, 음성 증상은 이곳의 보상 기대 반응이 약한 것과 관련된다고 봄.', related: ['dopamine-hypothesis', 'negative-mechanism'] },
+  { term: '전전두엽', en: 'prefrontal cortex', def: '노력과 보상의 값을 저울질하는 일에 관여하는 뇌 앞부분의 피질. 도파민 가설의 한 설명은 이곳의 도파민이 부족하다고 보며, rTMS가 음성 증상에 겨냥하는 부위이기도 함.', related: ['negative-mechanism', 'rtms-tdcs', 'dopamine-hypothesis'] },
+  { term: '프로락틴', en: 'prolactin', def: '뇌하수체에서 나와 출산 뒤 젖을 만들게 하는 호르몬. 평소 도파민이 분비를 억누르는데, 항정신병약이 이를 풀면 올라가 월경·젖 분비·성기능에 영향을 줄 수 있음.', related: ['hyperprolactinemia', 'womens-health', 'sexual-side-effects'] },
+  { term: '위약', en: 'placebo', def: '효과 성분이 없는 가짜 약. 임상시험에서 진짜 약을 받은 쪽과 견주어 약의 효과를 가리는 기준으로 씀.', related: ['positive-medication-response', 'drug-pipeline'], inline: false },
+  { term: '코크란', en: 'Cochrane', def: '여러 무작위 시험을 모아 결과를 종합하는 체계적 고찰(코크란 리뷰·코크란 고찰). 치료 효과의 근거를 따질 때 자주 인용됨.', related: ['case-management-act', 'psychoeducation', 'arts-music-therapy'] },
+  { term: 'NICE', en: 'National Institute for Health and Care Excellence', def: '영국 국립보건임상연구원. 정신증·조현병 치료, 술·약물 문제가 함께 있을 때의 치료 같은 진료지침을 내며, 이 백과가 권고의 근거로 자주 인용함.', related: ['cbtp', 'comorbid-substance-use', 'shared-decision-making'] },
+  { term: '낙인', en: 'stigma', def: '정신질환에 대한 고정관념·편견이 차별로 이어지는 것. 사회의 공적 낙인, 제도의 구조적 낙인, 그것을 스스로 받아들이는 자기낙인으로 나눔.', related: ['stigma-self-stigma', 'media-reporting-guidelines'], inline: false },
+  { term: '자기낙인', en: 'self-stigma', def: '사회의 편견을 내가 받아들여 스스로를 낮추는 것. 편견을 알고, 동의하고, 나에게 적용하며 생기고, 희망과 자존감을 깎지만 줄이는 프로그램이 있음.', related: ['stigma-self-stigma', 'diagnosis-emotions'] },
+  { term: '조증', en: 'mania', def: '기분이 크게 들뜨는 상태. 양극성 장애의 한 축이며, 심해지면 환각·망상이 함께 나타날 수 있어 조현병과 구분이 필요함.', related: ['vs-bipolar', 'grandiose-delusion'], standalone: true },
+  { term: '양극성 장애', en: 'bipolar disorder', def: '기분이 크게 들뜨는 조증과 가라앉는 우울이 번갈아 오는 병. 기분 삽화 중에 환각·망상이 생길 수 있어, 정신병 증상이 기분 삽화와 같이 오가는지로 조현병과 구분함.', related: ['vs-bipolar', 'misdiagnosis', 'vs-schizoaffective'] },
+  { term: '항우울제', en: 'antidepressant', def: '우울을 다루는 약. 조현병에서는 우울이나 음성 증상에 항정신병약과 함께 쓰는 보조 약으로 연구됐고, 효과는 작지만 일관된 편.', related: ['adjunct-medications', 'negative-vs-depression'] },
+  { term: '편집증', en: 'paranoia', def: '남이 나를 나쁘게 보거나 해치려 한다는 의심. 가벼운 의심부터 확신으로 굳은 피해망상까지 일반 인구 안에 연속선으로 퍼져 있다고 봄. 잠이 무너지면 심해지기 쉬움.', related: ['persecutory-delusion', 'sleep'] },
+  { term: '현실 검증', en: 'reality testing', def: '지금 겪는 것이 바깥 현실인지 내 뇌가 만든 것인지 가리는 힘. 급성기에는 흔들리고, 치료가 진행되면 경험과 해석을 떼어 놓는 힘이 돌아오는 경우가 많음.', related: ['positive-overview', 'positive-self-help'] },
+  { term: '정신병적 경험', en: 'psychotic experiences', def: '가끔 들리는 목소리, 감시당하는 느낌처럼 진단 문턱 아래에 있는 정신병 같은 경험. 일반 인구에서도 드물지 않고 대부분 지나감.', related: ['spectrum', 'sleep'] },
+  { term: '약화된 정신병 증후군', en: 'attenuated psychosis syndrome', def: '망상·환각 같은 경험이 있지만 강도나 빈도가 진단 문턱에 못 미치고 도움을 구하는 상태. DSM-5에 추가 연구가 필요한 상태로 실린 연구용 범주이며 정식 진단은 아님.', related: ['spectrum', 'prodrome'] },
+  { term: '작업기억', en: 'working memory', def: '정보를 몇 초 동안 머릿속에 붙들고 조작하는 "작업대" 같은 인지 기능. 약하면 긴 설명을 따라가기 어려워, 짧게 끊어 듣고 적으며 듣는 것이 도움이 됨.', related: ['cognitive-domains', 'cognitive-overview'] },
+  { term: '처리 속도', en: 'processing speed', def: '정보를 받아들이고 반응하기까지의 빠르기. 조현병의 인지 영역 가운데 가장 크게 떨어지는 영역으로 보고됨. 느리다는 것은 같은 결론에 시간이 더 필요하다는 뜻.', related: ['cognitive-domains', 'cognitive-overview'] },
+  { term: '실행 기능', en: 'executive function', def: '목표를 세우고 순서를 정하고 상황이 바뀌면 계획을 고치는 힘. 약하면 요리처럼 여러 단계를 관리하는 일, 서류 절차, 예산 짜기가 어려워짐.', related: ['cognitive-domains', 'cognitive-remediation'] },
+  { term: 'MRI', en: 'magnetic resonance imaging', def: '뇌 구조를 찍는 영상 검사. 모든 사람에게 하지는 않고, 다른 원인이 의심될 때 뇌종양·뇌전증 등을 가리는 데 씀. 연구에 많이 쓰이지만 아직 조현병 진단 도구는 아님.', related: ['rule-out-conditions', 'diagnostic-process', 'neuroimaging'] },
+  { term: '뇌파', en: 'electroencephalography (EEG)', def: '경련·의식 변화·발작성 증상이 있을 때 뇌전증이나 뇌염 같은 다른 원인을 가리려고 하는 뇌 검사. 모든 사람에게 하지는 않음.', related: ['rule-out-conditions', 'diagnostic-process'] },
+  { term: '뇌전증', en: 'epilepsy', def: '경련이나 멍해지는 발작을 일으키는 뇌 질환. 측두엽 뇌전증은 냄새·맛 환각이나 정신병 증상을 동반할 수 있어, 첫 진단 때 가려야 할 질환에 듦.', related: ['rule-out-conditions'] },
+  { term: '섬망', en: 'delirium', def: '수술·감염·약 같은 몸의 변화 때문에 의식이 흐려지고 주의가 흩어지는 상태. 하루 안에도 좋아졌다 나빠졌다 해서 정신과 증상과 헷갈리기 쉬움.', related: ['other-medical-care', 'rule-out-conditions'] },
+  { term: '사례관리', en: 'case management', def: '병원 밖에서 치료와 생활을 이어 주는 사람(사례관리자)을 두는 체계. 한국에서는 정신건강복지센터가 등록한 사람에게 무료로 상담·방문·위기 대응을 함.', related: ['case-management-act', 'mental-health-center'] },
+  { term: '주간재활', en: 'day rehabilitation', def: '정신건강복지센터나 정신재활시설(주간재활시설)에서 낮 동안 운영하는 재활 프로그램. 병원이 아닌 복지 체계라 대체로 무료이며 사회기술훈련·직업 준비·운동 등을 함.', related: ['hospital-day-hospital', 'rehab-facilities'] },
+  { term: '공유 의사결정', en: 'shared decision-making', def: '의사의 의학 지식과 당사자의 삶·선호를 합쳐 치료를 고르는 방식. 함께 결정하기라고도 함. 의사가 정해 주는 것도, 당사자 혼자 정하는 것도 아님.', related: ['shared-decision-making', 'managing-side-effects'] },
+  { term: '약 농도 검사', en: 'therapeutic drug monitoring (TDM)', def: '피를 뽑아 그 안에 약이 얼마나 들어 있는지 재고 해석해 치료를 맞추는 검사. 당사자를 의심하려는 것이 아니라 효과가 부족하거나 부작용이 큰 원인을 찾는 도구.', related: ['drug-level-test', 'treatment-resistant'] },
+
+  /* ───────── 2026-11-14 추가: 새 글의 몸·치료 용어 ───────── */
+  { term: '다음증', en: 'polydipsia', def: '목마름과 상관없이 몸에 필요한 것보다 훨씬 많은 물을 마시는 상태. 조현병을 오래 앓은 사람에게서 드물지 않게 보이며, 일부는 저나트륨으로 이어짐.', related: ['polydipsia-hyponatremia'] },
+  { term: '저나트륨', en: 'hyponatremia', def: '혈액의 나트륨이 낮은 상태. 물을 지나치게 마셔 나트륨이 묽어지면 두통·메스꺼움이 오고, 심하면 혼란·경련·혼수로 이어지는 물 중독이 올 수 있음.', related: ['polydipsia-hyponatremia'] },
+  { term: '열사병', en: 'heatstroke', def: '더위로 생기는 온열질환 가운데 의식이 흐려지거나 잃고 몸이 매우 뜨거워지는 응급 상태. 바로 119에 연락하고 기다리는 동안 몸을 식힘. 일부 정신과 약은 더위에 약하게 만듦.', related: ['heat-and-medication'] },
+  { term: '심근염', en: 'myocarditis', def: '클로자핀에서 드물게, 주로 시작 초기에 생기는 심장 부작용. 가슴 통증·빈맥·두근거림·숨참·열 같은 증상이 있으면 의심하므로 곧바로 의료진에게 알림.', related: ['heart-and-antipsychotics', 'clozapine'] },
+  { term: '빈맥', en: 'tachycardia', def: '맥박이 빨라지는 것. 약의 항콜린 작용이나 기립성 저혈압에 대한 반응으로 생길 수 있고 클로자핀에서 특히 흔함. 맥박을 재서 진료 때 숫자로 알림.', related: ['heart-and-antipsychotics', 'clozapine'] },
+  { term: '정신교육', en: 'psychoeducation', def: '병과 약, 재발 신호, 위기 때 할 일을 당사자와 가족이 여러 번에 걸쳐 체계적으로 배우는 치료. 정신건강복지센터나 담당 의사에게 프로그램을 물어볼 수 있음.', related: ['psychoeducation', 'insight'] },
+  { term: 'PTSD', en: 'post-traumatic stress disorder', def: '외상 후 스트레스 장애. 외상 기억이 되살아나는 병으로, 환각처럼 보이는 경험이 있어 조현병과 헷갈리기도 함. 정신증 경험이나 강제 입원 같은 치료 과정이 외상이 되기도 함.', related: ['trauma-and-psychosis', 'vs-autism-borderline'] },
+  { term: '아동기 역경', en: 'childhood adversity', def: '학대·방임·괴롭힘·부모의 죽음 같은 어린 시절의 심각한 경험. 정신병 위험을 높이지만 보통의 양육을 뜻하지 않으며, 역경을 겪은 아이 대부분은 정신병에 걸리지 않음.', related: ['social-factors', 'trauma-and-psychosis'] },
+  { term: '모호한 상실', en: 'ambiguous loss', def: '끝이 분명하지 않은 상실. 사람은 곁에 있는데 예전의 모습과 함께 그리던 미래를 잃은 것 같은 가족의 슬픔을 설명하는 말로, 슬픔이 마무리되지 않는 것은 애도의 실패가 아님.', related: ['family-grief'] },
+
+  /* ───────── 2026-11-14 추가: 제도·권리 ───────── */
+  { term: '보호의무자', def: '정신질환이 있는 사람의 치료와 권리를 곁에서 챙기도록 정신건강복지법이 정한 사람. 민법상 후견인이나 부양의무자가 되며, 입원을 신청할 수 있지만 본인 뜻 존중과 퇴원 협조 의무가 먼저임.', related: ['guardian-duties', 'admission-types'] },
+  { term: '절차조력인', def: '입원·퇴원 때 당사자의 동의를 받아 서류 작성, 심사 참여, 청구, 통신·면회를 돕는 사람. 정신건강복지법에 근거하며 병원은 이 서비스를 알려야 함.', related: ['admission-types', 'guardian-duties', 'mental-health-welfare-act'] },
+  { term: '국가인권위원회', en: 'National Human Rights Commission of Korea', def: '인권 침해와 차별에 대한 진정을 받아 조사하는 기관. 정신의료기관·정신요양시설 같은 곳에서 인권 침해를 당하거나 알게 된 사람이 진정할 수 있음. 인권상담전화 1331.', related: ['admission-types', 'habeas-corpus-relief', 'insurance-employment'] },
+  { term: '인신보호 구제청구', def: '본인 뜻과 다르게 병원이나 시설에 머물 때 그 수용이 법에 맞는지 법원에 직접 판단을 구하는 제도. 본인, 가족, 동거인, 시설 종사자 등이 청구할 수 있음.', related: ['habeas-corpus-relief', 'guardian-duties'] },
+  { term: '권역정신응급의료센터', def: '자해·자살 시도처럼 몸의 응급처치와 정신과 치료가 함께 필요한 사람을 위한 응급실. 응급의학과와 정신건강의학과가 함께 진료함. 다쳤거나 약을 많이 먹었다면 어느 병원인지보다 먼저 119.', related: ['psychiatric-emergency-system', 'treatment-cost-support'] },
+  { term: '동료지원쉼터', def: '일시적인 정신건강 위기를 겪는 사람을 잠시 보호하며, 정신질환을 겪었거나 겪고 있고 양성과정을 마친 동료지원인이 상담하는 곳. 가까운 쉼터는 정신건강복지센터나 1577-0199에 물어봄.', related: ['psychiatric-emergency-system', 'mental-health-welfare-act'] },
+  { term: '정신질환 치료비 지원사업', def: '응급입원·행정입원, 발병 초기 치료, 외래치료 지원 등의 치료비 본인부담을 국가와 지자체가 덜어 주는 사업. 정신건강복지센터 등 기관 등록이 요건이고 기준은 지역과 해마다 다름.', related: ['treatment-cost-support', 'medical-cost-safety-net'] },
+  { term: '본인부담상한제', def: '1년 동안 낸 건강보험 급여 본인부담금 합계가 개인별 상한액을 넘으면 넘은 돈을 국민건강보험공단이 부담하는 제도. 비급여 등은 합계에 들어가지 않음.', related: ['medical-cost-safety-net'] },
+  { term: '재난적의료비', def: '소득에 비해 큰 의료비로 어려운 가구에 의료비 일부를 지원하는 제도. 질환·소득·재산·의료비 부담 기준을 모두 채워야 하며 비급여 일부도 지원 범위에 듦.', related: ['medical-cost-safety-net'] },
+  { term: '긴급복지 의료지원', def: '주소득자의 사망·실직, 중한 질병 같은 위기로 생계가 어려워진 저소득 가구의 입원·수술 의료비를 일시적으로 돕는 제도. 시·군·구나 보건복지상담센터 129에 요청함.', related: ['medical-cost-safety-net'] },
+  { term: '심리상담 바우처', def: '우울·불안 같은 정서적 어려움이 있는 사람에게 전문 심리상담을 지원하는 정신건강 심리상담 바우처 사업. 조현병 당사자는 대개 대상이 아니지만 돌봄에 지친 가족은 신청할 수 있음.', related: ['counseling-voucher-and-screening', 'caregiver-burnout'] },
+  { term: '가족돌봄휴가', def: '회사에 다니는 사람이 질병·사고·노령으로 돌봄이 필요한 가족을 위해 쓰는 법정 휴가. 더 길게 쉬는 가족돌봄휴직과 근로시간 단축도 있으며, 형제자매는 법이 정한 대상 가족이 아님.', related: ['family-care-leave'] },
+  { term: '고지 의무', en: 'duty of disclosure', def: '보험에 가입할 때 보험사가 묻는 질문에 사실대로 답할 의무. 고의나 중대한 과실로 중요한 사항을 알리지 않거나 틀리게 알리면 보험사가 계약을 해지할 수 있고, 그러면 보험금을 못 받을 수 있음.', related: ['insurance-employment', 'faq-insurance'] },
+  { term: '심신미약', def: '심신장애로 사물을 변별하거나 의사를 결정할 능력이 미약한 상태를 가리키는 형법의 말. 형을 줄일 수 있으며, 진단명이 아니라 그때의 능력을 사건마다 법원이 판단함.', related: ['justice-system'] },
+  { term: '치료감호', def: '심신장애로 금고 이상의 형에 해당하는 죄를 지었고 치료가 필요하며 재범 위험성이 있을 때 치료감호시설에 수용해 치료하는 제도. 검사가 청구하고 법원이 판결로 정함.', related: ['justice-system'] },
 ];

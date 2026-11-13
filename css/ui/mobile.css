@@ -1,15 +1,19 @@
-/* css/ui/mobile.css — 휴대폰 하단 바 · 바텀시트 · 스와이프 힌트 (화면 폭 760px 이하에서만) */
+/* css/ui/mobile.css — 휴대폰 하단 바(모든 화면) · 바텀시트 · 스와이프 힌트 (화면 폭 760px 이하에서만)
+   칸 수는 js 가 --mb-n 으로 정해요(문서 4칸, 그 밖 3~4칸). 바가 있는 동안 body 에 아래 여백을 줘서 본문 끝·바닥글이 가리지 않아요. */
 .mb-bar, .mb-scrim, .mb-sheet, .mb-hint { display: none; }
 @media (max-width: 760px) {
   body.mb-has-bar { padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px)); }
-  .mb-bar { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); position: fixed; left: 0; right: 0; bottom: 0; z-index: 45; padding: 2px 6px calc(2px + env(safe-area-inset-bottom, 0px)); background: color-mix(in srgb, var(--paper) 94%, transparent); backdrop-filter: saturate(1.4) blur(10px); border-top: 1px solid var(--rule); transform: translateY(0); visibility: visible; transition: transform .2s ease, visibility 0s; }
+  .mb-bar { display: grid; grid-template-columns: repeat(var(--mb-n, 4), minmax(0, 1fr)); position: fixed; left: 0; right: 0; bottom: 0; z-index: 45; padding: 2px 6px calc(2px + env(safe-area-inset-bottom, 0px)); background: color-mix(in srgb, var(--paper) 94%, transparent); backdrop-filter: saturate(1.4) blur(10px); border-top: 1px solid var(--rule); transform: translateY(0); visibility: visible; transition: transform .2s ease, visibility 0s; }
   .mb-bar[hidden] { display: none; }
   .mb-bar.mb-hidden { transform: translateY(110%); visibility: hidden; transition: transform .2s ease, visibility 0s linear .2s; }
-  .mb-btn { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 44px; height: 58px; padding: 4px 2px; border-radius: 10px; color: var(--ink-2); font-size: 11.5px; font-weight: 600; line-height: 1.2; white-space: nowrap; -webkit-tap-highlight-color: transparent; }
+  .mb-btn { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-width: 0; min-height: 44px; height: 58px; padding: 4px 2px; border-radius: 10px; color: var(--ink-2); font-size: 11.5px; font-weight: 600; line-height: 1.2; white-space: nowrap; text-decoration: none; -webkit-tap-highlight-color: transparent; }
   .mb-btn svg { width: 22px; height: 22px; display: block; }
+  .mb-btn .mb-l { max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
   .mb-btn:active { background: var(--paper-2); }
+  .mb-btn:focus-visible { outline-offset: -2px; }
   .mb-btn[disabled] { opacity: .4; cursor: default; }
-  .mb-btn.on { color: var(--accent); }
+  .mb-btn.on, .mb-btn[aria-current="page"] { color: var(--accent); }
+  .mb-btn[aria-current="page"] .mb-l { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px; }
   .mb-scrim { display: block; position: fixed; inset: 0; z-index: 84; background: rgba(10, 12, 20, .35); }
   .mb-sheet { display: flex; flex-direction: column; position: fixed; left: 0; right: 0; bottom: 0; z-index: 85; max-height: 72vh; background: var(--paper-3); border-radius: 16px 16px 0 0; box-shadow: var(--shadow-pop); padding-bottom: env(safe-area-inset-bottom, 0px); outline: none; animation: mb-up .22s ease; }
   .mb-sheet[hidden], .mb-scrim[hidden] { display: none; }
@@ -18,7 +22,7 @@
   .mb-sheet-h .mb-n { font-family: var(--sans); font-weight: 500; font-size: 13px; color: var(--muted); }
   .mb-sheet-h .mb-x { margin-left: auto; width: 44px; height: 44px; border-radius: 10px; color: var(--muted); font-size: 24px; line-height: 1; display: grid; place-items: center; }
   .mb-sheet-h .mb-x:active { background: var(--paper-2); }
-  .mb-list { list-style: none; margin: 0; padding: 6px 8px 10px; overflow: auto; -webkit-overflow-scrolling: touch; }
+  .mb-list { list-style: none; margin: 0; padding: 6px 8px 10px; overflow: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
   .mb-list li { margin: 0; }
   .mb-item { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 2px; width: 100%; text-align: left; min-height: 48px; padding: 10px 12px; border-radius: 10px; font-size: 15.5px; color: var(--ink); line-height: 1.4; }
   .mb-item:active { background: var(--accent-soft); }
@@ -31,4 +35,7 @@
   .mb-hint.right { right: 12px; transform: translate(10px, -50%); }
   .mb-hint.on { opacity: .92; transform: translate(0, -50%); }
 }
+@media (max-width: 760px) and (hover: hover) { .mb-btn:hover { background: var(--paper-2); } }
 @media (prefers-reduced-motion: reduce) { .mb-bar, .mb-sheet, .mb-hint { transition: none !important; animation: none !important; } }
+:root[data-motion="reduce"] .mb-bar, :root[data-motion="reduce"] .mb-sheet, :root[data-motion="reduce"] .mb-hint { transition: none !important; animation: none !important; }
+@media print { .mb-bar, .mb-scrim, .mb-sheet, .mb-hint { display: none !important; } body.mb-has-bar { padding-bottom: 0 !important; } }
