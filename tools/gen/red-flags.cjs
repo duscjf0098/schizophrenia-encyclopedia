@@ -245,7 +245,7 @@ function main() {
 }
 
 module.exports = {
-  SOURCE_SLUG: SOURCE_SLUG, HEADING: HEADING, COLUMNS: COLUMNS, OUT: OUT,
+  SOURCE_SLUG: SOURCE_SLUG, HEADING: HEADING, COLUMNS: COLUMNS, OUT: OUT, DECL: DECL,
   parseDoc: parseDoc, plain: plain, cells: cells, leadOf: leadOf, classify: classify, afterErrors: afterErrors, leadErrors: leadErrors, sectionLines: sectionLines,
   extract: extract, contentSlugs: contentSlugs, serialize: serialize, run: run
 };
