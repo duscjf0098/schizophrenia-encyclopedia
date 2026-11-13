@@ -45,7 +45,8 @@ test('상품명·오타: 쎄로켈/세로켈 → 쿠에티아핀, 인베가 → 
 });
 
 test('영문·약어: clozapine, TRS, 짧은 약어는 단어 경계에서만', function () {
-  eq(first('clozapine'), 'treatment-resistant');
+  eq(first('clozapine'), 'clozapine', 'M8: 영문 약 이름은 그 약 글이 먼저(감사 #22, 전에는 치료저항성 글)');
+  eq(slugsOf('clozapine')[1], 'treatment-resistant', '치료저항성 글은 그다음');
   ok(slugsOf('TRS').indexOf('treatment-resistant') >= 0);
   eq(first('LAI'), 'lai');
   ok(slugsOf('exactly').indexOf('case-management-act') < 0, '"exactly" 속 act 는 잡지 않음');
@@ -120,6 +121,32 @@ test('느슨한 일치(loose): 낱말 순서·조사가 달라도, 앞 두 낱�
   const m = S.build([{ say: ['가나 다라 마바'], slugs: ['x'] }]);
   eq(S.loose(m, '가나 다라 사아').slugs.map(function (s) { return s.slug; }), ['x'], '앞 두 낱말(4자)');
   eq(S.loose(m, '가 다라').slugs, [], '짧은 구절은 아님');
+});
+
+/* 매칭은 띄어쓰기를 무시하므로 띄어쓰기만 다른 say 는 같은 말이 두 번 든 셈이에요. M8 이전부터 있던 7쌍(붙여 쓴 꼴·띄어 쓴 꼴을
+   함께 두어 오타 고치기 사전에 두 꼴의 낱말이 모두 들어가는 것)은 그대로 두고, 새로 늘지 않게만 본다(M8 검수: '일해도'·'일 해도') */
+const SPACE_PAIRS_OLD = ['혈액검사', '죽고싶', '강제입원', '동료지원가', '정신분열', '가짜약', '오픈다이얼로그'];
+test('데이터: 한 묶음 안에 띄어쓰기만 다른 같은 say 가 새로 늘지 않는다', function () {
+  const dup = [];
+  SYN.forEach(function (e, i) {
+    const seen = {};
+    e.say.forEach(function (s) {
+      const k = String(s).toLowerCase().replace(/\s+/g, '');
+      if (seen[k] && SPACE_PAIRS_OLD.indexOf(k) < 0) dup.push(i + '번 ' + seen[k] + ' / ' + s);
+      else seen[k] = s;
+    });
+  });
+  eq(dup, []);
+});
+
+test('데이터: nocard(일상 말만으로는 짧은 답 카드를 띄우지 않을 말)는 true 이거나 그 묶음의 say 목록 안의 말', function () {
+  const bad = [];
+  SYN.forEach(function (e, i) {
+    if (e.nocard == null || e.nocard === true) return;
+    if (!Array.isArray(e.nocard)) { bad.push(i + '번 형식'); return; }
+    e.nocard.forEach(function (s) { if (e.say.indexOf(s) < 0) bad.push(i + '번 say 에 없는 ' + s); });
+  });
+  eq(bad, []);
 });
 
 test('데이터: 항목 200~400개, say 2글자 이상, 모든 slug 가 toc 에 있고 모든 term 이 사전에 있다', function () {

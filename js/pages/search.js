@@ -16,9 +16,12 @@
      카드의 전화는 사용자가 직접 눌러야 걸린다.
    - 감지에 기대지 않는 안전망: 검색어가 있고 위기·타해 카드가 없을 때(정보 검색 watch 카드만 있을 때 포함) 입력창 바로 아래 "지금 많이 힘들다면 · 지금 도움" 한 줄(지금 도움 시트, 없으면 위기 상담 전화 글).
    - 오타·초성: 결과가 없거나 약하면 "○○을(를) 찾으셨나요?" 한 줄과 그 말로 찾은 글. 본문에 원래 말이 있으면 원래 말 결과로 돌아간다.
-   - 질문 꼴(…되나요, …할까요, ?) 질의의 맨 위 결과가 자주 묻는 질문(15분류) 글이면 그 글의 "## 짧은 답" 소절을 글자 그대로 보여 주는 카드
-     + "결정은 담당 의사와 상의하세요." + "자세히 읽기". 요약하거나 새로 짓지 않는다. 위기 감지(watch 포함)가 있거나 그 글이 질의의
-     일부 낱말에만 맞으면 띄우지 않는다(JHB.search.plan 의 answer). 위기 태그 글이면 카드 안에 109·1577-0199·119 고지.
+   - 질문 꼴(…되나요, …할까요, ?) 질의의 맨 위 결과가 자주 묻는 질문(15분류) 글이고 그 글이 정말 그 질문의 답이면(제목과 같은 것을 물음,
+     JHB.search.plan 의 answer·cardOk) 그 글의 "## 짧은 답" 소절을 글자 그대로 보여 주는 카드 + "결정은 담당 의사와 상의하세요." + "자세히 읽기".
+     요약하거나 새로 짓지 않는다. 위기 감지(watch 포함)·정의 질문("조현병이 뭐예요")·기능어뿐인 질의(되나요)에는 띄우지 않는다.
+     위기 태그 글이면 카드 안에 109·1577-0199·119 고지.
+   - 특집 화면 이름과 똑같은 질의(길잡이·바로 연락할 신호·내 서재)는 결과 위에 "이 화면을 찾으셨나요: …" 한 줄(위기 카드 아래).
+     찾기 말(기립성 저혈압·약 거부)로만 맞은 질의에는 두지 않는다(흔한 말로 화면 줄이 글보다 먼저 보이지 않게).
    - 결과를 그린 뒤 window 에 'jhb:search' { query, crisis, section, results:[slug…], total, offline } 를 보낸다(검색어가 들어 있으니 받는 쪽은 저장·전송 금지).
      위기로 감지된 질의는 query 를 '' 로, crisis 에 카드 종류만 싣는다.
    - 이미 찾기 화면일 때 goSearch() 는 'jhb:gosearch' 를 보내고, 이 화면이 받아 그 자리에서 찾는다. */
@@ -95,13 +98,14 @@
       var cards = el('div.pg-search-cards');
       var help = el('p.pg-search-help', { hidden: true });
       var did = el('p.pg-search-did', { hidden: true });
+      var screen = el('p.pg-search-screen', { hidden: true });
       var answer = el('div.pg-search-answer-slot');
       var hint = el('div.pg-search-hint');
       var status = el('p.status', { role: 'status' });
       var results = el('ul.rows.pg-search-rows');
       var more = el('div.pg-search-more');
       var form = el('form.searchbar', { role: 'search', 'aria-label': '본문 찾기' }, [input, sel]);
-      [form, cards, help, did, answer, hint, status, results, more].forEach(function (n) { mount.appendChild(n); });
+      [form, cards, help, did, screen, answer, hint, status, results, more].forEach(function (n) { mount.appendChild(n); });
 
       /* 지금 도움 한 줄: 누르면 시트(없으면 링크대로 위기 상담 전화 글) */
       var helpLink = el('a.pg-search-help-go', { href: '#/a/crisis-hotlines' }, ['지금 도움']);
@@ -149,6 +153,18 @@
         did.appendChild(document.createTextNode('‘'));
         did.appendChild(b);
         did.appendChild(document.createTextNode('’' + josa(sug.text) + ' 찾으셨나요?' + (showing ? ' 그 말로 찾은 글을 보여 드려요.' : '')));
+      }
+      /* "이 화면을 찾으셨나요: 바로 연락할 신호"(M8): 화면 이름과 똑같은 질의에서만(screens 의 exact). 위기 카드 아래 자리 */
+      function drawScreens(v) {
+        screen.innerHTML = '';
+        var list = (v && P && SR && SR.screens) ? SR.screens(P, A.pages, v).filter(function (x) { return x.exact; }) : [];
+        screen.hidden = !list.length;
+        if (!list.length) return;
+        screen.appendChild(document.createTextNode('이 화면을 찾으셨나요: '));
+        list.forEach(function (x, i) {
+          if (i) screen.appendChild(document.createTextNode(' · '));
+          screen.appendChild(el('a.pg-search-screen-go', { href: '#/' + x.page.id }, [x.page.label || x.page.title]));
+        });
       }
       function emptyLinks() {
         more.innerHTML = '';
@@ -227,6 +243,7 @@
         saveState('', sv, kinds);
         drawCards(kinds, '');
         did.hidden = true; did.innerHTML = '';
+        drawScreens('');
         drawAnswer(null);
         var slugs = SR && SR.cardSlugs ? SR.cardSlugs(J.crisisCard, kinds).filter(function (s) { return A.bySlug[s]; }) : [];
         drawList('', sv, slugs.map(function (s) { return { id: s, snippet: null }; }), false, true, '');
@@ -241,6 +258,7 @@
           saveState('', sv);
           drawCards([], '');
           did.hidden = true; did.innerHTML = '';
+          drawScreens('');
           drawAnswer(null);
           results.innerHTML = ''; hint.innerHTML = ''; more.innerHTML = '';
           status.textContent = '제목, 요약, 본문, 태그에서 찾아요.';
@@ -260,6 +278,7 @@
         saveState(kinds.length || paused() ? '' : v, sv, kinds);
         drawCards(kinds, v);
         drawDid(pl.sug, pl.useSug);
+        drawScreens(v);
         var note = pl.useSug ? '고친 말로 찾은 결과예요.' : '';
         /* 짧은 답: plan 이 고른 글(질문 꼴·위기 감지 없음·맨 위가 자주 묻는 질문 글·모든 낱말이 맞음)이 지금 목록의 맨 위일 때만 */
         function maybeAnswer(list) {

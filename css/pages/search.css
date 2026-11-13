@@ -15,6 +15,12 @@
 .pg-search-did-go { display: inline-flex; align-items: center; min-height: 44px; padding: 0 2px; border: 0; background: none; font: inherit; font-weight: 700; color: var(--accent); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
 .pg-search-did-go:hover { color: var(--accent-2); }
 
+/* "이 화면을 찾으셨나요: 바로 연락할 신호" — 찾으셨나요와 같은 결의 조용한 한 줄. 링크는 누르는 높이 44px */
+.pg-search-screen { margin: 2px 0; font-size: 15px; line-height: 1.6; color: var(--ink-2); }
+.pg-search-screen[hidden] { display: none; }
+.pg-search-screen-go { display: inline-flex; align-items: center; min-height: 44px; padding: 0 2px; font-weight: 700; color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+.pg-search-screen-go:hover { color: var(--accent-2); }
+
 /* 짧은 답 카드: 자주 묻는 질문 글의 "## 짧은 답" 원문 그대로. 종이 카드 + 왼쪽 강조 띠(콜아웃과 같은 결).
    본문을 읽게 하는 블록이라 글자 크기 설정(--fs-body)을 따라간다(보통 17px → 15.5px) */
 .pg-search-answer { margin: 12px 0 16px; padding: 14px 18px 12px; background: var(--paper-3); border: 1px solid var(--rule); border-left: 3px solid var(--accent); border-radius: 0 12px 12px 0; }
@@ -43,5 +49,5 @@
 }
 /* 인쇄: 입력한 말(고친 말 포함)이 종이에 남지 않게 */
 @media print {
-  #app .pg-search-help, #app .pg-search-did { display: none; }
+  #app .pg-search-help, #app .pg-search-did, #app .pg-search-screen { display: none; }
 }

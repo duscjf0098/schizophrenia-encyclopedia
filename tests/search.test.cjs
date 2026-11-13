@@ -259,7 +259,7 @@ function loadPalette(opts) {
   const secById = {}; DATA.sec.forEach(function (s) { secById[s.id] = s; });
   const app = {
     el: D.el, store: { get: function (k, f) { return k in ls ? ls[k] : f; }, set: function (k, v) { ls[k] = v; return true; }, remove: function (k) { delete ls[k]; } },
-    articles: DATA.toc, bySlug: bySlug, secById: secById, sections: DATA.sec, glossary: DATA.gl, courses: DATA.co, pages: [],
+    articles: DATA.toc, bySlug: bySlug, secById: secById, sections: DATA.sec, glossary: DATA.gl, courses: DATA.co, pages: opts.pages || [],
     spine: function () { return D.el('span.spine'); }, effectiveTheme: function () { return 'light'; },
     go: function (h) { calls.push(['go', h]); }, goSearch: function (v) { calls.push(['search', v]); },
     privacy: { recentq: function () { return !!opts.recentq; }, paused: function () { return false; }, clear: function (ids) { cleared.push(ids); if (ids.indexOf('recentq') >= 0) delete ls['jhb.ui.palette.recentq']; return ids; } }
@@ -464,6 +464,71 @@ test("팔레트 #q: 비어 있을 때 '/' 는 글자로 들어가지 않고 팔�
   ok(!ev2.defaultPrevented && !t.P.isOpen(), '값이 있으면 글자');
 });
 
+/* ---------- M8: 특집 화면을 이름으로 찾기 ---------- */
+const PAGES = fs.readdirSync(path.join(ROOT, 'data', 'pages')).filter(function (f) { return /\.json$/.test(f); }).map(function (f) { return JSON.parse(read('data/pages/' + f)); });
+const QP = S.prepare({ articles: DATA.toc, glossary: DATA.gl, courses: DATA.co, synonyms: DATA.sy, sections: DATA.sec, syn: SYN });
+test('M8 화면 찾기(순수 함수): 이름과 같으면 3, 여러 낱말 찾기 말·이름 앞부분 2, 글 제목에 쓰이지 않는 한 낱말 찾기 말 1, 흔한 낱말은 0', function () {
+  function top(q) { const r = S.screens(QP, PAGES, q); return r.length ? r[0].page.id + ':' + r[0].strength : ''; }
+  eq(top('길잡이'), 'guide:3'); eq(top('상황별 길잡이'), 'guide:3'); eq(top('바로 연락할 신호'), 'red-flags:3'); eq(top('내 서재'), 'me:3');
+  eq(top('약 비교'), 'meds:2'); eq(top('재발 예방 계획'), 'plan:2'); eq(top('응급 신호'), 'red-flags:2'); eq(top('위험 신호'), 'red-flags:2');
+  eq(top('119'), 'red-flags:1');
+  ['부작용', '입원', '체중', '환청', '약', '기록'].forEach(function (q) { eq(top(q), '', q + ' 는 화면을 올리지 않음'); });
+  /* 검수 뒤: 한 낱말 찾기 말은 119 같은 번호만 올린다(증상·부작용·일반 낱말은 원래 '동작' 묶음 자리 그대로) */
+  ['좌불안석', '졸림', '경련', '변비', '생활비', '약어', '지도', '역할', '수정', '분류', '인쇄'].forEach(function (q) { eq(top(q), '', q + ' 는 한 낱말 찾기 말이라 올리지 않음'); });
+  /* "이 화면을 찾으셨나요"(exact)는 화면 이름과 같을 때만. 여러 낱말 찾기 말(기립성 저혈압·약 거부·물 중독)은 아님 */
+  function exact(q) { return S.screens(QP, PAGES, q).filter(function (x) { return x.exact; }).map(function (x) { return x.page.id; }).join(','); }
+  eq([exact('길잡이'), exact('바로 연락할 신호'), exact('내 서재')], ['guide', 'red-flags', 'me']);
+  ['기립성 저혈압', '물 중독', '악성 증후군', '약 거부', '치료 거부', '처음 진단', '최근 검색', '저장한 글', '응급 신호'].forEach(function (q) { eq(exact(q), '', q + ' 는 이름이 아님'); });
+  /* 찾기 말로만 맞은 화면(kw)은 첫 글 뒤에(Enter 기본 선택이 글이 되게) */
+  eq(S.screenSlot([{ score: 459 }, { score: 300 }], 2, true), 1, '찾기 말로 맞으면 첫 글 뒤');
+  eq(S.screenSlot([{ why: 'crisis', score: 2000 }, { score: 459 }], 2, true), 2, '위기 글 다음 첫 글 뒤');
+  eq(S.screenSlot([], 2, true), 0, '글이 없으면 맨 앞');
+  eq(S.screenSlot([{ score: 131, why: 'partial' }, { score: 128 }], 2, true), 0, '첫 글이 일부 낱말만 맞은 글이면 화면 줄이 앞(약 한눈에)');
+  eq(S.screens(QP, [{ id: 'x', title: '숨은 화면', nav: ['side'] }], '숨은 화면'), [], '팔레트에 등록되지 않은 화면은 아님');
+  /* 자리: 위기 글 뒤, 3 → 제목이 똑같은 글 뒤 · 2 → 제목에 그 말이 낱말 시작으로 있는 글(800 이상) 두 편까지 뒤 · 1 → 글 두 편 뒤 */
+  const top4 = [{ why: 'crisis', score: 2000 }, { score: 906 }, { score: 459 }, { score: 300 }];
+  eq([S.screenSlot(top4, 3), S.screenSlot(top4, 2), S.screenSlot(top4, 1), S.screenSlot([], 1)], [1, 2, 3, 0]);
+});
+
+test('M8 팔레트 화면 찾기: 화면 이름·찾기 말로 찾으면 화면 줄이 위 5개 안(위기 줄·위기 글 다음), 흔한 낱말은 지금 순위 그대로', function () {
+  const bad = [];
+  function rows(q) { const t = loadPalette({ pages: PAGES }); t.type(q); return t.items(); }
+  function screenAt(items) { for (let i = 0; i < items.length; i++) if (items[i].classList.contains('pal-screen')) return i; return -1; }
+  ['길잡이', '상황별 길잡이', '약 한눈에', '약 비교', '종이 양식', '안전 계획', '재발 예방 계획', '질문 바구니', '내 서재', '기록 지우기',
+    '바로 연락할 신호', '응급 신호', '위험 신호', '고침 기록', '둘러보기', '119'].forEach(function (q) {
+    const it = rows(q), at = screenAt(it);
+    /* 위기 줄·위기 줄 아래 "본문까지 찾기"·위기 카드 글은 앞에 와도 된다 */
+    const lead = it.slice(0, Math.max(at, 0)).filter(function (n) { return /pal-crisis|pal-all-top/.test(n.className); }).length;
+    if (at < 0 || at - lead > 4) bad.push(q + ' → ' + at + '번째');
+  });
+  eq(bad, []);
+  /* 재발 예방 계획: 글이 1위, 화면 줄은 그 뒤 위 5개 안 */
+  let it = rows('재발 예방 계획');
+  has(it[0].textContent, '재발 예방 계획 쓰기');
+  /* 119: 위기 상담 전화·응급 상황 대처 글이 앞이고 화면 줄은 그다음 */
+  it = rows('119');
+  const at = screenAt(it), before = it.slice(0, at).map(function (n) { return n.textContent; }).join('|');
+  ok(/위기 상담 전화/.test(before) && /응급 상황 대처/.test(before), '119 앞 줄: ' + before);
+  /* 화면 이름이 똑같으면 Enter 한 번에 그 화면으로 */
+  const t = loadPalette({ pages: PAGES }); t.type('바로 연락할 신호'); t.key('Enter');
+  eq(t.calls, [['go', '#/red-flags']]);
+  /* 여러 낱말 찾기 말(약 거부·치료 거부·물 중독)로 맞은 화면 줄은 첫 글 뒤: 첫 줄(Enter 기본 선택)은 글 */
+  ['약 거부', '치료 거부', '물 중독'].forEach(function (q) {
+    const items = rows(q), at2 = screenAt(items);
+    ok(at2 > 0 && !items[0].classList.contains('pal-screen'), q + ' 첫 줄은 글(화면 줄 ' + at2 + '번째)');
+    ok(at2 <= 4, q + ' 화면 줄은 위 5개 안');
+  });
+  /* 한 낱말 찾기 말(좌불안석·경련)은 화면 줄을 문서 사이에 올리지 않는다 */
+  ['좌불안석', '경련'].forEach(function (q) { ok(screenAt(rows(q)) < 0, q + ' 화면 줄을 올리지 않음'); });
+  /* 흔한 낱말: 화면 줄이 글을 밀어내지 않음(문서 줄 순서가 빠른 찾기 순서 그대로, 화면 줄은 아래 동작 묶음에만) */
+  ['부작용', '입원', '체중'].forEach(function (q) {
+    const items = rows(q), docs = items.filter(function (n) { return n.querySelector('span.spine'); }).map(function (n) { return n.textContent; });
+    ok(screenAt(items) < 0, q + ' 화면 줄을 올리지 않음');
+    const want = S.plan(QP, q, { detect: C.detect, card: DATA.card }).top.slice(0, docs.length).map(function (x) { return x.a.title; });
+    eq(docs.map(function (s, i) { return s.indexOf(want[i]) === 0; }).every(Boolean), true, q + ' 문서 순서');
+  });
+});
+
 test('팔레트 소스: 일상 말 사전을 글자마다 새로 만들지 않는다(빠른 찾기 준비물은 한 번)', function () {
   const src = read('js/ui/palette.js');
   not(src, 'JHB.syn.build(', '팔레트가 사전을 직접 만들지 않음');
@@ -495,7 +560,7 @@ function loadSearchPage(opts) {
   const app = {
     el: D.el, articles: DATA.toc, bySlug: bySlug, sections: DATA.sec, pageById: {},
     row: function (a) { return D.el('li.row', { 'data-slug': a.slug }, [a.title]); },
-    announce: function () { }, esc: function (s) { return String(s); }, md: { render: function (t) { return { html: t }; } },
+    announce: function () { }, esc: function (s) { return String(s); }, md: { render: function (t) { return { html: t }; } }, pages: opts.pages || [],
     notice: function (k) { return D.el('div.notice.notice-' + k, null, ['자살예방상담 109, 정신건강위기상담 1577-0199 … 당장 위험하면 119']); },
     loadArticle: function (slug) { const d = defer(); loads.push({ slug: slug, d: d }); return d.promise; },
     search: function () { const d = defer(); searches.push(d); if (opts.searchFails) d.reject(new Error('offline')); return d.promise; },
@@ -613,6 +678,34 @@ test('찾기 화면: 안전망 줄은 위기·타해 카드가 없을 때 늘(wa
   ok(t.q('p.pg-search-help').hidden, '위기 카드가 있으면 겹쳐 두지 않음');
   t.type('');
   ok(t.q('p.pg-search-help').hidden, '빈 칸');
+});
+
+test('M8 찾기 화면: 정의 질문·기능어뿐인 질의는 짧은 답을 받지도 않고, 같은 것을 묻는 질문은 그 글의 카드', function () {
+  const t = loadSearchPage();
+  ['조현병이 뭐예요', '조현병 뭐예요', '되나요', '하니', '이거 뭐야', '약을 먹어야 하나요'].forEach(function (q) { t.type(q); });
+  t.searches.forEach(function (d) { d.resolve(PIDX); });
+  eq(t.loads.map(function (x) { return x.slug; }).filter(function (s) { return s !== 'faq-lifelong-medication'; }), [], '엉뚱한 FAQ 글(faq-dangerous·faq-cure·faq-alcohol·faq-voices-persist)을 받지 않음');
+  t.type('조현병이 뭐예요');
+  t.searches.forEach(function (d) { d.resolve(PIDX); });
+  eq(t.rows()[0], 'what-is-schizophrenia');
+  ok(!t.answer(), '카드 없음');
+  t.type('술 마셔도 되나요');
+  eq(t.loads[t.loads.length - 1].slug, 'faq-alcohol');
+});
+
+test('M8 찾기 화면: 화면 이름과 똑같은 질의에는 "이 화면을 찾으셨나요" 한 줄(위기 카드 아래), 흔한 낱말·위기 말에는 없음', function () {
+  const t = loadSearchPage({ pages: PAGES });
+  t.type('바로 연락할 신호');
+  const line = t.q('p.pg-search-screen');
+  ok(!line.hidden, '한 줄이 보임');
+  has(line.textContent, '이 화면을 찾으셨나요: 바로 연락할 신호');
+  eq(line.querySelector('a').getAttribute('href'), '#/red-flags');
+  const kids = t.mount.children;
+  ok(kids.indexOf(line) > kids.indexOf(t.q('div.pg-search-cards')), '위기 카드보다 아래 자리');
+  t.type('종이 양식');
+  has(t.q('p.pg-search-screen').textContent, '종이 양식');
+  /* 검수 뒤: 찾기 말(keywords)로만 맞은 질의(재발 예방 계획·기립성 저혈압·약 거부·물 중독)에는 두지 않는다 */
+  ['부작용', '입원', '119', '환청', '', '재발 예방 계획', '기립성 저혈압', '약 거부', '물 중독', '저장한 글'].forEach(function (q) { t.type(q); ok(t.q('p.pg-search-screen').hidden, q + ' 에는 없음'); });
 });
 
 test('찾기 화면: 본문 색인을 못 받으면 빠른 결과와 오프라인 안내, 고친 말로 찾으면 상태 줄에 알림', function () {

@@ -5,6 +5,8 @@
    "최근 검색 지우기 · 이 기기에만 저장돼요" 줄과 함께) · 동작(등록 화면 포함).
    입력 후: 위기·타해 안내(맨 위, 기본 선택 아님) · 문서 · 찾으셨나요(오타·초성) · 용어 · 코스 · 동작, 그 아래 "본문까지 찾기",
    맨 아래 차분한 고정 줄 "지금 많이 힘들다면 · 지금 도움"(위기 줄이 떠 있으면 겹쳐 두지 않음).
+   특집 화면의 이름(label·title)이나 여러 낱말 찾기 말과 같은 말로 찾으면 그 화면 줄을 문서 사이 위쪽에 둔다(M8, JHB.search.screens·screenSlot).
+   찾기 말로만 맞은 화면은 첫 글 뒤(첫 줄은 글), 한 낱말 찾기 말은 119 같은 번호만 올린다(그 밖은 동작 묶음 자리 그대로).
    - 찾기는 js/search.js 의 빠른 찾기(JHB.search.find)를 찾기 화면과 함께 쓴다. 준비물은 한 번만 만든다(글자마다 일상 말 사전을 새로 만들지 않음).
      빠른 찾기가 없으면(파일을 못 받음) 제목 포함만 보는 작은 대체 찾기로.
    - 위기·타해 감지는 원문과 고친 질의(오타·초성 후보) 모두에 돌린다(JHB.search.crisis).
@@ -130,10 +132,11 @@
     store.set(KEY_RQ, cur.slice(0, MAX_RQ));
   }
   /* 등록 화면(data/pages/*.json 에서 nav 에 "palette" 가 있는 것) */
+  function pageAction(d) {
+    return { id: d.id, label: d.label || d.title, sub: d.summary || '', keys: [d.title, d.label].concat(d.keywords || []).join(' '), run: function () { A.go('#/' + d.id); } };
+  }
   function pageActions() {
-    return (A.pages || []).filter(function (d) { return d && (d.nav || []).indexOf('palette') >= 0; }).map(function (d) {
-      return { label: d.label || d.title, sub: d.summary || '', keys: [d.title, d.label].concat(d.keywords || []).join(' '), run: function () { A.go('#/' + d.id); } };
-    });
+    return (A.pages || []).filter(function (d) { return d && (d.nav || []).indexOf('palette') >= 0; }).map(pageAction);
   }
   function actions() {
     var dark = A.effectiveTheme() === 'dark';
@@ -291,7 +294,17 @@
       var terms = (r.terms.length ? r.terms : (sug && sug.terms) || []).slice(0, 4);
       var courses = (r.courses || []).slice(0, 3);
       var lv = low(v).replace(/\s+/g, ' ');
-      var acts = actions().filter(function (ac) { return low(ac.label).indexOf(lv) >= 0 || low(ac.keys).indexOf(lv) >= 0; });
+      /* 특집 화면을 이름으로 찾기(M8, JHB.search.screens): 화면 이름·여러 낱말 찾기 말과 같거나 이름의 앞부분이면 그 화면 줄을
+         문서 사이 위쪽(위기 줄·위기 글 다음, screenSlot)에 둔다. 글 제목에 흔한 낱말(부작용·입원·체중)로는 올리지 않는다 */
+      var scr = (pl && P && S().screens) ? S().screens(P, A.pages, v) : [];
+      /* 찾기 말로만 맞은 화면(kw: '약 거부'·'물 중독')은 첫 글 뒤에(첫 줄·Enter 기본 선택은 글) */
+      var slot = scr.length && S().screenSlot ? Math.min(S().screenSlot(docs, scr[0].strength, scr[0].kw), docs.length) : 0;
+      var scrIds = scr.map(function (x) { return x.page.id; });
+      var acts = actions().filter(function (ac) { return scrIds.indexOf(ac.id) < 0 && (low(ac.label).indexOf(lv) >= 0 || low(ac.keys).indexOf(lv) >= 0); });
+      function screenItem(x) {
+        var ac = pageAction(x.page);
+        return item({ cls: 'pal-screen', lead: el('span.pal-dot', { 'aria-hidden': 'true' }, ['›']), title: hl(ac.label, v), sub: '화면 · ' + ac.sub, tail: '화면', remember: v, run: ac.run });
+      }
 
       if (sug) {
         /* "‘환청’을 찾으셨나요?": 묶음 제목 자리의 안내 한 줄(누르는 줄 아님). 후보로 찾은 글이면 바로 아래에 */
@@ -301,9 +314,13 @@
         /* 묶음 제목은 목록 탐색에서 읽히지 않으므로 입력칸 설명과 알림으로도 */
         didText = '‘' + sug.text + '’' + dj + ' 찾으셨나요?' + (pl.useSug || r.initials ? ' 그 말로 찾은 결과예요.' : '');
       }
-      if (docs.length) {
-        if (!(sug && (pl.useSug || r.initials))) list.appendChild(group(['문서']));
-        docs.forEach(function (x) { list.appendChild(docItem(x.a || A.bySlug[x.slug], pl && pl.useSug ? sug.text : v)); });
+      if (docs.length || scr.length) {
+        if (!(sug && (pl.useSug || r.initials))) list.appendChild(group([scr.length ? (docs.length ? '문서와 화면' : '화면') : '문서']));
+        docs.forEach(function (x, i) {
+          if (i === slot) scr.forEach(function (s) { list.appendChild(screenItem(s)); });
+          list.appendChild(docItem(x.a || A.bySlug[x.slug], pl && pl.useSug ? sug.text : v));
+        });
+        if (slot >= docs.length) scr.forEach(function (s) { list.appendChild(screenItem(s)); });
       }
       if (terms.length) {
         list.appendChild(group(['용어']));
