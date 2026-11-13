@@ -1,8 +1,9 @@
 /* content/<섹션>/<slug>.md 를 읽어 data/toc.js(글 목록), data/search-index.json(검색), data/precache.json(오프라인 목록)을 만든다.
-   실행: node tools/build-index.cjs */
+   실행: node tools/build-index.cjs (data/pages.js 를 프리캐시에 넣으므로 build-kb 다음에. 보통은 node tools/build-all.cjs) */
 const fs = require('fs');
 const path = require('path');
 const md = require('../js/md.js');
+const A = require('./lib/assets.cjs');
 
 const root = path.join(__dirname, '..');
 const sections = loadSections();
@@ -48,7 +49,12 @@ articles.sort(function (a, b) { return Number(a.section) - Number(b.section) || 
 const stamp = new Date().toISOString().slice(0, 10);
 fs.writeFileSync(path.join(root, 'data/toc.js'), '/* 자동 생성: node tools/build-index.cjs (' + stamp + ') — 직접 고치지 마세요 */\nwindow.JHB = window.JHB || {};\nJHB.toc = ' + JSON.stringify({ generated: stamp, sources: sourceUrls.size, articles: articles }, null, 1) + ';\n');
 fs.writeFileSync(path.join(root, 'data/search-index.json'), JSON.stringify(index));
-const shell = ['./', 'index.html', 'app-shell.html', 'css/style.css', 'js/util.js', 'js/paths.js', 'js/md.js', 'js/search.js', 'js/gloss.js', 'js/synonyms.js', 'js/crisis.js', 'js/progress.js', 'js/app.js', 'css/ui.css', 'js/ui/palette.js', 'js/ui/preview.js', 'js/ui/mobile.js', 'js/ui/sticky.js', 'js/ui/reading.js', 'js/ui/settings.js', 'js/ui/polish.js', 'js/ui/home.js', 'js/ui/shelf.js', 'data/sections.js', 'data/toc.js', 'data/glossary.js', 'data/about.js', 'data/synonyms.js', 'data/crisis-card.js', 'data/courses.js', 'data/links.js', 'manifest.webmanifest', 'favicon.svg', 'icon-192.png', 'icon-512.png', 'og.png'];
+/* 오프라인 목록: 핵심 파일 + 화면 확장 모듈(tools/ui-order.json 순서 + 새 모듈) + 특집 화면 선언·코드·스타일 + 지식 데이터.
+   본문 검색 색인(data/search-index.json)은 크기 때문에 넣지 않는다. */
+const core = ['./', 'index.html', 'app-shell.html', 'css/style.css', 'js/util.js', 'js/paths.js', 'js/md.js', 'js/search.js', 'js/gloss.js', 'js/synonyms.js', 'js/crisis.js', 'js/progress.js', 'js/app.js',
+  'data/sections.js', 'data/toc.js', 'data/glossary.js', 'data/about.js', 'data/synonyms.js', 'data/crisis-card.js', 'data/courses.js', 'data/links.js', 'manifest.webmanifest', 'favicon.svg', 'icon-192.png', 'icon-512.png', 'og.png'];
+const shell = core.concat(['css/ui.css'], A.uiModules(), ['data/pages.js'], A.pageAssetFiles(), A.kbFiles())
+  .filter(function (f, i, all) { return all.indexOf(f) === i; });
 const version = stamp + '-' + files.length + '-' + Date.now().toString(36);
 fs.writeFileSync(path.join(root, 'data/precache.json'), JSON.stringify({ version: version, files: shell.concat(files) }, null, 1));
 const swPath = path.join(root, 'sw.js');

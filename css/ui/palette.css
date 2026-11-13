@@ -34,16 +34,33 @@
 .pal-item.pal-all { border-top: 1px solid var(--rule); border-radius: 0 0 9px 9px; margin-top: 4px; padding-top: 12px; }
 .pal-item.pal-all .pal-t { color: var(--accent); }
 .pal-item.pal-all[aria-selected="true"] { border-top-color: transparent; border-radius: 9px; }
+/* 위기·타해 말일 때는 위기 줄 바로 아래(기본 선택) */
+.pal-item.pal-all.pal-all-top { border-top: 0; margin: 0 0 6px; padding-top: 9px; border-radius: 9px; }
 .pal-empty { padding: 14px 10px 8px; font-size: 14px; color: var(--muted); }
 
-/* 위기 안내: 맨 위, 빨간 항목 */
-.pal-item.pal-crisis { background: var(--bad-soft); color: var(--bad); margin-bottom: 4px; }
+/* 위기·타해 안내: 맨 위, 빨간 항목(기본 선택은 아님. 누르면 찾기 화면, 전화는 줄 안 버튼으로만) */
+.pal-item.pal-crisis { background: var(--bad-soft); color: var(--bad); margin-bottom: 4px; flex-wrap: wrap; }
 .pal-item.pal-crisis[aria-selected="true"] { box-shadow: inset 0 0 0 2px var(--bad); }
 .pal-item.pal-crisis .pal-dot { background: var(--bad); color: var(--paper-3); }
 .pal-item.pal-crisis .pal-t { color: var(--bad); }
 .pal-item.pal-crisis .pal-s { color: var(--bad); opacity: .9; white-space: normal; }
-.pal-tel { flex: none; font-size: 13px; font-weight: 700; color: var(--bad); border: 1px solid currentColor; border-radius: 999px; padding: 4px 12px; text-decoration: none; }
+.pal-tel { flex: none; display: inline-flex; align-items: center; min-height: 32px; font-size: 13px; font-weight: 700; color: var(--bad); border: 1px solid currentColor; border-radius: 999px; padding: 4px 12px; text-decoration: none; white-space: nowrap; }
 .pal-tel:hover { background: var(--bad); color: var(--paper-3); }
+.pal-tels { flex: none; display: flex; flex-wrap: wrap; gap: 6px; }
+/* 정보 검색(watch): 더 차분하게 */
+.pal-item.pal-crisis.pal-watch { background: var(--paper-2); color: var(--ink); }
+.pal-item.pal-crisis.pal-watch[aria-selected="true"] { box-shadow: inset 0 0 0 2px var(--accent); }
+.pal-item.pal-crisis.pal-watch .pal-dot { background: var(--accent-soft); color: var(--accent); }
+.pal-item.pal-crisis.pal-watch .pal-t { color: var(--ink); }
+.pal-item.pal-crisis.pal-watch .pal-s { color: var(--muted); opacity: 1; }
+.pal-item.pal-crisis.pal-watch .pal-tel { color: var(--accent); }
+.pal-item.pal-crisis.pal-watch .pal-tel:hover { background: var(--accent); color: var(--accent-ink); }
+/* 타해(harm): 찾기 화면의 harm 카드와 같은 주황(경고) 계열 */
+.pal-item.pal-crisis.pal-harm { background: var(--warn-soft); color: var(--warn); }
+.pal-item.pal-crisis.pal-harm[aria-selected="true"] { box-shadow: inset 0 0 0 2px var(--warn); }
+.pal-item.pal-crisis.pal-harm .pal-dot { background: var(--warn); color: var(--paper-3); }
+.pal-item.pal-crisis.pal-harm .pal-t, .pal-item.pal-crisis.pal-harm .pal-s, .pal-item.pal-crisis.pal-harm .pal-tel { color: var(--warn); opacity: 1; }
+.pal-item.pal-crisis.pal-harm .pal-tel:hover { background: var(--warn); color: var(--paper-3); }
 
 .pal-hint { flex: none; display: flex; gap: 14px; padding: 8px 16px; border-top: 1px solid var(--rule); font-size: 12px; color: var(--muted); background: var(--paper-2); }
 .pal-hint kbd { font-family: var(--sans); font-size: 11px; line-height: 18px; padding: 0 5px; border: 1px solid var(--rule-2); border-radius: 4px; background: var(--paper-3); color: var(--ink-2); }
@@ -58,4 +75,6 @@ html.pal-open, html.pal-open body { overflow: hidden; }
   .pal-hint { display: none; }
   .pal-tail { display: none; }
   .pal-item { padding: 10px 10px; }
+  /* 전화 버튼은 글 아래 줄로(좁은 화면에서 문구가 눌리지 않게) */
+  .pal-item.pal-crisis .pal-tels { flex-basis: 100%; padding-left: 32px; }
 }

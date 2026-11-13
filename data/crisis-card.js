@@ -1,7 +1,8 @@
-/* 조현병 백과 · 검색창에 자해·자살을 암시하는 말이 들어왔을 때 검색 결과보다 먼저 보이는 안내 카드
-   js/crisis.js의 detect()가 돌려주는 level('high' | 'watch')로 고른다.
+/* 조현병 백과 · 검색창에 자해·자살·타해를 암시하는 말이 들어왔을 때 검색 결과보다 먼저 보이는 안내 카드
+   js/crisis.js의 detect()가 돌려주는 level('high' | 'harm' | 'watch')로 고른다.
+   high 에 harm: true 가 붙으면(자살·자해와 타해가 함께) high 카드를 먼저, 그 아래 harm 카드를 보인다.
    문서 링크는 '#/a/<slug>' 꼴로 적는다(앱이 js/paths.js로 실제 경로로 바꿔 끼운다).
-   109(자살예방상담)·1577-0199(정신건강위기상담)는 24시간. */
+   109(자살예방상담)·1577-0199(정신건강위기상담)는 24시간. 112 는 경찰 긴급 신고. */
 window.JHB = window.JHB || {};
 JHB.crisisCard = {
   high: {
@@ -26,6 +27,18 @@ JHB.crisisCard = {
       { label: '자살 위험 신호와 대처', href: '#/a/suicide-warning-signs' },
       { label: '위기 상담 전화와 기관', href: '#/a/crisis-hotlines' },
       { label: '재발 예방 계획 쓰기', href: '#/a/relapse-prevention-plan' }
+    ]
+  },
+  /* 타해: 누군가를 해칠 것 같아 무서운 사람, 누군가에게 위협을 느끼는 사람 모두에게. 판단·낙인 없이 */
+  harm: {
+    title: '지금 위험하다고 느낀다면',
+    body: '누군가를 해칠 것 같아 무섭거나, 누군가에게 위협을 느끼고 있다면 혼자 버티지 않아도 돼요. 지금 위험하면 112나 119에 바로 알리고, 다른 사람과 거리를 두거나 안전한 곳으로 먼저 옮겨도 괜찮아요. 마음이 급하고 무서울 때는 정신건강위기상담 1577-0199가 24시간 함께 방법을 찾아요.',
+    actions: [
+      { label: '112 경찰 (지금 위험할 때)', href: 'tel:112' },
+      { label: '119 구급 (다쳤거나 생명이 위급할 때)', href: 'tel:119' },
+      { label: '1577-0199 정신건강위기상담 (24시간)', href: 'tel:1577-0199' },
+      { label: '응급 상황 대처', href: '#/a/emergency-response' },
+      { label: '화·짜증·공격성 다루기', href: '#/a/anger-irritability' }
     ]
   }
 };

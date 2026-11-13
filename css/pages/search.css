@@ -1,0 +1,12 @@
+/* 찾기 화면 (js/pages/search.js) · 접두어 .pg-search- */
+#app .fp-body[data-page="search"] { margin-top: 10px; }
+.pg-search-cards:empty, .pg-search-hint:empty, .pg-search-more:empty { display: none; }
+.pg-search-off { font-size: 13.5px; line-height: 1.6; color: var(--ink-2); background: var(--paper-2); border-radius: 10px; padding: 8px 12px; margin: 4px 0 8px; }
+.pg-search-more { font-size: 14.5px; color: var(--muted); margin: 6px 0 18px; line-height: 1.8; }
+.pg-search-more a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+.pg-search-nojs { font-size: 15px; line-height: 1.7; color: var(--ink-2); }
+.pg-search-nojs a { color: var(--accent); text-decoration: underline; }
+/* 타해(harm) 카드: 자살·자해(high, 빨강)와 함께 나올 때 구분되게 주황(경고) 계열. watch 는 style.css 의 차분한 회색 */
+.crisis-card.harm { background: var(--warn-soft); border-color: color-mix(in srgb, var(--warn) 50%, transparent); border-left: 4px solid var(--warn); }
+.crisis-card.harm h2 { color: var(--warn); }
+.crisis-card.harm .acts a.tel { background: var(--warn); border-color: var(--warn); color: var(--paper); }

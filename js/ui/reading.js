@@ -1,6 +1,10 @@
 /* 조현병 백과 · 읽기 모듈(js/ui/reading.js)
    1) 요약으로 보기 | 전체 보기 — core 소절만 보이고 detail 소절은 제목만 남겨 접는다. 선택은 'jhb.ui.reading.mode' 에 저장.
+      첫 소절은 늘 core(앱이 data-key 를 달고, 여기서도 한 번 더 지킨다). '위기'·'응급' 태그 글은 요약 모드를 무시하고
+      늘 전체를 보인다(스위치 없음, 요약 모드일 때만 "이 글은 늘 전체를 보여 줘요" 한 줄).
    2) 읽던 자리 — 문서를 떠날 때 스크롤 비율을 'jhb.ui.reading.pos' 에 저장하고, 7일 안에 다시 열면 그 자리로 돌아간다.
+      기록 쉼(JHB.app.privacy.paused())이면 저장하지 않는다.
+   3) JHB.ui.reading.reveal(id) — 그 id 의 소절(또는 소절 안 요소)이 접혀 있으면 펼친다(다른 모듈의 차례 이동용).
    앱 본체는 고치지 않고 jhb:page / jhb:article 이벤트로만 붙는다. */
 (function () {
   if (!window.JHB || !JHB.app) return;
@@ -16,15 +20,24 @@
   /* ---------- 요약/전체 ---------- */
   let cur = null; /* { body, sections:[{h, nodes, open}], switchEl, notice } */
 
+  /* 위기 연락처(109·1577-0199·119·112·1393)가 든 소절은 늘 core(앱이 data-key 를 달지만 여기서도 한 번 더 지킨다) */
+  function hasContact(nodes) {
+    const C = window.JHB && JHB.crisis;
+    if (!(C && C.hasContact)) return false;
+    return nodes.some(function (n) { return C.hasContact(n.outerHTML || n.textContent || ''); });
+  }
   function collect(body) {
     const sections = [];
     let sec = null;
     Array.prototype.slice.call(body.children).forEach(function (n) {
-      if (n.tagName === 'H2') { sec = { h: n, key: n.getAttribute('data-key') || 'detail', nodes: [], open: false }; sections.push(sec); }
+      if (n.tagName === 'H2') { sec = { h: n, key: sections.length === 0 ? 'core' : (n.getAttribute('data-key') || 'detail'), nodes: [], open: false }; sections.push(sec); }
       else if (sec) sec.nodes.push(n);
     });
+    sections.forEach(function (s) { if (s.key !== 'core' && hasContact(s.nodes)) s.key = 'core'; });
     return sections;
   }
+  function paused() { return !!(A.privacy && typeof A.privacy.paused === 'function' && A.privacy.paused()); }
+  const ALWAYS_FULL_TAGS = ['위기', '응급'];
 
   function setSectionOpen(sec, open) {
     sec.open = open;
@@ -104,18 +117,24 @@
     if (!cur || !cur.body.classList.contains('rd-summary')) return;
     const a = e.target.closest && e.target.closest('a[href*="#h-"]');
     if (!a) return;
-    const id = a.getAttribute('href').split('#')[1];
-    const target = id && document.getElementById(id);
-    if (!target || !cur.body.contains(target)) return;
-    let sec = null;
-    cur.sections.forEach(function (s) { if (s.h === target || s.nodes.indexOf(target) >= 0) sec = s; });
-    if (sec && sec.key !== 'core' && !sec.open) { setSectionOpen(sec, true); layoutChanged(); }
+    reveal(a.getAttribute('href').split('#')[1]);
   }, true);
 
+  function tagsOf(detail) {
+    const t = (detail.meta && detail.meta.tags) || (detail.article && detail.article.tags) || [];
+    return Array.isArray(t) ? t : [];
+  }
   function mountSwitch(detail) {
     const body = detail.body;
     if (!body || body.getAttribute('data-rd')) return;
     body.setAttribute('data-rd', '1');
+    /* 위기·응급 글은 요약 모드를 무시하고 늘 전체(스위치 없음). 요약 모드를 쓰는 사람에게만 왜인지 한 줄 */
+    if (tagsOf(detail).some(function (t) { return ALWAYS_FULL_TAGS.indexOf(t) >= 0; })) {
+      cur = null;
+      const head0 = body.parentNode && body.parentNode.querySelector('.doc-head');
+      if (head0 && mode() === 'summary') head0.insertAdjacentElement('afterend', el('div.rd-bar.rd-always', null, [el('p.rd-notice', null, ['이 글은 늘 전체를 보여 줘요.'])]));
+      return;
+    }
     const sections = collect(body);
     const hasCore = sections.some(function (s) { return s.key === 'core'; });
     const hasDetail = sections.some(function (s) { return s.key !== 'core'; });
@@ -141,7 +160,7 @@
     return Math.max(0, Math.min(1, window.scrollY / max));
   }
   function savePos() {
-    if (!curSlug) return;
+    if (!curSlug || paused()) return; /* 기록 쉼이면 읽던 자리를 남기지 않는다 */
     const y = ratio();
     if (y == null) return;
     const p = allPos();
@@ -207,10 +226,24 @@
     if (w.path[0] === 'a' && w.path[1]) {
       curSlug = w.path[1];
       const body = document.querySelector('#app .doc .body');
-      if (body && !body.getAttribute('data-rd')) { mountSwitch({ body: body }); restorePos(curSlug); }
+      /* 앱이 그린 본문(소제목에 data-key 가 있음)만. 정적 HTML 본문(배포 직후 옛 캐시로 남겨 둔 것 등)에는 스위치를 달지 않는다 */
+      /* 글 정보(태그)를 함께 넘겨야 위기·응급 글 예외(늘 전체)가 이 길에서도 같다 */
+      if (body && !body.getAttribute('data-rd') && body.querySelector('h2[data-key]')) { mountSwitch({ body: body, article: A.bySlug && A.bySlug[curSlug] }); restorePos(curSlug); }
     }
   })();
 
+  /* 그 id 의 소절(제목 h2 이거나 소절 안 요소)이 요약 모드로 접혀 있으면 펼친다. 펼쳤거나 이미 보이면 true */
+  function reveal(id) {
+    if (!cur || !id) return false;
+    const target = document.getElementById(String(id).replace(/^#/, ''));
+    if (!target || !cur.body.contains(target)) return false;
+    let sec = null;
+    cur.sections.forEach(function (s) { if (s.h === target || s.nodes.some(function (n) { return n === target || n.contains(target); })) sec = s; });
+    if (!sec) return false;
+    if (sec.key !== 'core' && cur.body.classList.contains('rd-summary') && !sec.open) { setSectionOpen(sec, true); layoutChanged(); }
+    return true;
+  }
+
   JHB.ui = JHB.ui || {};
-  JHB.ui.reading = { mode: mode, setMode: choose, savePos: savePos };
+  JHB.ui.reading = { mode: mode, setMode: choose, savePos: savePos, reveal: reveal };
 })();

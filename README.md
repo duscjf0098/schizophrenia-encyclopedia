@@ -12,7 +12,9 @@ http://localhost:5174 을 연다. (launch.json 항목 "jhb")
 
 ## 구조
 
-- 페이지는 모두 `tools/shell.html` 틀로 **생성**한다: `index.html`, `a/<slug>/index.html`, `s/<id>/index.html`, `glossary/`, `about/`, `search/`, `fav/`, `random/`, `404.html`, `app-shell.html`(서비스 워커가 오프라인에서 채워 쓰는 틀), `sitemap.xml`. 각 페이지에 본문이 미리 들어 있어 검색엔진이 읽을 수 있고, `<html data-base data-route>`로 앱이 위치를 안다. 이 파일들은 직접 고치지 않는다.
+- 페이지는 모두 `tools/shell.html` 틀로 **생성**한다: `index.html`, `a/<slug>/index.html`, `s/<id>/index.html`, `glossary/`, `about/`, `search/`, `fav/`, `random/`, 특집 화면 `<id>/`, `404.html`, `app-shell.html`(서비스 워커가 오프라인에서 채워 쓰는 틀), `sitemap.xml`. 각 페이지에 본문이 미리 들어 있어 검색엔진이 읽을 수 있고, `<html data-base data-route>`로 앱이 위치를 안다. 이 파일들은 직접 고치지 않는다.
+- 특집 화면(글·분류·용어 사전이 아닌 새 화면): `data/pages/<id>.json` 선언 + `js/pages/<id>.js` 화면 코드 + `css/pages/<id>.css` + `data/kb/<이름>.json` 데이터. 선언 형식은 `data/pages/README.md`, 만드는 법·공개 API·문서 확장 자리는 `docs/UI모듈가이드.md`. `data/pages.js` 는 자동 생성.
+- 화면 확장 모듈 스크립트 줄과 상단 도구 링크는 빌드가 채운다(`tools/lib/assets.cjs`, 순서는 `tools/ui-order.json`). `serve.cjs` 는 같은 함수로 `css/ui.css`·`data/pages.js`·모듈 줄을 즉석에서 만들어, 빌드 없이도 새 파일이 보인다.
 - `css/style.css` 토큰 기반. 밝음/어두움 모두 지원(`prefers-color-scheme` 기본, `<html data-theme>`로 수동). 글자 크기는 `<html data-fs="s|l">`. 섹션 색은 `.tinted`에 `--h`(색상각)를 주면 계산된다.
 - `js/md.js` 소형 Markdown 렌더러. frontmatter, `##`/`###`, 굵게·기울임·코드, 링크, `[^n]` 각주(출처 번호), 목록, 인용, 표, `::: 종류 제목 … :::` 콜아웃(tip/warn/crisis/note/research/fact/exp). node에서도 쓴다.
 - `js/search.js` 제목·태그·요약·본문 부분일치 점수 검색. `data/search-index.json`을 쓴다.
@@ -33,9 +35,11 @@ title: 환청
 section: 2
 order: 3
 summary: 한두 문장 요약
-tags: 양성, 환각, 환청        (위기 글은 "위기" 태그 → 상담 전화 배너)
+tags: 양성, 환각, 환청        (위기 글은 "위기" 태그 → 상담 전화 배너, 몸의 응급 신호 글은 "응급" 태그 → 119 줄)
 updated: 2026-10-23
 evidence: 가이드라인 | 연구 | 초기연구 | 경험
+points:                        (선택, 2~4줄 → 글 머리 "핵심 3가지" 상자)
+  - 핵심 한 줄
 sources:
   - 기관 | 제목 | 연도 | URL
 ---
@@ -49,13 +53,16 @@ sources:
 글을 추가·수정한 뒤:
 
 ```
-node tools/check-content.cjs && node tools/build-index.cjs && node tools/build-links.cjs && node tools/build-ui-css.cjs && node tools/build-pages.cjs
+node tools/build-all.cjs
 ```
 
+`build-all.cjs` 는 아래를 차례로 돌리고 하나라도 실패하면 멈춘다: check-content → build-kb → build-index → build-links → build-ui-css → build-pages.
+
 - `check-content.cjs`: 필수 항목, 출처·각주 범위, 금지 표현(용량 지시, 임의 중단 권유, 옛 병명, "조현병 환자", 단정적 완치), 위기 글의 109·1577-0199, 600자 미만 검사.
-- `build-index.cjs`: toc·검색 색인·프리캐시 목록 생성.
+- `build-kb.cjs`: 특집 화면 선언(`data/pages/*.json`)·지식 데이터(`data/kb/*.json`) 검사, `data/pages.js` 생성.
+- `build-index.cjs`: toc·검색 색인·프리캐시 목록 생성(모듈·특집 화면·지식 데이터까지 자동으로 모음).
 - `build-links.cjs`: 문서 간 링크 지도(`data/links.js`, 역링크·고아 문서 통계).
-- `build-pages.cjs`: 검색엔진용 정적 페이지와 sitemap.
+- `build-pages.cjs`: 검색엔진용 정적 페이지와 sitemap(문서에는 위기 배너·응급 줄·핵심 3가지·근거 한 줄·문서 고지도 넣음, 특집 화면은 `staticHtml` 결과와 고지).
 - `build-ui-css.cjs`: `css/ui/*.css` 를 `css/ui.css` 하나로 이어 붙임. `build-og.cjs`: 공유 배너 `og.png`(tools/og-template.html, 책등형).
 - 화면 확장 모듈 `js/ui/*.js` + `css/ui/*.css`(앱 본체는 안 건드리고 `JHB.app` 공개 API와 `jhb:page`·`jhb:article` 이벤트로 붙음, 규칙은 `docs/UI모듈가이드.md`): palette(Ctrl+K 명령 팔레트), preview(링크 미리보기 카드), reading(요약/전체 보기·읽던 자리), settings(보기 설정 패널: 글자·폭·글꼴·움직임·테마), mobile(휴대폰 하단 바·차례/용어 시트·스와이프), sticky(따라오는 제목 줄·남은 시간), polish(화면 전환·자리표시·토스트·분류 색), home(처음 온 사람 안내·역할별 첫 화면·새로 올라온 글·홈 화면에 추가), shelf(배너와 같은 책꽂이: 첫 화면 분류 책꽂이·분류 머리 책등·색 막대 책등 모양). 모두 없어도 앱은 동작한다.
 - 앱에 붙은 선택 모듈: `data/synonyms.js`+`js/synonyms.js`(일상 말 → 문서), `js/crisis.js`+`data/crisis-card.js`(위기 검색어 안내), `data/courses.js`(읽기 코스), `js/progress.js`(읽은 문서·이어 읽기, localStorage `jhb.read`), `data/links.js`(역링크). 모두 없어도 앱은 동작한다.

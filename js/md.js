@@ -1,6 +1,8 @@
 /* 조현병 백과 · 소형 Markdown 렌더러
    지원: frontmatter(---), #~### 제목, 문단, **굵게**, *기울임*, `코드`, [링크](url), [^n] 각주(출처),
-   - / 1. 목록, > 인용, --- 구분선, | 표 |, ::: 종류 제목 … ::: 콜아웃.
+   - / 1. 목록, > 인용, --- 구분선, | 표 |, ::: 종류 제목 … ::: 콜아웃(div role=note).
+   본문의 상담 전화번호(**109** 처럼 굵게 싼 번호, 1577-0199 꼴)는 tel: 링크가 된다.
+   앱 화면과 정적 페이지가 똑같이 쓰는 고정 안내(위기 배너·응급 줄·핵심 3가지·문서 고지·공용 고지)도 여기서 만든다.
    브라우저(window.JHB.md)와 node(module.exports) 양쪽에서 쓴다. */
 (function (root) {
   const CALLOUT_TITLE = { tip: '도움말', warn: '주의', crisis: '지금 위험하다면', note: '알아두기', research: '최신 연구', fact: '잘 알려지지 않은 사실', exp: '당사자 경험' };
@@ -58,7 +60,31 @@
     });
     s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
     s = s.replace(/(^|[^*])\*([^*\n]+)\*(?!\*)/g, '$1<em>$2</em>');
-    return s;
+    return telLinks(s);
+  }
+
+  /* ---- 본문 전화번호 → tel: 링크 ----
+     1) 1577-0199 꼴(15xx~18xx-xxxx)은 굵게가 아니어도. 건너뛰는 것:
+        앞 글자가 숫자·영문·-./ (DOI·주소 속 숫자), 뒤가 숫자·-·"년", 바로 앞 낱말이 ISSN·ISBN,
+        두 번째 묶음이 첫 묶음보다 큰 1500~1999(연도 범위 "1650-1750 사이")
+     2) 굵게 싼 짧은 번호: 109·112·119·129 같은 세 자리 공공 번호와 13xx 네 자리. 뒤에 명·조·년 같은 단위가 붙으면 건너뜀
+     이미 링크(<a>…</a>)나 코드(<code>…</code>) 안이면 건드리지 않는다. 옛 사파리 때문에 lookbehind 는 쓰지 않는다. */
+  const TEL_LONG = /(^|[^\w\-./])(1[5-8]\d{2}-\d{4})(?![\d-]|\s*년)/g;
+  const TEL_SHORT = /<strong>(109|110|112|114|117|118|119|120|122|125|127|128|129|131|132|182|13\d{2})<\/strong>(?!\s*(?:명|개|년|조|항|호|세|살|%|번째|만|천|억|원|회|건|곳|일|시간|분|위|차|쪽))/g;
+  const TEL_NOT_AFTER = /(?:e?ISSN|ISBN(?:-1[03])?)[\s:：]*$/i;
+  function telA(n) { return '<a href="tel:' + n + '">' + n + '</a>'; }
+  function longTel(m, pre, n, off, str) {
+    if (TEL_NOT_AFTER.test(str.slice(0, off + pre.length))) return m;
+    const a = Number(n.slice(0, 4)), b = Number(n.slice(5));
+    if (b >= 1500 && b <= 1999 && b > a) return m;
+    return pre + telA(n);
+  }
+  function telLinks(html) {
+    return String(html).split(/(<a\b[^>]*>[\s\S]*?<\/a>|<code>[\s\S]*?<\/code>)/).map(function (part, i) {
+      if (i % 2) return part;
+      return part.replace(TEL_LONG, longTel)
+        .replace(TEL_SHORT, function (_, n) { return '<strong>' + telA(n) + '</strong>'; });
+    }).join('');
   }
 
   /* ---- block ---- */
@@ -99,7 +125,7 @@
           const start = out.length;
           block(function (l) { return l.trim() === ':::'; });
           const inner = out.splice(start).join('');
-          out.push('<aside class="callout callout-' + esc(type) + '">' + (title ? '<div class="callout-title">' + inline(title) + '</div>' : '') + inner + '</aside>');
+          out.push('<div class="callout callout-' + esc(type) + '" role="note"' + (title ? ' aria-label="' + esc(plain(title)) + '"' : '') + '>' + (title ? '<div class="callout-title">' + inline(title) + '</div>' : '') + inner + '</div>');
           if (i < lines.length && lines[i].trim() === ':::') i++;
           continue;
         }
@@ -168,7 +194,72 @@
     return Math.max(1, Math.round(n / 500));
   }
 
-  const api = { parse: parse, render: render, plain: plain, readingMinutes: readingMinutes, esc: esc, CALLOUT_TITLE: CALLOUT_TITLE };
+  /* ---- 고정 안내: 앱(js/app.js)과 정적 페이지(tools/build-pages.cjs)가 같은 문구를 쓴다 ---- */
+  const DISCLAIMER = '일반적인 정보예요. 사람마다 상황이 달라서 진단과 치료는 담당 의사와 상의하는 게 안전해요. 약은 스스로 늘리거나 줄이거나 끊지 말고 먼저 상의하세요. 이 글은 AI가 초안을 쓰고 출처를 확인했으며, 전문가 감수는 받지 않았어요.';
+  function crisisHtml() {
+    return '<div class="crisis" role="note"><strong>지금 많이 힘들다면</strong> 혼자 견디지 않아도 돼요. 자살예방상담 ' + telA('109') + ', 정신건강위기상담 ' + telA('1577-0199') + '는 24시간 받아요. 당장 위험하면 ' + telA('119') + '에 전화하세요.</div>';
+  }
+  function emergencyHtml() {
+    return '<div class="emergency" role="note"><strong>몸의 응급 신호가 보이면</strong> ' + telA('119') + '에 전화하거나 응급실로 가세요. 약 때문인지 헷갈려도 먼저 연락하는 게 안전해요.</div>';
+  }
+  /* frontmatter points: 를 목록으로(글자 하나면 한 줄짜리 목록) */
+  function pointList(v) {
+    const list = Array.isArray(v) ? v : (typeof v === 'string' && v.trim() ? [v] : []);
+    return list.map(function (x) { return String(x).trim(); }).filter(Boolean);
+  }
+  /* 핵심 3가지 상자(줄 수가 3이 아니면 "핵심 정리"). crisis = 위기 태그 글이면 마지막에 상담 전화 줄 */
+  function keypointsHtml(points, crisis) {
+    const list = pointList(points);
+    if (!list.length) return '';
+    return '<section class="keypoints"><h2 class="keypoints-h">' + (list.length === 3 ? '핵심 3가지' : '핵심 정리') + '</h2><ul>' +
+      list.map(function (x) { return '<li>' + inline(x) + '</li>'; }).join('') + '</ul>' +
+      (crisis ? '<p class="keypoints-crisis">지금 힘들면 ' + telA('109') + ' · ' + telA('1577-0199') + '</p>' : '') + '</section>';
+  }
+  function fmtDay(s) {
+    const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(s || ''));
+    return m ? m[1] + '년 ' + Number(m[2]) + '월 ' + Number(m[3]) + '일' : '';
+  }
+  function dotDate(s) {
+    const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(s || ''));
+    return m ? m[1] + '.' + m[2] + '.' + m[3] : '';
+  }
+  /* 문서 머리 한 줄(근거 칩·읽는 시간·고친 날). 앱의 .doc-meta-m(휴대폰 머리 줄)과 정적 페이지의 p.doc-meta-s 가 같은 글자를 쓴다 */
+  function docMetaText(minutes, updated) {
+    const d = dotDate(updated);
+    return { minutes: '약 ' + (Number(minutes) || 1) + '분', updated: d ? d + ' 고침' : '' };
+  }
+  /* 근거 칩: 앱의 ev() 와 같은 마크업. info = JHB.EVIDENCE[key] ({label, desc}) */
+  function evChipHtml(key, info) {
+    if (!key) return '';
+    info = info || {};
+    return '<span class="ev ev-' + esc(key) + '"' + (info.desc ? ' title="' + esc(info.desc) + '"' : '') + '>' + esc(info.label || key) + '</span>';
+  }
+  /* o = { evidence: 키, ev: {label, desc}, minutes, updated } */
+  function docMetaHtml(o) {
+    o = o || {};
+    const t = docMetaText(o.minutes, o.updated);
+    return '<p class="doc-meta-s">' + evChipHtml(o.evidence, o.ev) + '<span>' + esc(t.minutes) + '</span>' + (t.updated ? '<span>' + esc(t.updated) + '</span>' : '') + '</p>';
+  }
+  const NOTICE = {
+    general: function () { return '일반적인 정보예요. 사람마다 상황이 달라서 진단과 치료는 담당 의사와 상의하는 게 안전해요. 이 백과의 내용은 AI가 공개 자료로 초안을 쓰고 출처를 확인해 만들었으며, 전문가 감수는 받지 않았어요.'; },
+    crisis: function () { return '힘든 생각이 들면 자살예방상담 ' + telA('109') + ', 정신건강위기상담 ' + telA('1577-0199') + '에 24시간 전화할 수 있어요. 당장 위험하면 ' + telA('119') + '에 전화하세요.'; },
+    emergency: function () { return '<strong>몸의 응급 신호가 보이면</strong> ' + telA('119') + '에 전화하거나 응급실로 가세요. 약 때문인지 헷갈려도 먼저 연락하는 게 안전해요.'; },
+    device: function () { return '이 기기의 브라우저에만 저장돼요. 어디로도 보내지 않아요. 같은 기기를 쓰는 사람이 볼 수 있어요.'; },
+    dated: function (arg) { const d = fmtDay(arg); return d ? d + '에 확인한 내용이에요. 그 뒤에 바뀌었을 수 있어요.' : ''; }
+  };
+  /* 공용 고지 한 줄. kind: general | crisis | emergency | device | dated(arg = 'YYYY-MM-DD'). 모르는 종류거나 날짜가 없으면 '' */
+  function noticeHtml(kind, arg) {
+    const f = Object.prototype.hasOwnProperty.call(NOTICE, kind) ? NOTICE[kind] : null;
+    const body = f ? f(arg) : '';
+    return body ? '<div class="notice notice-' + kind + '" role="note">' + body + '</div>' : '';
+  }
+
+  const api = {
+    parse: parse, render: render, plain: plain, readingMinutes: readingMinutes, esc: esc, CALLOUT_TITLE: CALLOUT_TITLE,
+    inline: inline, telLinks: telLinks, DISCLAIMER: DISCLAIMER, crisisHtml: crisisHtml, emergencyHtml: emergencyHtml,
+    pointList: pointList, keypointsHtml: keypointsHtml, noticeHtml: noticeHtml, NOTICE_KINDS: Object.keys(NOTICE),
+    docMetaText: docMetaText, docMetaHtml: docMetaHtml, evChipHtml: evChipHtml
+  };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else { root.JHB = root.JHB || {}; root.JHB.md = api; }
 })(typeof window !== 'undefined' ? window : this);
