@@ -1,0 +1,285 @@
+[
+  {
+    "id": "life",
+    "group": "지금 급해요",
+    "label": "생명이 위급해요",
+    "who": ["self", "family", "near"],
+    "contacts": [
+      { "ref": "rescue-119", "when": "이미 다쳤거나, 약을 많이 먹었거나, 의식이 흐릴 때" },
+      { "ref": "police-112", "when": "흉기·폭력·위협으로 누군가 위험할 때" },
+      { "ref": "suicide-109", "when": "죽고 싶은 마음이 들 때" },
+      { "ref": "crisis-1577-0199", "when": "증상이 심해 어떻게 할지 모를 때" }
+    ],
+    "rights": [
+      { "name": "몸의 응급 신호", "text": "몸의 응급 신호도 119예요.", "from": "emergency-response" },
+      { "name": "함께 오는 전문요원", "text": "지역에 따라 정신건강전문요원이 경찰과 함께 오기도 해요.", "from": "emergency-response" },
+      { "name": "입원한 사람의 권리", "text": "입원한 사람과 보호의무자는 퇴원이나 처우개선 심사를 청구할 수 있어요(제55조).", "from": "psychiatric-emergency-system" }
+    ],
+    "read": ["emergency-response", "psychiatric-emergency-system", "crisis-hotlines"],
+    "note": "119·112에 전화할 때 \"정신건강 위기\"라고 먼저 말하고, 진단명·먹는 약·흉기 여부·지금 있는 곳을 알려 주세요.",
+    "noteFrom": "psychiatric-emergency-system"
+  },
+  {
+    "id": "suicidal",
+    "group": "지금 급해요",
+    "label": "죽고 싶은 마음이 들어요",
+    "who": ["self", "family", "near"],
+    "contacts": [
+      { "ref": "suicide-109", "when": "나의 일이든 곁에 있는 사람의 일이든, 지금 이야기하고 싶을 때" },
+      { "ref": "crisis-1577-0199", "when": "증상과 함께 마음이 무너질 때" },
+      { "ref": "rescue-119", "when": "당장 위험할 때" }
+    ],
+    "rights": [
+      { "name": "직접 물어도 괜찮아요", "text": "\"혹시 죽고 싶은 생각이 들어?\"라고 직접 묻는 것이 자살 행동이나 생각을 늘리지 않는다는 것이 연구로 확인돼 있어요.", "from": "suicide-warning-signs" }
+    ],
+    "read": ["suicide-warning-signs", "crisis-hotlines", "faq-recovery-real"],
+    "note": "말이 잘 안 나와도 괜찮아요. 상담사가 질문하며 이끌어 줘요.",
+    "noteFrom": "crisis-hotlines"
+  },
+  {
+    "id": "threat",
+    "group": "지금 급해요",
+    "label": "가족이 위협을 느껴요",
+    "who": ["family", "near"],
+    "contacts": [
+      { "ref": "police-112", "when": "흉기, 때리기, 구체적인 위협이 있을 때" },
+      { "ref": "rescue-119", "when": "누가 다쳤을 때" },
+      { "ref": "women-1366", "when": "피할 곳이나 상담이 필요할 때" },
+      { "ref": "crisis-1577-0199", "when": "증상이 심해져 어떻게 할지 모를 때" }
+    ],
+    "rights": [
+      { "name": "112의 응급조치", "text": "신고를 받은 경찰은 바로 현장에 나가 폭력을 제지하고 두 사람을 떼어 놓아요.", "from": "family-violence-safety" },
+      { "name": "성별과 상관없이", "text": "아버지나 아들, 형제가 피해를 입었어도 112와 가정폭력 상담소에 도움을 청할 수 있어요.", "from": "family-violence-safety" },
+      { "name": "자리를 떠나도 돼요", "text": "내가 안전하지 않다고 느끼면 그 자리를 떠나도 돼요.", "from": "family-violence-safety" }
+    ],
+    "read": ["family-violence-safety", "emergency-response", "anger-irritability"],
+    "note": "중증 정신질환이 있는 사람 대부분은 폭력을 쓰지 않아요. 오히려 피해를 입기 쉬워요. 가족이 다치지 않는 것은 치료만큼 중요하고, 결국 당사자를 지키는 일이기도 해요.",
+    "noteFrom": "family-violence-safety"
+  },
+  {
+    "id": "missing",
+    "group": "지금 급해요",
+    "label": "연락이 끊겼어요",
+    "who": ["family", "near"],
+    "contacts": [
+      { "ref": "police-112", "when": "생명이 위험할 수 있으면 지금. \"생명이 위험할 수 있다\"고 분명히 말해요" },
+      { "ref": "missing-182", "when": "실종 신고를 할 때" },
+      { "ref": "rescue-119", "when": "배우자나 2촌 이내 친족이 긴급구조(위치 확인)를 요청할 때" }
+    ],
+    "rights": [
+      { "name": "바로 신고", "text": "경찰은 실종이 생기면 빠른 초기 조치가 무엇보다 중요하다며 지체 없이 신고하라고 안내해요.", "from": "missing-person" },
+      { "name": "가족의 긴급구조 요청", "text": "위치정보법 제29조에 따르면 생명·신체가 급박한 위험에 놓였을 때 본인, 배우자, 2촌 이내 친족 등은 긴급구조기관에 긴급구조를 요청할 수 있어요.", "from": "missing-person" },
+      { "name": "사전등록", "text": "미리 등록해 두면 따로 실종 신고를 하지 않았더라도 경찰이 신원을 바로 확인할 수 있어요.", "from": "missing-person" }
+    ],
+    "read": ["missing-person", "emergency-response", "relapse-signs"],
+    "note": "신고는 당사자를 벌주는 일이 아니라 찾는 일이에요.",
+    "noteFrom": "missing-person"
+  },
+  {
+    "id": "admission",
+    "group": "치료가 막혔을 때",
+    "label": "증상이 심해져 입원을 고민해요",
+    "who": ["family", "self"],
+    "contacts": [
+      { "ref": "crisis-1577-0199", "when": "입원 절차가 궁금하거나 어떻게 해야 할지 모를 때" },
+      { "ref": "humanrights-1331", "when": "입원 중 인권 침해를 상담하거나 진정할 때" }
+    ],
+    "rights": [
+      { "kind": "rule", "name": "입원은 다섯 가지", "text": "한국의 정신과 입원은 법으로 다섯 가지가 정해져 있고, 종류마다 누가 결정하는지와 어떻게 나오는지가 달라요.", "from": "admission-types" },
+      { "kind": "rule", "name": "거부만으로는 요건이 아니에요", "text": "치료를 거부한다는 사실만으로는 강제 입원 요건이 되지 않아요.", "from": "faq-forced-admission" },
+      { "kind": "rule", "name": "입원적합성심사", "text": "보호의무자 입원과 행정입원은 외부 심사를 받아요.", "from": "admission-types" },
+      { "kind": "right", "name": "퇴원 등 심사 청구", "text": "입원 중인 사람이나 보호의무자는 언제든 청구할 수 있어요(제55조).", "from": "admission-types" },
+      { "kind": "right", "name": "절차조력인", "text": "2026년 1월부터는 절차조력인이 서류 작성, 심사 참여, 청구, 통신·면회를 도울 수 있어요.", "from": "admission-types" },
+      { "kind": "right", "name": "인신보호 구제청구", "text": "병원 안의 심사와 함께 알아 둘 길로, 본인 뜻과 다른 수용이 법에 맞는지 법원에 판단을 구하는 인신보호 구제청구가 있어요.", "from": "admission-types" }
+    ],
+    "read": ["admission-types", "faq-forced-admission", "emergency-response", "guardian-duties"],
+    "note": "강제 입원은 당사자의 자유를 크게 제한하는 일이어서 법이 요건을 엄격히 정해 두었어요.",
+    "noteFrom": "emergency-response"
+  },
+  {
+    "id": "refuse-care",
+    "group": "치료가 막혔을 때",
+    "label": "병원에 가지 않으려 해요",
+    "who": ["family", "near"],
+    "contacts": [
+      { "ref": "crisis-1577-0199", "when": "어떻게 도와야 할지 모를 때, 가까운 정신건강복지센터를 알고 싶을 때" }
+    ],
+    "rights": [
+      { "name": "정신건강복지센터", "text": "지역 정신건강복지센터는 정신건강 문제로 도움을 원하는 사람이면 누구나 무료로 이용할 수 있어요.", "from": "faq-family-refuses" },
+      { "name": "지역마다 달라요", "text": "받을 수 있는 서비스는 지역마다 달라서 먼저 물어보는 게 좋아요.", "from": "faq-family-refuses" },
+      { "name": "센터 찾는 법", "text": "모르면 1577-0199에 전화해 관할 센터를 물어보세요.", "from": "mental-health-center" }
+    ],
+    "read": ["faq-family-refuses", "leap-communication", "insight", "mental-health-center"],
+    "note": "증거를 대며 설득할수록 대화는 싸움이 되기 쉬워요.",
+    "noteFrom": "faq-family-refuses"
+  },
+  {
+    "id": "refuse-meds",
+    "group": "치료가 막혔을 때",
+    "label": "약을 먹지 않겠다고 해요",
+    "who": ["family", "self"],
+    "meds": true,
+    "contacts": [
+      { "ref": "crisis-1577-0199", "when": "어떻게 도와야 할지 막막할 때" }
+    ],
+    "rights": [
+      { "name": "함께 정하기", "text": "의사가 정해 주는 것도, 당사자 혼자 정하는 것도 아니에요.", "from": "shared-decision-making" },
+      { "name": "거부하는 이유", "text": "부작용, \"나는 병이 없다\"는 생각, 낙인처럼 이유마다 길이 달라요.", "from": "faq-hide-meds-in-food" },
+      { "name": "몰래 섞지 않기", "text": "몰래 투약은 믿음을 깨는 일로 여겨지고, 알게 된 당사자는 화를 내며 치료를 거부할 수 있어요.", "from": "faq-hide-meds-in-food" }
+    ],
+    "read": ["medication-adherence", "faq-hide-meds-in-food", "shared-decision-making", "switching-reducing-stopping"],
+    "note": "약을 줄이거나 끊고 싶은 마음도 함께 이야기할 주제예요. 혼자 정하지 말고 이유를 말하면 선택지를 같이 찾을 수 있어요.",
+    "noteFrom": "shared-decision-making"
+  },
+  {
+    "id": "side-effects",
+    "group": "치료가 막혔을 때",
+    "label": "부작용이 너무 힘들어요",
+    "who": ["self", "family"],
+    "meds": true,
+    "contacts": [
+      { "ref": "rescue-119", "when": "고열과 함께 온몸이 굳거나, 가슴 통증·심한 두근거림·경련이 있을 때" },
+      { "ref": "crisis-1577-0199", "when": "응급은 아니지만 힘든 부작용을 어떻게 할지 모를 때" },
+      { "ref": "suicide-109", "when": "부작용이 괴로워 차라리 죽는 게 낫겠다는 생각이 들 때" }
+    ],
+    "rights": [
+      { "name": "당일 연락", "text": "다음 진료를 기다리지 말고 당일에 연락하세요.", "from": "managing-side-effects" },
+      { "name": "정기 검사", "text": "체중·허리둘레·혈압·혈당·지질은 약 시작 전과 12주 뒤, 그 뒤 정기적으로 재도록 2004년 학회 합의안이 정해 뒀어요. 검사를 안 하고 있다면 요청할 수 있어요.", "from": "managing-side-effects" },
+      { "name": "약국에서도", "text": "약사는 상호작용, 복용 시간, 식사와의 관계, 다른 약(감기약·진통제·영양제)과 겹치는 부작용을 봐 줘요.", "from": "managing-side-effects" }
+    ],
+    "read": ["managing-side-effects", "side-effects-overview", "neuroleptic-malignant-syndrome", "shared-decision-making"],
+    "note": "부작용을 말하는 건 불평이 아니라 치료 정보를 주는 거예요.",
+    "noteFrom": "managing-side-effects"
+  },
+  {
+    "id": "unjust",
+    "group": "권리·법·돈",
+    "label": "입원이 부당하다고 느껴요",
+    "who": ["self", "family"],
+    "contacts": [
+      { "ref": "humanrights-1331", "when": "입원 중 인권 침해를 상담하거나 진정할 때" },
+      { "ref": "legalaid-132", "when": "인신보호 구제청구 같은 법률 절차를 물을 때" }
+    ],
+    "rights": [
+      { "kind": "rule", "name": "입원 때 알릴 의무", "text": "병원은 입원 즉시 입원 사유와 심사를 받을 수 있다는 사실을 말과 글로 알리고, 대면조사를 원하는지 확인해요(제45조①).", "from": "admission-types" },
+      { "kind": "rule", "name": "대면 진단", "text": "응급입원을 빼면, 전문의의 대면 진단 없이는 입원시키거나 기간을 늘릴 수 없어요(제68조).", "from": "admission-types" },
+      { "kind": "right", "name": "퇴원 등 심사 청구", "text": "입원 중인 사람이나 보호의무자는 언제든 청구할 수 있어요(제55조).", "from": "admission-types" },
+      { "kind": "right", "name": "재심사", "text": "결과에 동의하지 않거나 기간 안에 결정이 없으면 시·도지사에게 재심사를 청구해요(제60조).", "from": "admission-types" },
+      { "kind": "right", "name": "인신보호 구제청구", "text": "입원 중이어도 법원에 직접 판단을 구할 권리가 있고, 병원은 이를 막을 수 없어요.", "from": "habeas-corpus-relief" },
+      { "kind": "right", "name": "절차조력인", "text": "2026년 1월부터는 절차조력인이 서류 작성, 심사 참여, 청구, 통신·면회를 도울 수 있어요.", "from": "admission-types" }
+    ],
+    "read": ["admission-types", "habeas-corpus-relief", "mental-health-welfare-act", "trauma-and-psychosis"],
+    "note": "서면 통지를 꼭 받아 두세요. 날짜가 심사와 청구의 기준이 돼요.",
+    "noteFrom": "admission-types"
+  },
+  {
+    "id": "justice",
+    "group": "권리·법·돈",
+    "label": "경찰 조사·재판을 받게 됐어요",
+    "who": ["self", "family"],
+    "contacts": [
+      { "ref": "legalaid-132", "when": "법률상담이 필요할 때" },
+      { "ref": "crisis-1577-0199", "when": "조사나 재판 중에 증상이 심해질 때" }
+    ],
+    "rights": [
+      { "name": "진술거부권", "text": "신문 전에 말하지 않아도 되고 변호인의 도움을 받을 수 있다는 것을 듣게 돼요.", "from": "justice-system" },
+      { "name": "신뢰관계인 동석", "text": "생각을 정리해 말하기 어려우면 믿을 수 있는 사람이 옆에 앉게 해 달라고 신청할 수 있어요(제244조의5).", "from": "justice-system" },
+      { "name": "국선변호인", "text": "피고인에게 심신장애가 있는 것으로 의심되면, 변호인이 없을 때 법원이 직권으로 변호인을 정해요.", "from": "justice-system" },
+      { "name": "약이 끊기지 않게", "text": "체포·구속되면 먹던 약이 끊기지 않도록 경찰과 변호인에게 진단명, 약 이름, 다니는 병원을 알리고 진료를 요청해요.", "from": "justice-system" }
+    ],
+    "read": ["justice-system", "faq-dangerous"],
+    "note": "조사나 재판을 받는다는 사실이 곧 그 사람을 말해 주지는 않아요.",
+    "noteFrom": "justice-system"
+  },
+  {
+    "id": "hospital-bill",
+    "group": "권리·법·돈",
+    "label": "병원비가 걱정돼요",
+    "who": ["self", "family"],
+    "contacts": [
+      { "ref": "nhis-1577-1000", "when": "산정특례·본인부담상한제·재난적의료비를 물을 때" },
+      { "ref": "welfare-129", "when": "긴급복지 의료지원과 복지 제도를 물을 때" }
+    ],
+    "rights": [
+      { "name": "산정특례", "text": "조현병은 \"중증난치질환\"으로 분류돼 등록하면 건강보험 진료비의 10%만 내요.", "from": "special-calculation" },
+      { "name": "병원비 안전망", "text": "산정특례 → 본인부담상한제 → 재난적의료비 → 긴급복지 의료지원 순서로 보면, 지금 내 상황에서 무엇을 물어야 할지 보여요.", "from": "medical-cost-safety-net" },
+      { "name": "치료비 지원사업", "text": "정신질환 치료비 지원사업은 응급하게 입원했거나, 병이 처음 생겨 집중 치료가 필요한 사람의 치료비 본인부담을 국가와 지자체가 덜어 주는 사업이에요.", "from": "treatment-cost-support" },
+      { "name": "퇴원 전에 묻기", "text": "퇴원 전에 묻는 것이 가장 중요해요.", "from": "medical-cost-safety-net" }
+    ],
+    "read": ["medical-cost-safety-net", "special-calculation", "treatment-cost-support", "faq-cost"],
+    "note": "병원비 영수증과 진료비 세부내역서를 버리지 말고 모아 두세요.",
+    "noteFrom": "medical-cost-safety-net"
+  },
+  {
+    "id": "income",
+    "group": "권리·법·돈",
+    "label": "생활비가 끊겼어요",
+    "who": ["self", "family"],
+    "contacts": [
+      { "ref": "welfare-129", "when": "긴급한 생계 위기, 기초생활보장 같은 제도를 물을 때" }
+    ],
+    "rights": [
+      { "name": "생활을 받쳐 주는 제도", "text": "병 때문에 일을 못 하게 됐을 때 생활을 받쳐 주는 제도는 크게 세 가지예요.", "from": "livelihood-pension" },
+      { "name": "긴급복지지원", "text": "주소득자의 실직이나 중한 질병·부상 같은 위기로 생계가 어려워진 가구는 긴급복지지원을 물어볼 수 있어요.", "from": "livelihood-pension" },
+      { "name": "가족도 신청할 수 있어요", "text": "본인뿐 아니라 친족이나 관계인도 신청할 수 있어요(제21조①).", "from": "livelihood-pension" },
+      { "name": "대신 신청", "text": "혼자 하기 어렵다면 사회복지 전담공무원이 동의를 받아 대신 신청할 수도 있어요(제21조②).", "from": "livelihood-pension" }
+    ],
+    "read": ["livelihood-pension", "disability-registration", "money-management", "medical-cost-safety-net"],
+    "note": "돈이 끊겨 생활이 무너질 것 같은 위기에도 전화해 보세요.",
+    "noteFrom": "crisis-hotlines"
+  },
+  {
+    "id": "new-diagnosis",
+    "group": "처음과 그다음",
+    "label": "처음 진단받았어요",
+    "who": ["self", "family"],
+    "contacts": [
+      { "ref": "crisis-1577-0199", "when": "가까운 정신건강복지센터를 알고 싶을 때" },
+      { "ref": "suicide-109", "when": "진단 뒤 죽고 싶은 생각이 들 때" }
+    ],
+    "rights": [
+      { "name": "산정특례와 치료비", "text": "처음 진단을 받았다면 산정특례 신청과 함께 센터 등록, 발병초기 치료비 지원을 물어보세요.", "from": "treatment-cost-support" },
+      { "name": "정신건강복지센터", "text": "상담과 사례관리를 무료로 받을 수 있고, 위기 때 연락할 곳이 하나 더 생겨요.", "from": "mental-health-center" },
+      { "name": "가족 교육", "text": "병원이나 지역 정신건강복지센터에 가족 교육·가족 모임이 있는지 물어보세요.", "from": "family-first-steps" }
+    ],
+    "read": ["first-episode", "diagnosis-emotions", "family-first-steps", "psychoeducation"],
+    "note": "조현병 진단을 들으면 믿기지 않고, 슬프고, 화가 나고, 부끄러운 마음이 번갈아 와요. 이상한 일이 아니에요.",
+    "noteFrom": "diagnosis-emotions"
+  },
+  {
+    "id": "discharge",
+    "group": "처음과 그다음",
+    "label": "퇴원을 앞두고 있어요",
+    "who": ["self", "family"],
+    "contacts": [
+      { "ref": "crisis-1577-0199", "when": "증상이 다시 심해지는데 다음 예약까지 기다릴 수 없을 때" },
+      { "ref": "suicide-109", "when": "\"없어지고 싶다\"는 생각이 들 때" }
+    ],
+    "rights": [
+      { "name": "센터 연결", "text": "병원은 본인 동의를 받아 퇴원 사실을 관할 정신건강복지센터에 알려야 하고, 통보를 받은 센터는 본인이나 보호의무자와 상담해 재활과 사회 적응 지원 방안을 마련해야 해요.", "from": "first-month-after-discharge" },
+      { "name": "첫 외래 날짜", "text": "날짜가 없다면 퇴원 전에 잡아 달라고 요청하세요.", "from": "first-month-after-discharge" },
+      { "name": "병원비 지원은 퇴원 전에", "text": "퇴원 전에 묻는 것이 가장 중요해요.", "from": "medical-cost-safety-net" }
+    ],
+    "read": ["first-month-after-discharge", "faq-after-discharge", "relapse-prevention-plan", "mental-health-center"],
+    "note": "센터 연결에 동의하는 것은 감시가 아니라 안전망을 하나 더 두는 거예요.",
+    "noteFrom": "first-month-after-discharge"
+  },
+  {
+    "id": "burnout",
+    "group": "처음과 그다음",
+    "label": "돌보다 지쳤어요",
+    "who": ["family", "near"],
+    "contacts": [
+      { "ref": "crisis-1577-0199", "when": "어떻게 해야 할지 막막할 때. 가족도 상담받을 수 있어요" },
+      { "ref": "suicide-109", "when": "가족도 죽고 싶다는 생각이 들 때" }
+    ],
+    "rights": [
+      { "name": "가족돌봄휴가·휴직", "text": "회사에 다니는 가족은 아픈 가족을 돌보려고 가족돌봄휴가, 가족돌봄휴직, 가족돌봄 근로시간 단축을 신청할 수 있어요.", "from": "family-care-leave" },
+      { "name": "센터 가족 프로그램", "text": "지역 정신건강복지센터는 가족 교육과 가족 모임을 운영하기도 해요.", "from": "caregiver-burnout" },
+      { "name": "가족 자신의 진료", "text": "가족의 우울과 불안도 치료 대상이에요.", "from": "caregiver-burnout" }
+    ],
+    "read": ["caregiver-burnout", "family-grief", "family-care-leave", "advocacy-groups"],
+    "note": "교육과 모임은 가족의 고통을 덜어 줄 수 있어요.",
+    "noteFrom": "caregiver-burnout"
+  }
+]

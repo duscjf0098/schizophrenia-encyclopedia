@@ -1,0 +1,220 @@
+{
+  "source": {
+    "slug": "side-effects-overview",
+    "title": "부작용 총론",
+    "heading": "바로 연락할 신호",
+    "updated": "2026-11-14"
+  },
+  "intro": "대부분은 드물어요. 하지만 이런 신호가 보이면 기다리지 말고 연락하세요.",
+  "after": "약을 스스로 끊지 말고 먼저 연락하세요. 약에 관한 판단은 의료진이 해요.",
+  "columns": [
+    "신호",
+    "의심되는 상태",
+    "할 일",
+    "자세한 글"
+  ],
+  "rows": [
+    {
+      "sign": "열이 나면서 몸이 뻣뻣하게 굳고 정신이 흐려짐, 땀을 많이 흘리고 맥박이 빠름",
+      "state": "신경이완제 악성 증후군",
+      "action": "바로 119. 약을 시작하거나 바꾼 뒤 새로 굳고 흐려지면 열이 아직 없어도",
+      "lead": "바로 119",
+      "kind": "119",
+      "links": [
+        {
+          "slug": "neuroleptic-malignant-syndrome",
+          "title": "신경이완제 악성 증후군"
+        }
+      ],
+      "refs": [
+        9,
+        10
+      ]
+    },
+    {
+      "sign": "가슴 통증이나 숨참, 심한 두근거림이나 불규칙한 맥, 두근거림과 함께 쓰러짐",
+      "state": "부정맥 등 심장 이상",
+      "action": "바로 119",
+      "lead": "바로 119",
+      "kind": "119",
+      "links": [
+        {
+          "slug": "heart-and-antipsychotics",
+          "title": "심장과 약"
+        }
+      ],
+      "refs": [
+        9,
+        14
+      ]
+    },
+    {
+      "sign": "클로자핀을 시작하고 두 달 안에 열·몸살과 함께 가슴 통증이나 숨참",
+      "state": "심근염",
+      "action": "바로 119. 가슴 증상 없이 열·몸살·빠른 맥박만 있으면 오늘 안에 담당 의료진에게",
+      "lead": "바로 119",
+      "kind": "119",
+      "links": [
+        {
+          "slug": "heart-and-antipsychotics",
+          "title": "심장과 약"
+        }
+      ],
+      "refs": [
+        9
+      ]
+    },
+    {
+      "sign": "클로자핀을 먹는 중 열이나 오한, 독감 같은 몸살, 목 아픔, 입안이 헐거나 궤양이 생김",
+      "state": "호중구 감소(무과립구증)",
+      "action": "오늘 안에 담당 의사나 병원에 연락. 미루지 말고 바로 전화하고, 연락이 닿지 않으면 응급실이나 119. 혈액 검사로 확인해요",
+      "lead": "오늘 안에 담당 의사나 병원에 연락",
+      "kind": "today",
+      "links": [
+        {
+          "slug": "clozapine",
+          "title": "클로자핀"
+        }
+      ],
+      "refs": [
+        9
+      ]
+    },
+    {
+      "sign": "클로자핀을 먹는 중 며칠째 대변이 없고, 배가 부풀거나 아프고, 메스껍거나 토함",
+      "state": "장 운동 저하(장폐색)",
+      "action": "오늘 안에 담당 의사나 병원에 연락. 연락이 닿지 않으면 응급실이나 119",
+      "lead": "오늘 안에 담당 의사나 병원에 연락",
+      "kind": "today",
+      "links": [
+        {
+          "slug": "clozapine",
+          "title": "클로자핀"
+        }
+      ],
+      "refs": [
+        9
+      ]
+    },
+    {
+      "sign": "경련(발작)을 함",
+      "state": "경련 발작",
+      "action": "바로 119",
+      "lead": "바로 119",
+      "kind": "119",
+      "links": [
+        {
+          "slug": "clozapine",
+          "title": "클로자핀"
+        }
+      ],
+      "refs": [
+        9,
+        11,
+        12
+      ]
+    },
+    {
+      "sign": "더운 날 정신이 흐려지거나 비틀거림, 몸이 매우 뜨거움, 맥박이나 숨이 아주 빠름, 쓰러지거나 유난히 졸림, 시원한 곳에서 물을 마시며 30분쯤 쉬어도 나아지지 않음",
+      "state": "열사병",
+      "action": "바로 119. 기다리는 동안 시원한 곳에서 몸을 식혀요",
+      "lead": "바로 119",
+      "kind": "119",
+      "links": [
+        {
+          "slug": "heat-and-medication",
+          "title": "더위와 약"
+        }
+      ],
+      "refs": [
+        11,
+        15
+      ]
+    },
+    {
+      "sign": "물을 아주 많이 마신 뒤 토함, 숨쉬기 힘듦, 비틀거려 제대로 걷지 못함, 심한 혼란, 깨워도 잘 깨지 않을 만큼 깊은 졸음, 경련",
+      "state": "물 중독(심한 저나트륨)",
+      "action": "바로 119",
+      "lead": "바로 119",
+      "kind": "119",
+      "links": [
+        {
+          "slug": "polydipsia-hyponatremia",
+          "title": "물을 너무 많이 마실 때"
+        }
+      ],
+      "refs": [
+        12,
+        13
+      ]
+    },
+    {
+      "sign": "물을 많이 마신 뒤 두통, 토하지 않는 메스꺼움, 새로 생긴 멍함",
+      "state": "저나트륨",
+      "action": "오늘 안에 담당 의사나 병원에 연락. 미루지 말고 바로 전화해 피검사로 나트륨을 재요. 연락이 닿지 않으면 응급실, 헷갈림이 심해지면 119",
+      "lead": "오늘 안에 담당 의사나 병원에 연락",
+      "kind": "today",
+      "links": [
+        {
+          "slug": "polydipsia-hyponatremia",
+          "title": "물을 너무 많이 마실 때"
+        }
+      ],
+      "refs": [
+        12,
+        13
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "n": 9,
+      "org": "U.S. FDA / DailyMed",
+      "title": "CLOZARIL (clozapine) tablets, prescribing information (Revised 6/2025) · Boxed Warning, 5.1 Severe Neutropenia, 5.4 Seizures, 5.5 Myocarditis, 5.7 Gastrointestinal Hypomotility, 5.9 QT Interval Prolongation, 5.11 Neuroleptic Malignant Syndrome, 10 Overdosage, 17 Patient Counseling Information, Medication Guide",
+      "year": "2025",
+      "url": "https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=90876802-0e3a-44c9-9ff7-1754dfbe736a&type=display"
+    },
+    {
+      "n": 10,
+      "org": "Tse L 외",
+      "title": "Neuroleptic malignant syndrome: a review from a clinically oriented perspective (Current Neuropharmacology)",
+      "year": "2015",
+      "url": "https://doi.org/10.2174/1570159X13999150424113345"
+    },
+    {
+      "n": 11,
+      "org": "Rethink Mental Illness",
+      "title": "Mental health medication and hot weather",
+      "year": "2026",
+      "url": "https://www.rethink.org/advice-and-information/living-with-mental-illness/medications/mental-health-medication-and-hot-weather-staying-safe-during-heatwaves/"
+    },
+    {
+      "n": 12,
+      "org": "Capinha M 외",
+      "title": "Drug-induced hyponatremia: insights into pharmacological mechanisms and clinical practice management (Journal of Clinical Medicine)",
+      "year": "2025",
+      "url": "https://doi.org/10.3390/jcm14186584"
+    },
+    {
+      "n": 13,
+      "org": "Peritogiannis V, Rizos DV",
+      "title": "Catatonia associated with hyponatremia: case report and brief review of the literature (Clinical Practice & Epidemiology in Mental Health)",
+      "year": "2021",
+      "url": "https://doi.org/10.2174/1745017902117010026"
+    },
+    {
+      "n": 14,
+      "org": "Haddad PM, Anderson IM",
+      "title": "Antipsychotic-related QTc prolongation, torsade de pointes and sudden death (Drugs)",
+      "year": "2002",
+      "url": "https://doi.org/10.2165/00003495-200262110-00006"
+    },
+    {
+      "n": 15,
+      "org": "NHS",
+      "title": "Heat exhaustion and heatstroke · Call 999",
+      "year": "2026",
+      "url": "https://www.nhs.uk/conditions/heat-exhaustion-heatstroke/"
+    }
+  ]
+}

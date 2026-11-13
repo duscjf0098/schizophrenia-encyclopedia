@@ -1,0 +1,120 @@
+[
+  {
+    "id": "relapse-plan",
+    "title": "재발·위기 대비 계획",
+    "tab": "재발·위기 대비",
+    "fixedTop": "crisis",
+    "lead": "괜찮을 때 나의 신호와 할 일을 한 장에 적어 두는 계획이에요. 믿는 사람과 함께 써도 좋아요. 다 채우지 않아도 괜찮아요.",
+    "basedOn": ["relapse-prevention-plan"],
+    "legal": "shared-decision-making",
+    "sections": [
+      {
+        "id": "usual",
+        "title": "평소의 나",
+        "help": { "slug": "relapse-prevention-plan", "quote": "계획은 좋을 때 써야 해요." },
+        "fields": [
+          { "id": "habits", "label": "나를 지키는 습관", "type": "lines", "n": 3 }
+        ]
+      },
+      {
+        "id": "signs",
+        "title": "나만의 경고 신호",
+        "help": { "slug": "relapse-prevention-plan", "quote": "지난 재발을 떠올리며 아래 질문에 답해 보세요." },
+        "fields": [
+          { "id": "first-change", "label": "가장 먼저 달라진 것", "hint": "잠, 식사, 연락, 씻기", "type": "lines", "n": 2 },
+          { "id": "next-feeling", "label": "그다음에 생긴 생각이나 느낌", "hint": "의심, 예민함, 특별한 의미", "type": "lines", "n": 2 },
+          { "id": "others-noticed", "label": "주변 사람이 알아챈 것", "type": "lines", "n": 2 },
+          { "id": "before", "label": "어떤 일이 먼저 있었나", "hint": "이사, 시험, 이별, 수면 부족, 술", "type": "lines", "n": 2 }
+        ]
+      },
+      {
+        "id": "when-signs",
+        "title": "신호가 보이면",
+        "help": { "slug": "relapse-prevention-plan", "quote": "나빠지면 생각할 힘이 줄어요." },
+        "fields": [
+          { "id": "my-steps", "label": "내가 할 일", "type": "lines", "n": 3 },
+          { "id": "ask-others", "label": "주변에 부탁할 일", "type": "lines", "n": 3 }
+        ]
+      },
+      {
+        "id": "crisis",
+        "title": "위기 때 원하는 도움",
+        "help": { "slug": "relapse-prevention-plan", "quote": "원하는 도움을 내가 먼저 말해 두는 거예요." },
+        "fields": [
+          { "id": "contacts", "label": "연락처", "hint": "담당 의사·병원, 정신건강복지센터, 믿는 사람 두 명", "type": "lines", "n": 3 },
+          { "id": "want", "label": "원하는 도움", "type": "lines", "n": 2 },
+          { "id": "not-want", "label": "원하지 않는 도움", "type": "lines", "n": 2 },
+          { "id": "past-meds", "label": "잘 맞았던 약과 맞지 않았던 약", "hint": "이름만, 조정은 의사가", "type": "lines", "n": 2 },
+          { "id": "avoid-effects", "label": "피하고 싶은 부작용과 그 까닭", "type": "lines", "n": 2 },
+          { "id": "cover", "label": "대신 챙겨 줄 일", "hint": "집안일·반려동물·직장 연락 등", "type": "lines", "n": 2 }
+        ]
+      }
+    ],
+    "notesTitle": "다 쓴 뒤에",
+    "notes": ["담당 의사에게 사본 주기", "석 달마다, 그리고 위기를 지난 뒤마다 다시 보기"]
+  },
+  {
+    "id": "safety-card",
+    "title": "안전 계획 카드",
+    "tab": "안전 계획 카드",
+    "fixedTop": "crisis",
+    "lead": "괜찮을 때 적어 두고, 힘들 때 꺼내 보는 카드예요.",
+    "basedOn": ["suicide-warning-signs"],
+    "short": true,
+    "sections": [
+      {
+        "id": "card",
+        "title": "힘들 때 꺼내 볼 것",
+        "help": { "slug": "suicide-warning-signs", "quote": "믿는 사람이나 담당 의사와 함께 쓰면 위기 때 서로 무엇을 할지 알 수 있어요." },
+        "fields": [
+          { "id": "my-signs", "label": "내가 위험해지기 전에 나타나는 나만의 신호", "type": "lines", "n": 2 },
+          { "id": "on-my-own", "label": "혼자 해 볼 수 있는 것", "hint": "산책, 음악, 샤워, 호흡", "type": "lines", "n": 2 },
+          { "id": "people", "label": "연락할 사람 두세 명과 전화번호", "type": "lines", "n": 3 },
+          { "id": "clinic", "label": "담당 의사·병원 연락처", "type": "lines", "n": 1 },
+          { "id": "keep-away", "label": "위험한 물건을 치우거나 맡기는 방법", "type": "lines", "n": 1 }
+        ]
+      }
+    ],
+    "notes": ["누군가에게 \"지금 위험하다\"고 말하는 것이 첫걸음이에요."]
+  },
+  {
+    "id": "my-info",
+    "title": "내 정보 카드",
+    "tab": "내 정보 카드",
+    "fixedTop": "crisis",
+    "lead": "응급실이나 처음 가는 진료에서 보여 줄 한 장이에요. 말하기 어려울 때를 대비해 미리 적어 둬요.",
+    "basedOn": ["other-medical-care", "emergency-response"],
+    "sections": [
+      {
+        "id": "care",
+        "title": "다니는 병원과 연락할 사람",
+        "help": { "slug": "emergency-response", "quote": "메모를 미리 써 두면 경황이 없어도 빠뜨리지 않아요." },
+        "fields": [
+          { "id": "clinic", "label": "담당 병원과 의사", "hint": "병원 이름과 전화번호", "type": "lines", "n": 2 },
+          { "id": "contact", "label": "연락할 사람", "hint": "가족이나 믿는 사람, 전화번호", "type": "lines", "n": 2 }
+        ]
+      },
+      {
+        "id": "meds",
+        "title": "먹는 약과 주사",
+        "help": { "slug": "other-medical-care", "quote": "장기지속형 주사제를 맞고 있다면 \"먹는 약은 없어요\"라고 답하기 쉬우니 특히 챙겨요." },
+        "fields": [
+          { "id": "meds", "label": "먹는 약", "hint": "처방전대로 직접 적어요", "type": "lines", "n": 4 },
+          { "id": "injection", "label": "장기지속형 주사제를 맞는다면 약 이름과 마지막으로 맞은 날", "type": "lines", "n": 1 },
+          { "id": "hard-effects", "label": "예전에 크게 힘들었던 부작용", "type": "lines", "n": 2 }
+        ]
+      },
+      {
+        "id": "body",
+        "title": "알레르기와 다른 병",
+        "help": { "slug": "other-medical-care", "quote": "다른 과에 갈 때 이 목록을 함께 보여 주면 빠뜨림이 줄어요." },
+        "fields": [
+          { "id": "allergy", "label": "약 알레르기", "type": "lines", "n": 1 },
+          { "id": "conditions", "label": "다른 지병", "type": "lines", "n": 2 },
+          { "id": "smoking", "label": "담배를 피우는지, 최근에 끊었거나 다시 피우는지", "type": "lines", "n": 1 }
+        ]
+      }
+    ],
+    "notes": ["약을 이어 갈지 바꿀지는 스스로 정하지 않고 의료진과 정해요."]
+  }
+]

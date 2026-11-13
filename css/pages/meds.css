@@ -1,0 +1,222 @@
+/* 항정신병약 한눈에(meds/) — js/pages/meds.js. 선택자는 .pg-meds- 로 시작하고 색은 css/style.css 토큰만 써요.
+   좋고 나쁨을 색으로 나타내지 않아요. 칸 앞 세 점은 글자와 같은 뜻의 무늬(채움·반 채움·점선)이고, 모두 같은 잉크색이에요.
+   내용 폭(컨테이너)이 48.25em(보통 글자 17px 에서 820px) 이상이면 표, 그보다 좁으면 약마다 카드. 인쇄는 늘 표.
+   글자 크기는 보기 설정(--fs-body: 15.5~25px)을 따라가요. 모든 글자 크기는 calc(var(--fs-body) * 비율)이고(보통 17px 에서 예전 px 와 같음),
+   표↔카드 기준도 em 이라 글자를 크게 하면 같은 화면에서도 카드로 넘어가요. 인쇄는 pt 로 따로 정해요. */
+.pg-meds { container-type: inline-size; font-size: var(--fs-body); }
+.pg-meds-sr { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+/* 머리 고정 문구: 차분한 종이 상자(경고색·아이콘 없음) */
+.pg-meds-fixed { max-width: 68ch; margin: 0; padding: 13px 16px; border: 1px solid var(--rule-2); border-left: 4px solid var(--ink-2); border-radius: 10px; background: var(--paper-2); font-size: calc(var(--fs-body) * .912); font-weight: 600; line-height: 1.65; color: var(--ink); }
+
+/* 세 점 무늬 */
+.pg-meds-mk { display: inline-flex; gap: 3px; margin-right: 7px; vertical-align: 0; }
+.pg-meds-mk i { display: block; width: 9px; height: 9px; border: 1.5px solid var(--rule-2); border-radius: 50%; box-sizing: border-box; }
+.pg-meds-mk i.f { border-color: var(--ink-2); background: var(--ink-2); }
+.pg-meds-mk i.r { border-color: var(--ink-2); background: linear-gradient(90deg, var(--ink-2) 50%, transparent 50%); }
+.pg-meds-mk i.n { border-color: var(--muted); border-style: dotted; }
+
+/* 표가 다루는 범위(접지 않음, 인쇄에도 남아요) */
+.pg-meds-scope { max-width: 68ch; margin: 10px 0 0; font-size: calc(var(--fs-body) * .853); line-height: 1.65; color: var(--ink-2); }
+
+/* 범례(무늬 풀이) */
+.pg-meds-legend { display: flex; flex-wrap: wrap; gap: 4px 16px; margin: 14px 0 0; font-size: calc(var(--fs-body) * .794); color: var(--muted); }
+.pg-meds-lg { display: inline-flex; align-items: center; max-width: 100%; }
+.pg-meds-lg .pg-meds-mk { flex: none; }
+
+/* 접는 상자(읽는 법·접어 둔 칸·출처) */
+.pg-meds-how, .pg-meds-folded, .pg-meds-src { max-width: 72ch; margin-top: 10px; border-radius: 10px; }
+.pg-meds-how summary, .pg-meds-folded summary, .pg-meds-src summary { display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 4px; cursor: pointer; font-size: calc(var(--fs-body) * .882); font-weight: 650; color: var(--ink-2); list-style: none; }
+.pg-meds-how summary::-webkit-details-marker, .pg-meds-folded summary::-webkit-details-marker, .pg-meds-src summary::-webkit-details-marker { display: none; }
+.pg-meds-how summary::before, .pg-meds-folded summary::before, .pg-meds-src summary::before { content: ""; flex: none; width: 7px; height: 7px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(-45deg); margin: 0 4px 0 2px; }
+.pg-meds-how[open] summary::before, .pg-meds-folded[open] summary::before, .pg-meds-src[open] summary::before { transform: rotate(45deg); margin-top: -4px; }
+.pg-meds-how summary:hover, .pg-meds-folded summary:hover, .pg-meds-src summary:hover { color: var(--accent); }
+.pg-meds-how-b { padding: 4px 16px 14px; border-left: 2px solid var(--rule); margin-left: 8px; font-size: calc(var(--fs-body) * .853); line-height: 1.7; color: var(--ink-2); }
+.pg-meds-how-b p + p { margin-top: 8px; }
+.pg-meds-how-s { margin-top: 10px; font-weight: 600; }
+.pg-meds-how-l { list-style: none; margin: 4px 0 0; padding: 0; }
+.pg-meds-how-l li { display: flex; flex-wrap: wrap; gap: 0 10px; align-items: baseline; }
+.pg-meds-how-k { min-width: 9.5em; color: var(--muted); font-size: calc(var(--fs-body) * .794); }
+.pg-meds-how-l a { display: inline-flex; align-items: center; min-height: 44px; box-sizing: border-box; padding: 6px 0; line-height: 1.5; color: var(--accent); }
+.pg-meds-how-l a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+/* 부분 머리 */
+.pg-meds-h { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; margin: 28px 0 0; padding-bottom: 8px; border-bottom: 1px solid var(--rule); font-family: var(--serif); font-weight: 700; font-size: calc(var(--fs-body) * 1.176); color: var(--ink); }
+.pg-meds-count { font-family: var(--sans); font-size: calc(var(--fs-body) * .794); font-weight: 500; color: var(--muted); }
+.pg-meds-hint { margin: 10px 0 0; font-size: calc(var(--fs-body) * .824); color: var(--muted); }
+.pg-meds-empty { margin-top: 18px; color: var(--ink-2); }
+.pg-meds-empty a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+
+/* 칸(표·카드 공통). 자바스크립트가 있으면 단추, 없으면 글자 */
+.pg-meds-cell { display: block; width: 100%; box-sizing: border-box; padding: 7px 8px; border: 1px solid transparent; text-align: left; font: inherit; color: var(--ink); line-height: 1.45; }
+button.pg-meds-cell { min-height: 44px; border-radius: 8px; background: transparent; cursor: pointer; }
+button.pg-meds-cell:hover { border-color: var(--rule-2); background: var(--paper-3); }
+button.pg-meds-cell[aria-expanded="true"] { border-color: var(--accent); background: var(--accent-soft); }
+.pg-meds-v { font-size: calc(var(--fs-body) * .853); font-weight: 600; overflow-wrap: anywhere; }
+.pg-meds-nw { white-space: nowrap; }
+/* 표의 부작용 칸: 무늬를 글자 위 한 줄에 두어 같은 열의 무늬가 나란히 서게(카드는 글자 앞에 한 줄로) */
+.pg-meds-table .pg-meds-cell-fx .pg-meds-mk { display: flex; margin: 3px 0 5px; }
+.pg-meds-dl .pg-meds-cell { padding-top: 10px; padding-bottom: 8px; }
+.pg-meds-legend .pg-meds-mk, .pg-meds-pop-v .pg-meds-mk { display: inline-flex; margin: 0 7px 0 0; }
+.pg-meds-vn { display: block; margin-top: 1px; font-size: calc(var(--fs-body) * .735); font-weight: 400; line-height: 1.4; color: var(--muted); overflow-wrap: anywhere; }
+.pg-meds-cell-fx .pg-meds-vn { padding-left: 0; }
+.pg-meds-td-form .pg-meds-v, .pg-meds-dr-form .pg-meds-v { font-weight: 500; font-size: calc(var(--fs-body) * .824); }
+.pg-meds-name { font-weight: 700; color: var(--ink); }
+.pg-meds-name:hover { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+.pg-meds-en { display: block; font-size: calc(var(--fs-body) * .735); font-weight: 400; color: var(--muted); }
+
+/* 표(넓은 자리) */
+.pg-meds-tablewrap { display: none; margin-top: 12px; }
+.pg-meds-table { width: 100%; table-layout: fixed; border-collapse: collapse; font-size: calc(var(--fs-body) * .824); }
+.pg-meds-col-name { width: 12.5%; }
+.pg-meds-col-class { width: 9%; }
+.pg-meds-col-form { width: 15.5%; }
+.pg-meds-table thead th { position: sticky; top: var(--top-h); z-index: 2; padding: 10px 8px 8px; border-bottom: 2px solid var(--rule-2); background: var(--paper); text-align: left; vertical-align: bottom; font-size: calc(var(--fs-body) * .765); font-weight: 700; line-height: 1.35; color: var(--ink-2); }
+.pg-meds-table thead a { display: inline-block; padding: 5px 0; color: inherit; text-decoration: underline; text-decoration-style: dotted; text-decoration-color: var(--rule-2); text-underline-offset: 4px; }
+.pg-meds-table thead a:hover { color: var(--accent); text-decoration-color: currentColor; }
+.pg-meds-table tbody th, .pg-meds-table tbody td { padding: 3px 2px; border-bottom: 1px solid var(--rule); vertical-align: top; text-align: left; }
+.pg-meds-table tbody th { padding: 6px 8px 8px; font-weight: 400; }
+.pg-meds-rh .pg-meds-name { display: inline-block; padding: 4px 0 2px; }
+.pg-meds-td-class { padding: 10px 8px 8px !important; font-size: calc(var(--fs-body) * .794); color: var(--ink-2); }
+.pg-meds-table tbody.pg-meds-drug:nth-of-type(even) { background: var(--paper-2); }
+.pg-meds-table tbody.pg-meds-drug:hover, .pg-meds-table tbody.pg-meds-drug:focus-within { background: var(--accent-soft); }
+/* 약마다 아래 줄: 꼭 알아둘 것(그 약의 줄 안에, 줄 사이 선은 약 사이에만) */
+.pg-meds-table tbody .pg-meds-tr > td { border-bottom: 0; }
+.pg-meds-table tbody .pg-meds-td-note { padding: 0 2px 6px; }
+.pg-meds-ntw { display: flex; align-items: flex-start; gap: 0 4px; }
+.pg-meds-ntw .pg-meds-nh { flex: none; padding: 9px 0 0 8px; }
+.pg-meds-ntw .pg-meds-cell { flex: 1 1 auto; min-width: 0; }
+.pg-meds-td-note .pg-meds-v { font-weight: 500; line-height: 1.6; }
+
+/* 카드(좁은 자리, 기본) */
+.pg-meds-jump { margin-top: 12px; }
+.pg-meds-jump-h { display: block; margin-bottom: 6px; font-size: calc(var(--fs-body) * .765); font-weight: 600; color: var(--muted); }
+.pg-meds-jump ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px 8px; }
+/* 상자 자체가 44px(누르는 범위를 이웃과 나누지 않게) */
+.pg-meds-jump button { min-height: 44px; padding: 0 14px; border: 1px solid var(--rule-2); border-radius: 999px; background: var(--paper-3); font: inherit; font-size: calc(var(--fs-body) * .824); font-weight: 600; color: var(--ink-2); cursor: pointer; }
+.pg-meds-jump button:hover { border-color: var(--accent); color: var(--accent); }
+.pg-meds-cards { list-style: none; margin: 14px 0 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
+.pg-meds-card { min-width: 0; padding: 14px 14px 12px; border: 1px solid var(--rule); border-radius: 14px; background: var(--paper-3); }
+.pg-meds-card-h { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; margin: 0; font-family: var(--serif); font-size: calc(var(--fs-body) * 1.176); line-height: 1.3; }
+.pg-meds-card-h:focus { outline: none; }
+.pg-meds-card-h:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+.pg-meds-card-h .pg-meds-name { display: inline-flex; align-items: center; min-height: 44px; padding: 4px 0; box-sizing: border-box; }
+.pg-meds-card-h .pg-meds-en { display: inline; font-family: var(--sans); font-size: calc(var(--fs-body) * .765); }
+.pg-meds-card-class { display: inline-block; margin: 2px 0 6px; padding: 1px 10px; border: 1px solid var(--rule-2); border-radius: 999px; font-size: calc(var(--fs-body) * .765); font-weight: 600; color: var(--ink-2); }
+.pg-meds-dl { margin: 0; }
+.pg-meds-dr { display: grid; grid-template-columns: minmax(6.5em, 38%) minmax(0, 1fr); gap: 0 8px; align-items: start; border-top: 1px solid var(--rule); }
+.pg-meds-dr dt { padding: 11px 0 8px; font-size: calc(var(--fs-body) * .794); line-height: 1.4; color: var(--ink-2); }
+.pg-meds-dr dd { margin: 0; padding: 2px 0; }
+.pg-meds-card-note { margin-top: 10px; padding: 10px 12px; border-radius: 10px; background: var(--paper-2); }
+.pg-meds-nh { display: block; font-size: calc(var(--fs-body) * .735); font-weight: 700; color: var(--ink-2); }
+.pg-meds-nt { margin: 2px 0 0; font-size: calc(var(--fs-body) * .853); line-height: 1.65; color: var(--ink); overflow-wrap: anywhere; }
+.pg-meds-srcbtn { margin-top: 4px; min-height: 44px; padding: 0 14px; border: 1px solid var(--rule-2); border-radius: 8px; background: var(--paper-3); font: inherit; font-size: calc(var(--fs-body) * .765); font-weight: 600; color: var(--ink-2); cursor: pointer; }
+.pg-meds-srcbtn:hover { border-color: var(--accent); color: var(--accent); }
+.pg-meds-srcbtn[aria-expanded="true"] { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
+
+/* 접어 둔 칸 */
+.pg-meds-folded { margin-top: 16px; }
+.pg-meds-folded-p { margin: 4px 0 8px 12px; font-size: calc(var(--fs-body) * .824); color: var(--muted); }
+.pg-meds-fold { margin: 0 0 10px 12px; }
+.pg-meds-fold-h { margin: 6px 0 2px; font-size: calc(var(--fs-body) * .824); font-weight: 700; color: var(--ink-2); }
+.pg-meds-fold-list { list-style: none; margin: 0; padding: 0; font-size: calc(var(--fs-body) * .824); line-height: 1.7; color: var(--ink-2); }
+.pg-meds-fold-n { display: inline-block; min-width: 7em; font-weight: 600; color: var(--ink); }
+
+/* 출처 */
+.pg-meds-src { margin-top: 26px; }
+.pg-meds-src-p { margin: 2px 0 8px 12px; font-size: calc(var(--fs-body) * .794); color: var(--muted); }
+.pg-meds-src-h { margin: 12px 0 4px 12px; font-size: calc(var(--fs-body) * .824); font-weight: 700; color: var(--ink-2); }
+.pg-meds-src-h span { font-weight: 500; color: var(--muted); }
+.pg-meds-src-prt { display: none; }
+.pg-meds-srclist { margin: 0 0 0 12px; padding-left: 1.6em; font-size: calc(var(--fs-body) * .794); line-height: 1.6; color: var(--ink-2); }
+.pg-meds-srclist li { padding: 3px 0; }
+.pg-meds-srclist a { position: relative; display: inline-block; padding: 2px 0; color: var(--accent); }
+/* 누르는 범위만 위아래로 넓혀 44px(줄 간격은 그대로) */
+.pg-meds-srclist a::before { content: ""; position: absolute; left: -4px; right: -4px; top: -9px; bottom: -9px; }
+.pg-meds-srclist a:hover { text-decoration: underline; }
+
+.pg-meds-tools { margin: 18px 0 0; }
+.pg-meds-print { height: 44px; padding: 0 18px; }
+.pg-meds-prt { display: none; }
+
+/* 팝오버(#pop 안, 공용 모양 위에 조금만) */
+.pg-meds-pop-v { margin: 2px 0 8px; color: var(--ink); }
+.pg-meds-pop-v .pg-meds-vn { display: inline; margin-left: 2px; }
+.pg-meds-pop-h { display: block; margin-top: 4px; font-size: calc(var(--fs-body) * .735); font-weight: 700; color: var(--muted); }
+.pg-meds-pop-src { margin: 2px 0 0; padding-left: 1.6em; font-size: calc(var(--fs-body) * .794); line-height: 1.55; }
+.pg-meds-pop-src li { padding: 3px 0; }
+.pg-meds-pop-src a { display: inline-block; padding: 2px 0; white-space: nowrap; }
+.pg-meds-pop-none { margin: 0; font-size: calc(var(--fs-body) * .794); color: var(--ink-2); }
+
+/* 넓은 자리: 카드 두 줄 → 표 */
+@container (min-width: 33em) {
+  .pg-meds-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@container (min-width: 48.25em) {
+  .pg-meds-tablewrap { display: block; }
+  .pg-meds-cards, .pg-meds-jump { display: none; }
+}
+
+@media (max-width: 760px) {
+  .pg-meds-fixed { font-size: calc(var(--fs-body) * .882); padding: 12px 14px; }
+  .pg-meds-legend { gap: 2px 12px; font-size: calc(var(--fs-body) * .765); }
+  .pg-meds-h { font-size: calc(var(--fs-body) * 1.118); margin-top: 22px; }
+  .pg-meds-print { width: 100%; justify-content: center; }
+}
+
+/* 인쇄: 늘 표 + 꼭 알아둘 것 + 출처(인쇄할 때 화면 코드가 출처를 펴요). 단추는 글자처럼 */
+@media print {
+  .pg-meds-tablewrap { display: block; }
+  .pg-meds-cards, .pg-meds-jump, .pg-meds-tools, .pg-meds-hint, .pg-meds-how, .pg-meds-srcbtn { display: none; }
+  .pg-meds-prt { display: block; margin: 0 0 8px; font-size: 9pt; color: var(--muted); }
+  .pg-meds-fixed { padding: 8px 10px; font-size: 10.5pt; }
+  .pg-meds-scope { margin-top: 5px; font-size: 9pt; line-height: 1.45; }
+  .pg-meds-legend { margin-top: 6px; font-size: 8.5pt; }
+  .pg-meds-h { margin-top: 12px; font-size: 13pt; }
+  .pg-meds-table { font-size: 9pt; }
+  .pg-meds-table thead th { position: static; padding: 4px 4px 3px; font-size: 8.5pt; }
+  .pg-meds-table thead { display: table-header-group; }
+  .pg-meds-table tbody th, .pg-meds-table tbody td { padding: 3px 4px; }
+  .pg-meds-table tr, .pg-meds-table tbody { break-inside: avoid; }
+  .pg-meds-table tbody.pg-meds-drug:nth-of-type(even), .pg-meds-table tbody.pg-meds-drug:hover, .pg-meds-table tbody.pg-meds-drug:focus-within { background: none; }
+  .pg-meds-table tbody .pg-meds-td-note { padding: 0 4px 3px; }
+  .pg-meds-ntw .pg-meds-nh { padding: 0; font-size: 7.5pt; }
+  .pg-meds-td-note .pg-meds-v { font-size: 8.5pt; font-weight: 500; line-height: 1.35; }
+  .pg-meds-td-class { padding: 3px 4px !important; font-size: 9pt; }
+  button.pg-meds-cell, .pg-meds-cell { min-height: 0; padding: 0; border: 0; background: none; }
+  .pg-meds-v, .pg-meds-td-form .pg-meds-v, .pg-meds-name { font-size: 9pt; }
+  .pg-meds-vn, .pg-meds-en { font-size: 7.5pt; }
+  .pg-meds-table { line-height: 1.3; }
+  .pg-meds-cell { line-height: 1.3; }
+  .pg-meds-vn { line-height: 1.25; }
+  /* 종이에서는 무늬를 글자 앞에 작게(줄 수를 줄여 표를 한 쪽 가까이에) */
+  .pg-meds-table .pg-meds-cell-fx .pg-meds-mk { display: inline-flex; gap: 1.5px; margin: 0 3px 0 0; vertical-align: 0; }
+  .pg-meds-mk i { width: 6px; height: 6px; border-width: 1px; }
+  .pg-meds-mk i { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .pg-meds-nt { font-size: 9pt; line-height: 1.5; }
+  .pg-meds-src { margin-top: 10px; }
+  .pg-meds-src summary { min-height: 0; font-size: 10pt; }
+  .pg-meds-src summary::before { display: none; }
+  .pg-meds-src-p { font-size: 8.5pt; }
+  .pg-meds-srclist { font-size: 8pt; line-height: 1.4; }
+  .pg-meds-srclist li { padding: 0; break-inside: avoid; }
+  /* 종이에는 출처를 두 단으로 짧게: 제목만, 주소는 짧은 DOI 만(긴 검색 주소는 화면에서) */
+  .pg-meds-srclist { columns: 2; column-gap: 18px; }
+  .pg-meds-src-h { margin: 4px 0 2px; font-size: 9pt; }
+  .pg-meds-src-resth, .pg-meds-src-rest { display: none; }
+  .pg-meds-src-prt { display: block; margin: 4px 0 0; font-size: 8.5pt; color: var(--ink-2); }
+  .pg-meds-srclist a { font-size: 0; color: var(--ink-2); text-decoration: none; }
+  .pg-meds-srclist a[href^="https://doi.org/"]::after { content: attr(href); font-size: 7.5pt; word-break: break-all; overflow-wrap: anywhere; color: var(--ink-2); }
+  /* 머리: 빵부스러기·소개 문장은 빼고 제목은 작게(이 화면에서만) */
+  #app:has(> .fp-body[data-page="meds"]) > .crumb,
+  #app:has(> .fp-body[data-page="meds"]) > .page-lead { display: none; }
+  #app:has(> .fp-body[data-page="meds"]) > .page-title { font-size: 18pt; }
+  .pg-meds-col-name { width: 12%; }
+  .pg-meds-col-class { width: 7.5%; }
+  .pg-meds-col-form { width: 16.5%; }
+  .pg-meds-rh .pg-meds-name, .pg-meds-table thead a { padding: 0; }
+}
+/* 자바스크립트 없이 인쇄해도 출처 목록을 펴요(지원 브라우저만. 모르는 브라우저는 이 규칙만 빠지고 화면 코드가 폅니다) */
+@media print {
+  .pg-meds-src::details-content { content-visibility: visible; display: block; }
+}

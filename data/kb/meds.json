@@ -1,0 +1,292 @@
+[
+ {
+  "slug": "lurasidone",
+  "name": "루라시돈",
+  "en": "lurasidone",
+  "updated": "2026-11-14",
+  "anchor": "h-3",
+  "rows": [
+   {"key":"class","name":"계열","text":"2세대","refs":[]},
+   {"key":"form","name":"제형","text":"먹는 약 · 장기지속형 주사 없음","refs":[8]},
+   {"key":"weight","name":"체중·대사","text":"적은 편","refs":[6,7]},
+   {"key":"eps","name":"추체외로 증상·좌불안석","text":"적은 편~중간 (자료마다 달라요)","refs":[6,7]},
+   {"key":"prolactin","name":"프로락틴","text":"적은 편~중간 (자료마다 달라요)","refs":[6,7]},
+   {"key":"sleep","name":"졸림","text":"적은 편~중간","refs":[6,7]},
+   {"key":"qt","name":"QT 연장","text":"적은 편","refs":[6,7]},
+   {"key":"ortho","name":"기립성 저혈압","text":"적은 편","refs":[6,7]},
+   {"key":"note","name":"꼭 알아둘 것","text":"가만히 있지 못하거나 다리가 근질거려 앉아 있기 힘들면 담당 의사에게 말해요.","refs":[1]}
+  ],
+  "sources": [
+   {"n":1,"org":"Sumitomo Pharma America","title":"LATUDA (lurasidone) 미국 FDA 처방정보 (DailyMed)","year":"2025","url":"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=afad3051-9df2-4c54-9684-e8262a133af8"},
+   {"n":6,"org":"Stroup TS 외","title":"Management of common adverse effects of antipsychotic medications (World Psychiatry)","year":"2018","url":"https://doi.org/10.1002/wps.20567"},
+   {"n":7,"org":"Solmi M 외","title":"Safety, tolerability, and risks associated with first- and second-generation antipsychotics: a state-of-the-art clinical review (Therapeutics and Clinical Risk Management)","year":"2017","url":"https://doi.org/10.2147/TCRM.S117321"},
+   {"n":8,"org":"식품의약품안전처","title":"의약품안전나라 · 의약품 검색(주성분 영문명 Lurasidone, 제품명 '주')","year":"2026","url":"https://nedrug.mfds.go.kr/searchDrug?searchYn=true&itemName=%EC%A3%BC&ingrEngName=Lurasidone"}
+  ]
+ },
+ {
+  "slug": "risperidone",
+  "name": "리스페리돈",
+  "en": "risperidone",
+  "updated": "2026-11-14",
+  "anchor": "h-3",
+  "rows": [
+   {"key":"class","name":"계열","text":"2세대","refs":[]},
+   {"key":"form","name":"제형","text":"먹는 약 · 장기지속형 주사 있음","refs":[10]},
+   {"key":"weight","name":"체중·대사","text":"중간","refs":[8,9]},
+   {"key":"eps","name":"추체외로 증상·좌불안석","text":"중간","refs":[8,9]},
+   {"key":"prolactin","name":"프로락틴","text":"많은 편","refs":[8,9]},
+   {"key":"sleep","name":"졸림","text":"적은 편","refs":[8,9]},
+   {"key":"qt","name":"QT 연장","text":"적은 편~중간 (자료마다 달라요)","refs":[8,9]},
+   {"key":"ortho","name":"기립성 저혈압","text":"적은 편~중간 (자료마다 달라요)","refs":[8,9]},
+   {"key":"note","name":"꼭 알아둘 것","text":"생리가 멈추거나 젖이 나오거나 성기능이 달라지면 프로락틴 때문일 수 있으니 담당 의사에게 말해요.","refs":[1]}
+  ],
+  "sources": [
+   {"n":1,"org":"Janssen Pharmaceuticals","title":"RISPERDAL (risperidone) 정·구강붕해정·액 미국 FDA 처방정보 (DailyMed)","year":"2025","url":"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=7e117c7e-02fc-4343-92a1-230061dfc5e0"},
+   {"n":8,"org":"Stroup TS 외","title":"Management of common adverse effects of antipsychotic medications (World Psychiatry)","year":"2018","url":"https://doi.org/10.1002/wps.20567"},
+   {"n":9,"org":"Solmi M 외","title":"Safety, tolerability, and risks associated with first- and second-generation antipsychotics: a state-of-the-art clinical review (Therapeutics and Clinical Risk Management)","year":"2017","url":"https://doi.org/10.2147/TCRM.S117321"},
+   {"n":10,"org":"식품의약품안전처","title":"의약품안전나라 · 의약품 검색 \"유제디\"","year":"2026","url":"https://nedrug.mfds.go.kr/searchDrug?searchYn=true&itemName=%EC%9C%A0%EC%A0%9C%EB%94%94"}
+  ]
+ },
+ {
+  "slug": "brexpiprazole",
+  "name": "브렉스피프라졸",
+  "en": "brexpiprazole",
+  "updated": "2026-11-14",
+  "anchor": "h-3",
+  "rows": [
+   {"key":"class","name":"계열","text":"2세대 · 부분 작용제","refs":[]},
+   {"key":"form","name":"제형","text":"먹는 약(국내 시판 허가 확인 안 됨) · 장기지속형 주사 없음","refs":[9]},
+   {"key":"weight","name":"체중·대사","text":"적은 편","refs":[8]},
+   {"key":"eps","name":"추체외로 증상·좌불안석","text":"중간","refs":[8]},
+   {"key":"prolactin","name":"프로락틴","text":"적은 편","refs":[8]},
+   {"key":"sleep","name":"졸림","text":"적은 편","refs":[8]},
+   {"key":"qt","name":"QT 연장","text":"적은 편","refs":[8]},
+   {"key":"ortho","name":"기립성 저혈압","text":"적은 편","refs":[8]},
+   {"key":"note","name":"꼭 알아둘 것","text":"도박·폭식·쇼핑·성적 충동이 새로 생기거나 심해지면 바로 담당 의사에게 말해요.","refs":[1]}
+  ],
+  "sources": [
+   {"n":1,"org":"Otsuka America Pharmaceutical","title":"REXULTI (brexpiprazole) 미국 FDA 처방정보 (DailyMed)","year":"2025","url":"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=2d301358-6291-4ec1-bd87-37b4ad9bd850"},
+   {"n":8,"org":"Solmi M 외","title":"Safety, tolerability, and risks associated with first- and second-generation antipsychotics: a state-of-the-art clinical review (Therapeutics and Clinical Risk Management)","year":"2017","url":"https://doi.org/10.2147/TCRM.S117321"},
+   {"n":9,"org":"식품의약품안전처","title":"의약품안전나라 · 의약품 검색(주성분 영문명 Brexpiprazole)","year":"2026","url":"https://nedrug.mfds.go.kr/searchDrug?searchYn=true&ingrEngName=Brexpiprazole"}
+  ]
+ },
+ {
+  "slug": "aripiprazole",
+  "name": "아리피프라졸",
+  "en": "aripiprazole",
+  "updated": "2026-11-14",
+  "anchor": "h-3",
+  "rows": [
+   {"key":"class","name":"계열","text":"2세대 · 부분 작용제","refs":[]},
+   {"key":"form","name":"제형","text":"먹는 약 · 장기지속형 주사 있음","refs":[7]},
+   {"key":"weight","name":"체중·대사","text":"적은 편","refs":[8,9]},
+   {"key":"eps","name":"추체외로 증상·좌불안석","text":"중간","refs":[8,9]},
+   {"key":"prolactin","name":"프로락틴","text":"적은 편","refs":[8,9]},
+   {"key":"sleep","name":"졸림","text":"적은 편","refs":[8,9]},
+   {"key":"qt","name":"QT 연장","text":"적은 편","refs":[8,9]},
+   {"key":"ortho","name":"기립성 저혈압","text":"적은 편","refs":[8,9]},
+   {"key":"note","name":"꼭 알아둘 것","text":"도박·폭식·쇼핑·성적 충동을 멈추기 어려워지면 바로 담당 의사에게 말해요.","refs":[1]}
+  ],
+  "sources": [
+   {"n":1,"org":"Otsuka America Pharmaceutical","title":"ABILIFY (aripiprazole) 미국 FDA 처방정보 (DailyMed)","year":"2025","url":"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=c040bd1d-45b7-49f2-93ea-aed7220b30ac"},
+   {"n":7,"org":"식품의약품안전처","title":"의약품안전나라 · 의약품 검색 \"아빌리파이\"","year":"2026","url":"https://nedrug.mfds.go.kr/searchDrug?searchYn=true&itemName=%EC%95%84%EB%B9%8C%EB%A6%AC%ED%8C%8C%EC%9D%B4"},
+   {"n":8,"org":"Stroup TS 외","title":"Management of common adverse effects of antipsychotic medications (World Psychiatry)","year":"2018","url":"https://doi.org/10.1002/wps.20567"},
+   {"n":9,"org":"Solmi M 외","title":"Safety, tolerability, and risks associated with first- and second-generation antipsychotics: a state-of-the-art clinical review (Therapeutics and Clinical Risk Management)","year":"2017","url":"https://doi.org/10.2147/TCRM.S117321"}
+  ]
+ },
+ {
+  "slug": "amisulpride",
+  "name": "아미설프리드",
+  "en": "amisulpride",
+  "updated": "2026-11-14",
+  "anchor": "h-3",
+  "rows": [
+   {"key":"class","name":"계열","text":"2세대","refs":[]},
+   {"key":"form","name":"제형","text":"먹는 약 · 장기지속형 주사 없음","refs":[9]},
+   {"key":"weight","name":"체중·대사","text":"적은 편","refs":[7,8]},
+   {"key":"eps","name":"추체외로 증상·좌불안석","text":"적은 편","refs":[7,8]},
+   {"key":"prolactin","name":"프로락틴","text":"많은 편","refs":[7,8]},
+   {"key":"sleep","name":"졸림","text":"적은 편","refs":[7,8]},
+   {"key":"qt","name":"QT 연장","text":"중간 (외국 허가사항에 QT 경고)","refs":[7,8,5,4]},
+   {"key":"ortho","name":"기립성 저혈압","text":"적은 편","refs":[7,8]},
+   {"key":"note","name":"꼭 알아둘 것","text":"심장 질환이나 QT 연장 가족력이 있으면 담당 의사에게 꼭 알려요.","refs":[4]}
+  ],
+  "sources": [
+   {"n":4,"org":"Health Products Regulatory Authority (아일랜드 의약품규제청)","title":"Solian (amisulpride) 제품 허가 요약 (SmPC)","year":"2022","url":"https://assets.hpra.ie/products/Human/18144/Licence_PA0540-158-002_25082022143946.pdf"},
+   {"n":5,"org":"Acacia Pharma","title":"BARHEMSYS (amisulpride) 주사 미국 FDA 처방정보 (DailyMed)","year":"2025","url":"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=ab23bc6e-b6a8-165f-e053-2a95a90ab144"},
+   {"n":7,"org":"Stroup TS 외","title":"Management of common adverse effects of antipsychotic medications (World Psychiatry)","year":"2018","url":"https://doi.org/10.1002/wps.20567"},
+   {"n":8,"org":"Solmi M 외","title":"Safety, tolerability, and risks associated with first- and second-generation antipsychotics: a state-of-the-art clinical review (Therapeutics and Clinical Risk Management)","year":"2017","url":"https://doi.org/10.2147/TCRM.S117321"},
+   {"n":9,"org":"식품의약품안전처","title":"의약품안전나라 · 의약품 검색(주성분 영문명 Amisulpride, 제품명 '주')","year":"2026","url":"https://nedrug.mfds.go.kr/searchDrug?searchYn=true&itemName=%EC%A3%BC&ingrEngName=Amisulpride"}
+  ]
+ },
+ {
+  "slug": "olanzapine",
+  "name": "올란자핀",
+  "en": "olanzapine",
+  "updated": "2026-11-14",
+  "anchor": "h-3",
+  "rows": [
+   {"key":"class","name":"계열","text":"2세대","refs":[]},
+   {"key":"form","name":"제형","text":"먹는 약 · 장기지속형 주사 없음","refs":[10]},
+   {"key":"weight","name":"체중·대사","text":"많은 편","refs":[8,9]},
+   {"key":"eps","name":"추체외로 증상·좌불안석","text":"적은 편","refs":[8,9]},
+   {"key":"prolactin","name":"프로락틴","text":"적은 편","refs":[8,9]},
+   {"key":"sleep","name":"졸림","text":"적은 편~중간","refs":[8,9]},
+   {"key":"qt","name":"QT 연장","text":"적은 편","refs":[8,9]},
+   {"key":"ortho","name":"기립성 저혈압","text":"적은 편~중간 (자료마다 달라요)","refs":[8,9]},
+   {"key":"note","name":"꼭 알아둘 것","text":"체중·혈당·지질은 시작할 때와 복용하는 동안 정기적으로 확인해요.","refs":[1]}
+  ],
+  "sources": [
+   {"n":1,"org":"H2-Pharma","title":"ZYPREXA (olanzapine) 정·ZYDIS 구강붕해정·근육주사 미국 FDA 처방정보 (DailyMed)","year":"2025","url":"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=b418946a-1ab4-4d89-a012-d94fc361a3c4"},
+   {"n":8,"org":"Stroup TS 외","title":"Management of common adverse effects of antipsychotic medications (World Psychiatry)","year":"2018","url":"https://doi.org/10.1002/wps.20567"},
+   {"n":9,"org":"Solmi M 외","title":"Safety, tolerability, and risks associated with first- and second-generation antipsychotics: a state-of-the-art clinical review (Therapeutics and Clinical Risk Management)","year":"2017","url":"https://doi.org/10.2147/TCRM.S117321"},
+   {"n":10,"org":"식품의약품안전처","title":"의약품안전나라 · 의약품 검색(주성분 영문명 Olanzapine, 제품명 \"주\")","year":"2026","url":"https://nedrug.mfds.go.kr/searchDrug?searchYn=true&itemName=%EC%A3%BC&ingrEngName=Olanzapine"}
+  ]
+ },
+ {
+  "slug": "ziprasidone",
+  "name": "지프라시돈",
+  "en": "ziprasidone",
+  "updated": "2026-11-14",
+  "anchor": "h-3",
+  "rows": [
+   {"key":"class","name":"계열","text":"2세대","refs":[]},
+   {"key":"form","name":"제형","text":"먹는 약 · 장기지속형 주사 없음","refs":[6,9]},
+   {"key":"weight","name":"체중·대사","text":"적은 편","refs":[7,8]},
+   {"key":"eps","name":"추체외로 증상·좌불안석","text":"적은 편~중간","refs":[7,8]},
+   {"key":"prolactin","name":"프로락틴","text":"적은 편~중간 (자료마다 달라요)","refs":[7,8]},
+   {"key":"sleep","name":"졸림","text":"적은 편","refs":[7,8]},
+   {"key":"qt","name":"QT 연장","text":"중간 (외국 허가사항에 QT 경고)","refs":[7,8,1]},
+   {"key":"ortho","name":"기립성 저혈압","text":"적은 편~중간 (자료마다 달라요)","refs":[7,8]},
+   {"key":"note","name":"꼭 알아둘 것","text":"쓰러지거나 심하게 두근거리면 바로 119에 연락해요.","refs":[1]}
+  ],
+  "sources": [
+   {"n":1,"org":"Roerig (Pfizer)","title":"GEODON (ziprasidone) 캡슐·근육주사 미국 FDA 처방정보 (DailyMed)","year":"2025","url":"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=8326928a-2cb6-4f7f-9712-03a425a14c37"},
+   {"n":6,"org":"식품의약품안전처","title":"의약품안전나라 · 의약품 검색 \"젤독스\"","year":"2026","url":"https://nedrug.mfds.go.kr/searchDrug?searchYn=true&itemName=%EC%A0%A4%EB%8F%85%EC%8A%A4"},
+   {"n":7,"org":"Stroup TS 외","title":"Management of common adverse effects of antipsychotic medications (World Psychiatry)","year":"2018","url":"https://doi.org/10.1002/wps.20567"},
+   {"n":8,"org":"Solmi M 외","title":"Safety, tolerability, and risks associated with first- and second-generation antipsychotics: a state-of-the-art clinical review (Therapeutics and Clinical Risk Management)","year":"2017","url":"https://doi.org/10.2147/TCRM.S117321"},
+   {"n":9,"org":"식품의약품안전처","title":"의약품안전나라 · 의약품 검색(주성분 영문명 Ziprasidone, 제품명 '주')","year":"2026","url":"https://nedrug.mfds.go.kr/searchDrug?searchYn=true&itemName=%EC%A3%BC&ingrEngName=Ziprasidone"}
+  ]
+ },
+ {
+  "slug": "cariprazine",
+  "name": "카리프라진",
+  "en": "cariprazine",
+  "updated": "2026-11-14",
+  "anchor": "h-3",
+  "rows": [
+   {"key":"class","name":"계열","text":"2세대 · 부분 작용제","refs":[]},
+   {"key":"form","name":"제형","text":"먹는 약(국내 시판 허가 확인 안 됨) · 장기지속형 주사 없음","refs":[5]},
+   {"key":"weight","name":"체중·대사","text":"적은 편","refs":[7]},
+   {"key":"eps","name":"추체외로 증상·좌불안석","text":"중간","refs":[7]},
+   {"key":"prolactin","name":"프로락틴","text":"적은 편","refs":[7]},
+   {"key":"sleep","name":"졸림","text":"적은 편","refs":[7]},
+   {"key":"qt","name":"QT 연장","text":"적은 편","refs":[7]},
+   {"key":"ortho","name":"기립성 저혈압","text":"적은 편","refs":[7]},
+   {"key":"note","name":"꼭 알아둘 것","text":"몸에 오래 남는 약이라 시작하고 몇 주 뒤에 부작용이 처음 나타날 수 있어요.","refs":[1]}
+  ],
+  "sources": [
+   {"n":1,"org":"Allergan","title":"VRAYLAR (cariprazine) 미국 FDA 처방정보 (DailyMed)","year":"2025","url":"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=4b5f7c65-aa2d-452a-b3db-bc85c06ff12f"},
+   {"n":5,"org":"식품의약품안전처","title":"의약품안전나라 · 의약품 검색 \"카리프라진\"","year":"2026","url":"https://nedrug.mfds.go.kr/searchDrug?searchYn=true&itemName=%EC%B9%B4%EB%A6%AC%ED%94%84%EB%9D%BC%EC%A7%84"},
+   {"n":7,"org":"Solmi M 외","title":"Safety, tolerability, and risks associated with first- and second-generation antipsychotics: a state-of-the-art clinical review (Therapeutics and Clinical Risk Management)","year":"2017","url":"https://doi.org/10.2147/TCRM.S117321"}
+  ]
+ },
+ {
+  "slug": "quetiapine",
+  "name": "쿠에티아핀",
+  "en": "quetiapine",
+  "updated": "2026-11-14",
+  "anchor": "h-3",
+  "rows": [
+   {"key":"class","name":"계열","text":"2세대","refs":[]},
+   {"key":"form","name":"제형","text":"먹는 약 · 장기지속형 주사 없음","refs":[10]},
+   {"key":"weight","name":"체중·대사","text":"중간","refs":[8,9]},
+   {"key":"eps","name":"추체외로 증상·좌불안석","text":"적은 편","refs":[8,9]},
+   {"key":"prolactin","name":"프로락틴","text":"적은 편","refs":[8]},
+   {"key":"sleep","name":"졸림","text":"중간","refs":[8,9]},
+   {"key":"qt","name":"QT 연장","text":"적은 편 (외국 허가사항에 QT 경고)","refs":[8,9,1]},
+   {"key":"ortho","name":"기립성 저혈압","text":"중간","refs":[8,9]},
+   {"key":"note","name":"꼭 알아둘 것","text":"일어설 때 어지럽거나 쓰러질 것 같으면 담당 의사에게 바로 말해요.","refs":[1]}
+  ],
+  "sources": [
+   {"n":1,"org":"AstraZeneca Pharmaceuticals","title":"SEROQUEL (quetiapine) 미국 FDA 처방정보 (DailyMed)","year":"2025","url":"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=0584dda8-bc3c-48fe-1a90-79608f78e8a0"},
+   {"n":8,"org":"Stroup TS 외","title":"Management of common adverse effects of antipsychotic medications (World Psychiatry)","year":"2018","url":"https://doi.org/10.1002/wps.20567"},
+   {"n":9,"org":"Solmi M 외","title":"Safety, tolerability, and risks associated with first- and second-generation antipsychotics: a state-of-the-art clinical review (Therapeutics and Clinical Risk Management)","year":"2017","url":"https://doi.org/10.2147/TCRM.S117321"},
+   {"n":10,"org":"식품의약품안전처","title":"의약품안전나라 · 의약품 검색(주성분 영문명 Quetiapine, 제품명 '주')","year":"2026","url":"https://nedrug.mfds.go.kr/searchDrug?searchYn=true&itemName=%EC%A3%BC&ingrEngName=Quetiapine"}
+  ]
+ },
+ {
+  "slug": "clozapine",
+  "name": "클로자핀",
+  "en": "clozapine",
+  "updated": "2026-11-14",
+  "anchor": "h-3",
+  "rows": [
+   {"key":"class","name":"계열","text":"2세대","refs":[]},
+   {"key":"form","name":"제형","text":"먹는 약 · 장기지속형 주사 없음","refs":[10]},
+   {"key":"weight","name":"체중·대사","text":"많은 편","refs":[8,9]},
+   {"key":"eps","name":"추체외로 증상·좌불안석","text":"적은 편","refs":[8,9]},
+   {"key":"prolactin","name":"프로락틴","text":"적은 편","refs":[8,9]},
+   {"key":"sleep","name":"졸림","text":"많은 편","refs":[8,9]},
+   {"key":"qt","name":"QT 연장","text":"적은 편~중간 (자료마다 달라요, 외국 허가사항에 QT 경고)","refs":[8,9,11]},
+   {"key":"ortho","name":"기립성 저혈압","text":"중간~많은 편 (자료마다 달라요)","refs":[8,9]},
+   {"key":"note","name":"꼭 알아둘 것","text":"정기 혈액 검사가 꼭 필요한 약이에요.","refs":[6]}
+  ],
+  "sources": [
+   {"n":6,"org":"약학정보원","title":"클자핀정100mg(클로자핀) 의약품 상세정보 · 허가사항","year":"2026","url":"https://www.health.kr/drug/2013101800003"},
+   {"n":8,"org":"Stroup TS 외","title":"Management of common adverse effects of antipsychotic medications (World Psychiatry)","year":"2018","url":"https://doi.org/10.1002/wps.20567"},
+   {"n":9,"org":"Solmi M 외","title":"Safety, tolerability, and risks associated with first- and second-generation antipsychotics: a state-of-the-art clinical review (Therapeutics and Clinical Risk Management)","year":"2017","url":"https://doi.org/10.2147/TCRM.S117321"},
+   {"n":10,"org":"식품의약품안전처","title":"의약품안전나라 · 의약품 검색(주성분 영문명 Clozapine, 제품명 '주')","year":"2026","url":"https://nedrug.mfds.go.kr/searchDrug?searchYn=true&itemName=%EC%A3%BC&ingrEngName=Clozapine"},
+   {"n":11,"org":"U.S. FDA / DailyMed","title":"CLOZARIL (clozapine) tablets, prescribing information (Revised 6/2025)","year":"2025","url":"https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=90876802-0e3a-44c9-9ff7-1754dfbe736a&type=display"}
+  ]
+ },
+ {
+  "slug": "paliperidone",
+  "name": "팔리페리돈",
+  "en": "paliperidone",
+  "updated": "2026-11-14",
+  "anchor": "h-3",
+  "rows": [
+   {"key":"class","name":"계열","text":"2세대","refs":[]},
+   {"key":"form","name":"제형","text":"먹는 약 · 장기지속형 주사 있음","refs":[6]},
+   {"key":"weight","name":"체중·대사","text":"중간","refs":[8,9]},
+   {"key":"eps","name":"추체외로 증상·좌불안석","text":"중간","refs":[8,9]},
+   {"key":"prolactin","name":"프로락틴","text":"많은 편","refs":[8,9]},
+   {"key":"sleep","name":"졸림","text":"적은 편","refs":[8,9]},
+   {"key":"qt","name":"QT 연장","text":"적은 편 (외국 허가사항에 QT 경고)","refs":[8,9,1]},
+   {"key":"ortho","name":"기립성 저혈압","text":"적은 편","refs":[8,9]},
+   {"key":"note","name":"꼭 알아둘 것","text":"생리·가슴·성기능에 변화가 생기면 프로락틴 때문일 수 있으니 담당 의사에게 말해요.","refs":[1]}
+  ],
+  "sources": [
+   {"n":1,"org":"Janssen Pharmaceuticals","title":"INVEGA (paliperidone) 서방정 미국 FDA 처방정보 (DailyMed)","year":"2025","url":"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=7b8e5b26-b9e4-4704-921b-3c3c0d159916"},
+   {"n":6,"org":"식품의약품안전처","title":"의약품안전나라 · 의약품 검색 \"인베가\"","year":"2026","url":"https://nedrug.mfds.go.kr/searchDrug?searchYn=true&itemName=%EC%9D%B8%EB%B2%A0%EA%B0%80"},
+   {"n":8,"org":"Stroup TS 외","title":"Management of common adverse effects of antipsychotic medications (World Psychiatry)","year":"2018","url":"https://doi.org/10.1002/wps.20567"},
+   {"n":9,"org":"Solmi M 외","title":"Safety, tolerability, and risks associated with first- and second-generation antipsychotics: a state-of-the-art clinical review (Therapeutics and Clinical Risk Management)","year":"2017","url":"https://doi.org/10.2147/TCRM.S117321"}
+  ]
+ },
+ {
+  "slug": "haloperidol",
+  "name": "할로페리돌",
+  "en": "haloperidol",
+  "updated": "2026-11-14",
+  "anchor": "h-3",
+  "rows": [
+   {"key":"class","name":"계열","text":"1세대","refs":[]},
+   {"key":"form","name":"제형","text":"먹는 약 · 장기지속형 주사 있음","refs":[7]},
+   {"key":"weight","name":"체중·대사","text":"적은 편","refs":[8,9]},
+   {"key":"eps","name":"추체외로 증상·좌불안석","text":"많은 편","refs":[8,9]},
+   {"key":"prolactin","name":"프로락틴","text":"중간~많은 편 (자료마다 달라요)","refs":[8,9]},
+   {"key":"sleep","name":"졸림","text":"적은 편","refs":[8,9]},
+   {"key":"qt","name":"QT 연장","text":"적은 편~중간 (자료마다 달라요, 외국 허가사항에 QT 경고)","refs":[8,9,2,1]},
+   {"key":"ortho","name":"기립성 저혈압","text":"적은 편~중간 (자료마다 달라요)","refs":[8,9]},
+   {"key":"note","name":"꼭 알아둘 것","text":"눈이 위로 돌아가거나 목·혀가 뒤틀리면 바로 담당 의사나 병원에 연락하고, 숨쉬기가 힘들면 119에 연락해요.","refs":[2,8]}
+  ],
+  "sources": [
+   {"n":1,"org":"Fresenius Kabi USA","title":"Haloperidol (haloperidol lactate) 주사 미국 FDA 처방정보 (DailyMed)","year":"2025","url":"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=b1ad2abd-a9d6-44e3-957b-36a73260f4f5"},
+   {"n":2,"org":"Somerset Therapeutics","title":"Haloperidol decanoate 주사 미국 FDA 처방정보 (DailyMed)","year":"2025","url":"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=f2bff27f-929f-4f7d-b3eb-084ebc2a885f"},
+   {"n":7,"org":"식품의약품안전처","title":"의약품안전나라 · 의약품 검색 \"할로페리돌\"","year":"2026","url":"https://nedrug.mfds.go.kr/searchDrug?searchYn=true&itemName=%ED%95%A0%EB%A1%9C%ED%8E%98%EB%A6%AC%EB%8F%8C"},
+   {"n":8,"org":"Stroup TS 외","title":"Management of common adverse effects of antipsychotic medications (World Psychiatry)","year":"2018","url":"https://doi.org/10.1002/wps.20567"},
+   {"n":9,"org":"Solmi M 외","title":"Safety, tolerability, and risks associated with first- and second-generation antipsychotics: a state-of-the-art clinical review (Therapeutics and Clinical Risk Management)","year":"2017","url":"https://doi.org/10.2147/TCRM.S117321"}
+  ]
+ }
+]

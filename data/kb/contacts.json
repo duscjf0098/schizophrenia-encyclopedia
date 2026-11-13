@@ -1,0 +1,106 @@
+[
+  {
+    "id": "suicide-109",
+    "name": "자살예방상담전화",
+    "tel": "109",
+    "hours": "24시간",
+    "note": "전화가 어렵다면 109로 문자를 보낼 수 있어요.",
+    "noteSource": "https://www.madeullan.or.kr/consult/guide",
+    "checked": "2026-11-14",
+    "source": "https://www.kfsp.or.kr/",
+    "alsoIn": ["crisis-hotlines", "suicide-warning-signs", "emergency-response"]
+  },
+  {
+    "id": "crisis-1577-0199",
+    "name": "정신건강위기상담전화",
+    "tel": "1577-0199",
+    "hours": "24시간",
+    "hoursSource": "https://news.seoul.go.kr/welfare/archives/561837",
+    "note": "휴대전화로 걸면 가까운 정신건강복지센터로 연결되고, 야간·공휴일에는 광역정신건강복지센터로 연결돼요.",
+    "noteSource": "https://www.mohw.go.kr/menu.es?mid=a10706040100",
+    "checked": "2026-11-14",
+    "source": "https://www.kfsp.or.kr/",
+    "alsoIn": ["crisis-hotlines", "mental-health-center", "emergency-response"]
+  },
+  {
+    "id": "rescue-119",
+    "name": "구급·구조(소방)",
+    "tel": "119",
+    "hours": null,
+    "note": "환자의 나이, 평소 앓고 있는 지병과 먹고 있는 약을 말해 주세요.",
+    "checked": "2026-11-14",
+    "source": "https://www.nfa.go.kr/nfa/safetyinfo/emergencyservice/119emergencydeclaration/",
+    "alsoIn": ["emergency-response", "crisis-hotlines", "psychiatric-emergency-system"]
+  },
+  {
+    "id": "police-112",
+    "name": "경찰",
+    "tel": "112",
+    "hours": null,
+    "note": null,
+    "checked": "2026-11-14",
+    "source": "https://www.police.go.kr/user/bbs/BD_selectBbs.do?q_bbsCode=1007&q_bbscttSn=20240718145407821",
+    "alsoIn": ["emergency-response", "family-violence-safety", "missing-person"]
+  },
+  {
+    "id": "welfare-129",
+    "name": "보건복지상담센터",
+    "tel": "129",
+    "hours": "평일 9~18시. 긴급복지지원·정신건강 상담은 24시간",
+    "note": "복지 제도와 긴급한 생계 위기를 함께 물어볼 수 있어요.",
+    "checked": "2026-11-14",
+    "source": "https://www.korea.kr/policy/civilView.do?newsId=148939193",
+    "alsoIn": ["crisis-hotlines", "livelihood-pension", "medical-cost-safety-net"]
+  },
+  {
+    "id": "women-1366",
+    "name": "여성긴급전화",
+    "tel": "1366",
+    "hours": "365일 24시간",
+    "note": "가정폭력 피해자에게 1차 긴급상담과 의료·상담·법률·보호시설 연계, 7일 이내 긴급피난처를 안내해요.",
+    "checked": "2026-11-14",
+    "source": "https://www.mogef.go.kr/sp/hrp/sp_hrp_f004.do",
+    "alsoIn": ["family-violence-safety"]
+  },
+  {
+    "id": "humanrights-1331",
+    "name": "국가인권위원회 인권상담",
+    "tel": "1331",
+    "needsArea": true,
+    "hours": "평일 9~18시(점심 12~13시)",
+    "note": null,
+    "checked": "2026-11-14",
+    "source": "https://case.humanrights.go.kr/cnslt/guide.do",
+    "alsoIn": ["admission-types", "habeas-corpus-relief"]
+  },
+  {
+    "id": "legalaid-132",
+    "name": "대한법률구조공단",
+    "tel": "132",
+    "hours": "평일 9시~11시 50분, 13시~17시 50분",
+    "note": "법률상담을 받을 수 있어요. 통화료는 거는 사람이 내요.",
+    "checked": "2026-11-14",
+    "source": "https://www.klac.or.kr/legalstruct/telephoneConsultation.do",
+    "alsoIn": ["habeas-corpus-relief", "justice-system"]
+  },
+  {
+    "id": "missing-182",
+    "name": "경찰청 실종아동찾기센터",
+    "tel": "182",
+    "hours": null,
+    "note": "실종아동등(18세 미만, 지적·자폐성·정신장애인, 치매환자) 신고를 받아요. 통화료는 거는 사람이 내요.",
+    "checked": "2026-11-14",
+    "source": "https://www.safe182.go.kr/cont/homeLogContents.do?contentsNm=report_info_182",
+    "alsoIn": ["missing-person"]
+  },
+  {
+    "id": "nhis-1577-1000",
+    "name": "국민건강보험공단",
+    "tel": "1577-1000",
+    "hours": "평일 9~18시(유료)",
+    "note": "산정특례, 본인부담상한제, 재난적의료비를 물어볼 수 있어요.",
+    "checked": "2026-11-14",
+    "source": "https://www.nhis.or.kr/nhis/policy/wbhada14200m01.do",
+    "alsoIn": ["medical-cost-safety-net", "special-calculation"]
+  }
+]
