@@ -7,6 +7,14 @@
   ::view-transition-old(pol-title), ::view-transition-new(pol-title) { animation-duration: 180ms; }
   .pol-vt .page-title { view-transition-name: pol-title; }
 }
+/* 앱 설정의 "움직임 줄이기"(data-motion=reduce): @view-transition 은 선택자 조건을 받지 않아서 js/ui/polish.js 가 전환을 건너뛰고(skipTransition),
+   여기서는 그래도 남는 전환 그림의 움직임을 없앤다(전환 그림은 html 에 붙는 가상 요소라 :root 조건이 닿음) */
+:root[data-motion="reduce"]::view-transition-group(*),
+:root[data-motion="reduce"]::view-transition-image-pair(*),
+:root[data-motion="reduce"]::view-transition-old(*),
+:root[data-motion="reduce"]::view-transition-new(*) { animation: none !important; }
+:root[data-motion="reduce"] .page-title { view-transition-name: none; }
+:root[data-motion="reduce"] .pol-skel-line { animation: none; }
 
 /* 자리표시: 글 모양 회색 막대 */
 .pol-skel-text { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; padding: 0; margin: 0; }

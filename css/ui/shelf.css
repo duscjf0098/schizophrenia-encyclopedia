@@ -1,15 +1,31 @@
-/* shelf — 배너(책등형)와 같은 책꽂이. 첫 화면 책꽂이·분류 머리 책등·공용 색 막대. */
+/* shelf — 배너(책등형)와 같은 책꽂이. 첫 화면 책꽂이·분류 머리 책등·공용 색 막대.
+   책등(a.sh-spine)은 누르는 범위이고, 보이는 책은 ::before 예요(휴대폰에서는 양옆 2px 를 비워 책 사이 틈을 두고 누르는 폭은 44px).
+   책 색과 라벨 글자 색은 js/ui/shelf.js 가 책마다 계산해 넣어요(--sl-l/--sl-d 책 명도, --ink-l/--ink-d 글자 색: 밝은·어두운 화면 각각 대비 4.5:1 이상).
+   높이는 --hd(넓은 화면)·--hm(휴대폰): 문서가 많을수록 높아요. */
 .sh-shelf { margin: 28px 0 4px; }
-.sh-row { display: flex; align-items: flex-end; gap: 4px; padding: 0 12px; overflow-x: auto; scrollbar-width: none; }
-.sh-row::-webkit-scrollbar { display: none; }
-.sh-spine { --h: 250; flex: none; display: block; width: 28px; border-radius: 4px 4px 1px 1px; position: relative; text-decoration: none;
-  background: linear-gradient(90deg, rgba(255, 255, 255, .28) 0, rgba(255, 255, 255, 0) 30%, rgba(0, 0, 0, .08) 100%), hsl(var(--h) var(--spine-s) var(--spine-l));
-  box-shadow: inset 0 -2px 0 rgba(0, 0, 0, .12); transition: transform .18s ease, box-shadow .18s ease; }
-.sh-spine:hover, .sh-spine:focus-visible { transform: translateY(-6px); box-shadow: inset 0 -2px 0 rgba(0, 0, 0, .12), 0 10px 18px rgba(29, 35, 44, .18); }
+.sh-rows { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 4px; padding: 0 12px; }
+.sh-row { display: flex; align-items: flex-end; gap: 4px; }
+.sh-spine { --h: 250; --sl: var(--sl-l, var(--spine-l)); --ink: var(--ink-l, #fff); --gut: 0px;
+  flex: none; display: block; position: relative; width: 36px; height: var(--hd, 160px); border-radius: 4px 4px 1px 1px; text-decoration: none;
+  transition: transform .18s ease; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .sh-spine { --sl: var(--sl-d, var(--spine-l)); --ink: var(--ink-d, #fff); } }
+:root[data-theme="dark"] .sh-spine { --sl: var(--sl-d, var(--spine-l)); --ink: var(--ink-d, #fff); }
+/* 보이는 책: 바탕 한 색(라벨 대비를 계산한 색) + 양 끝 3px 만 빛·그늘(라벨 글자 밑은 고른 색) */
+.sh-spine::before { content: ""; position: absolute; top: 0; bottom: 0; left: var(--gut); right: var(--gut); border-radius: 4px 4px 1px 1px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, .26) 0, rgba(255, 255, 255, 0) 3px, rgba(0, 0, 0, 0) calc(100% - 3px), rgba(0, 0, 0, .12) 100%), hsl(var(--h) var(--spine-s) var(--sl));
+  background-color: hsl(var(--h) var(--spine-s) var(--sl));
+  box-shadow: inset 0 -2px 0 rgba(0, 0, 0, .12); transition: box-shadow .18s ease; }
+/* 두꺼운 용어 사전: 위아래에 가는 띠 두 줄(사전 책등처럼) */
+.sh-dict { width: 50px; }
+.sh-dict::before {
+  background: linear-gradient(180deg, transparent 12px, rgba(255, 255, 255, .55) 12px, rgba(255, 255, 255, .55) 14px, transparent 14px, transparent calc(100% - 16px), rgba(255, 255, 255, .55) calc(100% - 16px), rgba(255, 255, 255, .55) calc(100% - 14px), transparent calc(100% - 14px)),
+    linear-gradient(90deg, rgba(255, 255, 255, .26) 0, rgba(255, 255, 255, 0) 3px, rgba(0, 0, 0, 0) calc(100% - 3px), rgba(0, 0, 0, .12) 100%), hsl(var(--h) var(--spine-s) var(--sl)); }
+.sh-spine:hover, .sh-spine:focus-visible { transform: translateY(-6px); }
+.sh-spine:hover::before, .sh-spine:focus-visible::before { box-shadow: inset 0 -2px 0 rgba(0, 0, 0, .12), 0 10px 18px rgba(29, 35, 44, .18); }
 .sh-spine:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
-.sh-label { position: absolute; top: 14px; left: 0; width: 100%; text-align: center; writing-mode: vertical-rl; text-orientation: upright;
-  font-size: 13px; font-weight: 700; letter-spacing: .04em; line-height: 28px; color: rgba(255, 255, 255, .96); white-space: nowrap; }
-.sh-spine.dk .sh-label { color: rgba(24, 26, 34, .82); }
+/* 라벨: 세로 글자. 책 안쪽(위 10px·아래 8px·양옆 3px)에 들어가고, 길면 띄어쓰기·가운뎃점에서 둘째 줄(왼쪽)로 */
+.sh-label { position: absolute; z-index: 1; top: 10px; bottom: 8px; left: 50%; transform: translateX(-50%); writing-mode: vertical-rl; text-orientation: upright;
+  white-space: normal; text-align: start; font-size: 13px; font-weight: 700; letter-spacing: .02em; line-height: 16px; color: var(--ink); }
 .sh-board { height: 6px; background: var(--rule-2); border-radius: 2px; position: relative; }
 .sh-board::after { content: ""; position: absolute; left: 0; right: 0; top: 6px; height: 14px; border-radius: 0 0 8px 8px;
   background: linear-gradient(180deg, rgba(29, 35, 44, .10), rgba(29, 35, 44, 0)); }
@@ -25,12 +41,36 @@
   background: linear-gradient(90deg, rgba(255, 255, 255, .30) 0, rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, .10) 100%), hsl(var(--h) var(--spine-s) var(--spine-l));
   box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .15); }
 
+/* 휴대폰: 두 줄 책꽂이. 줄마다 아래에 선반. 누르는 폭 44px(사전 50px), 보이는 책은 양옆 2px 안쪽 */
 @media (max-width: 760px) {
   .sh-shelf { margin-top: 22px; }
-  .sh-row { gap: 2px; padding: 0 6px; }
-  .sh-spine { width: 18px; border-radius: 3px 3px 1px 1px; }
-  .sh-label { top: 10px; font-size: 11px; line-height: 18px; letter-spacing: .02em; }
+  .sh-rows { display: grid; gap: 18px; padding: 0; }
+  .sh-row { gap: 0; border-bottom: 6px solid var(--rule-2); border-radius: 0 0 2px 2px; box-shadow: 0 12px 12px -12px rgba(29, 35, 44, .22); }
+  .sh-spine { --gut: 2px; flex: 0 1 44px; min-width: 0; width: auto; height: var(--hm, 100px); }
+  .sh-dict { flex-basis: 50px; }
+  .sh-label { top: 8px; bottom: 6px; font-size: 12px; line-height: 14px; letter-spacing: 0; }
+  /* 긴 이름(띄어쓰기 빼고 8글자 이상, js 가 sh-long)은 한 단계 작게 세 줄까지 */
+  .sh-long .sh-label { font-size: 11px; line-height: 12px; }
+  .sh-dict::before {
+    background: linear-gradient(180deg, transparent 9px, rgba(255, 255, 255, .55) 9px, rgba(255, 255, 255, .55) 11px, transparent 11px, transparent calc(100% - 12px), rgba(255, 255, 255, .55) calc(100% - 12px), rgba(255, 255, 255, .55) calc(100% - 10px), transparent calc(100% - 10px)),
+      linear-gradient(90deg, rgba(255, 255, 255, .26) 0, rgba(255, 255, 255, 0) 3px, rgba(0, 0, 0, 0) calc(100% - 3px), rgba(0, 0, 0, .12) 100%), hsl(var(--h) var(--spine-s) var(--sl)); }
+  .sh-board { display: none; }
+  .sh-hint { margin-top: 14px; }
   .sh-big { width: 12px; margin-right: 9px; }
 }
-@media (prefers-reduced-motion: reduce) { .sh-spine { transition: none; } .sh-spine:hover, .sh-spine:focus-visible { transform: none; } }
+/* 좁은 휴대폰(390px 미만: 360·375·320): 두 줄로는 책등이 44px 밑으로 줄어요(360 에서 40px, 320 에서 35px).
+   두 줄 묶음(.sh-row)을 풀어 한 줄에 6권씩(6·6·4, 용어 사전은 끝) 놓아요. 누르는 칸은 (폭 ÷ 6) — 320 에서 48px, 360 에서 54px.
+   보이는 책은 칸 가운데 40px(사전 48px)로 두꺼워지지 않게, 선반은 책마다 아래 6px 띠를 이어 그려요(줄마다 이어진 선반) */
+@media (max-width: 389.98px) {
+  .sh-rows { grid-template-columns: repeat(6, minmax(0, 1fr)); align-items: end; gap: 18px 0; }
+  .sh-row { display: contents; }
+  .sh-spine { --gut: max(2px, calc(50% - 20px)); height: calc(var(--hm, 100px) + 6px); border-bottom: 6px solid var(--rule-2); border-radius: 0;
+    box-shadow: 0 12px 12px -12px rgba(29, 35, 44, .22); }
+  .sh-dict { --gut: max(2px, calc(50% - 24px)); }
+  /* 책이 들리면 선반 띠도 같이 들리니, 좁은 화면에서는 들어 올리지 않아요(초점 표시는 외곽선) */
+  .sh-spine:hover, .sh-spine:focus-visible { transform: none; }
+}
+/* 움직임 줄이기(운영체제 설정·앱 설정 모두): 들어 올리지 않음 */
+@media (prefers-reduced-motion: reduce) { .sh-spine, .sh-spine::before { transition: none; } .sh-spine:hover, .sh-spine:focus-visible { transform: none; } }
+:root[data-motion="reduce"] .sh-spine:hover, :root[data-motion="reduce"] .sh-spine:focus-visible { transform: none; }
 @media print { .sh-shelf { display: none; } }

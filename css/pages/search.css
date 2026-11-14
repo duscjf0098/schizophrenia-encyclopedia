@@ -2,21 +2,21 @@
 #app .fp-body[data-page="search"] { margin-top: 10px; }
 .pg-search-cards:empty, .pg-search-hint:empty, .pg-search-more:empty, .pg-search-answer-slot:empty { display: none; }
 .pg-search-help[hidden], .pg-search-did[hidden] { display: none; }
-.pg-search-off { font-size: 13.5px; line-height: 1.6; color: var(--ink-2); background: var(--paper-2); border-radius: 10px; padding: 8px 12px; margin: 4px 0 8px; }
-.pg-search-nojs { font-size: 15px; line-height: 1.7; color: var(--ink-2); }
+.pg-search-off { font-size: calc(var(--fs-body) * 0.794); line-height: 1.6; color: var(--ink-2); background: var(--paper-2); border-radius: 10px; padding: 8px 12px; margin: 4px 0 8px; }
+.pg-search-nojs { font-size: calc(var(--fs-body) * 0.882); line-height: 1.7; color: var(--ink-2); }
 .pg-search-nojs a { color: var(--accent); text-decoration: underline; }
 
 /* 감지와 상관없는 안전망 한 줄: 입력창 바로 아래, 작고 조용하게(경고색·아이콘 없음). 링크는 누르는 높이 44px */
-.pg-search-help { display: flex; align-items: center; flex-wrap: wrap; margin: 0 0 2px; min-height: 44px; font-size: 13.5px; line-height: 1.5; color: var(--muted); }
+.pg-search-help { display: flex; align-items: center; flex-wrap: wrap; margin: 0 0 2px; min-height: 44px; font-size: calc(var(--fs-body) * 0.794); line-height: 1.5; color: var(--muted); }
 .pg-search-help-go { display: inline-flex; align-items: center; min-height: 44px; padding: 0 4px; color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
 
 /* "‘환청’을 찾으셨나요?" */
-.pg-search-did { margin: 4px 0 2px; font-size: 15px; line-height: 1.6; color: var(--ink-2); }
+.pg-search-did { margin: 4px 0 2px; font-size: calc(var(--fs-body) * 0.882); line-height: 1.6; color: var(--ink-2); }
 .pg-search-did-go { display: inline-flex; align-items: center; min-height: 44px; padding: 0 2px; border: 0; background: none; font: inherit; font-weight: 700; color: var(--accent); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
 .pg-search-did-go:hover { color: var(--accent-2); }
 
 /* "이 화면을 찾으셨나요: 바로 연락할 신호" — 찾으셨나요와 같은 결의 조용한 한 줄. 링크는 누르는 높이 44px */
-.pg-search-screen { margin: 2px 0; font-size: 15px; line-height: 1.6; color: var(--ink-2); }
+.pg-search-screen { margin: 2px 0; font-size: calc(var(--fs-body) * 0.882); line-height: 1.6; color: var(--ink-2); }
 .pg-search-screen[hidden] { display: none; }
 .pg-search-screen-go { display: inline-flex; align-items: center; min-height: 44px; padding: 0 2px; font-weight: 700; color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
 .pg-search-screen-go:hover { color: var(--accent-2); }
@@ -24,7 +24,7 @@
 /* 짧은 답 카드: 자주 묻는 질문 글의 "## 짧은 답" 원문 그대로. 종이 카드 + 왼쪽 강조 띠(콜아웃과 같은 결).
    본문을 읽게 하는 블록이라 글자 크기 설정(--fs-body)을 따라간다(보통 17px → 15.5px) */
 .pg-search-answer { margin: 12px 0 16px; padding: 14px 18px 12px; background: var(--paper-3); border: 1px solid var(--rule); border-left: 3px solid var(--accent); border-radius: 0 12px 12px 0; }
-.pg-search-answer-k { margin: 0 0 4px; font-size: 12.5px; letter-spacing: .02em; color: var(--muted); }
+.pg-search-answer-k { margin: 0 0 4px; font-size: max(12px, calc(var(--fs-body) * 0.735)); letter-spacing: .02em; color: var(--muted); }
 .pg-search-answer-t { margin: 0 0 8px; font-family: var(--serif); font-size: calc(var(--fs-body) + 1px); font-weight: 700; line-height: 1.45; color: var(--ink); }
 .pg-search-answer-b { font-size: calc(var(--fs-body) - 1.5px); line-height: 1.75; color: var(--ink); }
 .pg-search-answer-b p { margin: 0 0 .6em; }
@@ -37,7 +37,7 @@
 
 /* 결과가 없을 때 다른 길 */
 .pg-search-more { margin: 6px 0 18px; }
-.pg-search-more-links { font-size: 14.5px; color: var(--muted); line-height: 1.8; }
+.pg-search-more-links { font-size: calc(var(--fs-body) * 0.853); color: var(--muted); line-height: 1.8; }
 .pg-search-more-links a { display: inline-flex; align-items: center; min-height: 44px; color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
 
 /* 타해(harm) 카드: 겁주지 않게 자살·자해(high)와 같은 차분한 --calm 계열. 함께 나올 때는 굵은 왼쪽 띠로만 구분.

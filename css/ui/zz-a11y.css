@@ -1,0 +1,134 @@
+/* zz-a11y — 접근성 다듬기(F3). css/ui.css 의 맨 끝에 붙어(이름순) 앞 규칙을 낮은 특이도로 덮어요.
+   선택자는 .a11y- 접두어이거나 기존 클래스에 낮은 특이도로. 보이는 모양은 되도록 그대로 두고 누르는 범위만 넓혀요.
+   1) 목차 건너뛰기(js/ui/polish.js 가 넣음)  2) 휴대폰의 누르는 범위(390px 에서 높이 44px 목표, 최소 24px)
+   3) 낮은 화면(높이 500·400·349px 이하 세 단계, 크게 확대)에서 고정 막대(상단 바·하단 바)가 화면의 25% 를 넘지 않게
+   1-3) 머리 소개 문장·고지 줄의 글자 크기가 보기 설정을 따름
+   인쇄에는 적용하지 않아요(모든 규칙이 screen 안). */
+
+/* ---------- 1. 목차 건너뛰기 ----------
+   공용 .sr 로 숨어 있다가 Tab 으로 닿으면 상단 바 아래 왼쪽에 보여요(본문으로 건너뛰기 .skip 과 같은 결) */
+@media screen {
+  .a11y-skipnav:focus { position: fixed; top: calc(var(--top-h) + 8px); left: 8px; z-index: 100; width: auto; height: auto; clip: auto; overflow: visible; white-space: nowrap;
+    display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px; border-radius: 8px; background: var(--accent); color: var(--accent-ink); font-size: 15px; font-weight: 650;
+    box-shadow: var(--shadow-pop); outline: 2px solid var(--ink); outline-offset: 2px; }
+}
+/* 서랍 목차(1080px 이하)는 닫히면 inert 라 건너뛸 것이 없어요 */
+@media (max-width: 1080px) { .a11y-skipnav { display: none; } }
+
+/* ---------- 1-2. 글 칸의 포커스 표시 ----------
+   외곽선을 끄고 옅은 번짐(--accent 35%·--accent-soft)만 두던 글 칸은 번짐이 바탕과 3:1 이 안 돼요(밝은 1.6, 어두운 1.1 안팎).
+   테두리(--accent) 바깥에 같은 색 1px 을 더해 2px 실선 고리로 보이게 하고, 그 밖에 옅은 번짐은 그대로 둬요.
+   특집 화면 css 는 ui.css 뒤에 실리니 :root 를 붙여 앞서요 */
+@media screen {
+  :root .qs input:focus, :root .searchbar input:focus, :root .pg-ask-input:focus, :root .pg-plan-ta:focus {
+    border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent), 0 0 0 4px color-mix(in srgb, var(--accent) 28%, transparent); }
+  /* 명령 팔레트의 입력 칸은 테두리가 없는 칸이라, 칸이 든 머리 줄 아래 선을 2px --accent 로 */
+  .pal-head:focus-within { border-bottom-color: var(--accent); box-shadow: inset 0 -1px 0 var(--accent); }
+}
+
+/* ---------- 1-3. 머리 소개 문장·고지 줄도 보기 설정의 글자 크기를 따라요 ----------
+   style.css 의 고정 16.5px·13.5px 을 --fs-body(보통 17px) 기준 비율로. 보통에서는 같은 크기예요.
+   머리 소개는 '작게'에서도 함께 작아지고, 고지 줄(위기 번호와 "일반적인 정보예요…")은 지금 크기 밑으로는 줄이지 않아요.
+   같은 특이도로 style.css 뒤에 실려 이겨요. 인쇄는 각 화면의 print 규칙(pt)이 그대로 맡아요 */
+@media screen {
+  .page-lead { font-size: calc(var(--fs-body) * 0.971); }
+  .notice { font-size: max(13.5px, calc(var(--fs-body) * 0.794)); }
+}
+
+/* ---------- 2. 휴대폰의 누르는 범위 ---------- */
+@media screen and (max-width: 760px) {
+  /* 2-1. 상단: 검색창·지금 도움 44px, 본문으로 건너뛰기도 44px */
+  .qs input { height: 44px; }
+  .qs-icon { top: 13px; }
+  .tool-help { height: 44px; line-height: 42px; }
+  .skip { display: inline-flex; align-items: center; min-height: 44px; }
+
+  /* 2-2. 빵부스러기: 보이는 줄 높이는 그대로, 누르는 높이만 위아래로 넓혀 44px */
+  .crumb a { display: inline-flex; align-items: center; min-height: 44px; margin-block: -11px; }
+
+  /* 2-3. 문장 안 링크: 줄 간격은 그대로 두고(인라인의 위아래 여백은 줄 높이를 바꾸지 않아요) 누르는 높이만 넓혀요.
+     특이도 0 이라 모듈이 정한 여백이 있으면 그쪽이 이겨요 */
+  :where(#app, .sitefoot, .pop) :where(a:not([class]), a.pol-ext) { padding: 5px 2px; margin-inline: -2px; }
+
+  /* 2-4. 위기·응급 전화 링크(바닥글·특집 화면 위기 줄·문서 위기 배너·응급 줄·핵심 3가지 끝): 문장 안에서 누르기 쉬운 작은 단추 모양.
+     보이는 단추는 약 29~31px 이고, 누르는 범위는 ::after 로 위아래 8px·양옆 2px 를 넓혀 44px 이상.
+     넓힌 만큼을 바깥 여백(margin 8px 2px)으로도 비워 둬요: 인라인 블록의 바깥 여백은 줄 상자 안에 들어가니, 알약이 줄을 바꿔
+     위아래로 놓여도 아랫줄 알약의 누름 범위가 윗줄 알약의 보이는 부분을 덮지 않아요(다른 번호로 걸리는 일 없음) */
+  .sitefoot a[href^="tel:"], .notice a[href^="tel:"], .crisis a[href^="tel:"], .emergency a[href^="tel:"], .keypoints-crisis a[href^="tel:"] {
+    position: relative; display: inline-block; padding: 4px 10px; margin: 8px 2px; line-height: 1.4; vertical-align: baseline;
+    border: 1px solid var(--rule-2); border-radius: 999px; background: var(--paper-3); color: var(--ink); font-weight: 700; text-decoration: none; }
+  .sitefoot a[href^="tel:"]::after, .notice a[href^="tel:"]::after, .crisis a[href^="tel:"]::after, .emergency a[href^="tel:"]::after, .keypoints-crisis a[href^="tel:"]::after {
+    content: ""; position: absolute; left: -3px; right: -3px; top: -9px; bottom: -9px; }
+  .crisis a[href^="tel:"], .keypoints-crisis a[href^="tel:"] { border-color: color-mix(in srgb, var(--calm) 50%, transparent); color: var(--calm); }
+  .emergency a[href^="tel:"] { border-color: color-mix(in srgb, var(--warn) 50%, transparent); color: var(--ink); }
+
+  /* 2-5. 출처 번호: 보이는 크기는 그대로(폭 24px), 누르는 높이만 위아래로 44px */
+  .body .fn a { position: relative; min-width: 24px; }
+  .body .fn a::after { content: ""; position: absolute; left: 0; right: 0; top: -11px; bottom: -11px; }
+
+  /* 2-6. 목록형 링크: 역링크·함께 읽기·문서 차례·용어 사전 관련 글·첫 화면 분류 색인·코스 단계 — 줄마다 44px */
+  .backlinks ul, .see-also ul { gap: 0 24px; }
+  .backlinks a, .see-also a { min-height: 44px; }
+  .toc-m li { margin: 0; }
+  .toc-m a { display: flex; align-items: center; min-height: 44px; }
+  .toc-m summary { min-height: 44px; }
+  /* 용어 사전 관련 글: 두 글자 제목("환청")도 누르는 폭 24px 넘게 — 양옆 6px 를 넓히고 같은 만큼 바깥 여백을 당겨 글자 자리는 그대로 */
+  .gl-rel { gap: 0 14px; }
+  .gl-rel a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 6px; margin: 0 -6px; }
+  /* 용어 사전 첫 글자 줄: 휴대폰에서는 한 줄로(옆으로 밀어 넘김, 둘러보기 화면과 같은 꼴). 세 줄로 접히면 붙박이 줄만 161px(390×844 의 19%)라
+     상단 바·하단 바와 합쳐 화면의 1/3 을 가렸어요. 오른쪽 끝은 흐리게(옆으로 더 있다는 표시) */
+  .gl-letters { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; overscroll-behavior-x: contain; padding: 6px 28px 6px 0;
+    -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 28px), transparent); mask-image: linear-gradient(90deg, #000 calc(100% - 28px), transparent); }
+  .gl-letters::-webkit-scrollbar { display: none; }
+  .gl-letters a { flex: none; min-width: 44px; height: 44px; }
+  .index-sec ul { gap: 0 14px; }
+  .index-sec ul a { display: inline-flex; align-items: center; min-height: 44px; }
+  .index-sec h3 a, .terms dt a { display: inline-flex; align-items: center; min-height: 44px; }
+  .h-sec .more { display: inline-flex; align-items: center; min-height: 44px; padding: 0; margin-block: -5px; }
+  .step a { display: flex; align-items: center; min-height: 44px; }
+
+  /* 2-7. 단추: 휴대폰에서는 44px(문서 머리 줄의 단추는 style.css 가 보이는 크기 36px 에 누르는 범위만 넓혀 둠) */
+  .btn:not(.doc-meta-m .btn) { height: auto; min-height: 44px; }
+
+  /* 2-8. 따라오는 제목 줄 */
+  .stk-main { min-height: 44px; }
+}
+
+/* ---------- 3. 낮은 화면(높이 500px 이하: 가로로 눕힌 휴대폰, 200% 이상 확대) ----------
+   상단 바를 46px 로 줄이고(단추 44px 는 그대로), 휴대폰 폭에서는 하단 바를 한 줄(아이콘 옆에 이름)로 낮추고
+   따라오는 제목 줄은 감춰요(같은 차례가 하단 바에 있어요). 640×400 에서 상단 바 47 + 하단 바 49 = 96px(24%) */
+@media screen and (max-height: 500px) {
+  :root { --top-h: 46px; }
+  /* 화면 안에 붙어 따라오는 첫 글자 줄(용어 사전·둘러보기)은 낮은 화면에서는 붙이지 않아요(글을 읽을 자리가 남게) */
+  .gl-letters, :root .pg-browse-letters { position: static; }
+}
+@media screen and (max-height: 500px) and (max-width: 760px) {
+  .stk-bar { display: none !important; }
+  body.mb-has-bar { padding-bottom: calc(50px + env(safe-area-inset-bottom, 0px)); }
+  html:has(> body.mb-has-bar) { scroll-padding-bottom: calc(58px + env(safe-area-inset-bottom, 0px)); }
+  .mb-btn { flex-direction: row; gap: 6px; height: 44px; min-height: 44px; padding: 0 2px; }
+  .mb-btn svg { width: 20px; height: 20px; }
+}
+/* 3-2. 더 낮은 화면(높이 400px 이하: 1280×720 을 200% 로 확대한 640×360 등). 상단 바 42px(단추 40px), 하단 바 45px(단추 40px)
+   → 합 87px: 높이 350px 에서도 25% 아래(24.9%). 누르는 크기는 40px 로 최소 24px 를 넉넉히 넘어요 */
+@media screen and (max-height: 400px) {
+  :root { --top-h: 41px; }
+  .tool-help { height: 40px; line-height: 38px; }
+  .topbar .iconbtn { width: 40px; height: 40px; }
+  .qs input { height: 40px; }
+  .qs-icon { top: 11px; }
+}
+@media screen and (max-height: 400px) and (max-width: 760px) {
+  body.mb-has-bar { padding-bottom: calc(46px + env(safe-area-inset-bottom, 0px)); }
+  html:has(> body.mb-has-bar) { scroll-padding-bottom: calc(54px + env(safe-area-inset-bottom, 0px)); }
+  .mb-btn { height: 40px; min-height: 40px; }
+  .mb-btn svg { width: 18px; height: 18px; }
+}
+/* 3-3. 아주 낮은 화면(높이 349px 이하: 320×256 같은 400% 확대). 붙박이 막대는 상단 바(42px, "지금 도움"·찾기·분류 서랍이 있음) 하나만 남겨요.
+   하단 바의 일(찾기·분류·차례·저장·용어·위로)은 상단 바와 본문(문서 차례·머리 줄 저장 단추)에도 있어요. 따라오는 제목 줄도 감춰요.
+   320×256 에서 42px = 16% */
+@media screen and (max-height: 349px) {
+  .mb-bar, .stk-bar { display: none !important; }
+  body.mb-has-bar { padding-bottom: env(safe-area-inset-bottom, 0px); }
+  html:has(> body.mb-has-bar) { scroll-padding-bottom: 8px; }
+}

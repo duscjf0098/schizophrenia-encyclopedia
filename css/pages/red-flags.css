@@ -13,7 +13,7 @@
 .pg-red-flags-now { padding: 12px 14px 12px 18px; border-left: 3px solid var(--calm); border-radius: 0 12px 12px 0; background: var(--calm-soft); }
 .pg-red-flags-now-t { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 20px; margin: 0; }
 .pg-red-flags-now-l { font-family: var(--serif); font-size: calc(var(--fs-body) * 1.24); font-weight: 700; line-height: 1.35; color: var(--ink); }
-.pg-red-flags-call { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-width: 132px; min-height: 52px; padding: 0 22px; border-radius: 12px; background: var(--calm); color: var(--calm-ink); font-size: 26px; font-weight: 800; line-height: 1; letter-spacing: .03em; font-variant-numeric: tabular-nums; }
+.pg-red-flags-call { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-width: 132px; min-height: 52px; padding: 0 22px; border-radius: 12px; background: var(--calm); color: var(--calm-ink); font-size: calc(var(--fs-body) * 1.529); font-weight: 800; line-height: 1; letter-spacing: .03em; font-variant-numeric: tabular-nums; }
 .pg-red-flags-call:hover { filter: brightness(1.06); }
 .pg-red-flags-call:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
 .pg-red-flags-ico { flex: none; }
@@ -45,23 +45,23 @@
 .pg-red-flags-after strong { color: var(--ink); }
 .pg-red-flags-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin-top: 18px; }
 .pg-red-flags-print { height: 44px; padding: 0 18px; }
-.pg-red-flags-tip { margin: 0; font-size: 14px; line-height: 1.6; color: var(--muted); }
-.pg-red-flags-from { max-width: 72ch; margin: 26px 0 0; font-size: 14px; line-height: 1.7; color: var(--ink-2); }
+.pg-red-flags-tip { margin: 0; font-size: calc(var(--fs-body) * 0.824); line-height: 1.6; color: var(--muted); }
+.pg-red-flags-from { max-width: 72ch; margin: 26px 0 0; font-size: calc(var(--fs-body) * 0.824); line-height: 1.7; color: var(--ink-2); }
 .pg-red-flags-from a, .pg-red-flags-src-list a { color: var(--accent); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
 .pg-red-flags-prt { display: none; }
-.pg-red-flags-src { max-width: 72ch; margin-top: 6px; font-size: 14px; color: var(--ink-2); }
+.pg-red-flags-src { max-width: 72ch; margin-top: 6px; font-size: calc(var(--fs-body) * 0.824); color: var(--ink-2); }
 /* 펼침 표시(▸)가 남도록 list-item 그대로, 누르는 높이는 위아래 여백으로 44px */
 .pg-red-flags-src > summary { display: list-item; width: max-content; max-width: 100%; padding: 11px 0; line-height: 22px; cursor: pointer; font-weight: 600; }
 .pg-red-flags-src-list { margin: 2px 0 0; padding-left: 28px; line-height: 1.65; overflow-wrap: anywhere; }
 .pg-red-flags-src-list > li { margin: 4px 0; }
-.pg-red-flags-src-note { margin: 6px 0 0; font-size: 13px; color: var(--muted); }
+.pg-red-flags-src-note { margin: 6px 0 0; font-size: max(12px, calc(var(--fs-body) * 0.765)); color: var(--muted); }
 
 /* ---------- 휴대폰: 카드 ---------- */
 @media screen and (max-width: 760px) {
   .pg-red-flags-now { padding: 10px 10px 10px 16px; }
   .pg-red-flags-now-t { flex-wrap: nowrap; gap: 12px; }
   .pg-red-flags-now-l { font-size: calc(var(--fs-body) * 1.06); }
-  .pg-red-flags-call { flex: 1 1 auto; max-width: 220px; min-height: 56px; font-size: 26px; }
+  .pg-red-flags-call { flex: 1 1 auto; max-width: 220px; min-height: 56px; font-size: calc(var(--fs-body) * 1.529); }
   .pg-red-flags-wrap { margin-top: 16px; }
   .pg-red-flags-table, .pg-red-flags-table tbody, .pg-red-flags-table tr, .pg-red-flags-table td { display: block; width: auto; }
   /* 열 머리는 화면에서만 숨기고 읽기 프로그램에는 남겨요(카드의 칸 이름이 눈에 보이는 몫) */

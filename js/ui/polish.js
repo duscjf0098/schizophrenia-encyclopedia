@@ -4,31 +4,49 @@
    - 토스트: JHB.ui.toast(text, {kind}) — 저장·주소 복사 때 자동으로 띄움
    - 분류 색 길찾기: 상단 줄과 빵부스러기 색 막대를 현재 분류 색으로
    - 새 창으로 열리는 링크에 ↗ 표시(.pol-ext)
-   공개: JHB.ui.toast, JHB.ui.polish = { toast, setSection } */
+   - 넓은 화면의 "목차 건너뛰기"(왼쪽 분류 목차 바로 앞, Tab 으로 닿을 때만 보임 → 본문으로)
+   움직임: 운영체제 설정뿐 아니라 앱 설정의 "움직임 줄이기"(<html data-motion="reduce">, 머리 스크립트와 보기 설정 모듈이 맞춰 줌)도 따라
+   페이지 사이 화면 전환을 건너뛴다(pageswap·pagereveal 에서 skipTransition, css/ui/polish.css 의 같은 조건).
+   공개: JHB.ui.toast, JHB.ui.polish = { toast, setSection, reduced }. node: module.exports = { motionReduced } */
 (function () {
+  /* 움직임을 줄일지: html 의 data-motion 이 reduce 이거나 운영체제 설정(mq)이 줄이기면 true.
+     저장값(jhb.ui.settings)은 보지 않아요 — 머리 스크립트가 첫 그리기 전에 저장값을 속성으로 옮기고, 그 뒤로는 보기 설정 모듈이
+     속성을 늘 맞춰 줘요. 저장값을 보면 저장이 실패한 채 '보통'으로 되돌렸을 때 전환이 꺼진 채 남아요 */
+  function motionReduced(o) {
+    o = o || {};
+    return o.attr === 'reduce' || !!o.mq;
+  }
+  if (typeof module !== 'undefined' && module.exports) { module.exports = { motionReduced: motionReduced }; return; }
   if (!window.JHB || !JHB.app) return;
   const A = JHB.app, el = A.el, U = JHB.util;
   JHB.ui = JHB.ui || {};
   const root = document.documentElement;
   const LOADING = '문서를 불러오고 있어요.';
 
-  /* ---------- 1. 뷰 전환 지원 표시 ----------
-     실제 전환은 CSS(@view-transition { navigation: auto })가 맡는다. 여기서는 지원 여부만 html 에 적어 둔다. */
-  const reduced = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
+  /* ---------- 1. 뷰 전환 ----------
+     실제 전환은 CSS(@view-transition { navigation: auto })가 맡는다. 지원 여부와 움직임 설정을 html 의 pol-vt 로 적어 두고,
+     움직임을 줄이면 떠나는 페이지(pageswap)와 들어오는 페이지(pagereveal) 양쪽에서 전환을 건너뛴다. */
+  const mq = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
+  function reducedNow() {
+    return motionReduced({ attr: root.getAttribute('data-motion'), mq: mq.matches || !!(A.reducedMotion && A.reducedMotion()) });
+  }
   function markVT() {
-    const ok = typeof document.startViewTransition === 'function' && !reduced.matches;
+    const ok = typeof document.startViewTransition === 'function' && !reducedNow();
     root.classList.toggle('pol-vt', ok);
   }
   markVT();
-  if (reduced.addEventListener) reduced.addEventListener('change', markVT);
-  /* 전환이 건너뛰어질 때(새로고침, 상대 페이지가 옵트인하지 않음 등) 약속이 거부되며 콘솔에 오류로 남지 않게 받아 둔다 */
-  function quiet(e) {
+  if (mq.addEventListener) mq.addEventListener('change', markVT);
+  /* 보기 설정에서 움직임 줄이기를 켜고 끄면(data-motion 이 바뀜) 바로 반영 */
+  new MutationObserver(markVT).observe(root, { attributes: true, attributeFilter: ['data-motion'] });
+  /* 전환이 건너뛰어질 때(새로고침, 상대 페이지가 옵트인하지 않음, 움직임 줄이기 등) 약속이 거부되며 콘솔에 오류로 남지 않게 받아 둔다 */
+  function onVT(e) {
     const vt = e && e.viewTransition;
     if (!vt) return;
     ['finished', 'ready', 'updateCallbackDone'].forEach(function (k) { if (vt[k] && vt[k].catch) vt[k].catch(function () { }); });
+    if (reducedNow() && typeof vt.skipTransition === 'function') { try { vt.skipTransition(); } catch (err) { } }
   }
-  window.addEventListener('pagereveal', quiet);
-  window.addEventListener('pageswap', quiet);
+  window.addEventListener('pagereveal', onVT);
+  window.addEventListener('pageswap', onVT);
 
   /* ---------- 2. 자리표시 ---------- */
   function isLoadingP(n) {
@@ -155,5 +173,23 @@
     muts.forEach(function (m) { m.addedNodes.forEach(markExt); });
   }).observe(document.body, { childList: true, subtree: true });
 
-  JHB.ui.polish = { toast: toast, setSection: setSection };
+  /* ---------- 6. 목차 건너뛰기 ----------
+     넓은 화면(1081px 이상)에서는 왼쪽 분류 목차의 링크(분류·글·차례)가 모두 Tab 순서에 있어 본문까지 60번 넘게 눌러야 해요.
+     목차 바로 앞(상단 도구 다음)에 Tab 으로 닿을 때만 보이는 "목차 건너뛰기"를 둬요. 누르면 본문(#app)으로 포커스가 가요.
+     목차(#sidenav)는 앱이 화면마다 다시 그리니(innerHTML) 그 밖, 틀(.shell) 안 목차 앞에 둬요.
+     공용 .sr(style.css, absolute)을 함께 달아 css/ui/zz-a11y.css 가 없어도 칸 배치(.shell 의 grid)에 끼지 않고 보이지 않아요.
+     포커스를 받으면 zz-a11y.css 가 화면 왼쪽 위에 보여 줘요. 좁은 화면은 목차가 서랍(닫히면 inert)이라 숨겨요. */
+  const side = document.getElementById('sidenav');
+  if (side && side.parentNode && !document.querySelector('.a11y-skipnav')) {
+    const skip = el('a.sr.a11y-skipnav', { href: '#app' }, ['목차 건너뛰기']);
+    skip.addEventListener('click', function (e) {
+      e.preventDefault();
+      try { A.main.focus({ preventScroll: true }); } catch (err) { A.main.focus(); }
+      const r = A.main.getBoundingClientRect();
+      if (r.top < 0 || r.top > innerHeight) A.main.scrollIntoView({ block: 'start' });
+    });
+    side.parentNode.insertBefore(skip, side);
+  }
+
+  JHB.ui.polish = { toast: toast, setSection: setSection, reduced: reducedNow };
 })();

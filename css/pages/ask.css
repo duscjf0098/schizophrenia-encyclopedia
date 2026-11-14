@@ -3,14 +3,14 @@
 
 /* 맨 위: 저장 상태 */
 .pg-ask-top { display: grid; gap: 8px; padding: 14px 16px; border: 1px solid var(--rule); border-radius: 12px; background: var(--paper-3); }
-.pg-ask-keepbar { display: flex; flex-wrap: wrap; align-items: center; gap: 0 10px; padding: 0 6px 0 12px; border-radius: 9px; background: var(--accent-soft); color: var(--ink); font-size: 14.5px; font-weight: 650; }
+.pg-ask-keepbar { display: flex; flex-wrap: wrap; align-items: center; gap: 0 10px; padding: 0 6px 0 12px; border-radius: 9px; background: var(--accent-soft); color: var(--ink); font-size: calc(var(--fs-body) * 0.853); font-weight: 650; }
 .pg-ask-keepbar[hidden], .pg-ask-where[hidden] { display: none; }
 .pg-ask-keepdot { flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
 .pg-ask-keeptext { flex: 1 1 auto; padding: 6px 0; }
 .pg-ask-link { display: inline-flex; align-items: center; min-height: 44px; padding: 0 8px; color: var(--accent); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
-.pg-ask-where { font-size: 14.5px; line-height: 1.6; color: var(--ink-2); }
+.pg-ask-where { font-size: calc(var(--fs-body) * 0.853); line-height: 1.6; color: var(--ink-2); }
 .pg-ask-swrow { display: flex; }
-.pg-ask-switch { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 4px 8px 4px 2px; border-radius: 10px; color: var(--ink); font-size: 15.5px; font-weight: 650; text-align: left; -webkit-tap-highlight-color: transparent; }
+.pg-ask-switch { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 4px 8px 4px 2px; border-radius: 10px; color: var(--ink); font-size: calc(var(--fs-body) * 0.912); font-weight: 650; text-align: left; -webkit-tap-highlight-color: transparent; }
 .pg-ask-track { position: relative; flex: none; width: 44px; height: 26px; border-radius: 13px; background: var(--rule-2); transition: background-color .15s ease; }
 .pg-ask-thumb { position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%; background: var(--paper-3); box-shadow: 0 1px 2px rgba(0, 0, 0, .3); transition: transform .15s ease; }
 .pg-ask-switch[aria-checked="true"] .pg-ask-track { background: var(--accent); }
@@ -18,20 +18,20 @@
 /* 기록 쉼 중: disabled 대신 aria-disabled(Tab 으로 닿고, 누르면 이유를 알려 줘요) */
 .pg-ask-switch[aria-disabled="true"] { cursor: not-allowed; color: var(--muted); }
 .pg-ask-switch[aria-disabled="true"] .pg-ask-track { opacity: .6; }
-.pg-ask-swdesc { font-size: 13.5px; line-height: 1.6; color: var(--muted); }
+.pg-ask-swdesc { font-size: calc(var(--fs-body) * 0.794); line-height: 1.6; color: var(--muted); }
 
-.pg-ask-status { margin-top: 12px; font-size: 14.5px; line-height: 1.6; color: var(--ink-2); }
+.pg-ask-status { margin-top: 12px; font-size: calc(var(--fs-body) * 0.853); line-height: 1.6; color: var(--ink-2); }
 .pg-ask-status:empty { margin: 0; }
 .pg-ask-wait { color: var(--muted); padding: 20px 0; }
 
 /* 묶음 */
 .pg-ask-sec { margin-top: 32px; }
-.pg-ask-h { font-family: var(--serif); font-weight: 700; font-size: 21px; line-height: 1.35; padding-bottom: 8px; margin-bottom: 14px; border-bottom: 1px solid var(--rule); }
+.pg-ask-h { font-family: var(--serif); font-weight: 700; font-size: calc(var(--fs-body) * 1.235); line-height: 1.35; padding-bottom: 8px; margin-bottom: 14px; border-bottom: 1px solid var(--rule); }
 .pg-ask-h:focus { outline: none; }
 .pg-ask-h:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .pg-ask-group { margin-bottom: 12px; padding: 12px 16px 4px; border: 1px solid var(--rule); border-radius: 12px; background: var(--paper-3); }
 .pg-ask-ghead { display: flex; align-items: center; gap: 8px; }
-.pg-ask-gt { flex: 1 1 auto; min-width: 0; font-family: var(--serif); font-size: 17px; font-weight: 700; line-height: 1.45; }
+.pg-ask-gt { flex: 1 1 auto; min-width: 0; font-family: var(--serif); font-size: var(--fs-body); font-weight: 700; line-height: 1.45; }
 .pg-ask-gt a { display: inline-block; padding: 10px 0; color: var(--ink); text-decoration: underline; text-decoration-color: var(--rule-2); text-underline-offset: 4px; }
 .pg-ask-gt a:hover { color: var(--accent); text-decoration-color: currentColor; }
 .pg-ask-gacts { display: flex; flex: none; gap: 4px; }
@@ -41,41 +41,41 @@
 .pg-ask-item::marker { color: var(--muted); font-variant-numeric: tabular-nums; }
 .pg-ask-item.pg-ask-moved { background: var(--accent-soft); }
 /* 글자 크기 설정(--fs-body)을 따라 커져요(기본 17px 이면 16px) */
-.pg-ask-q { font-size: max(16px, calc(var(--fs-body) * .94)); line-height: 1.65; color: var(--ink); }
+.pg-ask-q { font-size: calc(var(--fs-body) * .94); line-height: 1.65; color: var(--ink); }
 .pg-ask-acts { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
-.pg-ask-btn { display: inline-flex; align-items: center; justify-content: center; gap: 3px; min-width: 44px; height: 38px; padding: 0 12px; border: 1px solid var(--rule-2); border-radius: 9px; background: var(--paper-3); color: var(--ink-2); font-size: 14px; font-weight: 600; white-space: nowrap; }
+.pg-ask-btn { display: inline-flex; align-items: center; justify-content: center; gap: 3px; min-width: 44px; min-height: 38px; padding: 0 12px; border: 1px solid var(--rule-2); border-radius: 9px; background: var(--paper-3); color: var(--ink-2); font-size: calc(var(--fs-body) * 0.824); font-weight: 600; white-space: nowrap; }
 .pg-ask-btn:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
 .pg-ask-btn:disabled { opacity: .38; cursor: default; }
-.pg-ask-gacts .pg-ask-btn { padding: 0; font-size: 16px; }
+.pg-ask-gacts .pg-ask-btn { padding: 0; font-size: calc(var(--fs-body) * 0.941); }
 .pg-ask-clearrow { margin-top: 4px; }
 .pg-ask-clearrow[hidden] { display: none; }
-.pg-ask-empty { padding: 16px 18px; border: 1px dashed var(--rule-2); border-radius: 12px; color: var(--ink-2); font-size: 15px; line-height: 1.7; }
+.pg-ask-empty { padding: 16px 18px; border: 1px dashed var(--rule-2); border-radius: 12px; color: var(--ink-2); font-size: calc(var(--fs-body) * 0.882); line-height: 1.7; }
 .pg-ask-empty p + p { margin-top: 8px; }
 .pg-ask-sugg { margin: 4px 0 0; padding-left: 1.2em; }
-.pg-ask-sugg a { display: inline-block; padding: 6px 0; color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+.pg-ask-sugg a { display: inline-flex; align-items: center; min-height: 44px; padding: 4px 0; color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
 
 /* 내 질문 */
-.pg-ask-label { display: block; font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 8px; }
+.pg-ask-label { display: block; font-size: calc(var(--fs-body) * 0.882); font-weight: 600; color: var(--ink); margin-bottom: 8px; }
 .pg-ask-row { display: flex; gap: 8px; }
-.pg-ask-input { flex: 1 1 auto; min-width: 0; min-height: 44px; padding: 6px 12px; border: 1px solid var(--rule-2); border-radius: 10px; background: var(--paper-3); color: var(--ink); font: inherit; font-size: max(16px, calc(var(--fs-body) * .94)); }
+.pg-ask-input { flex: 1 1 auto; min-width: 0; min-height: 44px; padding: 6px 12px; border: 1px solid var(--rule-2); border-radius: 10px; background: var(--paper-3); color: var(--ink); font: inherit; font-size: calc(var(--fs-body) * .94); }
 .pg-ask-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 35%, transparent); }
 .pg-ask-addbtn { height: 44px; flex: none; }
-.pg-ask-hint { margin-top: 8px; font-size: 13.5px; line-height: 1.6; color: var(--muted); }
+.pg-ask-hint { margin-top: 8px; font-size: calc(var(--fs-body) * 0.794); line-height: 1.6; color: var(--muted); }
 
 /* 종이로 뽑기 */
-.pg-ask-p { font-size: 15px; line-height: 1.7; color: var(--ink-2); }
+.pg-ask-p { font-size: calc(var(--fs-body) * 0.882); line-height: 1.7; color: var(--ink-2); }
 .pg-ask-check { display: flex; align-items: flex-start; gap: 10px; margin-top: 12px; }
 .pg-ask-check input { flex: none; width: 24px; height: 24px; margin: 10px 0 0; accent-color: var(--accent); }
 .pg-ask-check label { display: grid; gap: 2px; padding: 8px 0; cursor: pointer; }
-.pg-ask-checkt { font-size: 15.5px; font-weight: 650; color: var(--ink); }
-.pg-ask-checkd { font-size: 13.5px; line-height: 1.6; color: var(--muted); }
+.pg-ask-checkt { font-size: calc(var(--fs-body) * 0.912); font-weight: 650; color: var(--ink); }
+.pg-ask-checkd { font-size: calc(var(--fs-body) * 0.794); line-height: 1.6; color: var(--muted); }
 .pg-ask-printrow { margin-top: 10px; }
-.pg-ask-printbtn { height: 44px; padding: 0 20px; font-size: 15px; background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.pg-ask-printbtn { height: 44px; padding: 0 20px; font-size: calc(var(--fs-body) * 0.882); background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
 .pg-ask-printbtn:hover:not(:disabled) { background: var(--accent-2); border-color: var(--accent-2); color: var(--accent-ink); }
 .pg-ask-printbtn:disabled { background: var(--paper-2); border-color: var(--rule-2); color: var(--muted); cursor: default; }
 
 /* 자바스크립트가 없을 때 */
-.pg-ask-nojs { font-size: 15.5px; line-height: 1.75; color: var(--ink-2); }
+.pg-ask-nojs { font-size: calc(var(--fs-body) * 0.912); line-height: 1.75; color: var(--ink-2); }
 .pg-ask-nojs p + p, .pg-ask-nojs ul + p { margin-top: 10px; }
 .pg-ask-nojs a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
 .pg-ask-nojs .pg-ask-h { margin-top: 28px; }
@@ -89,7 +89,7 @@
   .pg-ask-top { padding: 12px 14px; }
   .pg-ask-group { padding: 10px 12px 2px; }
   .pg-ask-items { padding-left: 1.5em; }
-  .pg-ask-btn { height: 44px; flex: 1 1 auto; }
+  .pg-ask-btn { min-height: 44px; flex: 1 1 auto; }
   .pg-ask-gacts .pg-ask-btn { flex: none; width: 44px; }
   .pg-ask-clear { height: 44px; }
 }
