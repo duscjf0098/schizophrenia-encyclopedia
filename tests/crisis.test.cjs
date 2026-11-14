@@ -815,3 +815,28 @@ test('crisis-try.cjs 는 시험 도구라 run.cjs 가 테스트로 줍지 않는
   ok(!re.test('crisis-corpus.json'), 'run.cjs 가 crisis-corpus.json 을 줍는다');
   ok(re.test('crisis.test.cjs'), '거르개 확인');
 });
+
+test('8번째 수정 짝: 그리움 절 × 곁으로는 high, 사람만 있는 곁으로는 watch(남편·아내·와이프 포함)', function () {
+  ['엄마가 그리워서 곁으로 가고 싶어', '여보 그리워서 옆으로 갈래', '할머니 그립다 곁에 가고 싶어', '돌아가신 엄마한테 가고 싶어', '하늘나라 엄마한테 가고 싶다'].forEach(function (s) { eq(level(s), 'high', s); });
+  ['남편 곁으로 가고 싶어', '아내 곁으로 가고 싶어', '와이프 곁으로 가고 싶다', '아빠 보고 싶다 아빠한테 가고 싶어'].forEach(function (s) { eq(level(s), 'watch', s); });
+  ['엄마 보고 싶어서 엄마한테 놀러 가고 싶어', '친구한테 가고 싶어'].forEach(function (s) { ok(level(s) !== 'high', s); });
+});
+
+test('8번째 수정 짝: 지시어·바람 어미가 있는 사람 × 죽이다는 harm, 과장은 낮춤', function () {
+  ['그 사람 죽이고 싶어', '저 사람 죽이고 싶어', '사람 죽이고 싶어', '그 사람 죽이고 싶다는 생각이 들어', '그 사람을 죽이고 싶어', '그놈 죽이고 싶어'].forEach(function (s) { eq(level(s), 'harm', s); });
+  eq(level('이 더위 진짜 사람 죽이겠다'), null, '더위 과장');
+  eq(level('열받아서 사람 죽이겠다'), 'watch', '홧김 과장');
+});
+
+test('8번째 수정 짝: 오탐 낮춤은 지우지 않을 짝과 함께(안 살래·편하게 가는 법·다 먹다·사라지고 싶대)', function () {
+  eq(level('그 책은 도서관에서 빌릴래 안 살래'), 'watch');
+  eq(level('이렇게 살 거면 안 살래'), 'high');
+  ok(level('강남역으로 빠르고 편하게 가는 법') !== 'high');
+  eq(level('방에서 쉽고 편하게 가는 법'), 'high');
+  ok(level('배고파서 다 먹어 버릴 거야') !== 'high');
+  eq(level('배고파서 수면제 다 먹어 버릴 거야'), 'high');
+  eq(level('소설 속 인물이 사라지고 싶대'), 'watch');
+  eq(level('소설 읽다가 나도 사라지고 싶어'), 'high');
+  eq(level('더는 안 살아'), 'high');
+  eq(level('안 살아'), 'watch');
+});
