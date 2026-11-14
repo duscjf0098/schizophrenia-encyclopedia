@@ -27,30 +27,60 @@
 <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
 <link rel="manifest" href="../../manifest.webmanifest">
 <link rel="apple-touch-icon" href="../../icon-192.png">
-<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@600;700&display=swap">
 <link rel="stylesheet" href="../../css/style.css">
 <link rel="stylesheet" href="../../css/ui.css">
 
 
 
+
+<style>
+/* 정적 문서의 인쇄용 한 줄(사이트 이름 + 정식 글 주소): 화면에서는 숨기고 인쇄에서만. 자바스크립트가 꺼졌거나 앱이 문서를 다시 그리기 전에 인쇄해도 첫머리에 남아요.
+   인쇄 모듈(js/ui/print.js)이 만든 머리(.prt-head)가 있으면 인쇄에서도 숨겨요(같은 내용을 두 번 싣지 않게) */
+.prt-static { display: none; }
+@media print {
+  .prt-static { display: block; margin: 0 0 12px; padding: 0 0 6px; border-bottom: 1px solid var(--rule-2); font-size: 9.5pt; line-height: 1.5; color: var(--ink-2); overflow-wrap: anywhere; }
+  .prt-static b { font-family: var(--serif); font-weight: 700; color: var(--ink); }
+  .prt-static + .crumb { display: none; }
+  .prt-head ~ .prt-static, .prt-head ~ * .prt-static { display: none; }
+}
+/* 바닥글 링크 줄(이 백과에 대해 · 고침 기록): 따로 선 이동 링크라 화면에서는 누르는 높이를 44px 로(글자 크기는 그대로) */
+@media screen {
+  .sitefoot .foot-links a { display: inline-block; box-sizing: border-box; min-height: 44px; padding: 10px 4px; margin: 0 -4px; }
+}
+/* 자바스크립트가 꺼졌으면(아래 머리 스크립트가 html 에 js 클래스를 달지 못하면) 눌러도 아무 일도 하지 않는 버튼(분류 목차·글자 크기·밝게/어둡게)을 감춰요.
+   "지금 도움"은 링크라서 그대로 둬요 */
+html:not(.js) #btn-nav, html:not(.js) #btn-fs, html:not(.js) #btn-theme { display: none; }
+/* 정적 문서의 저장·공유 단추도 자바스크립트가 있어야 동작해요(앱과 같은 마크업이라 미리 들어 있음) */
+html:not(.js) .doc-meta-m .acts, html:not(.js) .infobox-actions { display: none; }
+</style>
 <script>
-/* 옛 해시 주소(#/a/…)로 들어오면 새 경로로 옮기고, 첫 그리기 전에 테마·글자 크기를 적용한다 */
+/* 자바스크립트가 켜졌다는 표시(html.js)를 달고, 옛 해시 주소(#/a/…)로 들어오면 새 경로로 옮기고, 첫 그리기 전에 보기 설정을 적용한다.
+   - 옛 해시 주소: js/paths.js 의 hashToPath 와 같은 규칙. 뒤에 화면 안 자리 조각이 붙으면 경로 뒤로('#/about#privacy' → 'about/#privacy')
+   - 보기 설정: js/ui/settings.js 의 load() 와 같은 값(테마 jhb.theme, 글자 크기 jhb.fs 다섯 단계, jhb.ui.settings 의 줄 너비·본문 글꼴·움직임 줄이기).
+     모듈이 실린 뒤 한 번 더 바뀌어 화면이 출렁이지 않게(T16)
+   첫 화면 자리 표시(data-hm-start)는 쓰지 않기로 했어요: 그 속성을 읽던 css/ui/home.css 규칙은 K4 에서 지웠어요(잰 값은 tests/pages.test.cjs 의 '머리 스크립트' 테스트 주석) */
 (function () {
+  var r = document.documentElement;
+  try { r.classList.add('js'); } catch (e) { }
   var h = location.hash;
   if (h.indexOf('#/') === 0) {
-    var rest = h.slice(2), qi = rest.indexOf('?');
+    var rest = h.slice(2), fi = rest.indexOf('#'), frag = fi >= 0 ? rest.slice(fi) : '';
+    if (fi >= 0) rest = rest.slice(0, fi);
+    var qi = rest.indexOf('?');
     var p = (qi >= 0 ? rest.slice(0, qi) : rest).split('/').filter(Boolean).join('/');
-    location.replace(document.documentElement.getAttribute('data-base') + (p ? p + '/' : '') + (qi >= 0 ? rest.slice(qi) : ''));
+    var to = (r.getAttribute('data-base') || '') + (p ? p + '/' : '') + (qi >= 0 ? rest.slice(qi) : '') + (frag.length > 1 ? frag : '');
+    location.replace(to || './');
   }
+  function get(k) { try { return JSON.parse(localStorage.getItem(k) || 'null'); } catch (e) { return null; } }
   try {
-    var t = JSON.parse(localStorage.getItem('jhb.theme') || 'null');
-    if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
-    var f = JSON.parse(localStorage.getItem('jhb.fs') || 'null');
-    if (f === 's' || f === 'l') document.documentElement.setAttribute('data-fs', f);
+    var t = get('jhb.theme');
+    if (t === 'light' || t === 'dark') r.setAttribute('data-theme', t);
+    var f = get('jhb.fs');
+    if (f === 's' || f === 'l' || f === 'xl' || f === 'xxl') r.setAttribute('data-fs', f);
+    var s = get('jhb.ui.settings') || {};
+    if (s.width === 'wide') r.setAttribute('data-width', 'wide');
+    if (s.font === 'serif') r.setAttribute('data-font', 'serif');
+    if (s.motion === 'reduce') r.setAttribute('data-motion', 'reduce');
   } catch (e) { }
 })();
 </script>
@@ -75,14 +105,15 @@
     <div class="qs" role="search">
       <svg class="qs-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="M15 15l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
       <input id="q" type="search" autocomplete="off" spellcheck="false" placeholder="문서나 용어 찾기" aria-label="문서나 용어 찾기" aria-haspopup="dialog">
-      <kbd class="qs-key" aria-hidden="true">/</kbd>
+      <kbd class="qs-key" aria-hidden="true">/ · Ctrl K</kbd>
     </div>
     <nav class="tools" aria-label="도구">
       <a class="tool-help" id="btn-help" href="../../a/crisis-hotlines/"><span class="tool-help-long">지금 </span>도움</a>
       <!--top:start-->
       <a href="../../glossary/" class="tool-link" data-r="glossary">용어 사전</a>
-      <a href="../../random/" class="tool-link" data-r="random" rel="nofollow">아무 문서</a>
-      <a href="../../fav/" class="tool-link" data-r="fav" rel="nofollow">저장한 문서</a>
+      <a href="../../guide/" class="tool-link" data-r="guide">길잡이</a>
+      <a href="../../browse/" class="tool-link" data-r="browse">둘러보기</a>
+      <a href="../../me/" class="tool-link" data-r="me" rel="nofollow">내 서재</a>
       <!--top:end-->
       <button type="button" class="iconbtn" id="btn-fs" aria-label="글자 크기 바꾸기" title="글자 크기">
         <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M3 18l4.5-11L12 18M4.6 14h5.8M14 18l3.2-7.5L20.4 18M15.1 15.6h4.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
@@ -96,45 +127,22 @@
 <div class="shell">
   <nav class="sidenav" id="sidenav" aria-label="분류 목차"></nav>
   <div class="scrim" id="scrim" hidden></div>
-  <main id="app" tabindex="-1"><nav class="crumb" aria-label="위치"><a href="../../">첫 화면</a><span class="sep">/</span>분류</nav><h1 class="page-title">가족과 주변</h1><p class="page-lead">처음 알게 됐을 때부터 대화법, 응급 상황, 돌봄의 지침</p><ul class="rows"><li class="row"><a href="../../a/family-first-steps/"><span class="row-t">처음 알게 됐을 때</span><span class="row-s">가족이 조현병 진단을 처음 들으면 충격, 죄책감, 막막함이 한꺼번에 와요. 가족 탓이 아니라는 것, 첫 몇 주에 할 일, 믿을 만한 정보 출처, 가족 교육의 근거, 그리고 본인의 뜻을 존중하는 법을 정리했어요.</span></a></li><li class="row"><a href="../../a/leap-communication/"><span class="row-t">대화법: LEAP와 그 밖의 방법</span><span class="row-s">&quot;병 없어&quot;, &quot;약 안 먹어&quot;라는 말 앞에서 가족은 설득하다 싸우게 돼요. 듣고·공감하고·동의할 부분을 찾고·함께 정하는 LEAP의 원리, 망상에 반박하지 않고 대화하는 법, 표출 정서를 줄이는 말하기를 대화 예시와 함께 정리했어요.</span></a></li><li class="row"><a href="../../a/family-during-symptoms/"><span class="row-t">증상이 심할 때 가족의 대응</span><span class="row-s">환청, 망상, 의심, 불면, 고립이 심해질 때 가족이 할 수 있는 말과 행동을 증상별로 정리했어요. 안전한 집 환경, 의료진에게 연락할 시점, 본인 동의 없이 정보를 주고받을 때의 한계, 그리고 가족 자신을 지키는 법도 담았어요.</span></a></li><li class="row"><a href="../../a/emergency-response/"><span class="row-t">응급 상황 대처</span><span class="row-s">자해·자살·타해 위험이 보일 때 가족이 무엇을, 어떤 순서로 해야 하는지 정리했어요. 109·1577-0199·119·112를 언제 쓰는지, 응급입원과 행정입원의 법적 요건, 경찰 동행, 응급실에서 할 말, 위기 뒤에 할 일까지 담았어요.</span></a></li><li class="row"><a href="../../a/caregiver-burnout/"><span class="row-t">가족 돌봄자의 소진</span><span class="row-s">정신질환이 있는 가족을 돌보는 사람 열 명 중 네 명 이상이 우울을 겪어요. 소진의 신호, 돌봄자 교육과 지지 모임의 근거, 한국에서 받을 수 있는 가족 지원, 그리고 쉬어도 된다는 권리를 정리했어요.</span></a></li><li class="row"><a href="../../a/siblings-children/"><span class="row-t">형제자매와 자녀</span><span class="row-s">조현병은 부모만이 아니라 형제자매와 자녀의 삶도 바꿔요. 형제자매가 겪는 부담, 부모에게 조현병이 있는 아이의 위험과 회복력, 나이에 맞게 설명하는 법, 가족을 돌보는 청소년·청년을 위한 지원을 정리했어요.</span></a></li><li class="row"><a href="../../a/genetic-counseling/"><span class="row-t">유전 상담과 가족 계획</span><span class="row-s">가족 가운데 조현병이 있으면 다른 가족의 위험은 관계에 따라 달라지지만, 대부분은 병에 걸리지 않아요. 고전적인 위험 수치와 덴마크 전국 코호트의 최신 수치, 정신과 유전 상담의 효과, 유전자 검사로 알 수 없는 것을 정리했어요.</span></a></li><li class="row"><a href="../../a/partner-caregiving/"><span class="row-t">배우자·연인이 조현병이 있을 때</span><span class="row-s">부모의 돌봄과 파트너의 돌봄은 달라요. 파트너는 대등한 관계 안에서 돌보는 사람이고, 성·돈·육아를 함께 나누는 사람이에요. 증상기와 안정기의 역할 변화, 친밀감, 경제·육아 부담, 자기 삶 지키기, 파트너 연구에서 확인된 것, 그리고 헤어짐을 생각할 때의 안내를 판단 없이 정리했어요.</span></a></li><li class="row"><a href="../../a/parents-future-planning/"><span class="row-t">부모가 떠난 뒤를 준비하기</span><span class="row-s">&quot;내가 없으면 이 아이는 어떻게 되나&quot;는 조현병이 있는 자녀를 둔 부모의 가장 오래된 걱정이에요. 돈(유언·상속·장애인 신탁·수급 영향), 주거, 결정 지원(성년후견·임의후견·공공후견), 사람(형제자매·지역)의 네 기둥으로 나눠, 2026년 10월 현재 시행 중인 법과 확인된 연구를 바탕으로 정리했어요.</span></a></li><li class="row"><a href="../../a/family-violence-safety/"><span class="row-t">가족이 위협받을 때: 안전 계획과 도움</span><span class="row-s">가족과 당사자가 모두 다치지 않도록 평온할 때 세워 두는 안전 계획, 위급할 때 연락할 곳(112·119·1577-0199), 신고 뒤의 절차, &quot;신고하면 치료가 멀어질까&quot; 하는 걱정을 정리했어요. 당사자 대부분은 위험하지 않고 오히려 피해를 입기 쉬워요.</span></a></li><li class="row"><a href="../../a/missing-person/"><span class="row-t">연락이 끊겼을 때: 실종 신고와 사전등록</span><span class="row-s">당사자가 집을 나가 연락이 닿지 않을 때 가족이 할 일을 순서대로 정리했어요. 바로 신고하는 이유와 알릴 것, 생명이 위험할 때 가족이 쓸 수 있는 긴급구조 요청, 실종아동법이 장애인복지법상 정신장애인을 보호 대상에 넣고 있다는 점과 경찰의 위치 확인 근거, 지문 등 사전등록, 돌아온 뒤 나눌 대화를 담았어요.</span></a></li><li class="row"><a href="../../a/suicide-bereavement/"><span class="row-t">가족을 자살로 잃은 뒤</span><span class="row-s">가족을 자살로 잃은 뒤 찾아오는 충격, 끝없는 &quot;왜&quot;, 죄책감, 말하기 어려움은 많은 유족이 함께 겪는 반응이에요. 유족이 겪는 일, 남은 형제자매와 자녀를 돌보는 법, 2026년 7월 전국으로 넓어진 자살 유족 원스톱 서비스, 언제든 걸 수 있는 109·1577-0199를 정리했어요.</span></a></li><li class="row"><a href="../../a/family-grief/"><span class="row-t">가족의 슬픔: 기대를 다시 세우는 일</span><span class="row-s">진단 뒤 가족은 걱정과 함께 이름 붙이기 어려운 슬픔을 겪어요. 사람은 곁에 있는데 예전의 모습과 함께 그리던 미래를 잃은 것 같은 &#39;모호한 상실&#39;, 그 슬픔이 시간에 따라 어떻게 바뀌는지, 회복 근거와 함께 기대를 다시 세우는 방법을 정리했어요.</span></a></li><li class="row"><a href="../../a/for-friends/"><span class="row-t">친구가 조현병일 때</span><span class="row-s">친구가 조현병 진단을 털어놓았거나 요즘 달라 보여 걱정될 때, 친구로서 할 수 있는 일과 하지 않을 일을 정리했어요. 연락을 이어 가는 법, 믿기 어려운 이야기를 들을 때의 대화, 진단하지 않기, 위기 때 연락할 곳을 대화 예시와 표로 담았어요.</span></a></li><li class="row"><a href="../../a/for-teachers/"><span class="row-t">교사가 알아둘 것: 학생에게 변화가 보일 때</span><span class="row-s">학생이 몇 주 사이 달라 보일 때 교사가 진단하지 않고 할 수 있는 일을 정리했어요. 본 것을 행동으로 적는 법, 학생과 보호자에게 건네는 말, 위(Wee) 클래스·위(Wee) 센터와 청소년상담 1388 같은 연결 창구, 치료 뒤 돌아온 학생을 돕는 법과 다른 학생에게 말할 때의 원칙을 담았어요.</span></a></li><li class="row"><a href="../../a/for-coworkers-managers/"><span class="row-t">동료와 관리자를 위한 안내</span><span class="row-s">동료가 조현병 진단을 털어놓았거나, 관리자로서 편의와 휴직·복귀를 의논해야 할 때를 위한 글이에요. 비밀을 지키는 법, 첫 반응과 피할 말, 장애인차별금지법이 정한 정당한 편의와 차별 금지, 복귀 면담의 대화, 위기 때 연락할 곳을 조문과 함께 정리했어요.</span></a></li></ul></main>
+  <main id="app" tabindex="-1"><nav class="crumb" aria-label="위치"><a href="../../">첫 화면</a><span class="sep">/</span>분류</nav><h1 class="page-title">가족과 주변</h1><p class="page-lead">처음 알게 됐을 때부터 대화법, 응급 상황, 돌봄의 지침. 문서 16개.</p><div class="hb" data-section="10"><p class="hb-help">힘들 때 바로: <a href="../../a/crisis-hotlines/">위기 상담 전화</a></p><section class="hb-first" aria-labelledby="hb-first-h"><h2 class="hb-first-h" id="hb-first-h">먼저 읽을 글</h2><ol><li data-slug="family-first-steps"><a href="../../a/family-first-steps/"><span class="hb-t">처음 알게 됐을 때</span><span class="hb-s">가족이 조현병 진단을 처음 들으면 충격, 죄책감, 막막함이 한꺼번에 와요. 가족 탓이 아니라는 것, 첫 몇 주에 할 일, 믿을 만한 정보 출처, 가족 교육의 근거, 그리고 본인의 뜻을 존중하는 법을 정리했어요.</span></a></li><li data-slug="leap-communication"><a href="../../a/leap-communication/"><span class="hb-t">대화법: LEAP와 그 밖의 방법</span><span class="hb-s">&quot;병 없어&quot;, &quot;약 안 먹어&quot;라는 말 앞에서 가족은 설득하다 싸우게 돼요. 듣고·공감하고·동의할 부분을 찾고·함께 정하는 LEAP의 원리, 망상에 반박하지 않고 대화하는 법, 표출 정서를 줄이는 말하기를 대화 예시와 함께 정리했어요.</span></a></li><li data-slug="emergency-response"><a href="../../a/emergency-response/"><span class="hb-t">응급 상황 대처</span><span class="hb-s">자해·자살·타해 위험이 보일 때 가족이 무엇을, 어떤 순서로 해야 하는지 정리했어요. 109·1577-0199·119·112를 언제 쓰는지, 응급입원과 행정입원의 법적 요건, 경찰 동행, 응급실에서 할 말, 위기 뒤에 할 일까지 담았어요.</span></a></li></ol></section><nav class="hb-jump" aria-label="이 분류의 묶음으로 건너뛰기"><a href="#hb-g-1">처음 알았을 때와 대화<span class="n" aria-hidden="true">2</span></a><a href="#hb-g-2">증상이 심하거나 위급할 때<span class="n" aria-hidden="true">4</span></a><a href="#hb-g-3">가족 자신의 돌봄과 마음<span class="n" aria-hidden="true">5</span></a><a href="#hb-g-4">앞날 준비<span class="n" aria-hidden="true">2</span></a><a href="#hb-g-5">친구·교사·동료라면<span class="n" aria-hidden="true">3</span></a></nav><section class="hb-group" id="hb-g-1" aria-labelledby="hb-g-1-h"><h2 class="hb-gh" id="hb-g-1-h"><span class="hb-gt">처음 알았을 때와 대화</span><span class="hb-gn">2편</span></h2><ul class="rows hb-rows"><li class="row" data-slug="family-first-steps"><a href="../../a/family-first-steps/"><span class="row-t">처음 알게 됐을 때</span><span class="row-s">가족이 조현병 진단을 처음 들으면 충격, 죄책감, 막막함이 한꺼번에 와요. 가족 탓이 아니라는 것, 첫 몇 주에 할 일, 믿을 만한 정보 출처, 가족 교육의 근거, 그리고 본인의 뜻을 존중하는 법을 정리했어요.</span><span class="row-m"><span class="ev ev-가이드라인" title="국내외 진료 지침·공공기관 자료에 근거">가이드라인</span></span></a></li><li class="row" data-slug="leap-communication"><a href="../../a/leap-communication/"><span class="row-t">대화법: LEAP와 그 밖의 방법</span><span class="row-s">&quot;병 없어&quot;, &quot;약 안 먹어&quot;라는 말 앞에서 가족은 설득하다 싸우게 돼요. 듣고·공감하고·동의할 부분을 찾고·함께 정하는 LEAP의 원리, 망상에 반박하지 않고 대화하는 법, 표출 정서를 줄이는 말하기를 대화 예시와 함께 정리했어요.</span><span class="row-m"><span class="ev ev-경험" title="당사자·가족·임상 경험에 바탕">경험</span></span></a></li></ul></section><section class="hb-group" id="hb-g-2" aria-labelledby="hb-g-2-h"><h2 class="hb-gh" id="hb-g-2-h"><span class="hb-gt">증상이 심하거나 위급할 때</span><span class="hb-gn">4편</span></h2><ul class="rows hb-rows"><li class="row" data-slug="family-during-symptoms"><a href="../../a/family-during-symptoms/"><span class="row-t">증상이 심할 때 가족의 대응</span><span class="row-s">환청, 망상, 의심, 불면, 고립이 심해질 때 가족이 할 수 있는 말과 행동을 증상별로 정리했어요. 안전한 집 환경, 의료진에게 연락할 시점, 본인 동의 없이 정보를 주고받을 때의 한계, 그리고 가족 자신을 지키는 법도 담았어요.</span><span class="row-m"><span class="ev ev-연구" title="메타분석·무작위 대조 시험 등 비교적 확립된 연구">연구</span></span></a></li><li class="row" data-slug="emergency-response"><a href="../../a/emergency-response/"><span class="row-t">응급 상황 대처</span><span class="row-s">자해·자살·타해 위험이 보일 때 가족이 무엇을, 어떤 순서로 해야 하는지 정리했어요. 109·1577-0199·119·112를 언제 쓰는지, 응급입원과 행정입원의 법적 요건, 경찰 동행, 응급실에서 할 말, 위기 뒤에 할 일까지 담았어요.</span><span class="row-m"><span class="ev ev-가이드라인" title="국내외 진료 지침·공공기관 자료에 근거">가이드라인</span></span></a></li><li class="row" data-slug="family-violence-safety"><a href="../../a/family-violence-safety/"><span class="row-t">가족이 위협받을 때: 안전 계획과 도움</span><span class="row-s">가족과 당사자가 모두 다치지 않도록 평온할 때 세워 두는 안전 계획, 위급할 때 연락할 곳(112·119·1577-0199), 신고 뒤의 절차, &quot;신고하면 치료가 멀어질까&quot; 하는 걱정을 정리했어요. 당사자 대부분은 위험하지 않고 오히려 피해를 입기 쉬워요.</span><span class="row-m"><span class="ev ev-연구" title="메타분석·무작위 대조 시험 등 비교적 확립된 연구">연구</span></span></a></li><li class="row" data-slug="missing-person"><a href="../../a/missing-person/"><span class="row-t">연락이 끊겼을 때: 실종 신고와 사전등록</span><span class="row-s">당사자가 집을 나가 연락이 닿지 않을 때 가족이 할 일을 순서대로 정리했어요. 바로 신고하는 이유와 알릴 것, 생명이 위험할 때 가족이 쓸 수 있는 긴급구조 요청, 실종아동법이 장애인복지법상 정신장애인을 보호 대상에 넣고 있다는 점과 경찰의 위치 확인 근거, 지문 등 사전등록, 돌아온 뒤 나눌 대화를 담았어요.</span><span class="row-m"><span class="ev ev-가이드라인" title="국내외 진료 지침·공공기관 자료에 근거">가이드라인</span></span></a></li></ul></section><section class="hb-group" id="hb-g-3" aria-labelledby="hb-g-3-h"><h2 class="hb-gh" id="hb-g-3-h"><span class="hb-gt">가족 자신의 돌봄과 마음</span><span class="hb-gn">5편</span></h2><ul class="rows hb-rows"><li class="row" data-slug="caregiver-burnout"><a href="../../a/caregiver-burnout/"><span class="row-t">가족 돌봄자의 소진</span><span class="row-s">정신질환이 있는 가족을 돌보는 사람 열 명 중 네 명 이상이 우울을 겪어요. 소진의 신호, 돌봄자 교육과 지지 모임의 근거, 한국에서 받을 수 있는 가족 지원, 그리고 쉬어도 된다는 권리를 정리했어요.</span><span class="row-m"><span class="ev ev-연구" title="메타분석·무작위 대조 시험 등 비교적 확립된 연구">연구</span></span></a></li><li class="row" data-slug="family-grief"><a href="../../a/family-grief/"><span class="row-t">가족의 슬픔: 기대를 다시 세우는 일</span><span class="row-s">진단 뒤 가족은 걱정과 함께 이름 붙이기 어려운 슬픔을 겪어요. 사람은 곁에 있는데 예전의 모습과 함께 그리던 미래를 잃은 것 같은 &#39;모호한 상실&#39;, 그 슬픔이 시간에 따라 어떻게 바뀌는지, 회복 근거와 함께 기대를 다시 세우는 방법을 정리했어요.</span><span class="row-m"><span class="ev ev-연구" title="메타분석·무작위 대조 시험 등 비교적 확립된 연구">연구</span></span></a></li><li class="row" data-slug="suicide-bereavement"><a href="../../a/suicide-bereavement/"><span class="row-t">가족을 자살로 잃은 뒤</span><span class="row-s">가족을 자살로 잃은 뒤 찾아오는 충격, 끝없는 &quot;왜&quot;, 죄책감, 말하기 어려움은 많은 유족이 함께 겪는 반응이에요. 유족이 겪는 일, 남은 형제자매와 자녀를 돌보는 법, 2026년 7월 전국으로 넓어진 자살 유족 원스톱 서비스, 언제든 걸 수 있는 109·1577-0199를 정리했어요.</span><span class="row-m"><span class="ev ev-연구" title="메타분석·무작위 대조 시험 등 비교적 확립된 연구">연구</span></span></a></li><li class="row" data-slug="siblings-children"><a href="../../a/siblings-children/"><span class="row-t">형제자매와 자녀</span><span class="row-s">조현병은 부모만이 아니라 형제자매와 자녀의 삶도 바꿔요. 형제자매가 겪는 부담, 부모에게 조현병이 있는 아이의 위험과 회복력, 나이에 맞게 설명하는 법, 가족을 돌보는 청소년·청년을 위한 지원을 정리했어요.</span><span class="row-m"><span class="ev ev-연구" title="메타분석·무작위 대조 시험 등 비교적 확립된 연구">연구</span></span></a></li><li class="row" data-slug="partner-caregiving"><a href="../../a/partner-caregiving/"><span class="row-t">배우자·연인이 조현병이 있을 때</span><span class="row-s">부모의 돌봄과 파트너의 돌봄은 달라요. 파트너는 대등한 관계 안에서 돌보는 사람이고, 성·돈·육아를 함께 나누는 사람이에요. 증상기와 안정기의 역할 변화, 친밀감, 경제·육아 부담, 자기 삶 지키기, 파트너 연구에서 확인된 것, 그리고 헤어짐을 생각할 때의 안내를 판단 없이 정리했어요.</span><span class="row-m"><span class="ev ev-연구" title="메타분석·무작위 대조 시험 등 비교적 확립된 연구">연구</span></span></a></li></ul></section><section class="hb-group" id="hb-g-4" aria-labelledby="hb-g-4-h"><h2 class="hb-gh" id="hb-g-4-h"><span class="hb-gt">앞날 준비</span><span class="hb-gn">2편</span></h2><ul class="rows hb-rows"><li class="row" data-slug="genetic-counseling"><a href="../../a/genetic-counseling/"><span class="row-t">유전 상담과 가족 계획</span><span class="row-s">가족 가운데 조현병이 있으면 다른 가족의 위험은 관계에 따라 달라지지만, 대부분은 병에 걸리지 않아요. 고전적인 위험 수치와 덴마크 전국 코호트의 최신 수치, 정신과 유전 상담의 효과, 유전자 검사로 알 수 없는 것을 정리했어요.</span><span class="row-m"><span class="ev ev-연구" title="메타분석·무작위 대조 시험 등 비교적 확립된 연구">연구</span></span></a></li><li class="row" data-slug="parents-future-planning"><a href="../../a/parents-future-planning/"><span class="row-t">부모가 떠난 뒤를 준비하기</span><span class="row-s">&quot;내가 없으면 이 아이는 어떻게 되나&quot;는 조현병이 있는 자녀를 둔 부모의 가장 오래된 걱정이에요. 돈(유언·상속·장애인 신탁·수급 영향), 주거, 결정 지원(성년후견·임의후견·공공후견), 사람(형제자매·지역)의 네 기둥으로 나눠, 2026년 10월 현재 시행 중인 법과 확인된 연구를 바탕으로 정리했어요.</span><span class="row-m"><span class="ev ev-가이드라인" title="국내외 진료 지침·공공기관 자료에 근거">가이드라인</span></span></a></li></ul></section><section class="hb-group" id="hb-g-5" aria-labelledby="hb-g-5-h"><h2 class="hb-gh" id="hb-g-5-h"><span class="hb-gt">친구·교사·동료라면</span><span class="hb-gn">3편</span></h2><ul class="rows hb-rows"><li class="row" data-slug="for-friends"><a href="../../a/for-friends/"><span class="row-t">친구가 조현병일 때</span><span class="row-s">친구가 조현병 진단을 털어놓았거나 요즘 달라 보여 걱정될 때, 친구로서 할 수 있는 일과 하지 않을 일을 정리했어요. 연락을 이어 가는 법, 믿기 어려운 이야기를 들을 때의 대화, 진단하지 않기, 위기 때 연락할 곳을 대화 예시와 표로 담았어요.</span><span class="row-m"><span class="ev ev-가이드라인" title="국내외 진료 지침·공공기관 자료에 근거">가이드라인</span></span></a></li><li class="row" data-slug="for-teachers"><a href="../../a/for-teachers/"><span class="row-t">교사가 알아둘 것: 학생에게 변화가 보일 때</span><span class="row-s">학생이 몇 주 사이 달라 보일 때 교사가 진단하지 않고 할 수 있는 일을 정리했어요. 본 것을 행동으로 적는 법, 학생과 보호자에게 건네는 말, 위(Wee) 클래스·위(Wee) 센터와 청소년상담 1388 같은 연결 창구, 치료 뒤 돌아온 학생을 돕는 법과 다른 학생에게 말할 때의 원칙을 담았어요.</span><span class="row-m"><span class="ev ev-가이드라인" title="국내외 진료 지침·공공기관 자료에 근거">가이드라인</span></span></a></li><li class="row" data-slug="for-coworkers-managers"><a href="../../a/for-coworkers-managers/"><span class="row-t">동료와 관리자를 위한 안내</span><span class="row-s">동료가 조현병 진단을 털어놓았거나, 관리자로서 편의와 휴직·복귀를 의논해야 할 때를 위한 글이에요. 비밀을 지키는 법, 첫 반응과 피할 말, 장애인차별금지법이 정한 정당한 편의와 차별 금지, 복귀 면담의 대화, 위기 때 연락할 곳을 조문과 함께 정리했어요.</span><span class="row-m"><span class="ev ev-가이드라인" title="국내외 진료 지침·공공기관 자료에 근거">가이드라인</span></span></a></li></ul></section></div></main>
 </div>
 <footer class="sitefoot">
   <div class="sitefoot-inner">
     <p>이 백과는 일반적인 정보를 전해요. 진단과 치료는 담당 의사와 상의하세요. 글마다 출처를 달았고, 틀린 내용은 고쳐 나가요.</p>
     <p>글은 AI가 공개 자료를 바탕으로 초안을 쓰고 출처를 확인해 만들었어요. 전문가 감수는 받지 않았어요.</p>
-    <p>힘든 생각이 들 때 자살예방상담 <a href="tel:109">109</a>, 정신건강위기상담 <a href="tel:1577-0199">1577-0199</a>에 전화하세요. 24시간 받아요.</p>
-    <p><a href="../../about/">이 백과에 대해</a></p>
+    <p>힘든 생각이 들 때 자살예방상담 <a href="tel:109">109</a>, 정신건강위기상담 <a href="tel:1577-0199">1577-0199</a>에 전화하세요. 24시간 받아요. 전화가 어렵다면 109로 문자를 보낼 수 있어요. 생명이 위급하면 <a href="tel:119">119</a>에 전화하세요.</p>
+    <p class="foot-links"><!--foot:start--><a href="../../about/">이 백과에 대해</a> · <a href="../../changes/">고침 기록</a><!--foot:end--></p>
   </div>
 </footer>
 <div class="pop" id="pop" role="dialog" aria-modal="false" hidden></div>
-<script src="../../data/sections.js"></script>
-<script src="../../data/toc.js"></script>
-<script src="../../data/glossary.js"></script>
-<script src="../../data/about.js"></script>
-<script src="../../data/synonyms.js"></script>
-<script src="../../data/crisis-card.js"></script>
-<script src="../../data/courses.js"></script>
-<script src="../../data/links.js"></script>
-<script src="../../data/pages.js"></script>
-<script src="../../js/util.js"></script>
-<script src="../../js/paths.js"></script>
-<script src="../../js/md.js"></script>
-<script src="../../js/search.js"></script>
-<script src="../../js/gloss.js"></script>
-<script src="../../js/synonyms.js"></script>
-<script src="../../js/crisis.js"></script>
-<script src="../../js/progress.js"></script>
-<script src="../../js/app.js"></script>
+<!--core:start-->
+<script src="../../js/core.js"></script>
+<!--core:end-->
 <!--ui:start-->
-<script src="../../js/ui/palette.js"></script>
-<script src="../../js/ui/preview.js"></script>
-<script src="../../js/ui/mobile.js"></script>
-<script src="../../js/ui/sticky.js"></script>
-<script src="../../js/ui/reading.js"></script>
-<script src="../../js/ui/settings.js"></script>
-<script src="../../js/ui/polish.js"></script>
-<script src="../../js/ui/home.js"></script>
-<script src="../../js/ui/shelf.js"></script>
+<script src="../../js/ui.js"></script>
 <!--ui:end-->
 </body>
 </html>

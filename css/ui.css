@@ -1,16 +1,113 @@
 /* 자동 생성: tools/build-ui-css.cjs 가 css/ui/*.css 를 이 순서로 이어 붙인다. 직접 고치지 않는다. */
 
+/* ===== ask.css ===== */
+/* 진료 질문 바구니 모듈(js/ui/ask.js): 글의 '담당 의사에게 물어볼 것' 항목 옆 "담기" 버튼과 그 아래 안내 줄. 선택자는 .ask- 로 시작해요. */
+/* 크기는 em: 글자 크기 설정(--fs-body)을 따라 버튼과 겉 높이가 함께 커져요(기본 17px 에서 13.5px·30px) */
+.body .ask-add { position: relative; display: inline-flex; align-items: center; gap: .3em; height: 2.22em; padding: 0 .8em 0 .65em; margin-left: 2px; border: 1px solid var(--rule-2); border-radius: 999px; background: var(--paper-3); color: var(--ink-2); font-family: var(--sans); font-size: .8em; font-weight: 650; line-height: 1; vertical-align: 1px; white-space: nowrap; cursor: pointer; }
+/* 줄 사이를 넘지 않는 만큼 누르는 자리를 넓혀요(겉모양은 그대로) */
+.body .ask-add::before { content: ""; position: absolute; inset: -6px -5px; }
+.body .ask-add:hover { border-color: var(--accent); color: var(--accent); }
+.body .ask-add.on { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+.ask-ico { display: inline-block; min-width: .9em; text-align: center; font-weight: 800; }
+.ask-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 12px; margin: 12px 0 6px; padding: 10px 14px; border-radius: 10px; background: var(--paper-2); font-size: 14.5px; line-height: 1.55; color: var(--ink-2); }
+.ask-bar[hidden] { display: none; }
+.ask-bar-go { display: inline-flex; align-items: center; min-height: 36px; color: var(--accent); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+.ask-bar-where { flex-basis: 100%; font-size: 13px; color: var(--muted); }
+@media (max-width: 760px) {
+  .body .ask-add { height: 2.3em; font-size: .83em; }
+  .ask-bar-go { min-height: 44px; }
+}
+@media print {
+  .ask-add, .ask-bar { display: none !important; }
+}
+
+
 /* ===== home.css ===== */
 /* home: 쓰는 사람에 맞춰 바뀌는 첫 화면. 선택자는 .hm- 로 시작한다(토큰은 css/style.css). */
 
-/* 어디서 시작할까요? 세 갈래 카드 */
-.hm-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
-.hm-card { --h: 250; position: relative; display: grid; gap: 6px; align-content: start; padding: 18px 44px 18px 18px; border: 1px solid var(--rule); border-left: 4px solid hsl(var(--h) var(--spine-s) var(--spine-l)); border-radius: 12px; background: var(--paper-3); color: var(--ink); min-height: 112px; transition: border-color .15s, transform .15s, box-shadow .15s; }
+/* 역할 자리가 들어오기 전 빈자리: home.js 가 머리 끝에 역할 자리를 끼우면서 아래 묶음이 밀리지 않게(CLS).
+   코어가 그린 첫 화면(.portal)에 data-hm 이 붙기 전까지만 있고, 처음 온 사람(카드 4장) 높이에 맞춘다
+   (2026-11-14 잰 값: 1280 218px · 980 이하 328px · 760 이하 411px = 실제 역할 자리 높이+위 여백).
+   다시 온 사람용 한 줄 예약(html[data-hm-start="line"], 72px)은 셸이 달지 않아 지웠어요: 코어가 처음부터
+   이어서 읽기·코스를 앞에 그린 뒤로는 그 속성을 달아도 CLS 가 줄지 않았어요(1280 0.016 → 0.015~0.029, 390 0.002~0.003 → 0.003) */
+.portal:not([data-hm]) > .portal-head::after { content: ''; display: block; height: var(--hm-reserve, 0px); }
+.portal:not([data-hm]) { --hm-reserve: 218px; }
+
+/* 역할 자리: 첫 화면 머리 안 끝(책꽂이 위) */
+.hm-role { margin-top: 22px; }
+.hm-role-h { font-family: var(--serif); font-weight: 700; font-size: 19px; line-height: 1.35; color: var(--ink); margin: 0 0 12px; }
+.hm-role-h:focus { outline: none; }
+.hm-role-h:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+/* 고른 역할·접힌 상태의 한 줄 */
+.hm-role-line { display: flex; align-items: center; gap: 12px; padding: 6px 6px 6px 16px; border: 1px solid var(--rule); border-radius: 12px; background: var(--paper-2); }
+.hm-role-now { flex: 1 1 auto; min-width: 0; font-size: 15px; line-height: 1.5; color: var(--ink-2); }
+.hm-role-now b { color: var(--ink); font-weight: 700; }
+.hm-role-tab { font-size: 13.5px; color: var(--ink-2); }
+.hm-role-text { flex: 1 1 auto; min-width: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 12px; }
+.hm-role-h-s { margin: 0; font-size: 16.5px; }
+/* --paper-2 위의 작은 글자라 --muted(4.39:1) 대신 --ink-2 로 대비 4.5:1 이상 */
+.hm-role-sub { font-size: 13.5px; line-height: 1.5; color: var(--ink-2); }
+.hm-role-btn { flex: none; margin-left: auto; height: 36px; padding: 0 16px; border-radius: 9px; border: 1px solid var(--rule-2); background: var(--paper-3); color: var(--accent); font-size: 14px; font-weight: 650; }
+.hm-role-btn:hover { border-color: var(--accent); background: var(--accent-soft); }
+.hm-role-btn[aria-expanded="true"] { background: var(--accent-soft); border-color: var(--accent); }
+.hm-role-panel { margin-top: 10px; }
+.hm-role-alt { margin: 10px 0 0; font-size: 13.5px; line-height: 1.6; color: var(--ink-2); }
+.hm-role-alt a { color: var(--accent); font-weight: 650; text-decoration: underline; text-underline-offset: 2px; }
+.hm-role-note { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; margin: 6px 0 0; font-size: 13px; line-height: 1.6; color: var(--muted); }
+.hm-role-clear { min-height: 32px; padding: 0 10px; border-radius: 8px; color: var(--ink-2); font-size: 13px; text-decoration: underline; text-underline-offset: 2px; }
+.hm-role-clear:hover { background: var(--paper-2); color: var(--ink); }
+
+/* 네 갈래 카드 */
+.hm-cards { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.hm-card { --h: 250; position: relative; display: grid; gap: 4px; align-content: start; padding: 14px 32px 14px 14px; border: 1px solid var(--rule); border-left: 4px solid hsl(var(--h) var(--spine-s) var(--spine-l)); border-radius: 12px; background: var(--paper-3); color: var(--ink); min-height: 100px; transition: border-color .15s, box-shadow .15s; }
 .hm-card:hover { border-color: var(--accent); border-left-color: hsl(var(--h) var(--spine-s) var(--spine-l)); box-shadow: 0 4px 16px rgba(20, 24, 40, .06); }
-.hm-card:hover .hm-card-go { color: var(--accent); transform: translateX(3px); }
-.hm-card-t { font-family: var(--serif); font-weight: 700; font-size: 19px; line-height: 1.3; }
-.hm-card-d { font-size: 14px; color: var(--ink-2); line-height: 1.6; }
-.hm-card-go { position: absolute; right: 16px; top: 16px; font-size: 20px; color: var(--muted); transition: transform .15s, color .15s; }
+.hm-card:hover .hm-card-go { color: var(--accent); }
+.hm-card[aria-current="true"] { background: var(--accent-soft); }
+.hm-card-t { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; font-family: var(--serif); font-weight: 700; font-size: 17.5px; line-height: 1.3; }
+.hm-card-now { font-family: var(--sans); font-size: 12px; font-weight: 650; line-height: 20px; padding: 0 7px; border-radius: 999px; border: 1px solid var(--accent); color: var(--accent); }
+.hm-card-d { font-size: 13.5px; color: var(--ink-2); line-height: 1.55; }
+.hm-card-go { position: absolute; right: 12px; top: 13px; font-size: 18px; color: var(--muted); transition: color .15s; }
+
+/* 차분한 두 입구: 같은 높이·같은 무게(책꽂이 아래). 휴대폰에서도 한 줄에 두 칸이라 한 화면에 함께 보인다 */
+.hm-doors { margin-top: 26px; }
+.hm-doors-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.hm-doors-list > li { display: flex; }
+.hm-doors-list > li:only-child { grid-column: 1 / -1; }
+.hm-door { flex: 1; display: flex; flex-wrap: wrap; align-items: center; gap: 2px 12px; min-height: 52px; padding: 10px 16px; border: 1px solid var(--rule); border-left: 3px solid var(--accent); border-radius: 0 12px 12px 0; background: var(--paper-2); color: var(--ink); }
+.hm-door:hover { border-color: var(--accent); background: var(--accent-soft); }
+.hm-door-k { font-size: 14.5px; color: var(--ink-2); }
+.hm-door-go { margin-left: auto; display: inline-flex; align-items: center; gap: 6px; font-size: 15px; font-weight: 700; color: var(--accent); white-space: nowrap; }
+.hm-door-ar { font-weight: 400; }
+/* 인쇄 전용 위기 고지(화면에서는 숨김: 화면의 위기 입구는 상단 버튼과 이 줄뿐) */
+.hm-doors-print { display: none; }
+
+/* 살펴보기(nav 에 home 이 있는 특집 화면) */
+.hm-xp-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.hm-xp-list > li { display: flex; }
+.hm-xp-list > li:only-child { grid-column: 1 / -1; }
+.hm-xp { flex: 1; display: grid; gap: 4px; align-content: start; padding: 14px 16px; border: 1px solid var(--rule); border-radius: 12px; background: var(--paper-3); color: var(--ink); }
+.hm-xp:hover { border-color: var(--accent); }
+.hm-xp-t { font-family: var(--serif); font-weight: 700; font-size: 17px; line-height: 1.35; }
+.hm-xp-d { font-size: 14px; color: var(--ink-2); line-height: 1.6; }
+
+/* 최근에 읽은 문서: 제목 줄(제목 h2 + 가리기 버튼), 기록 쉼 안내 */
+.hm-recent-head { display: flex; align-items: center; gap: 12px; margin: 40px 0 14px; padding-bottom: 8px; border-bottom: 1px solid var(--rule); }
+.hm-recent-head > .h-sec { flex: 1 1 auto; min-width: 0; margin: 0; padding: 0; border: 0; }
+.hm-recent-btn { flex: none; margin-left: auto; height: 32px; padding: 0 10px; border-radius: 8px; font-family: var(--sans); font-weight: 500; font-size: 14px; color: var(--accent); }
+.hm-recent-btn:hover { background: var(--paper-2); text-decoration: underline; }
+.hm-recent-hidden { font-size: 14px; line-height: 1.6; color: var(--ink-2); padding: 4px 2px; }
+.hm-paused { margin: 0 0 12px; padding: 8px 12px; border: 1px dashed var(--rule-2); border-radius: 10px; font-size: 13.5px; line-height: 1.6; color: var(--ink-2); }
+.hm-paused a { color: var(--accent); font-weight: 650; text-decoration: underline; text-underline-offset: 2px; }
+.hm-paused-box { margin-top: 32px; }
+.hm-paused-box .hm-paused { margin: 0; }
+
+/* 기록 가리기(.hm-veil): 이어서 읽기 본문, 코스 진행, 읽음 표시를 함께 가린다 */
+.hm-veil-note { display: none; font-size: 14px; line-height: 1.6; color: var(--ink-2); padding: 4px 2px; }
+.hm-veil [data-sec="continue"] .hm-veil-note { display: block; }
+.hm-veil [data-sec="continue"] .continue { display: none; }
+.hm-veil [data-sec="courses"] .course .bar,
+.hm-veil [data-sec="courses"] .course .bar-label { visibility: hidden; }
+.hm-veil .read-mark { display: none; }
 
 /* 새로 올라온 글 */
 .hm-new-date { margin-left: auto; font-family: var(--sans); font-weight: 500; font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
@@ -24,27 +121,124 @@
 .hm-install-x { margin-left: auto; width: 36px; height: 36px; border-radius: 9px; color: var(--muted); font-size: 20px; line-height: 1; }
 .hm-install-x:hover { background: var(--paper-3); color: var(--ink); }
 
+@media (max-width: 980px) {
+  .hm-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .portal:not([data-hm]) { --hm-reserve: 328px; }
+}
 @media (max-width: 760px) {
-  .hm-cards { grid-template-columns: minmax(0, 1fr); }
-  .hm-card { min-height: 0; padding: 16px 44px 16px 16px; }
+  .hm-role { margin-top: 18px; }
+  .hm-role-h { font-size: 18px; margin-bottom: 10px; }
+  .hm-role-h-s { font-size: 16px; }
+  .hm-role-line { padding: 4px 4px 4px 14px; }
+  .hm-role-btn { height: 44px; padding: 0 16px; }
+  .hm-role-clear { min-height: 44px; }
+  /* 휴대폰: 한 손으로 누르기 쉬운 한 줄씩 */
+  .hm-cards { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .hm-card { min-height: 0; gap: 2px; padding: 11px 36px 11px 14px; }
+  .hm-card-t { font-size: 17px; }
+  .hm-card-d { font-size: 13.5px; }
+  .hm-card-go { top: 50%; margin-top: -13px; right: 14px; }
+  .portal:not([data-hm]) { --hm-reserve: 411px; }
+  .hm-doors { margin-top: 18px; }
+  .hm-doors-list { gap: 8px; }
+  .hm-door { flex-direction: column; align-items: flex-start; justify-content: center; gap: 0; min-height: 56px; padding: 8px 12px; }
+  .hm-door-k { font-size: 13.5px; }
+  .hm-door-go { margin-left: 0; }
+  .hm-xp-list { grid-template-columns: minmax(0, 1fr); }
+  .hm-recent-btn { height: 44px; }
   .hm-install { margin-top: 24px; }
   .hm-install-x { width: 44px; height: 44px; }
+}
+@media print {
+  /* 역할(기기 안 기록)과 화면용 버튼·카드는 종이에 남기지 않는다. 두 입구 대신 번호가 든 위기 고지 한 줄 */
+  .hm-role, .hm-doors-list, .hm-recent-btn, .hm-install { display: none !important; }
+  .hm-doors-print { display: block !important; }
+  .portal-head::after { display: none !important; }
+}
+
+
+/* ===== hub.css ===== */
+/* hub — 분류 화면 소묶음(js/ui/hub.js). 선택자는 .hb- 로 시작한다(토큰은 css/style.css). */
+.hb { margin-top: 18px; }
+
+/* 4·5·10·11 분류의 차분한 한 줄 */
+.hb-help { margin: 0 0 16px; padding: 8px 14px; max-width: 62ch; border-left: 3px solid var(--accent); border-radius: 0 10px 10px 0; background: var(--paper-2); font-size: 14.5px; line-height: 1.6; color: var(--ink-2); }
+.hb-help a { display: inline-block; padding: 4px 0; color: var(--ink); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+.hb-help a:hover { color: var(--accent); }
+
+/* 먼저 읽을 글 */
+.hb-first { max-width: 760px; padding: 12px 18px 4px; border: 1px solid var(--rule); border-radius: 12px; background: var(--paper-3); }
+.hb-first-h { font-family: var(--sans); font-size: 13.5px; font-weight: 700; color: var(--accent); margin: 0 0 2px; }
+.hb-first ol { list-style: none; margin: 0; padding: 0; counter-reset: hbf; }
+.hb-first li { counter-increment: hbf; border-top: 1px solid var(--rule); }
+.hb-first li:first-child { border-top: 0; }
+.hb-first a { display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 2px 12px; align-items: start; min-height: 44px; padding: 10px 0; color: var(--ink); }
+.hb-first a::before { content: counter(hbf); grid-row: 1 / span 2; width: 24px; height: 24px; margin-top: 1px; border-radius: 50%; border: 1.5px solid var(--rule-2); display: grid; place-items: center; font-family: var(--serif); font-weight: 700; font-size: 13px; color: var(--muted); background: var(--paper); }
+.hb-t { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; font-weight: 650; font-size: 16px; line-height: 1.45; }
+.hb-first a:hover .hb-t { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+.hb-s { grid-column: 2; font-size: 14px; color: var(--ink-2); line-height: 1.55; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+/* 묶음 건너뛰기 */
+.hb-jump { display: flex; flex-wrap: wrap; gap: 6px; margin: 18px 0 2px; }
+.hb-jump a { display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 4px 12px; border: 1px solid var(--rule-2); border-radius: 999px; background: var(--paper-3); font-size: 14px; line-height: 1.3; color: var(--ink-2); }
+.hb-jump a:hover { border-color: var(--accent); color: var(--accent); }
+.hb-jump .n { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+/* 묶음 */
+.hb-group { margin-top: 28px; }
+.hb-gh { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 12px; padding-bottom: 8px; font-family: var(--serif); font-weight: 700; font-size: 19px; line-height: 1.35; }
+.hb-gn { font-family: var(--sans); font-size: 13px; font-weight: 500; color: var(--muted); font-variant-numeric: tabular-nums; }
+.hb-extra .hb-gh { color: var(--ink-2); }
+.hb-rows .row a { padding: 12px 4px; }
+
+@media (max-width: 760px) {
+  .hb { margin-top: 14px; }
+  .hb-first { padding: 10px 14px 2px; }
+  .hb-jump a { min-height: 44px; padding: 4px 12px; }
+  .hb-help a { padding: 10px 0; }
+  /* 먼저 읽을 글의 요약은 아래 묶음의 같은 행에도 있으니 휴대폰에서는 제목만 */
+  .hb-first .hb-s { display: none; }
+  .hb-first a { gap: 0 12px; padding: 8px 0; align-items: center; }
+  .hb-first a::before { grid-row: auto; margin-top: 0; }
+  /* 키보드 포커스가 하단 바 밑에 숨지 않게 하는 여백은 mobile.css 가 html 에 전역으로 줘요(scroll-padding-bottom) */
+  .hb-group { margin-top: 24px; }
+  .hb-gh { font-size: 18px; }
+  /* 행 간소화: 제목 줄 오른쪽에 근거·읽음, 요약은 한 줄 */
+  .hb-rows .row a { grid-template-columns: minmax(0, 1fr) auto; gap: 2px 10px; padding: 10px 2px; min-height: 44px; }
+  .hb-rows .row-t { font-size: 16px; line-height: 1.4; }
+  .hb-rows .row-s { grid-column: 1 / -1; -webkit-line-clamp: 1; font-size: 13.5px; line-height: 1.5; }
+  .hb-rows .row-m { grid-column: 2; grid-row: 1; align-self: start; flex-direction: row; align-items: center; gap: 6px; padding-top: 1px; }
+  .hb-rows .row-m:empty { display: none; }
+  .hb-rows .ev { font-size: 11.5px; padding: 1px 7px; gap: 4px; }
+  .hb-rows .ev::before { width: 5px; height: 5px; }
+}
+/* 손가락으로 누르는 화면(넓은 태블릿·터치 노트북 포함): 칩도 44px */
+@media (pointer: coarse) {
+  .hb-jump a { min-height: 44px; }
+  .hb-help a { padding: 10px 0; }
+}
+@media print {
+  .hb-jump { display: none; }
 }
 
 
 /* ===== mobile.css ===== */
-/* css/ui/mobile.css — 휴대폰 하단 바 · 바텀시트 · 스와이프 힌트 (화면 폭 760px 이하에서만) */
+/* css/ui/mobile.css — 휴대폰 하단 바(모든 화면) · 바텀시트 · 스와이프 힌트 (화면 폭 760px 이하에서만)
+   칸 수는 js 가 --mb-n 으로 정해요(문서 4칸, 그 밖 3~4칸). 바가 있는 동안 body 에 아래 여백을 줘서 본문 끝·바닥글이 가리지 않아요. */
 .mb-bar, .mb-scrim, .mb-sheet, .mb-hint { display: none; }
 @media (max-width: 760px) {
   body.mb-has-bar { padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px)); }
-  .mb-bar { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); position: fixed; left: 0; right: 0; bottom: 0; z-index: 45; padding: 2px 6px calc(2px + env(safe-area-inset-bottom, 0px)); background: color-mix(in srgb, var(--paper) 94%, transparent); backdrop-filter: saturate(1.4) blur(10px); border-top: 1px solid var(--rule); transform: translateY(0); visibility: visible; transition: transform .2s ease, visibility 0s; }
+  .mb-bar { display: grid; grid-template-columns: repeat(var(--mb-n, 4), minmax(0, 1fr)); position: fixed; left: 0; right: 0; bottom: 0; z-index: 45; padding: 2px 6px calc(2px + env(safe-area-inset-bottom, 0px)); background: color-mix(in srgb, var(--paper) 94%, transparent); backdrop-filter: saturate(1.4) blur(10px); border-top: 1px solid var(--rule); transform: translateY(0); visibility: visible; transition: transform .2s ease, visibility 0s; }
   .mb-bar[hidden] { display: none; }
   .mb-bar.mb-hidden { transform: translateY(110%); visibility: hidden; transition: transform .2s ease, visibility 0s linear .2s; }
-  .mb-btn { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 44px; height: 58px; padding: 4px 2px; border-radius: 10px; color: var(--ink-2); font-size: 11.5px; font-weight: 600; line-height: 1.2; white-space: nowrap; -webkit-tap-highlight-color: transparent; }
+  .mb-btn { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-width: 0; min-height: 44px; height: 58px; padding: 4px 2px; border-radius: 10px; color: var(--ink-2); font-size: 11.5px; font-weight: 600; line-height: 1.2; white-space: nowrap; text-decoration: none; -webkit-tap-highlight-color: transparent; }
   .mb-btn svg { width: 22px; height: 22px; display: block; }
+  .mb-btn .mb-l { max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
   .mb-btn:active { background: var(--paper-2); }
+  .mb-btn:focus-visible { outline-offset: -2px; }
   .mb-btn[disabled] { opacity: .4; cursor: default; }
-  .mb-btn.on { color: var(--accent); }
+  .mb-btn.on, .mb-btn[aria-current="page"] { color: var(--accent); }
+  .mb-btn[aria-current="page"] .mb-l { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px; }
   .mb-scrim { display: block; position: fixed; inset: 0; z-index: 84; background: rgba(10, 12, 20, .35); }
   .mb-sheet { display: flex; flex-direction: column; position: fixed; left: 0; right: 0; bottom: 0; z-index: 85; max-height: 72vh; background: var(--paper-3); border-radius: 16px 16px 0 0; box-shadow: var(--shadow-pop); padding-bottom: env(safe-area-inset-bottom, 0px); outline: none; animation: mb-up .22s ease; }
   .mb-sheet[hidden], .mb-scrim[hidden] { display: none; }
@@ -53,7 +247,7 @@
   .mb-sheet-h .mb-n { font-family: var(--sans); font-weight: 500; font-size: 13px; color: var(--muted); }
   .mb-sheet-h .mb-x { margin-left: auto; width: 44px; height: 44px; border-radius: 10px; color: var(--muted); font-size: 24px; line-height: 1; display: grid; place-items: center; }
   .mb-sheet-h .mb-x:active { background: var(--paper-2); }
-  .mb-list { list-style: none; margin: 0; padding: 6px 8px 10px; overflow: auto; -webkit-overflow-scrolling: touch; }
+  .mb-list { list-style: none; margin: 0; padding: 6px 8px 10px; overflow: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
   .mb-list li { margin: 0; }
   .mb-item { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 2px; width: 100%; text-align: left; min-height: 48px; padding: 10px 12px; border-radius: 10px; font-size: 15.5px; color: var(--ink); line-height: 1.4; }
   .mb-item:active { background: var(--accent-soft); }
@@ -66,7 +260,154 @@
   .mb-hint.right { right: 12px; transform: translate(10px, -50%); }
   .mb-hint.on { opacity: .92; transform: translate(0, -50%); }
 }
+@media (max-width: 760px) and (hover: hover) { .mb-btn:hover { background: var(--paper-2); } }
+/* 하단 바가 있는 동안 Tab 포커스·소절 이동이 바(높이 약 64px) 밑에 가리지 않게 아래 여백을 둬요(:has 를 모르는 브라우저는 이 규칙만 빠져요) */
+@media (max-width: 760px) { html:has(> body.mb-has-bar) { scroll-padding-bottom: calc(72px + env(safe-area-inset-bottom, 0px)); } }
 @media (prefers-reduced-motion: reduce) { .mb-bar, .mb-sheet, .mb-hint { transition: none !important; animation: none !important; } }
+:root[data-motion="reduce"] .mb-bar, :root[data-motion="reduce"] .mb-sheet, :root[data-motion="reduce"] .mb-hint { transition: none !important; animation: none !important; }
+@media print { .mb-bar, .mb-scrim, .mb-sheet, .mb-hint { display: none !important; } body.mb-has-bar { padding-bottom: 0 !important; } }
+
+
+/* ===== nextsteps.css ===== */
+/* 글 끝 "다음 걸음"·"이 주제의 자주 묻는 질문"과 접힌 "이 문서를 가리키는 문서" (js/ui/nextsteps.js) — 접두어 .ns-
+   글자 크기는 본문 글자 크기(--fs-body)를 따라가요: 설정에서 글자를 키우면 본문 끝 길 안내도 함께 커져요
+   (기본 17px 에서 제목 16px·요약 14px·분류 12.5px 쯤) */
+.ns-wrap { display: grid; gap: 26px; }
+.ns-h { font-family: var(--serif); font-size: max(18px, calc(var(--fs-body) + 1px)); font-weight: 700; line-height: 1.4; margin: 0; padding-bottom: 8px; border-bottom: 1px solid var(--rule); }
+.ns-h:focus { outline: none; }
+.ns-h:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+
+/* 다음 걸음: 분류 색 막대 + 제목·요약·분류, 한 줄에 한 편(엄지로 누르기 쉬운 높이) */
+.ns-list { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 8px; }
+.ns-a { display: flex; align-items: stretch; gap: 12px; min-height: 44px; box-sizing: border-box; padding: 12px 14px; border: 1px solid var(--rule); border-radius: 10px; background: var(--paper-3); color: var(--ink); text-decoration: none; transition: border-color .15s ease; }
+.ns-a .spine { width: 4px; height: auto; align-self: stretch; border-radius: 2px; vertical-align: 0; }
+.ns-a:hover { border-color: var(--accent); }
+.ns-a:hover .ns-t { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+.ns-tx { display: grid; gap: 3px; min-width: 0; }
+.ns-t { font-weight: 650; font-size: calc(var(--fs-body) - 1px); line-height: 1.45; }
+.ns-s { font-size: calc(var(--fs-body) * .82); color: var(--ink-2); line-height: 1.55; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.ns-m { font-size: calc(var(--fs-body) * .74); color: var(--muted); line-height: 1.5; }
+
+/* 역할 한 줄과 고른 근거: 작게, 흐린 글씨 */
+.ns-foot { margin-top: 10px; font-size: calc(var(--fs-body) * .77); color: var(--muted); line-height: 1.65; }
+.ns-foot p { margin: 0; }
+/* 누르는 영역 44×44 이상(기본 글자 크기에서 글자만으로는 42×43.6), 음수 여백으로 줄 높이는 그대로 */
+.ns-change { display: inline-block; box-sizing: border-box; min-width: 44px; min-height: 44px; text-align: center; padding: 11px 4px; margin: -11px -4px;color: var(--accent); font-weight: 650; text-decoration: underline; text-underline-offset: 3px; }
+.ns-change:hover { color: var(--accent-2); }
+
+/* 이 주제의 자주 묻는 질문: 질문 + 답의 첫 문장 */
+.ns-qs { list-style: none; margin: 4px 0 0; padding: 0; }
+.ns-qs li + li { border-top: 1px solid var(--rule); }
+.ns-q { display: flex; align-items: baseline; gap: 10px; min-height: 44px; box-sizing: border-box; padding: 11px 4px; color: var(--ink-2); font-size: calc(var(--fs-body) * .88); line-height: 1.5; text-decoration: none; }
+.ns-qm { flex: none; font-family: var(--serif); font-weight: 700; font-size: calc(var(--fs-body) * .82); color: var(--accent); }
+.ns-qx { display: grid; gap: 2px; min-width: 0; }
+.ns-qa { font-size: calc(var(--fs-body) * .78); color: var(--muted); line-height: 1.55; }
+.ns-q:hover .ns-qt { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+
+/* 접힌 "이 문서를 가리키는 문서" */
+.ns-fold { margin-top: 28px; }
+.ns-fold-s { display: flex; align-items: center; gap: 8px; min-height: 44px; list-style: none; cursor: pointer; border-bottom: 1px solid var(--rule); border-radius: 2px; }
+.ns-fold-s::-webkit-details-marker { display: none; }
+.ns-fold-s::marker { content: ""; }
+.ns-fold-s::after { content: ""; flex: none; width: 7px; height: 7px; margin: -4px 8px 0 auto; border-right: 1.6px solid var(--muted); border-bottom: 1.6px solid var(--muted); transform: rotate(45deg); transition: transform .15s ease; }
+.ns-fold[open] > .ns-fold-s::after { margin-top: 4px; transform: rotate(225deg); }
+.ns-fold-s:hover .ns-fold-h { color: var(--accent); }
+.ns-fold-h { font-family: var(--serif); font-size: 18px; font-weight: 700; line-height: 1.4; margin: 0; padding: 8px 0; }
+.ns-fold > .backlinks { margin-top: 0; padding-bottom: 4px; }
+
+/* 움직임 줄이기: 설정에서 고른 것과 운영체제 설정 모두(전역 규칙은 ::after 에 닿지 않아요) */
+:root[data-motion="reduce"] .ns-a, :root[data-motion="reduce"] .ns-fold-s::after { transition: none; }
+@media (prefers-reduced-motion: reduce) {
+  .ns-a, .ns-fold-s::after { transition: none; }
+}
+@media (max-width: 760px) {
+  .ns-a { padding: 12px; gap: 10px; }
+  .ns-t { font-size: calc(var(--fs-body) - 1.5px); }
+  .ns-s { font-size: calc(var(--fs-body) * .8); }
+}
+/* 종이에는 화면용 길 안내를 싣지 않아요(접힌 목록은 제목만 남아 헷갈리니 함께 숨김) */
+@media print {
+  .ns-wrap, .ns-fold { display: none !important; }
+}
+
+
+/* ===== nowhelp.css ===== */
+/* css/ui/nowhelp.css — "지금 도움" 시트. 넓은 화면은 가운데 대화상자, 휴대폰(.nh-phone)은 아래에서 올라오는 시트.
+   색은 차분하게: 종이 바탕 + 강조색(보라) 번호. 빨간 바탕·경고 아이콘을 쓰지 않아요.
+   글자는 앱의 글자 크기 설정(--fs-body)을 따라 em 으로 커져요(번호는 너무 커져 넘치지 않게 상한). */
+html.nh-lock { overflow: hidden; }
+html.nh-lock.nh-gutter { scrollbar-gutter: stable; }
+.nh-scrim { position: fixed; inset: 0; z-index: 110; background: rgba(10, 12, 20, .38); touch-action: none; }
+.nh-sheet { position: fixed; z-index: 111; top: calc(var(--top-h) + 20px); left: 50%; transform: translateX(-50%); width: min(460px, calc(100vw - 32px)); max-height: calc(100vh - var(--top-h) - 40px); display: flex; flex-direction: column; background: var(--paper-3); color: var(--ink); border: 1px solid var(--rule-2); border-radius: 16px; box-shadow: var(--shadow-pop); outline: none; font-size: var(--fs-body, 17px); }
+.nh-sheet[hidden], .nh-scrim[hidden] { display: none; }
+.nh-head { display: flex; align-items: center; gap: 8px; padding: 12px 10px 4px 20px; flex: none; }
+.nh-title { margin: 0; flex: 1; min-width: 0; font-family: var(--serif); font-size: 1.12em; font-weight: 700; line-height: 1.4; color: var(--ink); word-break: keep-all; }
+.nh-title:focus { outline: none; }
+.nh-x { flex: none; width: 44px; height: 44px; display: grid; place-items: center; border-radius: 10px; color: var(--muted); font-size: 24px; line-height: 1; }
+.nh-x:hover { background: var(--paper-2); color: var(--ink); }
+.nh-body { padding: 0 16px 16px; overflow: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
+.nh-lead { margin: 0 4px 12px; color: var(--ink-2); font-size: .88em; line-height: 1.6; word-break: keep-all; }
+
+/* 전화 줄 */
+/* 줄의 최소 폭이 번호+이름 한 덩어리로 커지지 않게(큰 글자에서 번호가 잘리던 문제) */
+.nh-tels { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; }
+.nh-tel { margin: 0; min-width: 0; }
+.nh-what { display: flex; flex-direction: column; gap: 1px; min-width: 0; flex: 1; }
+.nh-name { font-size: .88em; font-weight: 650; color: var(--ink); line-height: 1.4; word-break: keep-all; overflow-wrap: anywhere; }
+.nh-note { font-size: .76em; color: var(--muted); line-height: 1.4; }
+.nh-num { font-variant-numeric: tabular-nums; font-weight: 750; color: var(--accent); white-space: nowrap; letter-spacing: .01em; }
+.nh-ic { flex: none; display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); }
+.nh-ic svg { display: block; }
+
+/* 넓은 화면: 이름 · 큰 번호(글자) · 번호 복사 */
+.nh-wide { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; padding: 10px 10px 10px 16px; border: 1px solid var(--rule); border-radius: 12px; background: var(--paper); }
+/* 이름 칸이 6.5em 보다 좁아지면 번호·복사가 다음 줄로(큰 글자에서 이름이 글자마다 끊기지 않게) */
+.nh-wide .nh-what { flex: 1 1 6.5em; }
+.nh-wide .nh-num { margin-left: auto; font-size: min(1.53em, 34px); line-height: 1.2; padding: 2px 4px; user-select: all; }
+.nh-copy { flex: none; min-height: 44px; padding: 0 14px; border: 1px solid var(--rule-2); border-radius: 999px; background: var(--paper-3); color: var(--ink-2); font-size: .8em; font-weight: 600; white-space: nowrap; }
+.nh-copy:hover { border-color: var(--accent); color: var(--accent); }
+.nh-copy.nh-done { border-color: var(--ok); color: var(--ok); }
+
+/* 휴대폰: 줄 전체가 전화 버튼 */
+.nh-call { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 12px; min-height: 60px; padding: 10px 16px 10px 12px; border: 1px solid var(--rule-2); border-radius: 14px; background: var(--paper); color: var(--ink); -webkit-tap-highlight-color: transparent; }
+.nh-call .nh-what { flex: 1 1 7em; }
+.nh-call .nh-num { margin-left: auto; font-size: min(1.3em, 28px); }
+.nh-call:hover, .nh-call:active { background: var(--accent-soft); border-color: var(--accent); }
+
+/* 글 링크 */
+.nh-links { list-style: none; margin: 14px 0 0; padding: 6px 0 0; border-top: 1px solid var(--rule); }
+.nh-links li { margin: 0; }
+.nh-link { display: flex; align-items: center; gap: 10px; min-height: 48px; padding: 8px 8px 8px 6px; border-radius: 10px; color: var(--ink); font-size: .88em; line-height: 1.45; }
+.nh-link:hover { background: var(--paper-2); }
+.nh-link .nh-ic { width: 24px; height: 24px; background: none; color: var(--muted); margin-left: auto; }
+.nh-lt { min-width: 0; word-break: keep-all; }
+.nh-ls { display: block; font-size: .87em; color: var(--muted); }
+.nh-alt .nh-lt { color: var(--accent); font-weight: 650; }
+.nh-alt .nh-ls { font-weight: 400; }
+/* 맨 아래 작은 고지(번호를 가리지 않게 끝에) */
+.nh-foot { margin: 12px 4px 0; padding-top: 10px; border-top: 1px solid var(--rule); color: var(--muted); font-size: .72em; line-height: 1.55; word-break: keep-all; }
+.nh-ghost { position: fixed; left: -9999px; top: 0; width: 1px; height: 1px; opacity: 0; }
+
+/* 휴대폰(좁은 화면이나 터치 기기): 아래에서 올라오는 시트, 엄지가 닿는 아래쪽에 전화 줄 */
+.nh-sheet.nh-phone { top: auto; bottom: 0; left: 0; right: 0; transform: none; width: auto; max-width: 560px; margin: 0 auto; max-height: 88vh; max-height: 88dvh; border-radius: 18px 18px 0 0; border-bottom: 0; padding-bottom: env(safe-area-inset-bottom, 0px); }
+.nh-phone .nh-head { padding: 10px 8px 2px 20px; }
+.nh-phone .nh-head::before { content: ""; position: absolute; top: 6px; left: 50%; width: 36px; height: 4px; margin-left: -18px; border-radius: 2px; background: var(--rule-2); }
+.nh-phone .nh-body { padding: 0 12px 14px; }
+/* 아주 좁은 휴대폰(360px 이하): 아이콘을 빼서 이름과 번호가 한 줄에 */
+@media (max-width: 360px) {
+  .nh-call { column-gap: 10px; padding: 10px 12px; }
+  .nh-call .nh-ic { display: none; }
+  .nh-call .nh-num { font-size: min(1.18em, 24px); }
+}
+
+/* 움직임: 움직임 줄이기(운영체제·앱 설정)에서는 없음 */
+.nh-sheet.nh-anim { animation: nh-in .18s ease; }
+.nh-sheet.nh-anim.nh-phone { animation: nh-up .22s ease; }
+@keyframes nh-in { from { opacity: 0; transform: translate(-50%, 8px); } to { opacity: 1; transform: translateX(-50%); } }
+@keyframes nh-up { from { opacity: .4; transform: translateY(28px); } to { opacity: 1; transform: none; } }
+:root[data-motion="reduce"] .nh-sheet { animation: none !important; }
+@media (prefers-reduced-motion: reduce) { .nh-sheet { animation: none !important; } }
+@media print { .nh-sheet, .nh-scrim { display: none !important; } html.nh-lock { overflow: visible; } }
 
 
 /* ===== palette.css ===== */
@@ -91,7 +432,7 @@
 .pal-x:hover { background: var(--paper-2); color: var(--ink); }
 .pal-x:focus-visible, .pal-tel:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
-.pal-list { flex: 1 1 auto; overflow: auto; padding: 6px; scroll-padding: 6px; }
+.pal-list { flex: 1 1 auto; overflow: auto; padding: 6px; scroll-padding: 6px 6px 56px; } /* 아래 56px: 붙여 둔 도움 줄에 고른 줄이 가리지 않게 */
 .pal-group { font-size: 12px; color: var(--muted); padding: 10px 10px 4px; letter-spacing: .01em; }
 .pal-group:first-child { padding-top: 6px; }
 .pal-item { display: flex; align-items: center; gap: 12px; padding: 9px 10px; border-radius: 9px; cursor: pointer; min-height: 44px; }
@@ -110,14 +451,16 @@
 .pal-item.pal-all.pal-all-top { border-top: 0; margin: 0 0 6px; padding-top: 9px; border-radius: 9px; }
 .pal-empty { padding: 14px 10px 8px; font-size: 14px; color: var(--muted); }
 
-/* 위기·타해 안내: 맨 위, 빨간 항목(기본 선택은 아님. 누르면 찾기 화면, 전화는 줄 안 버튼으로만) */
-.pal-item.pal-crisis { background: var(--bad-soft); color: var(--bad); margin-bottom: 4px; flex-wrap: wrap; }
-.pal-item.pal-crisis[aria-selected="true"] { box-shadow: inset 0 0 0 2px var(--bad); }
-.pal-item.pal-crisis .pal-dot { background: var(--bad); color: var(--paper-3); }
-.pal-item.pal-crisis .pal-t { color: var(--bad); }
-.pal-item.pal-crisis .pal-s { color: var(--bad); opacity: .9; white-space: normal; }
-.pal-tel { flex: none; display: inline-flex; align-items: center; min-height: 32px; font-size: 13px; font-weight: 700; color: var(--bad); border: 1px solid currentColor; border-radius: 999px; padding: 4px 12px; text-decoration: none; white-space: nowrap; }
-.pal-tel:hover { background: var(--bad); color: var(--paper-3); }
+/* 위기·타해 안내: 맨 위, 차분한 청록빛 남색(--calm, 찾기 화면 위기 카드와 같은 계열. 빨간 경고색 아님).
+   기본 선택은 아님. 누르면 찾기 화면, 전화는 줄 안 버튼(109·1577-0199)으로만 */
+.pal-item.pal-crisis { background: var(--calm-soft); color: var(--calm); margin-bottom: 4px; flex-wrap: wrap; }
+.pal-item.pal-crisis[aria-selected="true"] { box-shadow: inset 0 0 0 2px var(--calm); }
+.pal-item.pal-crisis .pal-dot { background: var(--calm); color: var(--calm-ink); }
+.pal-item.pal-crisis .pal-t { color: var(--calm); }
+.pal-item.pal-crisis .pal-s { color: var(--ink-2); white-space: normal; }
+.pal-tel { flex: none; display: inline-flex; align-items: center; min-height: 36px; font-size: 13.5px; font-weight: 700; color: var(--calm); background: var(--paper-3); border: 1px solid currentColor; border-radius: 999px; padding: 4px 14px; text-decoration: none; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.pal-tel:hover { background: var(--calm); color: var(--calm-ink); }
+.pal-tel { min-width: 44px; justify-content: center; }
 .pal-tels { flex: none; display: flex; flex-wrap: wrap; gap: 6px; }
 /* 정보 검색(watch): 더 차분하게 */
 .pal-item.pal-crisis.pal-watch { background: var(--paper-2); color: var(--ink); }
@@ -127,14 +470,29 @@
 .pal-item.pal-crisis.pal-watch .pal-s { color: var(--muted); opacity: 1; }
 .pal-item.pal-crisis.pal-watch .pal-tel { color: var(--accent); }
 .pal-item.pal-crisis.pal-watch .pal-tel:hover { background: var(--accent); color: var(--accent-ink); }
-/* 타해(harm): 찾기 화면의 harm 카드와 같은 주황(경고) 계열 */
-.pal-item.pal-crisis.pal-harm { background: var(--warn-soft); color: var(--warn); }
-.pal-item.pal-crisis.pal-harm[aria-selected="true"] { box-shadow: inset 0 0 0 2px var(--warn); }
-.pal-item.pal-crisis.pal-harm .pal-dot { background: var(--warn); color: var(--paper-3); }
-.pal-item.pal-crisis.pal-harm .pal-t, .pal-item.pal-crisis.pal-harm .pal-s, .pal-item.pal-crisis.pal-harm .pal-tel { color: var(--warn); opacity: 1; }
-.pal-item.pal-crisis.pal-harm .pal-tel:hover { background: var(--warn); color: var(--paper-3); }
+/* 타해(harm): 찾기 화면의 harm 카드와 같은 차분한 --calm 계열(겁주는 경고색 아님). 왼쪽 띠로만 구분 */
+.pal-item.pal-crisis.pal-harm { box-shadow: inset 4px 0 0 var(--calm); }
+.pal-item.pal-crisis.pal-harm[aria-selected="true"] { box-shadow: inset 4px 0 0 var(--calm), inset 0 0 0 2px var(--calm); }
+
+/* "‘환청’을 찾으셨나요?" — 묶음 제목 자리의 한 줄(누르는 줄 아님, 아래 후보 글을 누름) */
+.pal-group .pal-did { font-size: 13.5px; color: var(--ink-2); letter-spacing: 0; }
+.pal-group .pal-did b { color: var(--accent); font-weight: 700; }
+
+/* 맨 아래 고정 줄: 지금 많이 힘들다면 · 지금 도움. 작고 조용하게(경고색·아이콘 없음). 기본 선택이 아니고 전화를 걸지 않음.
+   결과가 길어도 늘 보이게 목록 아래쪽에 붙여 둔다(sticky) */
+.pal-item.pal-help { position: sticky; bottom: -6px; z-index: 1; margin: 2px -6px -6px; padding: 8px 16px; gap: 0; border-radius: 0; background: var(--paper-3); border-top: 1px solid var(--rule); }
+.pal-item.pal-help .pal-t { font-weight: 500; font-size: 13.5px; color: var(--muted); }
+.pal-item.pal-help .pal-help-go { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+.pal-item.pal-help[aria-selected="true"] { background: var(--paper-2); box-shadow: inset 0 0 0 2px var(--accent); }
+
+/* 가려 둔 최근 기록 · 최근 검색 지우기: 작고 조용한 줄(기본 선택 아님) */
+.pal-item.pal-veil .pal-t, .pal-item.pal-rq-clear .pal-t { font-weight: 500; font-size: 14px; color: var(--ink-2); }
+.pal-item.pal-rq-clear .pal-t { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+/* 화면 읽기 프로그램에만 읽히는 글 */
+.pal-sr { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; border: 0; }
 
 .pal-hint { flex: none; display: flex; gap: 14px; padding: 8px 16px; border-top: 1px solid var(--rule); font-size: 12px; color: var(--muted); background: var(--paper-2); }
+.pal-hint .pal-hint-k { margin-left: auto; }
 .pal-hint kbd { font-family: var(--sans); font-size: 11px; line-height: 18px; padding: 0 5px; border: 1px solid var(--rule-2); border-radius: 4px; background: var(--paper-3); color: var(--ink-2); }
 
 /* 팔레트가 열린 동안 뒤 화면 스크롤 막기 */
@@ -149,6 +507,8 @@ html.pal-open, html.pal-open body { overflow: hidden; }
   .pal-item { padding: 10px 10px; }
   /* 전화 버튼은 글 아래 줄로(좁은 화면에서 문구가 눌리지 않게) */
   .pal-item.pal-crisis .pal-tels { flex-basis: 100%; padding-left: 32px; }
+  .pal-tel { min-height: 44px; padding: 4px 16px; font-size: 14.5px; }
+  .pal-item.pal-help { min-height: 44px; }
 }
 
 
@@ -162,6 +522,14 @@ html.pal-open, html.pal-open body { overflow: hidden; }
   ::view-transition-old(pol-title), ::view-transition-new(pol-title) { animation-duration: 180ms; }
   .pol-vt .page-title { view-transition-name: pol-title; }
 }
+/* 앱 설정의 "움직임 줄이기"(data-motion=reduce): @view-transition 은 선택자 조건을 받지 않아서 js/ui/polish.js 가 전환을 건너뛰고(skipTransition),
+   여기서는 그래도 남는 전환 그림의 움직임을 없앤다(전환 그림은 html 에 붙는 가상 요소라 :root 조건이 닿음) */
+:root[data-motion="reduce"]::view-transition-group(*),
+:root[data-motion="reduce"]::view-transition-image-pair(*),
+:root[data-motion="reduce"]::view-transition-old(*),
+:root[data-motion="reduce"]::view-transition-new(*) { animation: none !important; }
+:root[data-motion="reduce"] .page-title { view-transition-name: none; }
+:root[data-motion="reduce"] .pol-skel-line { animation: none; }
 
 /* 자리표시: 글 모양 회색 막대 */
 .pol-skel-text { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; padding: 0; margin: 0; }
@@ -218,6 +586,160 @@ html.pal-open, html.pal-open body { overflow: hidden; }
 .pv-ev { font-size: 12px; }
 .pv-read { font-size: 12px; color: var(--ok); font-weight: 600; display: inline-flex; align-items: center; gap: 4px; }
 .pv-read::before { content: "✓"; font-size: 11px; }
+
+
+/* ===== print.css ===== */
+/* 인쇄 모듈(js/ui/print.js): 문서 화면의 "인쇄" 버튼과 모든 화면의 인쇄 모양.
+   화면: .prt-btn 은 기존 .btn 과 같은 모양. 인쇄용 머리·꼬리(.prt-head, .prt-foot)는 화면에서 숨김.
+   인쇄(@media print): 밝은 색 강제(어두운 화면에서도), 상단 바·목차·여백·하단 바·모듈 장치 숨김, 접힌 차례·소절 펴기,
+   출처 링크 뒤 주소, 표·콜아웃이 쪽 사이에서 잘리지 않게.
+   싣는 순서: css/style.css 다음에 css/ui.css(모듈 css 를 이름순으로 이어 붙임)가 실려요. 그래서 style.css 의 @media print 는 이 파일이 이기지만,
+   ui.css 안에서는 이름이 뒤인 모듈(reading·settings·shelf·sticky·trust …)이 같은 특이도면 이겨요. 그런 곳은 특이도를 높여 둬요.
+   특집 화면(길잡이·질문 바구니·종이 양식)의 인쇄 모양은 각 화면 css 가 맡고, 여기 규칙(색 강제·크롬 숨김)을 함께 써요.
+   밝은 색 강제는 아래 토큰 한 곳에서만 해요(질문 바구니처럼 따로 hex 를 두지 않아도 어두운 화면 인쇄가 흰 종이에 먹색 글자).
+   인쇄 토큰은 특이도 (0,2,1) 로 정해요. style.css 의 어두운 화면 선택자(0,2,0)는 이기고, 특집 화면이
+   :root:has(.fp-body[data-page="…"])(0,3,0) 처럼 더 구체적인 선택자로 자기 인쇄 토큰을 정하면 그쪽이 이겨요(!important 를 쓰지 않아요).
+   모듈이 문서 자리에 끼운 상자: 인쇄에서 after-body·end·margin 자리는 숨기고 lead 자리는 남겨요.
+   바꾸려면 상자에 data-print="keep"(남김) 또는 data-print="hide"(숨김). */
+
+.prt-head, .prt-foot { display: none; }
+/* 인쇄 버튼은 한 줄로, 정보 상자 줄에서는 글자만큼만 차지해요. 칸을 똑같이 셋으로 나누면 공유 버튼이 "주소 복사됨"으로
+   바뀔 때 두 줄로 넘쳐서, 옆 버튼(코어)은 건드리지 않고 이 버튼이 덜 차지해요 */
+.prt-btn { white-space: nowrap; }
+.infobox-actions .prt-btn { flex: 0 0 auto; padding: 0 12px; }
+
+@media print {
+  @page { margin: 16mm 15mm 18mm; }
+
+  /* ---------- 밝은 색 강제: 어두운 화면(운영체제 설정이든 직접 고른 것이든)에서도 흰 종이에 먹색 글자 ---------- */
+  html:root:not([data-print-tokens="own"]) {
+    color-scheme: light;
+    --paper: #ffffff;
+    --paper-2: #f4f4f2;
+    --paper-3: #ffffff;
+    --ink: #111418;
+    --ink-2: #30353d;
+    --muted: #555b64;
+    --rule: #d0d3d0;
+    --rule-2: #9ea3a3;
+    --accent: #3a3591;
+    --accent-2: #2e2a78;
+    --accent-soft: #ecebfa;
+    --accent-ink: #ffffff;
+    --mark: #fff0a6;
+    --bad: #9b1c14;
+    --bad-soft: #fdeceb;
+    --warn: #7d4605;
+    --warn-soft: #fdf3e2;
+    --ok: #1a6634;
+    --ok-soft: #e8f5ec;
+    /* 위기 안내 전용(css/style.css 의 --calm 계열, 차분한 청록빛 남색). 인쇄 값은 여기 한 곳에서 정해요(대비는 tests/core.test.cjs 의 K3-3 이 재요).
+       세 값 모두 밝은 화면 값(style.css :root)과 같아요. 다른 -soft 토큰처럼 바탕은 밝은 값을 그대로 써요 */
+    --calm: #1d5c78;
+    --calm-soft: #e8f1f4;
+    --calm-ink: #ffffff;
+    --spine-s: 38%;
+    --spine-l: 56%;
+    --shadow-pop: none;
+  }
+
+  /* ---------- 본문 글자 크기: 보기 설정을 따르되 종이에 맞게 줄여요(아주 크게 25px 가 그대로 오면 쪽수가 두 배 가까이 늘어요).
+     작게 10.5pt · 보통 11.5pt · 크게 12pt · 더 크게·아주 크게 13pt. settings.css 의 :root[data-fs](0,2,0)보다 구체적인 (0,2,1) */
+  html:root:not([data-fs]), html:root[data-fs="m"] { --fs-body: 11.5pt; }
+  html:root[data-fs="s"] { --fs-body: 10.5pt; }
+  html:root[data-fs="l"] { --fs-body: 12pt; }
+  html:root[data-fs="xl"], html:root[data-fs="xxl"] { --fs-body: 13pt; }
+  html, body { background: #ffffff !important; color: var(--ink) !important; }
+  body { margin: 0 !important; padding: 0 !important; }
+
+  /* ---------- 크롬 숨김 ----------
+     body 바로 아래에는 본문 틀(.shell)과 바닥글만 남겨요. 상단 바·진행 막대·건너뛰기·팝오버와
+     모듈이 body 에 붙인 하단 바·시트·토스트·안내 띠는 이름을 몰라도 모두 숨겨요. */
+  body > :not(.shell):not(.sitefoot) { display: none !important; }
+  .sidenav, .scrim, .doc-margin, .rd-bar, .prt-btn, .doc-meta-m .acts,
+  .course-nav, .backlinks, .see-also, .pager,
+  .doc-slot[data-slot="after-body"] > :not([data-print="keep"]),
+  .doc-slot[data-slot="end"] > :not([data-print="keep"]),
+  .doc-slot[data-slot="margin"],
+  [data-print="hide"],
+  .prt-head + .crumb { display: none !important; }
+  /* 찾기 입력 줄: 화면에는 "찾는 말은 이 기기 안에서만"이라고 적혀 있으니, 입력한 말이 종이·PDF 로 기기 밖에 남지 않게 숨겨요 */
+  #app .searchbar, #app input[type="search"] { display: none !important; }
+  .doc-slot[data-slot="after-body"], .doc-slot[data-slot="end"] { margin: 0 !important; }
+
+  /* ---------- 틀: 한 단으로 ---------- */
+  .shell { display: block !important; max-width: none !important; margin: 0 !important; padding: 0 !important; }
+  main, #app { padding: 0 !important; min-height: 0 !important; }
+  .doc, .doc-main { display: block !important; max-width: none !important; }
+  .page-title { color: var(--ink); }
+
+  /* ---------- 인쇄 머리와 꼬리(js/ui/print.js 가 끼움) ---------- */
+  .prt-head { display: flex !important; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 2px 16px; margin: 0 0 14px; padding: 0 0 8px; border-bottom: 1px solid var(--rule-2); font-size: 9.5pt; line-height: 1.5; color: var(--ink-2); break-after: avoid; break-inside: avoid; }
+  .prt-site { font-family: var(--serif); font-weight: 700; color: var(--ink); }
+  .prt-date { color: var(--muted); white-space: nowrap; }
+  .prt-url { flex: 1 1 100%; color: var(--muted); word-break: break-all; overflow-wrap: anywhere; }
+  .prt-tel { flex: 1 1 100%; margin-top: 2px; color: var(--ink); font-weight: 650; }
+  .prt-foot { display: block !important; margin-top: 10px; break-inside: avoid; }
+
+  /* 바닥 고지(일반 정보·AI 초안·감수 없음·109·1577-0199·119·문자 109): style.css 의 인쇄 규칙은 바닥글을 숨기지 않고,
+     이 파일이 화면 종류에 따라 정해요. 기본은 인쇄물에도 남겨요(자바스크립트가 없어도).
+     문서 꼬리가 있는 문서 화면과 고지 줄(.fp-notices)이 있는 특집 화면에서는 같은 고지를 겹쳐 싣지 않아요. */
+  html body > footer.sitefoot { display: block !important; margin-top: 18px; border-top: 1px solid var(--rule-2); background: none !important; break-inside: avoid; }
+  html body > footer.sitefoot .sitefoot-inner { max-width: none; padding: 10px 0 0; font-size: 9.5pt; }
+  html.prt-doc body > .sitefoot { display: none !important; }
+
+  /* ---------- 문서 머리 한 줄과 차례: 종이 폭과 상관없이 보이게 ---------- */
+  .doc-meta-m { display: flex !important; flex-wrap: wrap; gap: 4px 14px; align-items: center; margin-top: 10px; font-size: 10pt; color: var(--muted); }
+  .toc-m { display: block !important; margin: 14px 0 0; padding: 8px 12px; border: 1px solid var(--rule); border-radius: 8px; font-size: 10pt; break-inside: avoid; }
+  .toc-m summary { display: block; list-style: none; padding: 0; font-weight: 700; color: var(--ink-2); cursor: auto; }
+  .toc-m summary::-webkit-details-marker { display: none; }
+  .toc-m ol { margin: 4px 0 0; padding: 0 0 0 22px; }
+  .toc-m li { margin: 2px 0; }
+  .toc-m li.l3 { margin-left: 14px; list-style: circle; }
+
+  /* ---------- 접힌 것 펴기 ---------- */
+  /* 요약 보기로 접힌 소절: 숨긴 문단을 보이고, 접기 제목은 보통 소제목으로 */
+  html .body .rd-hidden { display: revert !important; } /* reading.css(이름순으로 뒤에 실림)의 .rd-hidden 숨김을 특이도로 이겨요 */
+  html .body h2.rd-fold { display: block; color: var(--ink); cursor: auto; margin: 1.9em 0 .55em; padding-bottom: .35em; border-bottom: 1px solid var(--rule); }
+  html .body h2.rd-fold::after { content: none; display: none; }
+
+  /* ---------- 본문 ---------- */
+  .body .term { text-decoration: none !important; background: none !important; cursor: auto; }
+  .body img { max-width: 100% !important; height: auto; }
+  .body .tbl { overflow: visible !important; }
+  .body table { width: 100%; font-size: .86em; }
+  .body th { white-space: normal !important; }
+  .body thead { display: table-header-group; }
+  .body p, .body li { orphans: 3; widows: 3; }
+  .body h2, .body h3, .sources h2, .keypoints-h { break-after: avoid; }
+
+  /* 표·콜아웃·위기 안내가 쪽 사이에서 잘리지 않게(한 쪽보다 길면 브라우저가 어쩔 수 없이 나눠요. 그때도 줄은 안 갈라요) */
+  .body .tbl, .body table, .body tr, .body blockquote, .body pre, .body img, .body figure,
+  .callout, .crisis, .emergency, .keypoints, .notice, .disclaimer { break-inside: avoid; }
+
+  /* ---------- 출처 링크 뒤에 주소 ---------- */
+  .sources { margin-top: 26px; }
+  .sources a { color: var(--ink) !important; text-decoration: none; }
+  .sources a[href^="http"]::after,
+  .body a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    display: inline; margin: 0; font-size: inherit; font-weight: 400; vertical-align: baseline; opacity: 1;
+    color: var(--ink-2); text-decoration: none; word-break: break-all; overflow-wrap: anywhere;
+  }
+  .disclaimer { border: 1px solid var(--rule); }
+}
+
+/* 고지 줄이 있는 특집 화면에서는 바닥 고지를 겹쳐 싣지 않아요(:has 를 모르는 브라우저에서는 이 규칙만 빠지고 바닥글이 한 번 더 실려요) */
+@media print {
+  body:has(.fp-notices) > .sitefoot { display: none !important; }
+}
+/* 접힌 차례(details)를 자바스크립트 없이도 펴요(지원 브라우저). 모르는 브라우저에서는 이 규칙만 빠지고 print.js 가 폅니다 */
+@media print {
+  #app article.doc details.toc-m::details-content,
+  #app article.doc .body details::details-content { content-visibility: visible; display: block; }
+  /* 펼쳐 싣는 본문 details 의 표시도 열린 모양으로(js 의 details() 와 같은 범위만) */
+  #app article.doc .body details > summary { list-style-type: disclosure-open; }
+}
 
 
 /* ===== reading.css ===== */
@@ -320,18 +842,34 @@ html.pal-open, html.pal-open body { overflow: hidden; }
 
 
 /* ===== shelf.css ===== */
-/* shelf — 배너(책등형)와 같은 책꽂이. 첫 화면 책꽂이·분류 머리 책등·공용 색 막대. */
+/* shelf — 배너(책등형)와 같은 책꽂이. 첫 화면 책꽂이·분류 머리 책등·공용 색 막대.
+   책등(a.sh-spine)은 누르는 범위이고, 보이는 책은 ::before 예요(휴대폰에서는 양옆 2px 를 비워 책 사이 틈을 두고 누르는 폭은 44px).
+   책 색과 라벨 글자 색은 js/ui/shelf.js 가 책마다 계산해 넣어요(--sl-l/--sl-d 책 명도, --ink-l/--ink-d 글자 색: 밝은·어두운 화면 각각 대비 4.5:1 이상).
+   높이는 --hd(넓은 화면)·--hm(휴대폰): 문서가 많을수록 높아요. */
 .sh-shelf { margin: 28px 0 4px; }
-.sh-row { display: flex; align-items: flex-end; gap: 4px; padding: 0 12px; overflow-x: auto; scrollbar-width: none; }
-.sh-row::-webkit-scrollbar { display: none; }
-.sh-spine { --h: 250; flex: none; display: block; width: 28px; border-radius: 4px 4px 1px 1px; position: relative; text-decoration: none;
-  background: linear-gradient(90deg, rgba(255, 255, 255, .28) 0, rgba(255, 255, 255, 0) 30%, rgba(0, 0, 0, .08) 100%), hsl(var(--h) var(--spine-s) var(--spine-l));
-  box-shadow: inset 0 -2px 0 rgba(0, 0, 0, .12); transition: transform .18s ease, box-shadow .18s ease; }
-.sh-spine:hover, .sh-spine:focus-visible { transform: translateY(-6px); box-shadow: inset 0 -2px 0 rgba(0, 0, 0, .12), 0 10px 18px rgba(29, 35, 44, .18); }
+.sh-rows { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 4px; padding: 0 12px; }
+.sh-row { display: flex; align-items: flex-end; gap: 4px; }
+.sh-spine { --h: 250; --sl: var(--sl-l, var(--spine-l)); --ink: var(--ink-l, #fff); --gut: 0px;
+  flex: none; display: block; position: relative; width: 36px; height: var(--hd, 160px); border-radius: 4px 4px 1px 1px; text-decoration: none;
+  transition: transform .18s ease; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .sh-spine { --sl: var(--sl-d, var(--spine-l)); --ink: var(--ink-d, #fff); } }
+:root[data-theme="dark"] .sh-spine { --sl: var(--sl-d, var(--spine-l)); --ink: var(--ink-d, #fff); }
+/* 보이는 책: 바탕 한 색(라벨 대비를 계산한 색) + 양 끝 3px 만 빛·그늘(라벨 글자 밑은 고른 색) */
+.sh-spine::before { content: ""; position: absolute; top: 0; bottom: 0; left: var(--gut); right: var(--gut); border-radius: 4px 4px 1px 1px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, .26) 0, rgba(255, 255, 255, 0) 3px, rgba(0, 0, 0, 0) calc(100% - 3px), rgba(0, 0, 0, .12) 100%), hsl(var(--h) var(--spine-s) var(--sl));
+  background-color: hsl(var(--h) var(--spine-s) var(--sl));
+  box-shadow: inset 0 -2px 0 rgba(0, 0, 0, .12); transition: box-shadow .18s ease; }
+/* 두꺼운 용어 사전: 위아래에 가는 띠 두 줄(사전 책등처럼) */
+.sh-dict { width: 50px; }
+.sh-dict::before {
+  background: linear-gradient(180deg, transparent 12px, rgba(255, 255, 255, .55) 12px, rgba(255, 255, 255, .55) 14px, transparent 14px, transparent calc(100% - 16px), rgba(255, 255, 255, .55) calc(100% - 16px), rgba(255, 255, 255, .55) calc(100% - 14px), transparent calc(100% - 14px)),
+    linear-gradient(90deg, rgba(255, 255, 255, .26) 0, rgba(255, 255, 255, 0) 3px, rgba(0, 0, 0, 0) calc(100% - 3px), rgba(0, 0, 0, .12) 100%), hsl(var(--h) var(--spine-s) var(--sl)); }
+.sh-spine:hover, .sh-spine:focus-visible { transform: translateY(-6px); }
+.sh-spine:hover::before, .sh-spine:focus-visible::before { box-shadow: inset 0 -2px 0 rgba(0, 0, 0, .12), 0 10px 18px rgba(29, 35, 44, .18); }
 .sh-spine:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
-.sh-label { position: absolute; top: 14px; left: 0; width: 100%; text-align: center; writing-mode: vertical-rl; text-orientation: upright;
-  font-size: 13px; font-weight: 700; letter-spacing: .04em; line-height: 28px; color: rgba(255, 255, 255, .96); white-space: nowrap; }
-.sh-spine.dk .sh-label { color: rgba(24, 26, 34, .82); }
+/* 라벨: 세로 글자. 책 안쪽(위 10px·아래 8px·양옆 3px)에 들어가고, 길면 띄어쓰기·가운뎃점에서 둘째 줄(왼쪽)로 */
+.sh-label { position: absolute; z-index: 1; top: 10px; bottom: 8px; left: 50%; transform: translateX(-50%); writing-mode: vertical-rl; text-orientation: upright;
+  white-space: normal; text-align: start; font-size: 13px; font-weight: 700; letter-spacing: .02em; line-height: 16px; color: var(--ink); }
 .sh-board { height: 6px; background: var(--rule-2); border-radius: 2px; position: relative; }
 .sh-board::after { content: ""; position: absolute; left: 0; right: 0; top: 6px; height: 14px; border-radius: 0 0 8px 8px;
   background: linear-gradient(180deg, rgba(29, 35, 44, .10), rgba(29, 35, 44, 0)); }
@@ -347,14 +885,38 @@ html.pal-open, html.pal-open body { overflow: hidden; }
   background: linear-gradient(90deg, rgba(255, 255, 255, .30) 0, rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, .10) 100%), hsl(var(--h) var(--spine-s) var(--spine-l));
   box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .15); }
 
+/* 휴대폰: 두 줄 책꽂이. 줄마다 아래에 선반. 누르는 폭 44px(사전 50px), 보이는 책은 양옆 2px 안쪽 */
 @media (max-width: 760px) {
   .sh-shelf { margin-top: 22px; }
-  .sh-row { gap: 2px; padding: 0 6px; }
-  .sh-spine { width: 18px; border-radius: 3px 3px 1px 1px; }
-  .sh-label { top: 10px; font-size: 11px; line-height: 18px; letter-spacing: .02em; }
+  .sh-rows { display: grid; gap: 18px; padding: 0; }
+  .sh-row { gap: 0; border-bottom: 6px solid var(--rule-2); border-radius: 0 0 2px 2px; box-shadow: 0 12px 12px -12px rgba(29, 35, 44, .22); }
+  .sh-spine { --gut: 2px; flex: 0 1 44px; min-width: 0; width: auto; height: var(--hm, 100px); }
+  .sh-dict { flex-basis: 50px; }
+  .sh-label { top: 8px; bottom: 6px; font-size: 12px; line-height: 14px; letter-spacing: 0; }
+  /* 긴 이름(띄어쓰기 빼고 8글자 이상, js 가 sh-long)은 한 단계 작게 세 줄까지 */
+  .sh-long .sh-label { font-size: 11px; line-height: 12px; }
+  .sh-dict::before {
+    background: linear-gradient(180deg, transparent 9px, rgba(255, 255, 255, .55) 9px, rgba(255, 255, 255, .55) 11px, transparent 11px, transparent calc(100% - 12px), rgba(255, 255, 255, .55) calc(100% - 12px), rgba(255, 255, 255, .55) calc(100% - 10px), transparent calc(100% - 10px)),
+      linear-gradient(90deg, rgba(255, 255, 255, .26) 0, rgba(255, 255, 255, 0) 3px, rgba(0, 0, 0, 0) calc(100% - 3px), rgba(0, 0, 0, .12) 100%), hsl(var(--h) var(--spine-s) var(--sl)); }
+  .sh-board { display: none; }
+  .sh-hint { margin-top: 14px; }
   .sh-big { width: 12px; margin-right: 9px; }
 }
-@media (prefers-reduced-motion: reduce) { .sh-spine { transition: none; } .sh-spine:hover, .sh-spine:focus-visible { transform: none; } }
+/* 좁은 휴대폰(390px 미만: 360·375·320): 두 줄로는 책등이 44px 밑으로 줄어요(360 에서 40px, 320 에서 35px).
+   두 줄 묶음(.sh-row)을 풀어 한 줄에 6권씩(6·6·4, 용어 사전은 끝) 놓아요. 누르는 칸은 (폭 ÷ 6) — 320 에서 48px, 360 에서 54px.
+   보이는 책은 칸 가운데 40px(사전 48px)로 두꺼워지지 않게, 선반은 책마다 아래 6px 띠를 이어 그려요(줄마다 이어진 선반) */
+@media (max-width: 389.98px) {
+  .sh-rows { grid-template-columns: repeat(6, minmax(0, 1fr)); align-items: end; gap: 18px 0; }
+  .sh-row { display: contents; }
+  .sh-spine { --gut: max(2px, calc(50% - 20px)); height: calc(var(--hm, 100px) + 6px); border-bottom: 6px solid var(--rule-2); border-radius: 0;
+    box-shadow: 0 12px 12px -12px rgba(29, 35, 44, .22); }
+  .sh-dict { --gut: max(2px, calc(50% - 24px)); }
+  /* 책이 들리면 선반 띠도 같이 들리니, 좁은 화면에서는 들어 올리지 않아요(초점 표시는 외곽선) */
+  .sh-spine:hover, .sh-spine:focus-visible { transform: none; }
+}
+/* 움직임 줄이기(운영체제 설정·앱 설정 모두): 들어 올리지 않음 */
+@media (prefers-reduced-motion: reduce) { .sh-spine, .sh-spine::before { transition: none; } .sh-spine:hover, .sh-spine:focus-visible { transform: none; } }
+:root[data-motion="reduce"] .sh-spine:hover, :root[data-motion="reduce"] .sh-spine:focus-visible { transform: none; }
 @media print { .sh-shelf { display: none; } }
 
 
@@ -389,3 +951,190 @@ html.pal-open, html.pal-open body { overflow: hidden; }
 @media (max-width: 480px) { .stk-time { display: none; } }
 @media (prefers-reduced-motion: reduce) { .stk-bar, .stk-caret { transition: none !important; } }
 @media print { .stk-bar { display: none !important; } }
+
+
+/* ===== trust.css ===== */
+/* 믿음 장치(js/ui/trust.js): 출처 확인일 상자와 "이 글의 고친 내역". 선택자는 .trust- 접두어, 색은 토큰만.
+   넓은 화면은 여백(margin) 자리의 상자, 여백이 숨는 1080px 이하와 인쇄는 글 끝(end) 자리의 상자(.trust-rev-m). */
+.trust-rev { padding: 12px 14px; border: 1px solid var(--rule); border-radius: 12px; background: var(--paper-3); font-size: 13.5px; line-height: 1.6; }
+.trust-rev-line { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 12px; }
+.trust-rev-k { color: var(--muted); }
+.trust-rev-d { font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; }
+.trust-rev-def { margin-top: 6px; font-size: 12.5px; line-height: 1.6; color: var(--muted); }
+.trust-jump { display: block; width: 100%; min-height: 32px; margin-top: 10px; padding: 8px 0 0; border-top: 1px solid var(--rule); text-align: left; font-size: 13px; font-weight: 600; color: var(--accent); }
+.trust-jump:hover { text-decoration: underline; text-underline-offset: 3px; }
+.trust-rev-jump { padding: 6px 14px; }
+.trust-rev-jump .trust-jump { margin-top: 0; padding-top: 0; border-top: 0; }
+
+.trust-end { display: grid; gap: 12px; }
+.trust-end > * + * { margin-top: 0; }
+.trust-hist { border: 1px solid var(--rule); border-radius: 10px; font-size: 14.5px; }
+/* 펼침 표시(▸)는 문서 차례(.toc-m)처럼 기본 표시를 그대로 써요 */
+.trust-hist > summary { min-height: 44px; padding: 11px 14px; cursor: pointer; font-weight: 600; color: var(--ink-2); }
+.trust-hist > summary:hover { color: var(--ink); }
+.trust-hist-n { margin-left: 8px; font-size: 13.5px; font-weight: 500; color: var(--muted); }
+.trust-hist-list { list-style: none; margin: 0; padding: 0 14px 4px; }
+.trust-hist-item { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; padding: 10px 0; border-top: 1px solid var(--rule); }
+.trust-hist-d { font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.trust-kind { padding: 0 8px; border: 1px solid currentColor; border-radius: 999px; font-size: 12px; font-weight: 600; line-height: 1.6; white-space: nowrap; }
+.trust-k-new { color: var(--ok); }
+.trust-k-enrich { color: var(--accent); }
+.trust-k-fix { color: var(--ink-2); background: var(--paper-2); border-color: var(--rule-2); }
+.trust-k-feature { color: var(--muted); border-style: dashed; }
+.trust-hist-w { flex: 1 1 16em; min-width: 0; line-height: 1.6; color: var(--ink-2); }
+.trust-hist-foot { padding: 6px 14px 10px; border-top: 1px solid var(--rule); font-size: 13.5px; color: var(--muted); }
+.trust-hist-foot a { display: inline-block; padding: 6px 0; color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+
+@media (max-width: 760px) {
+  .trust-hist-foot a { display: inline-flex; align-items: center; min-height: 44px; padding: 0; }
+}
+/* 넓은 화면에서는 여백 상자가 보이니 글 끝의 같은 줄은 숨겨요(인쇄에서는 여백이 숨으니 남겨요) */
+@media screen and (min-width: 1081px) {
+  .trust-rev-m { display: none; }
+  .trust-end:not(:has(.trust-hist)) { display: none; }
+  /* 좁은 화면에서 넓은 화면으로 바뀌어 보일 것 없는 글 끝 상자만 남았으면, 그 자리의 빈 간격(28px)도 없애요 */
+  .doc-slot[data-slot="end"]:not(:has(> :not(.trust-end))):not(:has(.trust-hist)) { display: none; }
+}
+/* 종이에는 출처 확인 줄만(접힌 내역·이동 버튼은 빼요) */
+@media print {
+  .trust-jump, .trust-hist { display: none; }
+  .trust-end:not(:has(.trust-rev-m)) { display: none; }
+  .trust-rev { break-inside: avoid; }
+}
+
+
+/* ===== zz-a11y.css ===== */
+/* zz-a11y — 접근성 다듬기(F3). css/ui.css 의 맨 끝에 붙어(이름순) 앞 규칙을 낮은 특이도로 덮어요.
+   선택자는 .a11y- 접두어이거나 기존 클래스에 낮은 특이도로. 보이는 모양은 되도록 그대로 두고 누르는 범위만 넓혀요.
+   1) 목차 건너뛰기(js/ui/polish.js 가 넣음)  2) 휴대폰의 누르는 범위(390px 에서 높이 44px 목표, 최소 24px)
+   3) 낮은 화면(높이 500·400·349px 이하 세 단계, 크게 확대)에서 고정 막대(상단 바·하단 바)가 화면의 25% 를 넘지 않게
+   1-3) 머리 소개 문장·고지 줄의 글자 크기가 보기 설정을 따름
+   인쇄에는 적용하지 않아요(모든 규칙이 screen 안). */
+
+/* ---------- 1. 목차 건너뛰기 ----------
+   공용 .sr 로 숨어 있다가 Tab 으로 닿으면 상단 바 아래 왼쪽에 보여요(본문으로 건너뛰기 .skip 과 같은 결) */
+@media screen {
+  .a11y-skipnav:focus { position: fixed; top: calc(var(--top-h) + 8px); left: 8px; z-index: 100; width: auto; height: auto; clip: auto; overflow: visible; white-space: nowrap;
+    display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px; border-radius: 8px; background: var(--accent); color: var(--accent-ink); font-size: 15px; font-weight: 650;
+    box-shadow: var(--shadow-pop); outline: 2px solid var(--ink); outline-offset: 2px; }
+}
+/* 서랍 목차(1080px 이하)는 닫히면 inert 라 건너뛸 것이 없어요 */
+@media (max-width: 1080px) { .a11y-skipnav { display: none; } }
+
+/* ---------- 1-2. 글 칸의 포커스 표시 ----------
+   외곽선을 끄고 옅은 번짐(--accent 35%·--accent-soft)만 두던 글 칸은 번짐이 바탕과 3:1 이 안 돼요(밝은 1.6, 어두운 1.1 안팎).
+   테두리(--accent) 바깥에 같은 색 1px 을 더해 2px 실선 고리로 보이게 하고, 그 밖에 옅은 번짐은 그대로 둬요.
+   특집 화면 css 는 ui.css 뒤에 실리니 :root 를 붙여 앞서요 */
+@media screen {
+  :root .qs input:focus, :root .searchbar input:focus, :root .pg-ask-input:focus, :root .pg-plan-ta:focus {
+    border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent), 0 0 0 4px color-mix(in srgb, var(--accent) 28%, transparent); }
+  /* 명령 팔레트의 입력 칸은 테두리가 없는 칸이라, 칸이 든 머리 줄 아래 선을 2px --accent 로 */
+  .pal-head:focus-within { border-bottom-color: var(--accent); box-shadow: inset 0 -1px 0 var(--accent); }
+}
+
+/* ---------- 1-3. 머리 소개 문장·고지 줄도 보기 설정의 글자 크기를 따라요 ----------
+   style.css 의 고정 16.5px·13.5px 을 --fs-body(보통 17px) 기준 비율로. 보통에서는 같은 크기예요.
+   머리 소개는 '작게'에서도 함께 작아지고, 고지 줄(위기 번호와 "일반적인 정보예요…")은 지금 크기 밑으로는 줄이지 않아요.
+   같은 특이도로 style.css 뒤에 실려 이겨요. 인쇄는 각 화면의 print 규칙(pt)이 그대로 맡아요 */
+@media screen {
+  .page-lead { font-size: calc(var(--fs-body) * 0.971); }
+  .notice { font-size: max(13.5px, calc(var(--fs-body) * 0.794)); }
+}
+
+/* ---------- 2. 휴대폰의 누르는 범위 ---------- */
+@media screen and (max-width: 760px) {
+  /* 2-1. 상단: 검색창·지금 도움 44px, 본문으로 건너뛰기도 44px */
+  .qs input { height: 44px; }
+  .qs-icon { top: 13px; }
+  .tool-help { height: 44px; line-height: 42px; }
+  .skip { display: inline-flex; align-items: center; min-height: 44px; }
+
+  /* 2-2. 빵부스러기: 보이는 줄 높이는 그대로, 누르는 높이만 위아래로 넓혀 44px */
+  .crumb a { display: inline-flex; align-items: center; min-height: 44px; margin-block: -11px; }
+
+  /* 2-3. 문장 안 링크: 줄 간격은 그대로 두고(인라인의 위아래 여백은 줄 높이를 바꾸지 않아요) 누르는 높이만 넓혀요.
+     특이도 0 이라 모듈이 정한 여백이 있으면 그쪽이 이겨요 */
+  :where(#app, .sitefoot, .pop) :where(a:not([class]), a.pol-ext) { padding: 5px 2px; margin-inline: -2px; }
+
+  /* 2-4. 위기·응급 전화 링크(바닥글·특집 화면 위기 줄·문서 위기 배너·응급 줄·핵심 3가지 끝): 문장 안에서 누르기 쉬운 작은 단추 모양.
+     보이는 단추는 약 29~31px 이고, 누르는 범위는 ::after 로 위아래 8px·양옆 2px 를 넓혀 44px 이상.
+     넓힌 만큼을 바깥 여백(margin 8px 2px)으로도 비워 둬요: 인라인 블록의 바깥 여백은 줄 상자 안에 들어가니, 알약이 줄을 바꿔
+     위아래로 놓여도 아랫줄 알약의 누름 범위가 윗줄 알약의 보이는 부분을 덮지 않아요(다른 번호로 걸리는 일 없음) */
+  .sitefoot a[href^="tel:"], .notice a[href^="tel:"], .crisis a[href^="tel:"], .emergency a[href^="tel:"], .keypoints-crisis a[href^="tel:"] {
+    position: relative; display: inline-block; padding: 4px 10px; margin: 8px 2px; line-height: 1.4; vertical-align: baseline;
+    border: 1px solid var(--rule-2); border-radius: 999px; background: var(--paper-3); color: var(--ink); font-weight: 700; text-decoration: none; }
+  .sitefoot a[href^="tel:"]::after, .notice a[href^="tel:"]::after, .crisis a[href^="tel:"]::after, .emergency a[href^="tel:"]::after, .keypoints-crisis a[href^="tel:"]::after {
+    content: ""; position: absolute; left: -3px; right: -3px; top: -9px; bottom: -9px; }
+  .crisis a[href^="tel:"], .keypoints-crisis a[href^="tel:"] { border-color: color-mix(in srgb, var(--calm) 50%, transparent); color: var(--calm); }
+  .emergency a[href^="tel:"] { border-color: color-mix(in srgb, var(--warn) 50%, transparent); color: var(--ink); }
+
+  /* 2-5. 출처 번호: 보이는 크기는 그대로(폭 24px), 누르는 높이만 위아래로 44px */
+  .body .fn a { position: relative; min-width: 24px; }
+  .body .fn a::after { content: ""; position: absolute; left: 0; right: 0; top: -11px; bottom: -11px; }
+
+  /* 2-6. 목록형 링크: 역링크·함께 읽기·문서 차례·용어 사전 관련 글·첫 화면 분류 색인·코스 단계 — 줄마다 44px */
+  .backlinks ul, .see-also ul { gap: 0 24px; }
+  .backlinks a, .see-also a { min-height: 44px; }
+  .toc-m li { margin: 0; }
+  .toc-m a { display: flex; align-items: center; min-height: 44px; }
+  .toc-m summary { min-height: 44px; }
+  /* 용어 사전 관련 글: 두 글자 제목("환청")도 누르는 폭 24px 넘게 — 양옆 6px 를 넓히고 같은 만큼 바깥 여백을 당겨 글자 자리는 그대로 */
+  .gl-rel { gap: 0 14px; }
+  .gl-rel a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 6px; margin: 0 -6px; }
+  /* 용어 사전 첫 글자 줄: 휴대폰에서는 한 줄로(옆으로 밀어 넘김, 둘러보기 화면과 같은 꼴). 세 줄로 접히면 붙박이 줄만 161px(390×844 의 19%)라
+     상단 바·하단 바와 합쳐 화면의 1/3 을 가렸어요. 오른쪽 끝은 흐리게(옆으로 더 있다는 표시) */
+  .gl-letters { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; overscroll-behavior-x: contain; padding: 6px 28px 6px 0;
+    -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 28px), transparent); mask-image: linear-gradient(90deg, #000 calc(100% - 28px), transparent); }
+  .gl-letters::-webkit-scrollbar { display: none; }
+  .gl-letters a { flex: none; min-width: 44px; height: 44px; }
+  .index-sec ul { gap: 0 14px; }
+  .index-sec ul a { display: inline-flex; align-items: center; min-height: 44px; }
+  .index-sec h3 a, .terms dt a { display: inline-flex; align-items: center; min-height: 44px; }
+  .h-sec .more { display: inline-flex; align-items: center; min-height: 44px; padding: 0; margin-block: -5px; }
+  .step a { display: flex; align-items: center; min-height: 44px; }
+
+  /* 2-7. 단추: 휴대폰에서는 44px(문서 머리 줄의 단추는 style.css 가 보이는 크기 36px 에 누르는 범위만 넓혀 둠) */
+  .btn:not(.doc-meta-m .btn) { height: auto; min-height: 44px; }
+
+  /* 2-8. 따라오는 제목 줄 */
+  .stk-main { min-height: 44px; }
+}
+
+/* ---------- 3. 낮은 화면(높이 500px 이하: 가로로 눕힌 휴대폰, 200% 이상 확대) ----------
+   상단 바를 46px 로 줄이고(단추 44px 는 그대로), 휴대폰 폭에서는 하단 바를 한 줄(아이콘 옆에 이름)로 낮추고
+   따라오는 제목 줄은 감춰요(같은 차례가 하단 바에 있어요). 640×400 에서 상단 바 47 + 하단 바 49 = 96px(24%) */
+@media screen and (max-height: 500px) {
+  :root { --top-h: 46px; }
+  /* 화면 안에 붙어 따라오는 첫 글자 줄(용어 사전·둘러보기)은 낮은 화면에서는 붙이지 않아요(글을 읽을 자리가 남게) */
+  .gl-letters, :root .pg-browse-letters { position: static; }
+}
+@media screen and (max-height: 500px) and (max-width: 760px) {
+  .stk-bar { display: none !important; }
+  body.mb-has-bar { padding-bottom: calc(50px + env(safe-area-inset-bottom, 0px)); }
+  html:has(> body.mb-has-bar) { scroll-padding-bottom: calc(58px + env(safe-area-inset-bottom, 0px)); }
+  .mb-btn { flex-direction: row; gap: 6px; height: 44px; min-height: 44px; padding: 0 2px; }
+  .mb-btn svg { width: 20px; height: 20px; }
+}
+/* 3-2. 더 낮은 화면(높이 400px 이하: 1280×720 을 200% 로 확대한 640×360 등). 상단 바 42px(단추 40px), 하단 바 45px(단추 40px)
+   → 합 87px: 높이 350px 에서도 25% 아래(24.9%). 누르는 크기는 40px 로 최소 24px 를 넉넉히 넘어요 */
+@media screen and (max-height: 400px) {
+  :root { --top-h: 41px; }
+  .tool-help { height: 40px; line-height: 38px; }
+  .topbar .iconbtn { width: 40px; height: 40px; }
+  .qs input { height: 40px; }
+  .qs-icon { top: 11px; }
+}
+@media screen and (max-height: 400px) and (max-width: 760px) {
+  body.mb-has-bar { padding-bottom: calc(46px + env(safe-area-inset-bottom, 0px)); }
+  html:has(> body.mb-has-bar) { scroll-padding-bottom: calc(54px + env(safe-area-inset-bottom, 0px)); }
+  .mb-btn { height: 40px; min-height: 40px; }
+  .mb-btn svg { width: 18px; height: 18px; }
+}
+/* 3-3. 아주 낮은 화면(높이 349px 이하: 320×256 같은 400% 확대). 붙박이 막대는 상단 바(42px, "지금 도움"·찾기·분류 서랍이 있음) 하나만 남겨요.
+   하단 바의 일(찾기·분류·차례·저장·용어·위로)은 상단 바와 본문(문서 차례·머리 줄 저장 단추)에도 있어요. 따라오는 제목 줄도 감춰요.
+   320×256 에서 42px = 16% */
+@media screen and (max-height: 349px) {
+  .mb-bar, .stk-bar { display: none !important; }
+  body.mb-has-bar { padding-bottom: env(safe-area-inset-bottom, 0px); }
+  html:has(> body.mb-has-bar) { scroll-padding-bottom: 8px; }
+}

@@ -7,13 +7,13 @@
 <meta name="theme-color" content="#fbfbf9" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#15171c" media="(prefers-color-scheme: dark)">
 <title>읽기 코스 - 조현병 백과</title>
-<meta name="description" content="처음 진단받았을 때, 가족이 진단받았을 때, 약을 시작했을 때처럼 상황별로 읽을 순서를 안내하는 코스 8개.">
+<meta name="description" content="처음 진단받았을 때, 가족이 진단받았을 때, 약을 시작했을 때처럼 상황별로 읽을 순서를 안내하는 코스 18개.">
 <meta name="robots" content="index,follow">
 <link rel="canonical" href="https://duscjf0098.github.io/schizophrenia-encyclopedia/courses/">
 <meta property="og:site_name" content="조현병 백과">
 <meta property="og:locale" content="ko_KR">
 <meta property="og:title" content="읽기 코스 - 조현병 백과">
-<meta property="og:description" content="처음 진단받았을 때, 가족이 진단받았을 때, 약을 시작했을 때처럼 상황별로 읽을 순서를 안내하는 코스 8개.">
+<meta property="og:description" content="처음 진단받았을 때, 가족이 진단받았을 때, 약을 시작했을 때처럼 상황별로 읽을 순서를 안내하는 코스 18개.">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://duscjf0098.github.io/schizophrenia-encyclopedia/og.png">
 <meta property="og:image:width" content="1200">
@@ -21,36 +21,66 @@
 <meta property="og:image:alt" content="조현병 백과 - 출처와 함께 읽는 한국어 백과">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="읽기 코스 - 조현병 백과">
-<meta name="twitter:description" content="처음 진단받았을 때, 가족이 진단받았을 때, 약을 시작했을 때처럼 상황별로 읽을 순서를 안내하는 코스 8개.">
+<meta name="twitter:description" content="처음 진단받았을 때, 가족이 진단받았을 때, 약을 시작했을 때처럼 상황별로 읽을 순서를 안내하는 코스 18개.">
 <meta name="twitter:image" content="https://duscjf0098.github.io/schizophrenia-encyclopedia/og.png">
 <meta property="og:url" content="https://duscjf0098.github.io/schizophrenia-encyclopedia/courses/">
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <link rel="manifest" href="../manifest.webmanifest">
 <link rel="apple-touch-icon" href="../icon-192.png">
-<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@600;700&display=swap">
 <link rel="stylesheet" href="../css/style.css">
 <link rel="stylesheet" href="../css/ui.css">
 
 
 
+
+<style>
+/* 정적 문서의 인쇄용 한 줄(사이트 이름 + 정식 글 주소): 화면에서는 숨기고 인쇄에서만. 자바스크립트가 꺼졌거나 앱이 문서를 다시 그리기 전에 인쇄해도 첫머리에 남아요.
+   인쇄 모듈(js/ui/print.js)이 만든 머리(.prt-head)가 있으면 인쇄에서도 숨겨요(같은 내용을 두 번 싣지 않게) */
+.prt-static { display: none; }
+@media print {
+  .prt-static { display: block; margin: 0 0 12px; padding: 0 0 6px; border-bottom: 1px solid var(--rule-2); font-size: 9.5pt; line-height: 1.5; color: var(--ink-2); overflow-wrap: anywhere; }
+  .prt-static b { font-family: var(--serif); font-weight: 700; color: var(--ink); }
+  .prt-static + .crumb { display: none; }
+  .prt-head ~ .prt-static, .prt-head ~ * .prt-static { display: none; }
+}
+/* 바닥글 링크 줄(이 백과에 대해 · 고침 기록): 따로 선 이동 링크라 화면에서는 누르는 높이를 44px 로(글자 크기는 그대로) */
+@media screen {
+  .sitefoot .foot-links a { display: inline-block; box-sizing: border-box; min-height: 44px; padding: 10px 4px; margin: 0 -4px; }
+}
+/* 자바스크립트가 꺼졌으면(아래 머리 스크립트가 html 에 js 클래스를 달지 못하면) 눌러도 아무 일도 하지 않는 버튼(분류 목차·글자 크기·밝게/어둡게)을 감춰요.
+   "지금 도움"은 링크라서 그대로 둬요 */
+html:not(.js) #btn-nav, html:not(.js) #btn-fs, html:not(.js) #btn-theme { display: none; }
+/* 정적 문서의 저장·공유 단추도 자바스크립트가 있어야 동작해요(앱과 같은 마크업이라 미리 들어 있음) */
+html:not(.js) .doc-meta-m .acts, html:not(.js) .infobox-actions { display: none; }
+</style>
 <script>
-/* 옛 해시 주소(#/a/…)로 들어오면 새 경로로 옮기고, 첫 그리기 전에 테마·글자 크기를 적용한다 */
+/* 자바스크립트가 켜졌다는 표시(html.js)를 달고, 옛 해시 주소(#/a/…)로 들어오면 새 경로로 옮기고, 첫 그리기 전에 보기 설정을 적용한다.
+   - 옛 해시 주소: js/paths.js 의 hashToPath 와 같은 규칙. 뒤에 화면 안 자리 조각이 붙으면 경로 뒤로('#/about#privacy' → 'about/#privacy')
+   - 보기 설정: js/ui/settings.js 의 load() 와 같은 값(테마 jhb.theme, 글자 크기 jhb.fs 다섯 단계, jhb.ui.settings 의 줄 너비·본문 글꼴·움직임 줄이기).
+     모듈이 실린 뒤 한 번 더 바뀌어 화면이 출렁이지 않게(T16)
+   첫 화면 자리 표시(data-hm-start)는 쓰지 않기로 했어요: 그 속성을 읽던 css/ui/home.css 규칙은 K4 에서 지웠어요(잰 값은 tests/pages.test.cjs 의 '머리 스크립트' 테스트 주석) */
 (function () {
+  var r = document.documentElement;
+  try { r.classList.add('js'); } catch (e) { }
   var h = location.hash;
   if (h.indexOf('#/') === 0) {
-    var rest = h.slice(2), qi = rest.indexOf('?');
+    var rest = h.slice(2), fi = rest.indexOf('#'), frag = fi >= 0 ? rest.slice(fi) : '';
+    if (fi >= 0) rest = rest.slice(0, fi);
+    var qi = rest.indexOf('?');
     var p = (qi >= 0 ? rest.slice(0, qi) : rest).split('/').filter(Boolean).join('/');
-    location.replace(document.documentElement.getAttribute('data-base') + (p ? p + '/' : '') + (qi >= 0 ? rest.slice(qi) : ''));
+    var to = (r.getAttribute('data-base') || '') + (p ? p + '/' : '') + (qi >= 0 ? rest.slice(qi) : '') + (frag.length > 1 ? frag : '');
+    location.replace(to || './');
   }
+  function get(k) { try { return JSON.parse(localStorage.getItem(k) || 'null'); } catch (e) { return null; } }
   try {
-    var t = JSON.parse(localStorage.getItem('jhb.theme') || 'null');
-    if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
-    var f = JSON.parse(localStorage.getItem('jhb.fs') || 'null');
-    if (f === 's' || f === 'l') document.documentElement.setAttribute('data-fs', f);
+    var t = get('jhb.theme');
+    if (t === 'light' || t === 'dark') r.setAttribute('data-theme', t);
+    var f = get('jhb.fs');
+    if (f === 's' || f === 'l' || f === 'xl' || f === 'xxl') r.setAttribute('data-fs', f);
+    var s = get('jhb.ui.settings') || {};
+    if (s.width === 'wide') r.setAttribute('data-width', 'wide');
+    if (s.font === 'serif') r.setAttribute('data-font', 'serif');
+    if (s.motion === 'reduce') r.setAttribute('data-motion', 'reduce');
   } catch (e) { }
 })();
 </script>
@@ -75,14 +105,15 @@
     <div class="qs" role="search">
       <svg class="qs-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="M15 15l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
       <input id="q" type="search" autocomplete="off" spellcheck="false" placeholder="문서나 용어 찾기" aria-label="문서나 용어 찾기" aria-haspopup="dialog">
-      <kbd class="qs-key" aria-hidden="true">/</kbd>
+      <kbd class="qs-key" aria-hidden="true">/ · Ctrl K</kbd>
     </div>
     <nav class="tools" aria-label="도구">
       <a class="tool-help" id="btn-help" href="../a/crisis-hotlines/"><span class="tool-help-long">지금 </span>도움</a>
       <!--top:start-->
       <a href="../glossary/" class="tool-link" data-r="glossary">용어 사전</a>
-      <a href="../random/" class="tool-link" data-r="random" rel="nofollow">아무 문서</a>
-      <a href="../fav/" class="tool-link" data-r="fav" rel="nofollow">저장한 문서</a>
+      <a href="../guide/" class="tool-link" data-r="guide">길잡이</a>
+      <a href="../browse/" class="tool-link" data-r="browse">둘러보기</a>
+      <a href="../me/" class="tool-link" data-r="me" rel="nofollow">내 서재</a>
       <!--top:end-->
       <button type="button" class="iconbtn" id="btn-fs" aria-label="글자 크기 바꾸기" title="글자 크기">
         <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M3 18l4.5-11L12 18M4.6 14h5.8M14 18l3.2-7.5L20.4 18M15.1 15.6h4.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
@@ -96,45 +127,22 @@
 <div class="shell">
   <nav class="sidenav" id="sidenav" aria-label="분류 목차"></nav>
   <div class="scrim" id="scrim" hidden></div>
-  <main id="app" tabindex="-1"><nav class="crumb" aria-label="위치"><a href="../">첫 화면</a><span class="sep">/</span>읽기 코스</nav><h1 class="page-title">읽기 코스</h1><ul><li><a href="../course/first-diagnosis/">처음 진단받았어요</a> 진단을 처음 들은 당사자가 병이 무엇인지, 지금 무엇을 하면 좋은지 차근차근 알 수 있도록 묶었어요. 첫 삽화는 치료 반응이 가장 좋은 시기라는 사실부터 시작해요.</li><li><a href="../course/family-first/">가족이 진단받았어요</a> 가족이 조현병 진단을 받은 분이 충격을 추스르고, 대화와 돌봄의 방법을 익히도록 묶었어요. 가족 탓이 아니라는 것에서 출발해 응급 상황과 자신을 돌보는 법까지 이어져요.</li><li><a href="../course/starting-medication/">약을 시작했어요 · 부작용이 힘들어요</a> 항정신병약을 처음 먹기 시작한 분, 부작용 때문에 계속 먹을지 고민하는 분을 위해 묶었어요. 약의 원리에서 시작해 부작용의 종류와 의사에게 말하는 법, 중단의 위험까지 순서대로 봐요.</li><li><a href="../course/negative-symptoms/">음성 증상이 힘들어요</a> 의욕과 즐거움이 사라지고 말과 표정이 줄어 힘든 당사자와, 그것을 게으름으로 오해하기 쉬운 가족을 위해 묶었어요. 증상의 정체를 이해한 뒤 우울·약 부작용과 구분하고, 실제로 해 볼 수 있는 방법으로 이어져요.</li><li><a href="../course/living-with-positive/">환청·망상과 지내기</a> 약을 먹어도 목소리나 의심이 남는 당사자가 증상을 이해하고 거리를 두는 법을 익히도록 묶었어요. 증상이 생기는 과정에서 시작해 자가 대처, 인지행동치료, 다음 단계 치료까지 이어져요.</li><li><a href="../course/preventing-relapse/">재발을 막고 안정을 지키고 싶어요</a> 증상이 가라앉은 뒤 안정을 오래 지키고 싶은 당사자와 가족을 위해 묶었어요. 재발 신호를 알아보는 법에서 약·수면·스트레스 관리, 한 장짜리 재발 예방 계획 쓰기까지 이어져요.</li><li><a href="../course/system-support/">제도와 지원을 알아보고 싶어요</a> 한국에서 조현병이 있는 사람과 가족이 쓸 수 있는 법·비용·기관·복지 제도를 순서대로 묶었어요. 법의 뼈대에서 시작해 치료비, 지역 기관, 일자리와 소득, 입원과 위기 연락처까지 이어져요.</li><li><a href="../course/research-curious/">연구와 역사가 궁금해요</a> 조현병이라는 진단이 어떻게 만들어지고 치료가 어떻게 바뀌어 왔는지, 지금 연구가 어디까지 왔는지 알고 싶은 분을 위해 묶었어요. 100년 전 개념의 탄생에서 유전체·뇌 영상·신약, 그리고 남은 논쟁까지 이어져요.</li></ul></main>
+  <main id="app" tabindex="-1"><nav class="crumb" aria-label="위치"><a href="../">첫 화면</a><span class="sep">/</span>읽기 코스</nav><h1 class="page-title">읽기 코스</h1><p class="page-lead">지금 상황에 맞는 코스를 고르면 읽을 순서를 안내해요. 읽은 문서는 표시가 남고, 첫 화면에서 이어서 읽을 수 있어요. 기록은 이 기기에만 저장돼요.</p><ul><li><a href="../course/first-diagnosis/">처음 진단받았어요</a> 진단을 처음 들은 당사자가 병이 무엇인지, 지금 무엇을 하면 좋은지 차근차근 알 수 있도록 묶었어요. 첫 삽화는 치료 반응이 가장 좋은 시기라는 사실부터 시작해요.</li><li><a href="../course/family-first/">가족이 진단받았어요</a> 가족이 조현병 진단을 받은 분이 충격을 추스르고, 대화와 돌봄의 방법을 익히도록 묶었어요. 가족 탓이 아니라는 것에서 출발해 응급 상황과 자신을 돌보는 법까지 이어져요.</li><li><a href="../course/starting-medication/">약을 시작했어요 · 부작용이 힘들어요</a> 항정신병약을 처음 먹기 시작한 분, 부작용 때문에 계속 먹을지 고민하는 분을 위해 묶었어요. 약의 원리에서 시작해 부작용의 종류와 의사에게 말하는 법, 중단의 위험까지 순서대로 봐요.</li><li><a href="../course/negative-symptoms/">음성 증상이 힘들어요</a> 의욕과 즐거움이 사라지고 말과 표정이 줄어 힘든 당사자와, 그것을 게으름으로 오해하기 쉬운 가족을 위해 묶었어요. 증상의 정체를 이해한 뒤 우울·약 부작용과 구분하고, 실제로 해 볼 수 있는 방법으로 이어져요.</li><li><a href="../course/living-with-positive/">환청·망상과 지내기</a> 약을 먹어도 목소리나 의심이 남는 당사자가 증상을 이해하고 거리를 두는 법을 익히도록 묶었어요. 증상이 생기는 과정에서 시작해 자가 대처, 인지행동치료, 다음 단계 치료까지 이어져요.</li><li><a href="../course/preventing-relapse/">재발을 막고 안정을 지키고 싶어요</a> 증상이 가라앉은 뒤 안정을 오래 지키고 싶은 당사자와 가족을 위해 묶었어요. 재발 신호를 알아보는 법에서 약·수면·스트레스 관리, 한 장짜리 재발 예방 계획 쓰기까지 이어져요.</li><li><a href="../course/system-support/">제도와 지원을 알아보고 싶어요</a> 한국에서 조현병이 있는 사람과 가족이 쓸 수 있는 법·비용·기관·복지 제도를 순서대로 묶었어요. 법의 뼈대에서 시작해 치료비, 지역 기관, 일자리와 소득, 입원과 위기 연락처까지 이어져요.</li><li><a href="../course/research-curious/">연구와 역사가 궁금해요</a> 조현병이라는 진단이 어떻게 만들어지고 치료가 어떻게 바뀌어 왔는지, 지금 연구가 어디까지 왔는지 알고 싶은 분을 위해 묶었어요. 100년 전 개념의 탄생에서 유전체·뇌 영상·신약, 그리고 남은 논쟁까지 이어져요.</li><li><a href="../course/near-first/">주변 사람이 조현병일 때</a> 친구·동료·학생처럼 가까운 사람이 조현병이라는 걸 알게 됐거나 요즘 달라 보여 걱정되는 분을 위해 묶었어요. 병과 오해를 먼저 바로잡고, 관계마다 할 수 있는 일과 대화법, 위기 때 연락할 곳까지 이어져요.</li><li><a href="../course/confusing-diagnosis/">진단이 헷갈릴 때</a> 진단명이 낯설거나 바뀌어서 혼란스러운 당사자와 가족을 위해 묶었어요. 진단이 만들어지는 과정과 기준에서 시작해 헷갈리기 쉬운 다른 진단과의 차이, 의문이 들 때 할 수 있는 일까지 이어져요.</li><li><a href="../course/symptoms-remain/">약을 먹어도 증상이 남을 때</a> 약을 먹어도 환청·망상이 남아 힘든 당사자를 위해 묶었어요. 약이 증상에 어떻게 듣는지 아는 데서 시작해 몸에 충분히 들어가는지 확인하기, 치료저항성 평가, 클로자핀과 다른 치료, 증상과 함께 지내는 법까지 이어져요.</li><li><a href="../course/body-health/">몸 건강 챙기기</a> 약을 먹으며 몸 건강까지 챙기고 싶은 당사자를 위해 묶었어요. 왜 몸을 챙기는 것이 치료인지에서 시작해 약이 몸에 주는 영향, 바로 연락해야 할 신호, 오늘 할 수 있는 생활 습관까지 이어져요.</li><li><a href="../course/work-school/">일과 학업으로 돌아가기</a> 일터나 학교로 돌아가고 싶은 당사자를 위해 묶었어요. 일할 수 있다는 근거와 인지 증상 이해에서 시작해 알릴지 정하기, 차별과 기록 걱정, 고용 지원 제도, 일터에서 증상이 올 때의 대처까지 이어져요.</li><li><a href="../course/teens-twenties/">10대·20대에 시작됐을 때</a> 10대·20대에 증상이 시작됐거나 달라진 모습이 걱정되는 당사자와 가족을 위해 묶었어요. 초기 변화와 첫 삽화에서 시작해 대마·잠 같은 생활, 학교·복학·병역, 위기 때 연락할 곳까지 이어져요.</li><li><a href="../course/hospital-stay/">입원 전후</a> 입원을 앞두고 있거나 입원 중이거나 막 퇴원한 당사자와 가족을 위해 묶었어요. 급성기와 입원의 종류·권리에서 시작해 병동 생활과 비용, 퇴원 뒤 첫 한 달과 지역에서 이어지는 돌봄까지 따라가요.</li><li><a href="../course/partners-parents/">연인·배우자·부모로 살기</a> 연애하고 결혼하고 부모가 되는 삶을 생각하는 당사자를 위해 묶었어요. 관계와 공개에서 시작해 약과 성·피임, 유전과 임신, 아이와 파트너가 알면 좋은 것까지 이어져요.</li><li><a href="../course/after-parents/">부모가 떠난 뒤를 준비하기</a> &quot;내가 없으면 이 아이는 어떻게 되나&quot; 하는 걱정을 안고 있는 부모와 가족을 위해 묶었어요. 돈·주거·결정 지원·사람이라는 준비의 틀에서 시작해 후견과 급여, 집과 돌봄 서비스, 함께할 사람과 단체까지 이어져요.</li><li><a href="../course/money-rights/">돈과 권리</a> 치료비 부담을 덜고, 기록·보험·입원·수사 같은 상황에서 지켜지는 권리를 알고 싶은 당사자와 가족을 위해 묶었어요. 진료비를 줄이는 제도에서 시작해 큰 병원비 안전망, 기록과 정보, 법이 보장하는 권리까지 이어져요.</li></ul></main>
 </div>
 <footer class="sitefoot">
   <div class="sitefoot-inner">
     <p>이 백과는 일반적인 정보를 전해요. 진단과 치료는 담당 의사와 상의하세요. 글마다 출처를 달았고, 틀린 내용은 고쳐 나가요.</p>
     <p>글은 AI가 공개 자료를 바탕으로 초안을 쓰고 출처를 확인해 만들었어요. 전문가 감수는 받지 않았어요.</p>
-    <p>힘든 생각이 들 때 자살예방상담 <a href="tel:109">109</a>, 정신건강위기상담 <a href="tel:1577-0199">1577-0199</a>에 전화하세요. 24시간 받아요.</p>
-    <p><a href="../about/">이 백과에 대해</a></p>
+    <p>힘든 생각이 들 때 자살예방상담 <a href="tel:109">109</a>, 정신건강위기상담 <a href="tel:1577-0199">1577-0199</a>에 전화하세요. 24시간 받아요. 전화가 어렵다면 109로 문자를 보낼 수 있어요. 생명이 위급하면 <a href="tel:119">119</a>에 전화하세요.</p>
+    <p class="foot-links"><!--foot:start--><a href="../about/">이 백과에 대해</a> · <a href="../changes/">고침 기록</a><!--foot:end--></p>
   </div>
 </footer>
 <div class="pop" id="pop" role="dialog" aria-modal="false" hidden></div>
-<script src="../data/sections.js"></script>
-<script src="../data/toc.js"></script>
-<script src="../data/glossary.js"></script>
-<script src="../data/about.js"></script>
-<script src="../data/synonyms.js"></script>
-<script src="../data/crisis-card.js"></script>
-<script src="../data/courses.js"></script>
-<script src="../data/links.js"></script>
-<script src="../data/pages.js"></script>
-<script src="../js/util.js"></script>
-<script src="../js/paths.js"></script>
-<script src="../js/md.js"></script>
-<script src="../js/search.js"></script>
-<script src="../js/gloss.js"></script>
-<script src="../js/synonyms.js"></script>
-<script src="../js/crisis.js"></script>
-<script src="../js/progress.js"></script>
-<script src="../js/app.js"></script>
+<!--core:start-->
+<script src="../js/core.js"></script>
+<!--core:end-->
 <!--ui:start-->
-<script src="../js/ui/palette.js"></script>
-<script src="../js/ui/preview.js"></script>
-<script src="../js/ui/mobile.js"></script>
-<script src="../js/ui/sticky.js"></script>
-<script src="../js/ui/reading.js"></script>
-<script src="../js/ui/settings.js"></script>
-<script src="../js/ui/polish.js"></script>
-<script src="../js/ui/home.js"></script>
-<script src="../js/ui/shelf.js"></script>
+<script src="../js/ui.js"></script>
 <!--ui:end-->
 </body>
 </html>

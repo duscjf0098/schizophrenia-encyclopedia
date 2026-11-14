@@ -27,30 +27,60 @@
 <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
 <link rel="manifest" href="../../manifest.webmanifest">
 <link rel="apple-touch-icon" href="../../icon-192.png">
-<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@600;700&display=swap">
 <link rel="stylesheet" href="../../css/style.css">
 <link rel="stylesheet" href="../../css/ui.css">
 
 
 
+
+<style>
+/* 정적 문서의 인쇄용 한 줄(사이트 이름 + 정식 글 주소): 화면에서는 숨기고 인쇄에서만. 자바스크립트가 꺼졌거나 앱이 문서를 다시 그리기 전에 인쇄해도 첫머리에 남아요.
+   인쇄 모듈(js/ui/print.js)이 만든 머리(.prt-head)가 있으면 인쇄에서도 숨겨요(같은 내용을 두 번 싣지 않게) */
+.prt-static { display: none; }
+@media print {
+  .prt-static { display: block; margin: 0 0 12px; padding: 0 0 6px; border-bottom: 1px solid var(--rule-2); font-size: 9.5pt; line-height: 1.5; color: var(--ink-2); overflow-wrap: anywhere; }
+  .prt-static b { font-family: var(--serif); font-weight: 700; color: var(--ink); }
+  .prt-static + .crumb { display: none; }
+  .prt-head ~ .prt-static, .prt-head ~ * .prt-static { display: none; }
+}
+/* 바닥글 링크 줄(이 백과에 대해 · 고침 기록): 따로 선 이동 링크라 화면에서는 누르는 높이를 44px 로(글자 크기는 그대로) */
+@media screen {
+  .sitefoot .foot-links a { display: inline-block; box-sizing: border-box; min-height: 44px; padding: 10px 4px; margin: 0 -4px; }
+}
+/* 자바스크립트가 꺼졌으면(아래 머리 스크립트가 html 에 js 클래스를 달지 못하면) 눌러도 아무 일도 하지 않는 버튼(분류 목차·글자 크기·밝게/어둡게)을 감춰요.
+   "지금 도움"은 링크라서 그대로 둬요 */
+html:not(.js) #btn-nav, html:not(.js) #btn-fs, html:not(.js) #btn-theme { display: none; }
+/* 정적 문서의 저장·공유 단추도 자바스크립트가 있어야 동작해요(앱과 같은 마크업이라 미리 들어 있음) */
+html:not(.js) .doc-meta-m .acts, html:not(.js) .infobox-actions { display: none; }
+</style>
 <script>
-/* 옛 해시 주소(#/a/…)로 들어오면 새 경로로 옮기고, 첫 그리기 전에 테마·글자 크기를 적용한다 */
+/* 자바스크립트가 켜졌다는 표시(html.js)를 달고, 옛 해시 주소(#/a/…)로 들어오면 새 경로로 옮기고, 첫 그리기 전에 보기 설정을 적용한다.
+   - 옛 해시 주소: js/paths.js 의 hashToPath 와 같은 규칙. 뒤에 화면 안 자리 조각이 붙으면 경로 뒤로('#/about#privacy' → 'about/#privacy')
+   - 보기 설정: js/ui/settings.js 의 load() 와 같은 값(테마 jhb.theme, 글자 크기 jhb.fs 다섯 단계, jhb.ui.settings 의 줄 너비·본문 글꼴·움직임 줄이기).
+     모듈이 실린 뒤 한 번 더 바뀌어 화면이 출렁이지 않게(T16)
+   첫 화면 자리 표시(data-hm-start)는 쓰지 않기로 했어요: 그 속성을 읽던 css/ui/home.css 규칙은 K4 에서 지웠어요(잰 값은 tests/pages.test.cjs 의 '머리 스크립트' 테스트 주석) */
 (function () {
+  var r = document.documentElement;
+  try { r.classList.add('js'); } catch (e) { }
   var h = location.hash;
   if (h.indexOf('#/') === 0) {
-    var rest = h.slice(2), qi = rest.indexOf('?');
+    var rest = h.slice(2), fi = rest.indexOf('#'), frag = fi >= 0 ? rest.slice(fi) : '';
+    if (fi >= 0) rest = rest.slice(0, fi);
+    var qi = rest.indexOf('?');
     var p = (qi >= 0 ? rest.slice(0, qi) : rest).split('/').filter(Boolean).join('/');
-    location.replace(document.documentElement.getAttribute('data-base') + (p ? p + '/' : '') + (qi >= 0 ? rest.slice(qi) : ''));
+    var to = (r.getAttribute('data-base') || '') + (p ? p + '/' : '') + (qi >= 0 ? rest.slice(qi) : '') + (frag.length > 1 ? frag : '');
+    location.replace(to || './');
   }
+  function get(k) { try { return JSON.parse(localStorage.getItem(k) || 'null'); } catch (e) { return null; } }
   try {
-    var t = JSON.parse(localStorage.getItem('jhb.theme') || 'null');
-    if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
-    var f = JSON.parse(localStorage.getItem('jhb.fs') || 'null');
-    if (f === 's' || f === 'l') document.documentElement.setAttribute('data-fs', f);
+    var t = get('jhb.theme');
+    if (t === 'light' || t === 'dark') r.setAttribute('data-theme', t);
+    var f = get('jhb.fs');
+    if (f === 's' || f === 'l' || f === 'xl' || f === 'xxl') r.setAttribute('data-fs', f);
+    var s = get('jhb.ui.settings') || {};
+    if (s.width === 'wide') r.setAttribute('data-width', 'wide');
+    if (s.font === 'serif') r.setAttribute('data-font', 'serif');
+    if (s.motion === 'reduce') r.setAttribute('data-motion', 'reduce');
   } catch (e) { }
 })();
 </script>
@@ -75,14 +105,15 @@
     <div class="qs" role="search">
       <svg class="qs-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="M15 15l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
       <input id="q" type="search" autocomplete="off" spellcheck="false" placeholder="문서나 용어 찾기" aria-label="문서나 용어 찾기" aria-haspopup="dialog">
-      <kbd class="qs-key" aria-hidden="true">/</kbd>
+      <kbd class="qs-key" aria-hidden="true">/ · Ctrl K</kbd>
     </div>
     <nav class="tools" aria-label="도구">
       <a class="tool-help" id="btn-help" href="../../a/crisis-hotlines/"><span class="tool-help-long">지금 </span>도움</a>
       <!--top:start-->
       <a href="../../glossary/" class="tool-link" data-r="glossary">용어 사전</a>
-      <a href="../../random/" class="tool-link" data-r="random" rel="nofollow">아무 문서</a>
-      <a href="../../fav/" class="tool-link" data-r="fav" rel="nofollow">저장한 문서</a>
+      <a href="../../guide/" class="tool-link" data-r="guide">길잡이</a>
+      <a href="../../browse/" class="tool-link" data-r="browse">둘러보기</a>
+      <a href="../../me/" class="tool-link" data-r="me" rel="nofollow">내 서재</a>
       <!--top:end-->
       <button type="button" class="iconbtn" id="btn-fs" aria-label="글자 크기 바꾸기" title="글자 크기">
         <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M3 18l4.5-11L12 18M4.6 14h5.8M14 18l3.2-7.5L20.4 18M15.1 15.6h4.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
@@ -96,45 +127,22 @@
 <div class="shell">
   <nav class="sidenav" id="sidenav" aria-label="분류 목차"></nav>
   <div class="scrim" id="scrim" hidden></div>
-  <main id="app" tabindex="-1"><nav class="crumb" aria-label="위치"><a href="../../">첫 화면</a><span class="sep">/</span>분류</nav><h1 class="page-title">잘 알려지지 않은 사실</h1><p class="page-lead">문화별 환청, 니코틴, 출생 계절처럼 의외의 발견들</p><ul class="rows"><li class="row"><a href="../../a/voices-across-cultures/"><span class="row-t">문화권마다 다른 환청</span><span class="row-s">미국의 당사자는 목소리를 폭력적이고 침입적인 것으로, 인도와 가나의 당사자는 관계를 맺는 존재로 듣는 경우가 많았어요. 문화가 목소리의 내용과 괴로움에 영향을 준다는 작은 연구들이 이어지고 있어요.</span></a></li><li class="row"><a href="../../a/congenital-blindness/"><span class="row-t">선천성 시각장애와 조현병</span><span class="row-s">태어날 때부터 앞을 보지 못한 사람에게서 조현병이 보고된 적이 거의 없다는 이야기가 있어요. 흥미로운 단서이지만, 근거는 증례의 부재와 숫자가 아주 작은 인구 연구 하나뿐이에요.</span></a></li><li class="row"><a href="../../a/birth-season/"><span class="row-t">태어난 계절과 조현병</span><span class="row-s">겨울과 이른 봄에 태어난 사람에게서 조현병이 아주 조금 더 많아요. 수백 편의 연구가 같은 방향을 가리키지만, 효과는 위험을 몇 % 높이는 정도로 매우 작아요.</span></a></li><li class="row"><a href="../../a/nicotine-self-medication/"><span class="row-t">담배는 스스로 하는 치료일까</span><span class="row-s">조현병이 있는 사람의 흡연율이 높은 이유로 &quot;니코틴으로 스스로 증상을 달랜다&quot;는 자가치료 가설이 오래 거론됐어요. 일부 실험 근거가 있지만, 흡연이 오히려 조현병 위험을 높인다는 유전 연구가 나오면서 그림이 복잡해졌어요.</span></a></li><li class="row"><a href="../../a/rheumatoid-arthritis/"><span class="row-t">류마티스 관절염과의 묘한 반비례</span><span class="row-s">조현병이 있는 사람에게서는 류마티스 관절염이 예상보다 적게 진단된다는 관찰이 반세기 넘게 반복됐어요. 다만 그 이유가 생물학적 보호인지, 진단이 덜 된 탓인지는 아직 결론이 나지 않았어요.</span></a></li><li class="row"><a href="../../a/eye-tracking/"><span class="row-t">눈의 움직임에 남는 흔적</span><span class="row-s">움직이는 물체를 눈으로 부드럽게 따라가는 능력이 조현병에서 흔히 달라져 있고, 증상이 없는 가족에게서도 보여요. 시선 검사로 98% 정확도를 냈다는 연구도 있지만, 아직 진단 도구는 아니에요.</span></a></li><li class="row"><a href="../../a/smell/"><span class="row-t">냄새를 잘 못 맡는 사람이 많다</span><span class="row-s">조현병이 있는 사람은 냄새를 알아맞히고 구분하는 능력이 평균적으로 떨어져 있어요. 약이나 흡연만으로는 설명되지 않고, 정신증 위험이 높은 청소년에게서도 보여요. 냄새 신경이 시작되는 후각 망울이 작다는 연구도 있어요.</span></a></li><li class="row"><a href="../../a/self-tickling/"><span class="row-t">스스로를 간질일 수 있다?</span><span class="row-s">보통 사람은 자기 손으로 자기를 간질이면 간지럽지 않아요. 그런데 환청이나 조종당하는 느낌이 있는 사람은 스스로 만든 자극도 남이 만든 것처럼 느낀다는 실험이 있어요. &quot;내가 한 일&quot;을 알아보는 뇌의 예측 기능을 보여 주는 작은 창이에요.</span></a></li><li class="row"><a href="../../a/hollow-mask/"><span class="row-t">오목 가면 착시에 덜 속는다</span><span class="row-s">안쪽이 파인 가면도 대부분의 사람 눈에는 튀어나온 얼굴로 보여요. 정신증 상태의 사람은 이 착시에 덜 속는 경향이 있어요. &quot;뇌의 기대가 감각을 덮는 힘&quot;이 약해졌다는 설명이 있지만, 착시 연구 전반의 결과는 엇갈려요.</span></a></li><li class="row"><a href="../../a/creativity/"><span class="row-t">창의성과 조현병, 신화와 근거</span><span class="row-s">&quot;광기의 천재&quot;는 오래된 신화예요. 대규모 연구에서 창의적 직업이 많았던 쪽은 조현병이 있는 당사자보다 그 형제·가족이었고, 실제 증상이 심할수록 창의성 검사 점수는 낮았어요. 관련은 있지만, 병이 창의성을 주는 것은 아니에요.</span></a></li><li class="row"><a href="../../a/dementia-risk/"><span class="row-t">조현병과 치매 위험</span><span class="row-s">조현병이 있는 사람은 나이가 들어 치매 진단을 받을 위험이 약 2배 이상 높게 보고돼요. 다만 진단 방식의 한계도 크고, 혈압·흡연·운동 부족처럼 바꿀 수 있는 요인이 상당 부분을 차지할 수 있어요.</span></a></li><li class="row"><a href="../../a/pain-insensitivity/"><span class="row-t">통증을 덜 느낀다는 관찰</span><span class="row-s">조현병이 있는 사람은 실험에서 통증 역치가 높게 나타나는 경향이 있어요. 하지만 &quot;아픔을 못 느낀다&quot;기보다 &quot;아픔을 덜 표현한다&quot;일 수 있다는 논쟁이 있어요. 어느 쪽이든 몸의 병이 늦게 발견될 위험이 있어 실천이 중요해요.</span></a></li><li class="row"><a href="../../a/twin-studies/"><span class="row-t">쌍둥이가 알려 준 것</span><span class="row-s">유전자가 같은 네 쌍둥이 자매는 모두 조현병을 앓았지만 경과는 서로 달랐어요. 한 명만 병을 앓은 일란성 쌍둥이 연구는 뇌의 차이, 후성유전, 그리고 &quot;드러나지 않은 소인&quot;을 보여 줬어요. 유전은 중요하지만 운명은 아니에요.</span></a></li><li class="row"><a href="../../a/toxoplasma/"><span class="row-t">고양이 기생충과 조현병</span><span class="row-s">고양이를 통해 퍼지는 기생충 톡소플라스마에 감염된 흔적이 조현병이 있는 사람에게서 약 2배 더 많이 발견돼요. 하지만 감염이 원인인지는 아직 증명되지 않았고, 고양이를 키우는 것만으로 위험해진다는 근거는 엇갈려요.</span></a></li><li class="row"><a href="../../a/recovery-commonalities/"><span class="row-t">회복한 사람들의 공통점</span><span class="row-s">회복을 예측하는 요인을 모은 연구들은 뜻밖의 결과를 보여 줘요. 나이·성별 같은 배경보다 치료를 일찍 시작했는지, 인지 기능, 그리고 희망·의미·자기결정감이 회복과 더 강하게 이어져 있었어요. 바꿀 수 있는 것이 생각보다 많아요.</span></a></li><li class="row"><a href="../../a/urban-upbringing/"><span class="row-t">도시에서 자라면?</span><span class="row-s">도시에서 자란 기간이 길수록 조현병 위험이 조금씩 높아진다는 &quot;용량-반응&quot; 관계가 덴마크 전국 자료에서 확인됐어요. 어린 시절 녹지가 많을수록 위험이 낮았다는 연구도 있어요. 하지만 가족 요인과 유전이 이 관련의 상당 부분을 설명할 수 있다는 반론도 강해요.</span></a></li><li class="row"><a href="../../a/cancer-incidence/"><span class="row-t">조현병과 암 발생률의 역설</span><span class="row-s">담배를 많이 피우고 운동이 적은데도 조현병이 있는 사람의 전체 암 발생률은 일반 인구와 비슷하거나 조금 낮게 나와요. 그런데 암으로 사망할 위험은 약 1.4배 높아요. 부위별 차이, 유전·약·검진 격차 가설, 그리고 당사자에게 가장 중요한 결론인 검진을 정리했어요.</span></a></li><li class="row"><a href="../../a/handedness/"><span class="row-t">왼손잡이와 조현병</span><span class="row-s">조현병이 있는 사람 가운데 오른손잡이가 아닌 사람의 비율이 일반 인구보다 조금 높다는 것은 여러 메타분석이 반복한 발견이에요. 뇌의 좌우 편측화가 덜 뚜렷하다는 가설과 이어지지만, 효과 크기가 작아서 손잡이로 병을 예측하거나 설명할 수는 없어요.</span></a></li></ul></main>
+  <main id="app" tabindex="-1"><nav class="crumb" aria-label="위치"><a href="../../">첫 화면</a><span class="sep">/</span>분류</nav><h1 class="page-title">잘 알려지지 않은 사실</h1><p class="page-lead">문화별 환청, 니코틴, 출생 계절처럼 의외의 발견들. 문서 18개.</p><div class="hb" data-section="13"><section class="hb-first" aria-labelledby="hb-first-h"><h2 class="hb-first-h" id="hb-first-h">먼저 읽을 글</h2><ol><li data-slug="voices-across-cultures"><a href="../../a/voices-across-cultures/"><span class="hb-t">문화권마다 다른 환청</span><span class="hb-s">미국의 당사자는 목소리를 폭력적이고 침입적인 것으로, 인도와 가나의 당사자는 관계를 맺는 존재로 듣는 경우가 많았어요. 문화가 목소리의 내용과 괴로움에 영향을 준다는 작은 연구들이 이어지고 있어요.</span></a></li><li data-slug="recovery-commonalities"><a href="../../a/recovery-commonalities/"><span class="hb-t">회복한 사람들의 공통점</span><span class="hb-s">회복을 예측하는 요인을 모은 연구들은 뜻밖의 결과를 보여 줘요. 나이·성별 같은 배경보다 치료를 일찍 시작했는지, 인지 기능, 그리고 희망·의미·자기결정감이 회복과 더 강하게 이어져 있었어요. 바꿀 수 있는 것이 생각보다 많아요.</span></a></li><li data-slug="self-tickling"><a href="../../a/self-tickling/"><span class="hb-t">스스로를 간질일 수 있다?</span><span class="hb-s">보통 사람은 자기 손으로 자기를 간질이면 간지럽지 않아요. 그런데 환청이나 조종당하는 느낌이 있는 사람은 스스로 만든 자극도 남이 만든 것처럼 느낀다는 실험이 있어요. &quot;내가 한 일&quot;을 알아보는 뇌의 예측 기능을 보여 주는 작은 창이에요.</span></a></li></ol></section><nav class="hb-jump" aria-label="이 분류의 묶음으로 건너뛰기"><a href="#hb-g-1">몸과 감각에 남는 흔적<span class="n" aria-hidden="true">6</span></a><a href="#hb-g-2">태어나고 자란 환경<span class="n" aria-hidden="true">4</span></a><a href="#hb-g-3">다른 병과의 묘한 관계<span class="n" aria-hidden="true">4</span></a><a href="#hb-g-4">사람과 문화<span class="n" aria-hidden="true">4</span></a></nav><section class="hb-group" id="hb-g-1" aria-labelledby="hb-g-1-h"><h2 class="hb-gh" id="hb-g-1-h"><span class="hb-gt">몸과 감각에 남는 흔적</span><span class="hb-gn">6편</span></h2><ul class="rows hb-rows"><li class="row" data-slug="eye-tracking"><a href="../../a/eye-tracking/"><span class="row-t">눈의 움직임에 남는 흔적</span><span class="row-s">움직이는 물체를 눈으로 부드럽게 따라가는 능력이 조현병에서 흔히 달라져 있고, 증상이 없는 가족에게서도 보여요. 시선 검사로 98% 정확도를 냈다는 연구도 있지만, 아직 진단 도구는 아니에요.</span><span class="row-m"><span class="ev ev-연구" title="메타분석·무작위 대조 시험 등 비교적 확립된 연구">연구</span></span></a></li><li class="row" data-slug="smell"><a href="../../a/smell/"><span class="row-t">냄새를 잘 못 맡는 사람이 많다</span><span class="row-s">조현병이 있는 사람은 냄새를 알아맞히고 구분하는 능력이 평균적으로 떨어져 있어요. 약이나 흡연만으로는 설명되지 않고, 정신증 위험이 높은 청소년에게서도 보여요. 냄새 신경이 시작되는 후각 망울이 작다는 연구도 있어요.</span><span class="row-m"><span class="ev ev-연구" title="메타분석·무작위 대조 시험 등 비교적 확립된 연구">연구</span></span></a></li><li class="row" data-slug="self-tickling"><a href="../../a/self-tickling/"><span class="row-t">스스로를 간질일 수 있다?</span><span class="row-s">보통 사람은 자기 손으로 자기를 간질이면 간지럽지 않아요. 그런데 환청이나 조종당하는 느낌이 있는 사람은 스스로 만든 자극도 남이 만든 것처럼 느낀다는 실험이 있어요. &quot;내가 한 일&quot;을 알아보는 뇌의 예측 기능을 보여 주는 작은 창이에요.</span><span class="row-m"><span class="ev ev-초기연구" title="아직 재현·검증이 더 필요한 연구나 가설">초기 연구</span></span></a></li><li class="row" data-slug="hollow-mask"><a href="../../a/hollow-mask/"><span class="row-t">오목 가면 착시에 덜 속는다</span><span class="row-s">안쪽이 파인 가면도 대부분의 사람 눈에는 튀어나온 얼굴로 보여요. 정신증 상태의 사람은 이 착시에 덜 속는 경향이 있어요. &quot;뇌의 기대가 감각을 덮는 힘&quot;이 약해졌다는 설명이 있지만, 착시 연구 전반의 결과는 엇갈려요.</span><span class="row-m"><span class="ev ev-초기연구" title="아직 재현·검증이 더 필요한 연구나 가설">초기 연구</span></span></a></li><li class="row" data-slug="pain-insensitivity"><a href="../../a/pain-insensitivity/"><span class="row-t">통증을 덜 느낀다는 관찰</span><span class="row-s">조현병이 있는 사람은 실험에서 통증 역치가 높게 나타나는 경향이 있어요. 하지만 &quot;아픔을 못 느낀다&quot;기보다 &quot;아픔을 덜 표현한다&quot;일 수 있다는 논쟁이 있어요. 어느 쪽이든 몸의 병이 늦게 발견될 위험이 있어 실천이 중요해요.</span><span class="row-m"><span class="ev ev-연구" title="메타분석·무작위 대조 시험 등 비교적 확립된 연구">연구</span></span></a></li><li class="row" data-slug="handedness"><a href="../../a/handedness/"><span class="row-t">왼손잡이와 조현병</span><span class="row-s">조현병이 있는 사람 가운데 오른손잡이가 아닌 사람의 비율이 일반 인구보다 조금 높다는 것은 여러 메타분석이 반복한 발견이에요. 뇌의 좌우 편측화가 덜 뚜렷하다는 가설과 이어지지만, 효과 크기가 작아서 손잡이로 병을 예측하거나 설명할 수는 없어요.</span><span class="row-m"><span class="ev ev-연구" title="메타분석·무작위 대조 시험 등 비교적 확립된 연구">연구</span></span></a></li></ul></section><section class="hb-group" id="hb-g-2" aria-labelledby="hb-g-2-h"><h2 class="hb-gh" id="hb-g-2-h"><span class="hb-gt">태어나고 자란 환경</span><span class="hb-gn">4편</span></h2><ul class="rows hb-rows"><li class="row" data-slug="birth-season"><a href="../../a/birth-season/"><span class="row-t">태어난 계절과 조현병</span><span class="row-s">겨울과 이른 봄에 태어난 사람에게서 조현병이 아주 조금 더 많아요. 수백 편의 연구가 같은 방향을 가리키지만, 효과는 위험을 몇 % 높이는 정도로 매우 작아요.</span><span class="row-m"><span class="ev ev-연구" title="메타분석·무작위 대조 시험 등 비교적 확립된 연구">연구</span></span></a></li><li class="row" data-slug="urban-upbringing"><a href="../../a/urban-upbringing/"><span class="row-t">도시에서 자라면?</span><span class="row-s">도시에서 자란 기간이 길수록 조현병 위험이 조금씩 높아진다는 &quot;용량-반응&quot; 관계가 덴마크 전국 자료에서 확인됐어요. 어린 시절 녹지가 많을수록 위험이 낮았다는 연구도 있어요. 하지만 가족 요인과 유전이 이 관련의 상당 부분을 설명할 수 있다는 반론도 강해요.</span><span class="row-m"><span class="ev ev-연구" title="메타분석·무작위 대조 시험 등 비교적 확립된 연구">연구</span></span></a></li><li class="row" data-slug="toxoplasma"><a href="../../a/toxoplasma/"><span class="row-t">고양이 기생충과 조현병</span><span class="row-s">고양이를 통해 퍼지는 기생충 톡소플라스마에 감염된 흔적이 조현병이 있는 사람에게서 약 2배 더 많이 발견돼요. 하지만 감염이 원인인지는 아직 증명되지 않았고, 고양이를 키우는 것만으로 위험해진다는 근거는 엇갈려요.</span><span class="row-m"><span class="ev ev-연구" title="메타분석·무작위 대조 시험 등 비교적 확립된 연구">연구</span></span></a></li><li class="row" data-slug="congenital-blindness"><a href="../../a/congenital-blindness/"><span class="row-t">선천성 시각장애와 조현병</span><span class="row-s">태어날 때부터 앞을 보지 못한 사람에게서 조현병이 보고된 적이 거의 없다는 이야기가 있어요. 흥미로운 단서이지만, 근거는 증례의 부재와 숫자가 아주 작은 인구 연구 하나뿐이에요.</span><span class="row-m"><span class="ev ev-초기연구" title="아직 재현·검증이 더 필요한 연구나 가설">초기 연구</span></span></a></li></ul></section><section class="hb-group" id="hb-g-3" aria-labelledby="hb-g-3-h"><h2 class="hb-gh" id="hb-g-3-h"><span class="hb-gt">다른 병과의 묘한 관계</span><span class="hb-gn">4편</span></h2><ul class="rows hb-rows"><li class="row" data-slug="rheumatoid-arthritis"><a href="../../a/rheumatoid-arthritis/"><span class="row-t">류마티스 관절염과의 묘한 반비례</span><span class="row-s">조현병이 있는 사람에게서는 류마티스 관절염이 예상보다 적게 진단된다는 관찰이 반세기 넘게 반복됐어요. 다만 그 이유가 생물학적 보호인지, 진단이 덜 된 탓인지는 아직 결론이 나지 않았어요.</span><span class="row-m"><span class="ev ev-연구" title="메타분석·무작위 대조 시험 등 비교적 확립된 연구">연구</span></span></a></li><li class="row" data-slug="cancer-incidence"><a href="../../a/cancer-incidence/"><span class="row-t">조현병과 암 발생률의 역설</span><span class="row-s">담배를 많이 피우고 운동이 적은데도 조현병이 있는 사람의 전체 암 발생률은 일반 인구와 비슷하거나 조금 낮게 나와요. 그런데 암으로 사망할 위험은 약 1.4배 높아요. 부위별 차이, 유전·약·검진 격차 가설, 그리고 당사자에게 가장 중요한 결론인 검진을 정리했어요.</span><span class="row-m"><span class="ev ev-연구" title="메타분석·무작위 대조 시험 등 비교적 확립된 연구">연구</span></span></a></li><li class="row" data-slug="dementia-risk"><a href="../../a/dementia-risk/"><span class="row-t">조현병과 치매 위험</span><span class="row-s">조현병이 있는 사람은 나이가 들어 치매 진단을 받을 위험이 약 2배 이상 높게 보고돼요. 다만 진단 방식의 한계도 크고, 혈압·흡연·운동 부족처럼 바꿀 수 있는 요인이 상당 부분을 차지할 수 있어요.</span><span class="row-m"><span class="ev ev-연구" title="메타분석·무작위 대조 시험 등 비교적 확립된 연구">연구</span></span></a></li><li class="row" data-slug="nicotine-self-medication"><a href="../../a/nicotine-self-medication/"><span class="row-t">담배는 스스로 하는 치료일까</span><span class="row-s">조현병이 있는 사람의 흡연율이 높은 이유로 &quot;니코틴으로 스스로 증상을 달랜다&quot;는 자가치료 가설이 오래 거론됐어요. 일부 실험 근거가 있지만, 흡연이 오히려 조현병 위험을 높인다는 유전 연구가 나오면서 그림이 복잡해졌어요.</span><span class="row-m"><span class="ev ev-초기연구" title="아직 재현·검증이 더 필요한 연구나 가설">초기 연구</span></span></a></li></ul></section><section class="hb-group" id="hb-g-4" aria-labelledby="hb-g-4-h"><h2 class="hb-gh" id="hb-g-4-h"><span class="hb-gt">사람과 문화</span><span class="hb-gn">4편</span></h2><ul class="rows hb-rows"><li class="row" data-slug="voices-across-cultures"><a href="../../a/voices-across-cultures/"><span class="row-t">문화권마다 다른 환청</span><span class="row-s">미국의 당사자는 목소리를 폭력적이고 침입적인 것으로, 인도와 가나의 당사자는 관계를 맺는 존재로 듣는 경우가 많았어요. 문화가 목소리의 내용과 괴로움에 영향을 준다는 작은 연구들이 이어지고 있어요.</span><span class="row-m"><span class="ev ev-초기연구" title="아직 재현·검증이 더 필요한 연구나 가설">초기 연구</span></span></a></li><li class="row" data-slug="creativity"><a href="../../a/creativity/"><span class="row-t">창의성과 조현병, 신화와 근거</span><span class="row-s">&quot;광기의 천재&quot;는 오래된 신화예요. 대규모 연구에서 창의적 직업이 많았던 쪽은 조현병이 있는 당사자보다 그 형제·가족이었고, 실제 증상이 심할수록 창의성 검사 점수는 낮았어요. 관련은 있지만, 병이 창의성을 주는 것은 아니에요.</span><span class="row-m"><span class="ev ev-연구" title="메타분석·무작위 대조 시험 등 비교적 확립된 연구">연구</span></span></a></li><li class="row" data-slug="twin-studies"><a href="../../a/twin-studies/"><span class="row-t">쌍둥이가 알려 준 것</span><span class="row-s">유전자가 같은 네 쌍둥이 자매는 모두 조현병을 앓았지만 경과는 서로 달랐어요. 한 명만 병을 앓은 일란성 쌍둥이 연구는 뇌의 차이, 후성유전, 그리고 &quot;드러나지 않은 소인&quot;을 보여 줬어요. 유전은 중요하지만 운명은 아니에요.</span><span class="row-m"><span class="ev ev-연구" title="메타분석·무작위 대조 시험 등 비교적 확립된 연구">연구</span></span></a></li><li class="row" data-slug="recovery-commonalities"><a href="../../a/recovery-commonalities/"><span class="row-t">회복한 사람들의 공통점</span><span class="row-s">회복을 예측하는 요인을 모은 연구들은 뜻밖의 결과를 보여 줘요. 나이·성별 같은 배경보다 치료를 일찍 시작했는지, 인지 기능, 그리고 희망·의미·자기결정감이 회복과 더 강하게 이어져 있었어요. 바꿀 수 있는 것이 생각보다 많아요.</span><span class="row-m"><span class="ev ev-연구" title="메타분석·무작위 대조 시험 등 비교적 확립된 연구">연구</span></span></a></li></ul></section></div></main>
 </div>
 <footer class="sitefoot">
   <div class="sitefoot-inner">
     <p>이 백과는 일반적인 정보를 전해요. 진단과 치료는 담당 의사와 상의하세요. 글마다 출처를 달았고, 틀린 내용은 고쳐 나가요.</p>
     <p>글은 AI가 공개 자료를 바탕으로 초안을 쓰고 출처를 확인해 만들었어요. 전문가 감수는 받지 않았어요.</p>
-    <p>힘든 생각이 들 때 자살예방상담 <a href="tel:109">109</a>, 정신건강위기상담 <a href="tel:1577-0199">1577-0199</a>에 전화하세요. 24시간 받아요.</p>
-    <p><a href="../../about/">이 백과에 대해</a></p>
+    <p>힘든 생각이 들 때 자살예방상담 <a href="tel:109">109</a>, 정신건강위기상담 <a href="tel:1577-0199">1577-0199</a>에 전화하세요. 24시간 받아요. 전화가 어렵다면 109로 문자를 보낼 수 있어요. 생명이 위급하면 <a href="tel:119">119</a>에 전화하세요.</p>
+    <p class="foot-links"><!--foot:start--><a href="../../about/">이 백과에 대해</a> · <a href="../../changes/">고침 기록</a><!--foot:end--></p>
   </div>
 </footer>
 <div class="pop" id="pop" role="dialog" aria-modal="false" hidden></div>
-<script src="../../data/sections.js"></script>
-<script src="../../data/toc.js"></script>
-<script src="../../data/glossary.js"></script>
-<script src="../../data/about.js"></script>
-<script src="../../data/synonyms.js"></script>
-<script src="../../data/crisis-card.js"></script>
-<script src="../../data/courses.js"></script>
-<script src="../../data/links.js"></script>
-<script src="../../data/pages.js"></script>
-<script src="../../js/util.js"></script>
-<script src="../../js/paths.js"></script>
-<script src="../../js/md.js"></script>
-<script src="../../js/search.js"></script>
-<script src="../../js/gloss.js"></script>
-<script src="../../js/synonyms.js"></script>
-<script src="../../js/crisis.js"></script>
-<script src="../../js/progress.js"></script>
-<script src="../../js/app.js"></script>
+<!--core:start-->
+<script src="../../js/core.js"></script>
+<!--core:end-->
 <!--ui:start-->
-<script src="../../js/ui/palette.js"></script>
-<script src="../../js/ui/preview.js"></script>
-<script src="../../js/ui/mobile.js"></script>
-<script src="../../js/ui/sticky.js"></script>
-<script src="../../js/ui/reading.js"></script>
-<script src="../../js/ui/settings.js"></script>
-<script src="../../js/ui/polish.js"></script>
-<script src="../../js/ui/home.js"></script>
-<script src="../../js/ui/shelf.js"></script>
+<script src="../../js/ui.js"></script>
 <!--ui:end-->
 </body>
 </html>

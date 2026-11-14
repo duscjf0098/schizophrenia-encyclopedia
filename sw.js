@@ -8,7 +8,7 @@
      쉼이면 새 캐시 항목을 만들지 않는다(연 글의 HTML 이 쌓이지 않게). 이미 있는 항목의 갱신과 프리캐시·오프라인 동작은 그대로.
      워커가 다시 떠도 알 수 있게 그 값('1' 쉼 · '0' 쉼 아님)을 'jhb.state' 캐시(판이 바뀌어도 activate 가 지우지 않는 이름)에 둔다.
      알림을 받은 뒤 그 값을 읽지 못하면(상태 캐시가 사라진 직후 등) 페이지가 다시 알려 줄 때까지 새 항목을 만들지 않는다(보수적 기본값, isPaused). */
-const BUILD = '2026-11-13-284-mwfbinwv';
+const BUILD = '2026-11-14-284-mwg1dc3y';
 const PRECACHE = 'data/precache.json';
 let CACHE = 'jhb-' + BUILD;
 const STATE_CACHE = 'jhb.state';

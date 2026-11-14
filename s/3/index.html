@@ -27,30 +27,60 @@
 <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
 <link rel="manifest" href="../../manifest.webmanifest">
 <link rel="apple-touch-icon" href="../../icon-192.png">
-<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@600;700&display=swap">
 <link rel="stylesheet" href="../../css/style.css">
 <link rel="stylesheet" href="../../css/ui.css">
 
 
 
+
+<style>
+/* 정적 문서의 인쇄용 한 줄(사이트 이름 + 정식 글 주소): 화면에서는 숨기고 인쇄에서만. 자바스크립트가 꺼졌거나 앱이 문서를 다시 그리기 전에 인쇄해도 첫머리에 남아요.
+   인쇄 모듈(js/ui/print.js)이 만든 머리(.prt-head)가 있으면 인쇄에서도 숨겨요(같은 내용을 두 번 싣지 않게) */
+.prt-static { display: none; }
+@media print {
+  .prt-static { display: block; margin: 0 0 12px; padding: 0 0 6px; border-bottom: 1px solid var(--rule-2); font-size: 9.5pt; line-height: 1.5; color: var(--ink-2); overflow-wrap: anywhere; }
+  .prt-static b { font-family: var(--serif); font-weight: 700; color: var(--ink); }
+  .prt-static + .crumb { display: none; }
+  .prt-head ~ .prt-static, .prt-head ~ * .prt-static { display: none; }
+}
+/* 바닥글 링크 줄(이 백과에 대해 · 고침 기록): 따로 선 이동 링크라 화면에서는 누르는 높이를 44px 로(글자 크기는 그대로) */
+@media screen {
+  .sitefoot .foot-links a { display: inline-block; box-sizing: border-box; min-height: 44px; padding: 10px 4px; margin: 0 -4px; }
+}
+/* 자바스크립트가 꺼졌으면(아래 머리 스크립트가 html 에 js 클래스를 달지 못하면) 눌러도 아무 일도 하지 않는 버튼(분류 목차·글자 크기·밝게/어둡게)을 감춰요.
+   "지금 도움"은 링크라서 그대로 둬요 */
+html:not(.js) #btn-nav, html:not(.js) #btn-fs, html:not(.js) #btn-theme { display: none; }
+/* 정적 문서의 저장·공유 단추도 자바스크립트가 있어야 동작해요(앱과 같은 마크업이라 미리 들어 있음) */
+html:not(.js) .doc-meta-m .acts, html:not(.js) .infobox-actions { display: none; }
+</style>
 <script>
-/* 옛 해시 주소(#/a/…)로 들어오면 새 경로로 옮기고, 첫 그리기 전에 테마·글자 크기를 적용한다 */
+/* 자바스크립트가 켜졌다는 표시(html.js)를 달고, 옛 해시 주소(#/a/…)로 들어오면 새 경로로 옮기고, 첫 그리기 전에 보기 설정을 적용한다.
+   - 옛 해시 주소: js/paths.js 의 hashToPath 와 같은 규칙. 뒤에 화면 안 자리 조각이 붙으면 경로 뒤로('#/about#privacy' → 'about/#privacy')
+   - 보기 설정: js/ui/settings.js 의 load() 와 같은 값(테마 jhb.theme, 글자 크기 jhb.fs 다섯 단계, jhb.ui.settings 의 줄 너비·본문 글꼴·움직임 줄이기).
+     모듈이 실린 뒤 한 번 더 바뀌어 화면이 출렁이지 않게(T16)
+   첫 화면 자리 표시(data-hm-start)는 쓰지 않기로 했어요: 그 속성을 읽던 css/ui/home.css 규칙은 K4 에서 지웠어요(잰 값은 tests/pages.test.cjs 의 '머리 스크립트' 테스트 주석) */
 (function () {
+  var r = document.documentElement;
+  try { r.classList.add('js'); } catch (e) { }
   var h = location.hash;
   if (h.indexOf('#/') === 0) {
-    var rest = h.slice(2), qi = rest.indexOf('?');
+    var rest = h.slice(2), fi = rest.indexOf('#'), frag = fi >= 0 ? rest.slice(fi) : '';
+    if (fi >= 0) rest = rest.slice(0, fi);
+    var qi = rest.indexOf('?');
     var p = (qi >= 0 ? rest.slice(0, qi) : rest).split('/').filter(Boolean).join('/');
-    location.replace(document.documentElement.getAttribute('data-base') + (p ? p + '/' : '') + (qi >= 0 ? rest.slice(qi) : ''));
+    var to = (r.getAttribute('data-base') || '') + (p ? p + '/' : '') + (qi >= 0 ? rest.slice(qi) : '') + (frag.length > 1 ? frag : '');
+    location.replace(to || './');
   }
+  function get(k) { try { return JSON.parse(localStorage.getItem(k) || 'null'); } catch (e) { return null; } }
   try {
-    var t = JSON.parse(localStorage.getItem('jhb.theme') || 'null');
-    if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
-    var f = JSON.parse(localStorage.getItem('jhb.fs') || 'null');
-    if (f === 's' || f === 'l') document.documentElement.setAttribute('data-fs', f);
+    var t = get('jhb.theme');
+    if (t === 'light' || t === 'dark') r.setAttribute('data-theme', t);
+    var f = get('jhb.fs');
+    if (f === 's' || f === 'l' || f === 'xl' || f === 'xxl') r.setAttribute('data-fs', f);
+    var s = get('jhb.ui.settings') || {};
+    if (s.width === 'wide') r.setAttribute('data-width', 'wide');
+    if (s.font === 'serif') r.setAttribute('data-font', 'serif');
+    if (s.motion === 'reduce') r.setAttribute('data-motion', 'reduce');
   } catch (e) { }
 })();
 </script>
@@ -75,14 +105,15 @@
     <div class="qs" role="search">
       <svg class="qs-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="M15 15l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
       <input id="q" type="search" autocomplete="off" spellcheck="false" placeholder="문서나 용어 찾기" aria-label="문서나 용어 찾기" aria-haspopup="dialog">
-      <kbd class="qs-key" aria-hidden="true">/</kbd>
+      <kbd class="qs-key" aria-hidden="true">/ · Ctrl K</kbd>
     </div>
     <nav class="tools" aria-label="도구">
       <a class="tool-help" id="btn-help" href="../../a/crisis-hotlines/"><span class="tool-help-long">지금 </span>도움</a>
       <!--top:start-->
       <a href="../../glossary/" class="tool-link" data-r="glossary">용어 사전</a>
-      <a href="../../random/" class="tool-link" data-r="random" rel="nofollow">아무 문서</a>
-      <a href="../../fav/" class="tool-link" data-r="fav" rel="nofollow">저장한 문서</a>
+      <a href="../../guide/" class="tool-link" data-r="guide">길잡이</a>
+      <a href="../../browse/" class="tool-link" data-r="browse">둘러보기</a>
+      <a href="../../me/" class="tool-link" data-r="me" rel="nofollow">내 서재</a>
       <!--top:end-->
       <button type="button" class="iconbtn" id="btn-fs" aria-label="글자 크기 바꾸기" title="글자 크기">
         <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M3 18l4.5-11L12 18M4.6 14h5.8M14 18l3.2-7.5L20.4 18M15.1 15.6h4.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
@@ -96,45 +127,22 @@
 <div class="shell">
   <nav class="sidenav" id="sidenav" aria-label="분류 목차"></nav>
   <div class="scrim" id="scrim" hidden></div>
-  <main id="app" tabindex="-1"><nav class="crumb" aria-label="위치"><a href="../../">첫 화면</a><span class="sep">/</span>분류</nav><h1 class="page-title">음성 증상</h1><p class="page-lead">의욕·즐거움·말·표정·관계가 줄어드는 증상의 모든 것</p><ul class="rows"><li class="row"><a href="../../a/negative-overview/"><span class="row-t">음성 증상이란 무엇인가</span><span class="row-s">의욕·즐거움·말·표정·사람 만남처럼 원래 있던 것이 줄어드는 증상이에요. 눈에 잘 안 띄어 게으름으로 오해받지만, 일상 기능과 가장 깊이 얽힌 증상이에요.</span></a></li><li class="row"><a href="../../a/avolition/"><span class="row-t">무의욕</span><span class="row-s">하고 싶은데 시작이 안 되는 상태예요. 뇌가 &quot;노력의 값&quot;을 실제보다 크게 매기는 것과 관련이 있어요. 게으름과는 다르고, 작은 단계와 바깥의 구조가 도움이 돼요.</span></a></li><li class="row"><a href="../../a/anhedonia/"><span class="row-t">무쾌감</span><span class="row-s">즐거움을 &quot;미리 기대하는&quot; 힘이 줄어드는 증상이에요. 막상 하면 즐길 수 있는 경우가 많아요. 우울의 무쾌감과는 결이 다르고, 경험을 기록하고 몸을 먼저 움직이는 게 도움이 돼요.</span></a></li><li class="row"><a href="../../a/alogia/"><span class="row-t">무언증</span><span class="row-s">말의 양이 줄고 내용이 빈약해지는 증상이에요. 말이 뒤죽박죽되는 사고 장애와는 다른 것이고, 단어를 꺼내 오는 속도와 관련이 있어요. 대화 방식을 조금 바꾸면 훨씬 편해져요.</span></a></li><li class="row"><a href="../../a/blunted-affect/"><span class="row-t">정서 둔마</span><span class="row-s">표정·목소리·몸짓으로 드러나는 감정 표현이 줄어드는 증상이에요. 안에서 느끼는 감정은 보존된 경우가 많아요. 약 부작용과 구분해야 하고, 주변 사람의 오해가 가장 큰 어려움이에요.</span></a></li><li class="row"><a href="../../a/asociality/"><span class="row-t">비사회성</span><span class="row-s">사람을 만나려는 마음 자체가 줄어드는 증상이에요. 불안이나 의심 때문에 피하는 것과는 달라요. 외로움은 깊어지기 쉽고, 부담이 낮은 접촉과 동료 지원이 도움이 돼요.</span></a></li><li class="row"><a href="../../a/primary-secondary-negative/"><span class="row-t">일차 음성 증상과 이차 음성 증상</span><span class="row-s">똑같이 의욕과 표정이 줄어 보여도, 병 자체에서 오는 일차 증상과 약 부작용·우울·망상·환경 때문에 생기는 이차 증상은 달라요. 이차는 원인을 다루면 좋아지는 경우가 많아서 구분이 중요해요.</span></a></li><li class="row"><a href="../../a/deficit-syndrome/"><span class="row-t">결핍 증후군</span><span class="row-s">다른 원인 없이 1년 이상 이어지는 일차 음성 증상을 가진 조현병의 한 아형이에요. 여름 출생, 인지, 경과에서 차이가 있어 &quot;별개의 병&quot;이라는 가설이 있지만, 아직 논쟁 중이에요.</span></a></li><li class="row"><a href="../../a/negative-scales/"><span class="row-t">음성 증상 척도</span><span class="row-s">SANS·PANSS 같은 오래된 척도와 BNSS·CAINS 같은 2세대 척도, 당사자가 직접 답하는 SNS가 있어요. 2세대 척도는 겉으로 보이는 것뿐 아니라 &quot;안에서 느끼는 동기·즐거움&quot;을 묻는다는 점이 달라요.</span></a></li><li class="row"><a href="../../a/negative-mechanism/"><span class="row-t">음성 증상이 생기는 이유: 보상 회로</span><span class="row-s">뇌가 &quot;곧 좋은 일이 온다&quot;는 신호를 약하게 만들고, 노력의 값을 비싸게 매기고, 즐거웠던 기억을 잘 꺼내지 못하는 것이 합쳐져 음성 증상이 생긴다고 봐요. 도파민·전전두엽·믿음이 함께 얽혀 있어요.</span></a></li><li class="row"><a href="../../a/negative-treatment-difficulty/"><span class="row-t">음성 증상 치료가 어려운 이유</span><span class="row-s">항정신병약의 효과가 작고, 약 부작용·우울 때문에 생긴 이차 음성 증상과 뒤섞이고, 측정이 어렵고, 임상시험 설계가 까다로워요. 그래도 가능한 것이 분명히 있어요.</span></a></li><li class="row"><a href="../../a/negative-treatment-latest/"><span class="row-t">음성 증상 치료의 최신 접근</span><span class="row-s">카리프라진·아미설프리드 같은 약, 운동·인지행동치료·사회기술 훈련, rTMS, 그리고 롤루페리돈·이클레페르틴 같은 신약의 2024~2025년 결과까지 근거를 정리했어요. 효과는 대부분 중간 이하지만, 합치면 달라져요.</span></a></li><li class="row"><a href="../../a/negative-family-misunderstanding/"><span class="row-t">가족이 오해하기 쉬운 점</span><span class="row-s">음성 증상은 게으름·무관심·반항으로 보이기 쉬워요. 표정이 없어도 감정은 있고, 재촉과 비난은 재발 위험을 높여요. 도움이 되는 말과 행동, 가족 자신을 돌보는 법을 정리했어요.</span></a></li><li class="row"><a href="../../a/negative-vs-depression/"><span class="row-t">음성 증상과 우울증 구분하기</span><span class="row-s">의욕과 즐거움이 줄어드는 건 둘 다 같지만, 슬픔·죄책감·절망은 우울 쪽이고 표정·말의 감소는 음성 증상 쪽이에요. 조현병의 약 3분의 1이 우울을 겪고, 치료가 다르기 때문에 구분이 중요해요.</span></a></li><li class="row"><a href="../../a/negative-self-help/"><span class="row-t">음성 증상, 당사자가 할 수 있는 것</span><span class="row-s">활동 일정표, 5분 규칙, 매일 가는 곳, 운동, 수면, 동료 지원, 작은 목표 기록, 자기 비난 줄이기, 가족과 역할 나누기. 근거가 있는 방법을 실제로 할 수 있는 크기로 쪼갰어요.</span></a></li></ul></main>
+  <main id="app" tabindex="-1"><nav class="crumb" aria-label="위치"><a href="../../">첫 화면</a><span class="sep">/</span>분류</nav><h1 class="page-title">음성 증상</h1><p class="page-lead">의욕·즐거움·말·표정·관계가 줄어드는 증상의 모든 것. 문서 15개.</p><div class="hb" data-section="3"><section class="hb-first" aria-labelledby="hb-first-h"><h2 class="hb-first-h" id="hb-first-h">먼저 읽을 글</h2><ol><li data-slug="negative-overview"><a href="../../a/negative-overview/"><span class="hb-t">음성 증상이란 무엇인가</span><span class="hb-s">의욕·즐거움·말·표정·사람 만남처럼 원래 있던 것이 줄어드는 증상이에요. 눈에 잘 안 띄어 게으름으로 오해받지만, 일상 기능과 가장 깊이 얽힌 증상이에요.</span></a></li><li data-slug="negative-self-help"><a href="../../a/negative-self-help/"><span class="hb-t">음성 증상, 당사자가 할 수 있는 것</span><span class="hb-s">활동 일정표, 5분 규칙, 매일 가는 곳, 운동, 수면, 동료 지원, 작은 목표 기록, 자기 비난 줄이기, 가족과 역할 나누기. 근거가 있는 방법을 실제로 할 수 있는 크기로 쪼갰어요.</span></a></li><li data-slug="negative-family-misunderstanding"><a href="../../a/negative-family-misunderstanding/"><span class="hb-t">가족이 오해하기 쉬운 점</span><span class="hb-s">음성 증상은 게으름·무관심·반항으로 보이기 쉬워요. 표정이 없어도 감정은 있고, 재촉과 비난은 재발 위험을 높여요. 도움이 되는 말과 행동, 가족 자신을 돌보는 법을 정리했어요.</span></a></li></ol></section><nav class="hb-jump" aria-label="이 분류의 묶음으로 건너뛰기"><a href="#hb-g-1">증상 하나씩<span class="n" aria-hidden="true">6</span></a><a href="#hb-g-2">구분과 평가<span class="n" aria-hidden="true">4</span></a><a href="#hb-g-3">왜 생기고 어떻게 치료하나<span class="n" aria-hidden="true">3</span></a><a href="#hb-g-4">당사자와 가족이 할 수 있는 것<span class="n" aria-hidden="true">2</span></a></nav><section class="hb-group" id="hb-g-1" aria-labelledby="hb-g-1-h"><h2 class="hb-gh" id="hb-g-1-h"><span class="hb-gt">증상 하나씩</span><span class="hb-gn">6편</span></h2><ul class="rows hb-rows"><li class="row" data-slug="negative-overview"><a href="../../a/negative-overview/"><span class="row-t">음성 증상이란 무엇인가</span><span class="row-s">의욕·즐거움·말·표정·사람 만남처럼 원래 있던 것이 줄어드는 증상이에요. 눈에 잘 안 띄어 게으름으로 오해받지만, 일상 기능과 가장 깊이 얽힌 증상이에요.</span><span class="row-m"><span class="ev ev-연구" title="메타분석·무작위 대조 시험 등 비교적 확립된 연구">연구</span></span></a></li><li class="row" data-slug="avolition"><a href="../../a/avolition/"><span class="row-t">무의욕</span><span class="row-s">하고 싶은데 시작이 안 되는 상태예요. 뇌가 &quot;노력의 값&quot;을 실제보다 크게 매기는 것과 관련이 있어요. 게으름과는 다르고, 작은 단계와 바깥의 구조가 도움이 돼요.</span><span class="row-m"><span class="ev ev-연구" title="메타분석·무작위 대조 시험 등 비교적 확립된 연구">연구</span></span></a></li><li class="row" data-slug="anhedonia"><a href="../../a/anhedonia/"><span class="row-t">무쾌감</span><span class="row-s">즐거움을 &quot;미리 기대하는&quot; 힘이 줄어드는 증상이에요. 막상 하면 즐길 수 있는 경우가 많아요. 우울의 무쾌감과는 결이 다르고, 경험을 기록하고 몸을 먼저 움직이는 게 도움이 돼요.</span><span class="row-m"><span class="ev ev-연구" title="메타분석·무작위 대조 시험 등 비교적 확립된 연구">연구</span></span></a></li><li class="row" data-slug="alogia"><a href="../../a/alogia/"><span class="row-t">무언증</span><span class="row-s">말의 양이 줄고 내용이 빈약해지는 증상이에요. 말이 뒤죽박죽되는 사고 장애와는 다른 것이고, 단어를 꺼내 오는 속도와 관련이 있어요. 대화 방식을 조금 바꾸면 훨씬 편해져요.</span><span class="row-m"><span class="ev ev-연구" title="메타분석·무작위 대조 시험 등 비교적 확립된 연구">연구</span></span></a></li><li class="row" data-slug="blunted-affect"><a href="../../a/blunted-affect/"><span class="row-t">정서 둔마</span><span class="row-s">표정·목소리·몸짓으로 드러나는 감정 표현이 줄어드는 증상이에요. 안에서 느끼는 감정은 보존된 경우가 많아요. 약 부작용과 구분해야 하고, 주변 사람의 오해가 가장 큰 어려움이에요.</span><span class="row-m"><span class="ev ev-연구" title="메타분석·무작위 대조 시험 등 비교적 확립된 연구">연구</span></span></a></li><li class="row" data-slug="asociality"><a href="../../a/asociality/"><span class="row-t">비사회성</span><span class="row-s">사람을 만나려는 마음 자체가 줄어드는 증상이에요. 불안이나 의심 때문에 피하는 것과는 달라요. 외로움은 깊어지기 쉽고, 부담이 낮은 접촉과 동료 지원이 도움이 돼요.</span><span class="row-m"><span class="ev ev-연구" title="메타분석·무작위 대조 시험 등 비교적 확립된 연구">연구</span></span></a></li></ul></section><section class="hb-group" id="hb-g-2" aria-labelledby="hb-g-2-h"><h2 class="hb-gh" id="hb-g-2-h"><span class="hb-gt">구분과 평가</span><span class="hb-gn">4편</span></h2><ul class="rows hb-rows"><li class="row" data-slug="primary-secondary-negative"><a href="../../a/primary-secondary-negative/"><span class="row-t">일차 음성 증상과 이차 음성 증상</span><span class="row-s">똑같이 의욕과 표정이 줄어 보여도, 병 자체에서 오는 일차 증상과 약 부작용·우울·망상·환경 때문에 생기는 이차 증상은 달라요. 이차는 원인을 다루면 좋아지는 경우가 많아서 구분이 중요해요.</span><span class="row-m"><span class="ev ev-연구" title="메타분석·무작위 대조 시험 등 비교적 확립된 연구">연구</span></span></a></li><li class="row" data-slug="deficit-syndrome"><a href="../../a/deficit-syndrome/"><span class="row-t">결핍 증후군</span><span class="row-s">다른 원인 없이 1년 이상 이어지는 일차 음성 증상을 가진 조현병의 한 아형이에요. 여름 출생, 인지, 경과에서 차이가 있어 &quot;별개의 병&quot;이라는 가설이 있지만, 아직 논쟁 중이에요.</span><span class="row-m"><span class="ev ev-연구" title="메타분석·무작위 대조 시험 등 비교적 확립된 연구">연구</span></span></a></li><li class="row" data-slug="negative-vs-depression"><a href="../../a/negative-vs-depression/"><span class="row-t">음성 증상과 우울증 구분하기</span><span class="row-s">의욕과 즐거움이 줄어드는 건 둘 다 같지만, 슬픔·죄책감·절망은 우울 쪽이고 표정·말의 감소는 음성 증상 쪽이에요. 조현병의 약 3분의 1이 우울을 겪고, 치료가 다르기 때문에 구분이 중요해요.</span><span class="row-m"><span class="ev ev-연구" title="메타분석·무작위 대조 시험 등 비교적 확립된 연구">연구</span></span></a></li><li class="row" data-slug="negative-scales"><a href="../../a/negative-scales/"><span class="row-t">음성 증상 척도</span><span class="row-s">SANS·PANSS 같은 오래된 척도와 BNSS·CAINS 같은 2세대 척도, 당사자가 직접 답하는 SNS가 있어요. 2세대 척도는 겉으로 보이는 것뿐 아니라 &quot;안에서 느끼는 동기·즐거움&quot;을 묻는다는 점이 달라요.</span><span class="row-m"><span class="ev ev-연구" title="메타분석·무작위 대조 시험 등 비교적 확립된 연구">연구</span></span></a></li></ul></section><section class="hb-group" id="hb-g-3" aria-labelledby="hb-g-3-h"><h2 class="hb-gh" id="hb-g-3-h"><span class="hb-gt">왜 생기고 어떻게 치료하나</span><span class="hb-gn">3편</span></h2><ul class="rows hb-rows"><li class="row" data-slug="negative-mechanism"><a href="../../a/negative-mechanism/"><span class="row-t">음성 증상이 생기는 이유: 보상 회로</span><span class="row-s">뇌가 &quot;곧 좋은 일이 온다&quot;는 신호를 약하게 만들고, 노력의 값을 비싸게 매기고, 즐거웠던 기억을 잘 꺼내지 못하는 것이 합쳐져 음성 증상이 생긴다고 봐요. 도파민·전전두엽·믿음이 함께 얽혀 있어요.</span><span class="row-m"><span class="ev ev-연구" title="메타분석·무작위 대조 시험 등 비교적 확립된 연구">연구</span></span></a></li><li class="row" data-slug="negative-treatment-difficulty"><a href="../../a/negative-treatment-difficulty/"><span class="row-t">음성 증상 치료가 어려운 이유</span><span class="row-s">항정신병약의 효과가 작고, 약 부작용·우울 때문에 생긴 이차 음성 증상과 뒤섞이고, 측정이 어렵고, 임상시험 설계가 까다로워요. 그래도 가능한 것이 분명히 있어요.</span><span class="row-m"><span class="ev ev-연구" title="메타분석·무작위 대조 시험 등 비교적 확립된 연구">연구</span></span></a></li><li class="row" data-slug="negative-treatment-latest"><a href="../../a/negative-treatment-latest/"><span class="row-t">음성 증상 치료의 최신 접근</span><span class="row-s">카리프라진·아미설프리드 같은 약, 운동·인지행동치료·사회기술 훈련, rTMS, 그리고 롤루페리돈·이클레페르틴 같은 신약의 2024~2025년 결과까지 근거를 정리했어요. 효과는 대부분 중간 이하지만, 합치면 달라져요.</span><span class="row-m"><span class="ev ev-연구" title="메타분석·무작위 대조 시험 등 비교적 확립된 연구">연구</span></span></a></li></ul></section><section class="hb-group" id="hb-g-4" aria-labelledby="hb-g-4-h"><h2 class="hb-gh" id="hb-g-4-h"><span class="hb-gt">당사자와 가족이 할 수 있는 것</span><span class="hb-gn">2편</span></h2><ul class="rows hb-rows"><li class="row" data-slug="negative-self-help"><a href="../../a/negative-self-help/"><span class="row-t">음성 증상, 당사자가 할 수 있는 것</span><span class="row-s">활동 일정표, 5분 규칙, 매일 가는 곳, 운동, 수면, 동료 지원, 작은 목표 기록, 자기 비난 줄이기, 가족과 역할 나누기. 근거가 있는 방법을 실제로 할 수 있는 크기로 쪼갰어요.</span><span class="row-m"><span class="ev ev-연구" title="메타분석·무작위 대조 시험 등 비교적 확립된 연구">연구</span></span></a></li><li class="row" data-slug="negative-family-misunderstanding"><a href="../../a/negative-family-misunderstanding/"><span class="row-t">가족이 오해하기 쉬운 점</span><span class="row-s">음성 증상은 게으름·무관심·반항으로 보이기 쉬워요. 표정이 없어도 감정은 있고, 재촉과 비난은 재발 위험을 높여요. 도움이 되는 말과 행동, 가족 자신을 돌보는 법을 정리했어요.</span><span class="row-m"><span class="ev ev-연구" title="메타분석·무작위 대조 시험 등 비교적 확립된 연구">연구</span></span></a></li></ul></section></div></main>
 </div>
 <footer class="sitefoot">
   <div class="sitefoot-inner">
     <p>이 백과는 일반적인 정보를 전해요. 진단과 치료는 담당 의사와 상의하세요. 글마다 출처를 달았고, 틀린 내용은 고쳐 나가요.</p>
     <p>글은 AI가 공개 자료를 바탕으로 초안을 쓰고 출처를 확인해 만들었어요. 전문가 감수는 받지 않았어요.</p>
-    <p>힘든 생각이 들 때 자살예방상담 <a href="tel:109">109</a>, 정신건강위기상담 <a href="tel:1577-0199">1577-0199</a>에 전화하세요. 24시간 받아요.</p>
-    <p><a href="../../about/">이 백과에 대해</a></p>
+    <p>힘든 생각이 들 때 자살예방상담 <a href="tel:109">109</a>, 정신건강위기상담 <a href="tel:1577-0199">1577-0199</a>에 전화하세요. 24시간 받아요. 전화가 어렵다면 109로 문자를 보낼 수 있어요. 생명이 위급하면 <a href="tel:119">119</a>에 전화하세요.</p>
+    <p class="foot-links"><!--foot:start--><a href="../../about/">이 백과에 대해</a> · <a href="../../changes/">고침 기록</a><!--foot:end--></p>
   </div>
 </footer>
 <div class="pop" id="pop" role="dialog" aria-modal="false" hidden></div>
-<script src="../../data/sections.js"></script>
-<script src="../../data/toc.js"></script>
-<script src="../../data/glossary.js"></script>
-<script src="../../data/about.js"></script>
-<script src="../../data/synonyms.js"></script>
-<script src="../../data/crisis-card.js"></script>
-<script src="../../data/courses.js"></script>
-<script src="../../data/links.js"></script>
-<script src="../../data/pages.js"></script>
-<script src="../../js/util.js"></script>
-<script src="../../js/paths.js"></script>
-<script src="../../js/md.js"></script>
-<script src="../../js/search.js"></script>
-<script src="../../js/gloss.js"></script>
-<script src="../../js/synonyms.js"></script>
-<script src="../../js/crisis.js"></script>
-<script src="../../js/progress.js"></script>
-<script src="../../js/app.js"></script>
+<!--core:start-->
+<script src="../../js/core.js"></script>
+<!--core:end-->
 <!--ui:start-->
-<script src="../../js/ui/palette.js"></script>
-<script src="../../js/ui/preview.js"></script>
-<script src="../../js/ui/mobile.js"></script>
-<script src="../../js/ui/sticky.js"></script>
-<script src="../../js/ui/reading.js"></script>
-<script src="../../js/ui/settings.js"></script>
-<script src="../../js/ui/polish.js"></script>
-<script src="../../js/ui/home.js"></script>
-<script src="../../js/ui/shelf.js"></script>
+<script src="../../js/ui.js"></script>
 <!--ui:end-->
 </body>
 </html>

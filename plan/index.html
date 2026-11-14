@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="ko" data-base="../" data-route="plan">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#fbfbf9" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#15171c" media="(prefers-color-scheme: dark)">
+<title>미리 써 두는 종이 - 조현병 백과</title>
+<meta name="description" content="재발·위기 대비 계획, 안전 계획 카드, 내 정보 카드를 화면에서 적고 바로 인쇄해요. 기본으로 저장하지 않고, 적은 내용은 이 기기 밖으로 나가지 않아요.">
+<meta name="robots" content="noindex,follow">
+
+<meta property="og:site_name" content="조현병 백과">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:title" content="미리 써 두는 종이">
+<meta property="og:description" content="재발·위기 대비 계획, 안전 계획 카드, 내 정보 카드를 화면에서 적고 바로 인쇄해요. 기본으로 저장하지 않고, 적은 내용은 이 기기 밖으로 나가지 않아요.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://duscjf0098.github.io/schizophrenia-encyclopedia/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="조현병 백과 - 출처와 함께 읽는 한국어 백과">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="미리 써 두는 종이">
+<meta name="twitter:description" content="재발·위기 대비 계획, 안전 계획 카드, 내 정보 카드를 화면에서 적고 바로 인쇄해요. 기본으로 저장하지 않고, 적은 내용은 이 기기 밖으로 나가지 않아요.">
+<meta name="twitter:image" content="https://duscjf0098.github.io/schizophrenia-encyclopedia/og.png">
+
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="../manifest.webmanifest">
+<link rel="apple-touch-icon" href="../icon-192.png">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/ui.css">
+<link rel="stylesheet" href="../css/pages/plan.css">
+
+
+
+<style>
+/* 정적 문서의 인쇄용 한 줄(사이트 이름 + 정식 글 주소): 화면에서는 숨기고 인쇄에서만. 자바스크립트가 꺼졌거나 앱이 문서를 다시 그리기 전에 인쇄해도 첫머리에 남아요.
+   인쇄 모듈(js/ui/print.js)이 만든 머리(.prt-head)가 있으면 인쇄에서도 숨겨요(같은 내용을 두 번 싣지 않게) */
+.prt-static { display: none; }
+@media print {
+  .prt-static { display: block; margin: 0 0 12px; padding: 0 0 6px; border-bottom: 1px solid var(--rule-2); font-size: 9.5pt; line-height: 1.5; color: var(--ink-2); overflow-wrap: anywhere; }
+  .prt-static b { font-family: var(--serif); font-weight: 700; color: var(--ink); }
+  .prt-static + .crumb { display: none; }
+  .prt-head ~ .prt-static, .prt-head ~ * .prt-static { display: none; }
+}
+/* 바닥글 링크 줄(이 백과에 대해 · 고침 기록): 따로 선 이동 링크라 화면에서는 누르는 높이를 44px 로(글자 크기는 그대로) */
+@media screen {
+  .sitefoot .foot-links a { display: inline-block; box-sizing: border-box; min-height: 44px; padding: 10px 4px; margin: 0 -4px; }
+}
+/* 자바스크립트가 꺼졌으면(아래 머리 스크립트가 html 에 js 클래스를 달지 못하면) 눌러도 아무 일도 하지 않는 버튼(분류 목차·글자 크기·밝게/어둡게)을 감춰요.
+   "지금 도움"은 링크라서 그대로 둬요 */
+html:not(.js) #btn-nav, html:not(.js) #btn-fs, html:not(.js) #btn-theme { display: none; }
+/* 정적 문서의 저장·공유 단추도 자바스크립트가 있어야 동작해요(앱과 같은 마크업이라 미리 들어 있음) */
+html:not(.js) .doc-meta-m .acts, html:not(.js) .infobox-actions { display: none; }
+</style>
+<script>
+/* 자바스크립트가 켜졌다는 표시(html.js)를 달고, 옛 해시 주소(#/a/…)로 들어오면 새 경로로 옮기고, 첫 그리기 전에 보기 설정을 적용한다.
+   - 옛 해시 주소: js/paths.js 의 hashToPath 와 같은 규칙. 뒤에 화면 안 자리 조각이 붙으면 경로 뒤로('#/about#privacy' → 'about/#privacy')
+   - 보기 설정: js/ui/settings.js 의 load() 와 같은 값(테마 jhb.theme, 글자 크기 jhb.fs 다섯 단계, jhb.ui.settings 의 줄 너비·본문 글꼴·움직임 줄이기).
+     모듈이 실린 뒤 한 번 더 바뀌어 화면이 출렁이지 않게(T16)
+   첫 화면 자리 표시(data-hm-start)는 쓰지 않기로 했어요: 그 속성을 읽던 css/ui/home.css 규칙은 K4 에서 지웠어요(잰 값은 tests/pages.test.cjs 의 '머리 스크립트' 테스트 주석) */
+(function () {
+  var r = document.documentElement;
+  try { r.classList.add('js'); } catch (e) { }
+  var h = location.hash;
+  if (h.indexOf('#/') === 0) {
+    var rest = h.slice(2), fi = rest.indexOf('#'), frag = fi >= 0 ? rest.slice(fi) : '';
+    if (fi >= 0) rest = rest.slice(0, fi);
+    var qi = rest.indexOf('?');
+    var p = (qi >= 0 ? rest.slice(0, qi) : rest).split('/').filter(Boolean).join('/');
+    var to = (r.getAttribute('data-base') || '') + (p ? p + '/' : '') + (qi >= 0 ? rest.slice(qi) : '') + (frag.length > 1 ? frag : '');
+    location.replace(to || './');
+  }
+  function get(k) { try { return JSON.parse(localStorage.getItem(k) || 'null'); } catch (e) { return null; } }
+  try {
+    var t = get('jhb.theme');
+    if (t === 'light' || t === 'dark') r.setAttribute('data-theme', t);
+    var f = get('jhb.fs');
+    if (f === 's' || f === 'l' || f === 'xl' || f === 'xxl') r.setAttribute('data-fs', f);
+    var s = get('jhb.ui.settings') || {};
+    if (s.width === 'wide') r.setAttribute('data-width', 'wide');
+    if (s.font === 'serif') r.setAttribute('data-font', 'serif');
+    if (s.motion === 'reduce') r.setAttribute('data-motion', 'reduce');
+  } catch (e) { }
+})();
+</script>
+</head>
+<body>
+<a class="skip" href="#app">본문으로 건너뛰기</a>
+<div class="progress" id="progress" aria-hidden="true"></div>
+<header class="topbar">
+  <div class="topbar-inner">
+    <button type="button" class="iconbtn nav-toggle" id="btn-nav" aria-label="분류 목차 열기" aria-expanded="false" aria-controls="sidenav">
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/></svg>
+    </button>
+    <a class="brand" href="../" aria-label="조현병 백과 첫 화면">
+      <svg class="brand-mark" viewBox="0 0 28 28" aria-hidden="true">
+        <g stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none">
+          <path d="M3 6h22"/><path d="M3 10.5h22"/><path d="M3 15c6 0 8 2.6 11 2.6S19 15 25 15" class="brand-tuned"/><path d="M3 19.5h22"/><path d="M3 24h22"/>
+        </g>
+        <circle cx="14" cy="17.6" r="1.9" class="brand-dot"/>
+      </svg>
+      <span class="brand-name">조현병 백과</span>
+    </a>
+    <div class="qs" role="search">
+      <svg class="qs-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="M15 15l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <input id="q" type="search" autocomplete="off" spellcheck="false" placeholder="문서나 용어 찾기" aria-label="문서나 용어 찾기" aria-haspopup="dialog">
+      <kbd class="qs-key" aria-hidden="true">/ · Ctrl K</kbd>
+    </div>
+    <nav class="tools" aria-label="도구">
+      <a class="tool-help" id="btn-help" href="../a/crisis-hotlines/"><span class="tool-help-long">지금 </span>도움</a>
+      <!--top:start-->
+      <a href="../glossary/" class="tool-link" data-r="glossary">용어 사전</a>
+      <a href="../guide/" class="tool-link" data-r="guide">길잡이</a>
+      <a href="../browse/" class="tool-link" data-r="browse">둘러보기</a>
+      <a href="../me/" class="tool-link" data-r="me" rel="nofollow">내 서재</a>
+      <!--top:end-->
+      <button type="button" class="iconbtn" id="btn-fs" aria-label="글자 크기 바꾸기" title="글자 크기">
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M3 18l4.5-11L12 18M4.6 14h5.8M14 18l3.2-7.5L20.4 18M15.1 15.6h4.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+      </button>
+      <button type="button" class="iconbtn" id="btn-theme" aria-label="밝게 또는 어둡게" title="밝게/어둡게">
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="12" cy="12" r="7.5" stroke="currentColor" stroke-width="1.6" fill="none"/><path d="M12 4.5a7.5 7.5 0 0 1 0 15z" fill="currentColor"/></svg>
+      </button>
+    </nav>
+  </div>
+</header>
+<div class="shell">
+  <nav class="sidenav" id="sidenav" aria-label="분류 목차"></nav>
+  <div class="scrim" id="scrim" hidden></div>
+  <main id="app" tabindex="-1"><nav class="crumb" aria-label="위치"><a href="../">첫 화면</a><span class="sep">/</span>미리 써 두는 종이</nav><h1 class="page-title">미리 써 두는 종이</h1><p class="page-lead">괜찮을 때 미리 적어 두면 힘들 때 꺼내 볼 수 있어요. 쓰고 바로 인쇄하세요. 저장은 직접 켤 때만 이 기기에 해요.</p><div class="fp-body" data-page="plan"><div class="pg-plan-nojs"><div class="pg-plan-fixed" role="note" aria-label="위기 연락처"><p class="pg-plan-fixed-h">지금 힘들면 바로 연락하세요</p><p class="pg-plan-tels"><a class="pg-plan-tel" href="tel:109"><b>109</b> <span>자살예방상담</span></a> <a class="pg-plan-tel" href="tel:1577-0199"><b>1577-0199</b> <span>정신건강위기상담</span></a> <a class="pg-plan-tel" href="tel:119"><b>119</b> <span>응급</span></a></p><p class="pg-plan-fixed-n">109·1577-0199는 24시간 받아요. 전화가 어렵다면 109로 문자를 보낼 수 있어요.</p></div><p>재발·위기 대비 계획, 안전 계획 카드, 내 정보 카드를 화면에서 적고 바로 인쇄하는 곳이에요. 칸에 적으려면 자바스크립트가 켜져 있어야 해요.</p><p>자바스크립트를 켤 수 없다면 아래 칸 이름을 종이에 옮겨 손으로 써도 돼요. 법적 효력이 정해진 문서가 아니에요. 담당 의사·가족과 미리 나눠 두는 메모예요.</p><section class="pg-plan-nojs-f"><h2 class="pg-plan-h">재발·위기 대비 계획</h2><p>괜찮을 때 나의 신호와 할 일을 한 장에 적어 두는 계획이에요. 믿는 사람과 함께 써도 좋아요. 다 채우지 않아도 괜찮아요.</p><p class="pg-plan-basis">바탕 글: <a href="../a/relapse-prevention-plan/">재발 예방 계획 쓰기</a></p><h3 class="pg-plan-sh">평소의 나</h3><ul><li>나를 지키는 습관</li></ul><h3 class="pg-plan-sh">나만의 경고 신호</h3><ul><li>가장 먼저 달라진 것 <span class="pg-plan-hint">(잠, 식사, 연락, 씻기)</span></li><li>그다음에 생긴 생각이나 느낌 <span class="pg-plan-hint">(의심, 예민함, 특별한 의미)</span></li><li>주변 사람이 알아챈 것</li><li>어떤 일이 먼저 있었나 <span class="pg-plan-hint">(이사, 시험, 이별, 수면 부족, 술)</span></li></ul><h3 class="pg-plan-sh">신호가 보이면</h3><ul><li>내가 할 일</li><li>주변에 부탁할 일</li></ul><h3 class="pg-plan-sh">위기 때 원하는 도움</h3><ul><li>연락처 <span class="pg-plan-hint">(담당 의사·병원, 정신건강복지센터, 믿는 사람 두 명)</span></li><li>원하는 도움</li><li>원하지 않는 도움</li><li>잘 맞았던 약과 맞지 않았던 약 <span class="pg-plan-hint">(이름만, 조정은 의사가)</span></li><li>피하고 싶은 부작용과 그 까닭</li><li>대신 챙겨 줄 일 <span class="pg-plan-hint">(집안일·반려동물·직장 연락 등)</span></li></ul></section><section class="pg-plan-nojs-f"><h2 class="pg-plan-h">안전 계획 카드</h2><p>괜찮을 때 적어 두고, 힘들 때 꺼내 보는 카드예요.</p><p class="pg-plan-basis">바탕 글: <a href="../a/suicide-warning-signs/">자살 위험 신호와 대처</a></p><h3 class="pg-plan-sh">힘들 때 꺼내 볼 것</h3><ul><li>내가 위험해지기 전에 나타나는 나만의 신호</li><li>혼자 해 볼 수 있는 것 <span class="pg-plan-hint">(산책, 음악, 샤워, 호흡)</span></li><li>연락할 사람 두세 명과 전화번호</li><li>담당 의사·병원 연락처</li><li>위험한 물건을 치우거나 맡기는 방법</li></ul></section><section class="pg-plan-nojs-f"><h2 class="pg-plan-h">내 정보 카드</h2><p>응급실이나 처음 가는 진료에서 보여 줄 한 장이에요. 말하기 어려울 때를 대비해 미리 적어 둬요.</p><p class="pg-plan-basis">바탕 글: <a href="../a/other-medical-care/">다른 과 진료·수술·치과·약국에서 알릴 것</a>, <a href="../a/emergency-response/">응급 상황 대처</a></p><h3 class="pg-plan-sh">다니는 병원과 연락할 사람</h3><ul><li>담당 병원과 의사 <span class="pg-plan-hint">(병원 이름과 전화번호)</span></li><li>연락할 사람 <span class="pg-plan-hint">(가족이나 믿는 사람, 전화번호)</span></li></ul><h3 class="pg-plan-sh">먹는 약과 주사</h3><ul><li>먹는 약 <span class="pg-plan-hint">(처방전대로 직접 적어요)</span></li><li>장기지속형 주사제를 맞는다면 약 이름과 마지막으로 맞은 날</li><li>예전에 크게 힘들었던 부작용</li></ul><h3 class="pg-plan-sh">알레르기와 다른 병</h3><ul><li>약 알레르기</li><li>다른 지병</li><li>담배를 피우는지, 최근에 끊었거나 다시 피우는지</li></ul></section></div></div><div class="fp-notices"><div class="notice notice-general" role="note">일반적인 정보예요. 사람마다 상황이 달라서 진단과 치료는 담당 의사와 상의하는 게 안전해요. 이 백과의 내용은 AI가 공개 자료로 초안을 쓰고 출처를 확인해 만들었으며, 전문가 감수는 받지 않았어요.</div><div class="notice notice-device" role="note">이 기기의 브라우저에만 저장돼요. 어디로도 보내지 않아요. 같은 기기를 쓰는 사람이 볼 수 있어요.</div><div class="notice notice-crisis" role="note">힘든 생각이 들면 자살예방상담 <a href="tel:109">109</a>, 정신건강위기상담 <a href="tel:1577-0199">1577-0199</a>에 24시간 전화할 수 있어요. 전화가 어렵다면 109로 문자를 보낼 수 있어요. 당장 위험하면 <a href="tel:119">119</a>에 전화하세요.</div></div></main>
+</div>
+<footer class="sitefoot">
+  <div class="sitefoot-inner">
+    <p>이 백과는 일반적인 정보를 전해요. 진단과 치료는 담당 의사와 상의하세요. 글마다 출처를 달았고, 틀린 내용은 고쳐 나가요.</p>
+    <p>글은 AI가 공개 자료를 바탕으로 초안을 쓰고 출처를 확인해 만들었어요. 전문가 감수는 받지 않았어요.</p>
+    <p>힘든 생각이 들 때 자살예방상담 <a href="tel:109">109</a>, 정신건강위기상담 <a href="tel:1577-0199">1577-0199</a>에 전화하세요. 24시간 받아요. 전화가 어렵다면 109로 문자를 보낼 수 있어요. 생명이 위급하면 <a href="tel:119">119</a>에 전화하세요.</p>
+    <p class="foot-links"><!--foot:start--><a href="../about/">이 백과에 대해</a> · <a href="../changes/">고침 기록</a><!--foot:end--></p>
+  </div>
+</footer>
+<div class="pop" id="pop" role="dialog" aria-modal="false" hidden></div>
+<!--core:start-->
+<script src="../js/core.js"></script>
+<!--core:end-->
+<!--ui:start-->
+<script src="../js/ui.js"></script>
+<!--ui:end-->
+</body>
+</html>

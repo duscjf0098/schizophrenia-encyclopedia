@@ -1,8 +1,8 @@
-/* 자동 생성: node tools/build-index.cjs (2026-11-13) — 직접 고치지 마세요 */
+/* 자동 생성: node tools/build-index.cjs (2026-11-14) — 직접 고치지 마세요 */
 window.JHB = window.JHB || {};
 JHB.toc = {
- "generated": "2026-11-13",
- "sources": 1059,
+ "generated": "2026-11-14",
+ "sources": 1112,
  "articles": [
   {
    "slug": "what-is-schizophrenia",
@@ -14,10 +14,11 @@ JHB.toc = {
     "정의",
     "유병률"
    ],
-   "updated": "2026-10-25",
+   "updated": "2026-11-14",
    "evidence": "가이드라인",
-   "minutes": 2,
-   "order": 1
+   "minutes": 6,
+   "order": 1,
+   "reviewed": "2026-11-14"
   },
   {
    "slug": "name-history",
@@ -47,9 +48,9 @@ JHB.toc = {
     "발병 연령",
     "성차"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 3,
+   "minutes": 4,
    "order": 3
   },
   {
@@ -66,7 +67,7 @@ JHB.toc = {
    ],
    "updated": "2026-10-23",
    "evidence": "연구",
-   "minutes": 5,
+   "minutes": 6,
    "order": 4
   },
   {
@@ -82,7 +83,7 @@ JHB.toc = {
    ],
    "updated": "2026-10-23",
    "evidence": "연구",
-   "minutes": 3,
+   "minutes": 4,
    "order": 5
   },
   {
@@ -97,9 +98,9 @@ JHB.toc = {
     "GWAS",
     "쌍둥이 연구"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 4,
+   "minutes": 5,
    "order": 6
   },
   {
@@ -114,9 +115,9 @@ JHB.toc = {
     "신경과학",
     "항정신병약"
    ],
-   "updated": "2026-10-25",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 4,
+   "minutes": 5,
    "order": 7
   },
   {
@@ -150,7 +151,7 @@ JHB.toc = {
    ],
    "updated": "2026-10-23",
    "evidence": "연구",
-   "minutes": 4,
+   "minutes": 5,
    "order": 9
   },
   {
@@ -168,7 +169,7 @@ JHB.toc = {
    ],
    "updated": "2026-10-23",
    "evidence": "초기연구",
-   "minutes": 4,
+   "minutes": 5,
    "order": 10
   },
   {
@@ -186,7 +187,7 @@ JHB.toc = {
    ],
    "updated": "2026-10-23",
    "evidence": "연구",
-   "minutes": 4,
+   "minutes": 5,
    "order": 11
   },
   {
@@ -240,7 +241,7 @@ JHB.toc = {
    ],
    "updated": "2026-10-25",
    "evidence": "연구",
-   "minutes": 4,
+   "minutes": 5,
    "order": 14
   },
   {
@@ -256,9 +257,9 @@ JHB.toc = {
     "관해",
     "조기 치료"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 4,
+   "minutes": 6,
    "order": 15
   },
   {
@@ -275,7 +276,7 @@ JHB.toc = {
    ],
    "updated": "2026-10-23",
    "evidence": "경험",
-   "minutes": 4,
+   "minutes": 5,
    "order": 16
   },
   {
@@ -294,7 +295,8 @@ JHB.toc = {
    "updated": "2026-11-13",
    "evidence": "가이드라인",
    "minutes": 6,
-   "order": 17
+   "order": 17,
+   "reviewed": "2026-11-13"
   },
   {
    "slug": "positive-overview",
@@ -322,9 +324,9 @@ JHB.toc = {
     "환각",
     "총론"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 6,
+   "minutes": 7,
    "order": 2
   },
   {
@@ -335,12 +337,14 @@ JHB.toc = {
    "tags": [
     "양성",
     "환각",
-    "환청"
+    "환청",
+    "위기"
    ],
-   "updated": "2026-10-25",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 3,
-   "order": 3
+   "minutes": 7,
+   "order": 3,
+   "reviewed": "2026-11-14"
   },
   {
    "slug": "visual-hallucination",
@@ -352,9 +356,9 @@ JHB.toc = {
     "환각",
     "환시"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 5,
+   "minutes": 6,
    "order": 4
   },
   {
@@ -371,7 +375,7 @@ JHB.toc = {
    ],
    "updated": "2026-10-23",
    "evidence": "연구",
-   "minutes": 5,
+   "minutes": 6,
    "order": 5
   },
   {
@@ -410,16 +414,16 @@ JHB.toc = {
    "slug": "persecutory-delusion",
    "section": "2",
    "title": "피해망상",
-   "summary": "누군가 나를 해치려 한다는 확고한 믿음이에요. 가장 흔한 망상이고, 위협을 예상하는 마음·불안·불면이 서로를 키우며 유지돼요. 이 고리를 끊는 치료가 효과를 보이고 있어요.",
+   "summary": "누군가 나를 해치려 한다는 확고한 믿음이에요. 아주 흔한 망상이고, 위협을 예상하는 마음·불안·불면이 서로를 키우며 유지돼요. 이 고리를 끊는 치료가 효과를 보이고 있어요.",
    "tags": [
     "양성",
     "망상",
     "피해망상",
     "편집증"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 6,
+   "minutes": 8,
    "order": 8
   },
   {
@@ -449,7 +453,7 @@ JHB.toc = {
     "과대망상",
     "조증"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
    "minutes": 5,
    "order": 10
@@ -519,7 +523,7 @@ JHB.toc = {
     "색정망상",
     "안전"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
    "minutes": 6,
    "order": 14
@@ -571,7 +575,7 @@ JHB.toc = {
    ],
    "updated": "2026-10-23",
    "evidence": "가이드라인",
-   "minutes": 5,
+   "minutes": 6,
    "order": 17
   },
   {
@@ -586,9 +590,9 @@ JHB.toc = {
     "응급",
     "위기"
    ],
-   "updated": "2026-10-25",
+   "updated": "2026-11-14",
    "evidence": "가이드라인",
-   "minutes": 5,
+   "minutes": 6,
    "order": 18
   },
   {
@@ -603,9 +607,9 @@ JHB.toc = {
     "평가",
     "연구"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 5,
+   "minutes": 6,
    "order": 19
   },
   {
@@ -620,9 +624,9 @@ JHB.toc = {
     "뇌 영상",
     "기전"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 6,
+   "minutes": 7,
    "order": 20
   },
   {
@@ -638,7 +642,7 @@ JHB.toc = {
     "재발 예방",
     "위기"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "가이드라인",
    "minutes": 6,
    "order": 21
@@ -751,7 +755,7 @@ JHB.toc = {
     "외로움",
     "관계"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
    "minutes": 6,
    "order": 6
@@ -768,7 +772,7 @@ JHB.toc = {
     "약 부작용",
     "우울"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
    "minutes": 6,
    "order": 7
@@ -858,7 +862,7 @@ JHB.toc = {
    ],
    "updated": "2026-10-25",
    "evidence": "연구",
-   "minutes": 6,
+   "minutes": 7,
    "order": 12
   },
   {
@@ -873,9 +877,9 @@ JHB.toc = {
     "재발",
     "돌봄"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 6,
+   "minutes": 7,
    "order": 13
   },
   {
@@ -907,7 +911,7 @@ JHB.toc = {
     "운동",
     "동료지원"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
    "minutes": 6,
    "order": 15
@@ -923,10 +927,11 @@ JHB.toc = {
     "기능",
     "인지재활"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 4,
-   "order": 1
+   "minutes": 5,
+   "order": 1,
+   "reviewed": "2026-11-14"
   },
   {
    "slug": "cognitive-domains",
@@ -975,9 +980,9 @@ JHB.toc = {
     "가족",
     "LEAP"
    ],
-   "updated": "2026-10-25",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 4,
+   "minutes": 5,
    "order": 4
   },
   {
@@ -993,10 +998,11 @@ JHB.toc = {
     "후정신병우울",
     "동반질환"
    ],
-   "updated": "2026-10-25",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 4,
-   "order": 5
+   "minutes": 6,
+   "order": 5,
+   "reviewed": "2026-11-14"
   },
   {
    "slug": "sleep",
@@ -1010,26 +1016,28 @@ JHB.toc = {
     "재발",
     "수면CBT"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 5,
-   "order": 6
+   "minutes": 6,
+   "order": 6,
+   "reviewed": "2026-11-14"
   },
   {
    "slug": "suicide-warning-signs",
    "section": "4",
    "title": "자살 위험 신호와 대처",
-   "summary": "조현병이 있는 사람은 특히 발병 초기와 퇴원 직후에 자살 위험이 높아져요. 신호를 알고 미리 계획을 세우면 위험을 줄일 수 있어요.",
+   "summary": "정신증으로 처음 진료받은 뒤 첫해와 정신과 퇴원 직후에는 자살 위험이 특히 높아져요. 신호와 도움이 되는 것을 알고 미리 계획을 세워 두면 본인도 가족도 대비할 수 있어요.",
    "tags": [
     "위기",
     "자살",
     "우울",
     "안전계획"
    ],
-   "updated": "2026-10-25",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 2,
-   "order": 7
+   "minutes": 6,
+   "order": 7,
+   "reviewed": "2026-11-14"
   },
   {
    "slug": "physical-health",
@@ -1044,10 +1052,11 @@ JHB.toc = {
     "흡연",
     "검진"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 4,
-   "order": 8
+   "minutes": 7,
+   "order": 8,
+   "reviewed": "2026-11-14"
   },
   {
    "slug": "life-expectancy",
@@ -1061,10 +1070,11 @@ JHB.toc = {
     "흡연",
     "위기"
    ],
-   "updated": "2026-10-25",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 5,
-   "order": 9
+   "minutes": 6,
+   "order": 9,
+   "reviewed": "2026-11-14"
   },
   {
    "slug": "anger-irritability",
@@ -1082,10 +1092,11 @@ JHB.toc = {
     "비확전",
     "위기"
    ],
-   "updated": "2026-10-25",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 5,
-   "order": 10
+   "minutes": 6,
+   "order": 10,
+   "reviewed": "2026-11-14"
   },
   {
    "slug": "polydipsia-hyponatremia",
@@ -1102,7 +1113,8 @@ JHB.toc = {
    "updated": "2026-11-13",
    "evidence": "연구",
    "minutes": 5,
-   "order": 11
+   "order": 11,
+   "reviewed": "2026-11-13"
   },
   {
    "slug": "heat-and-medication",
@@ -1119,7 +1131,8 @@ JHB.toc = {
    "updated": "2026-11-13",
    "evidence": "가이드라인",
    "minutes": 5,
-   "order": 12
+   "order": 12,
+   "reviewed": "2026-11-13"
   },
   {
    "slug": "trauma-and-psychosis",
@@ -1137,7 +1150,8 @@ JHB.toc = {
    "updated": "2026-11-13",
    "evidence": "연구",
    "minutes": 6,
-   "order": 13
+   "order": 13,
+   "reviewed": "2026-11-13"
   },
   {
    "slug": "comorbid-substance-use",
@@ -1153,10 +1167,11 @@ JHB.toc = {
     "중독",
     "통합치료"
    ],
-   "updated": "2026-11-13",
+   "updated": "2026-11-14",
    "evidence": "가이드라인",
    "minutes": 6,
-   "order": 14
+   "order": 14,
+   "reviewed": "2026-11-13"
   },
   {
    "slug": "prodrome",
@@ -1170,9 +1185,9 @@ JHB.toc = {
     "조기개입",
     "가족"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 4,
+   "minutes": 6,
    "order": 1
   },
   {
@@ -1189,7 +1204,7 @@ JHB.toc = {
    ],
    "updated": "2026-10-23",
    "evidence": "연구",
-   "minutes": 4,
+   "minutes": 5,
    "order": 2
   },
   {
@@ -1207,7 +1222,7 @@ JHB.toc = {
    ],
    "updated": "2026-10-25",
    "evidence": "연구",
-   "minutes": 5,
+   "minutes": 6,
    "order": 3
   },
   {
@@ -1241,9 +1256,9 @@ JHB.toc = {
     "약중단",
     "가족"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 5,
+   "minutes": 6,
    "order": 5
   },
   {
@@ -1261,7 +1276,7 @@ JHB.toc = {
    ],
    "updated": "2026-10-23",
    "evidence": "연구",
-   "minutes": 4,
+   "minutes": 5,
    "order": 6
   },
   {
@@ -1278,7 +1293,7 @@ JHB.toc = {
    ],
    "updated": "2026-10-23",
    "evidence": "연구",
-   "minutes": 6,
+   "minutes": 7,
    "order": 7
   },
   {
@@ -1318,7 +1333,7 @@ JHB.toc = {
    ],
    "updated": "2026-10-24",
    "evidence": "연구",
-   "minutes": 5,
+   "minutes": 6,
    "order": 9
   },
   {
@@ -1335,9 +1350,9 @@ JHB.toc = {
     "가족",
     "예후"
    ],
-   "updated": "2026-10-25",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 5,
+   "minutes": 7,
    "order": 10
   },
   {
@@ -1356,9 +1371,9 @@ JHB.toc = {
     "돌봄",
     "주거"
    ],
-   "updated": "2026-10-24",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 5,
+   "minutes": 7,
    "order": 11
   },
   {
@@ -1377,8 +1392,9 @@ JHB.toc = {
    ],
    "updated": "2026-11-13",
    "evidence": "연구",
-   "minutes": 4,
-   "order": 12
+   "minutes": 5,
+   "order": 12,
+   "reviewed": "2026-11-13"
   },
   {
    "slug": "dsm5-criteria",
@@ -1393,7 +1409,7 @@ JHB.toc = {
    ],
    "updated": "2026-10-23",
    "evidence": "가이드라인",
-   "minutes": 4,
+   "minutes": 5,
    "order": 1
   },
   {
@@ -1410,7 +1426,7 @@ JHB.toc = {
    ],
    "updated": "2026-10-25",
    "evidence": "가이드라인",
-   "minutes": 3,
+   "minutes": 4,
    "order": 2
   },
   {
@@ -1425,9 +1441,9 @@ JHB.toc = {
     "뇌 영상",
     "심리검사"
    ],
-   "updated": "2026-10-25",
+   "updated": "2026-11-14",
    "evidence": "가이드라인",
-   "minutes": 4,
+   "minutes": 6,
    "order": 3
   },
   {
@@ -1444,7 +1460,7 @@ JHB.toc = {
    ],
    "updated": "2026-10-25",
    "evidence": "연구",
-   "minutes": 3,
+   "minutes": 4,
    "order": 4
   },
   {
@@ -1461,7 +1477,7 @@ JHB.toc = {
    ],
    "updated": "2026-10-25",
    "evidence": "연구",
-   "minutes": 3,
+   "minutes": 4,
    "order": 5
   },
   {
@@ -1478,14 +1494,14 @@ JHB.toc = {
    ],
    "updated": "2026-10-25",
    "evidence": "연구",
-   "minutes": 3,
+   "minutes": 4,
    "order": 6
   },
   {
    "slug": "vs-brief-psychotic",
    "section": "6",
    "title": "단기 정신병적 장애·조현양상장애",
-   "summary": "같은 정신병 증상이라도 1개월 미만이면 단기 정신병적 장애, 1~6개월이면 조현양상장애, 6개월을 넘기면 조현병이에요. 기간으로 나뉜 이름이라 시간이 지나면 바뀌기도 하고, 상당수는 완전히 회복해요.",
+   "summary": "같은 정신병 증상이라도 1개월 미만이면 단기 정신병적 장애, 1~6개월이면 조현양상장애, 6개월 이상이면 조현병이에요. 기간으로 나뉜 이름이라 시간이 지나면 바뀌기도 하고, 상당수는 완전히 회복해요.",
    "tags": [
     "진단",
     "감별",
@@ -1494,9 +1510,9 @@ JHB.toc = {
     "산후 정신병",
     "위기"
    ],
-   "updated": "2026-10-25",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 3,
+   "minutes": 4,
    "order": 7
   },
   {
@@ -1548,7 +1564,7 @@ JHB.toc = {
    ],
    "updated": "2026-10-23",
    "evidence": "연구",
-   "minutes": 3,
+   "minutes": 4,
    "order": 10
   },
   {
@@ -1565,7 +1581,7 @@ JHB.toc = {
    ],
    "updated": "2026-10-25",
    "evidence": "연구",
-   "minutes": 4,
+   "minutes": 5,
    "order": 11
   },
   {
@@ -1583,7 +1599,7 @@ JHB.toc = {
    ],
    "updated": "2026-10-25",
    "evidence": "연구",
-   "minutes": 4,
+   "minutes": 5,
    "order": 12
   },
   {
@@ -1598,16 +1614,16 @@ JHB.toc = {
     "D2 수용체",
     "효과 크기"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 4,
+   "minutes": 5,
    "order": 1
   },
   {
    "slug": "first-generation",
    "section": "7",
    "title": "1세대 항정신병약",
-   "summary": "1952년 클로르프로마진에서 시작한 1세대 항정신병약의 역사, 종류, 작용과 부작용(추체외로 증상·지연성 운동장애이 많음), 그리고 \"효과는 2세대와 생각보다 비슷하다\"는 CATIE·메타분석 결과를 정리했어요.",
+   "summary": "1952년 클로르프로마진에서 시작한 1세대 항정신병약의 역사, 종류, 작용과 부작용(추체외로 증상·지연성 운동장애가 많음), 그리고 \"효과는 2세대와 생각보다 비슷하다\"는 CATIE·메타분석 결과를 정리했어요.",
    "tags": [
     "약물 치료",
     "1세대 항정신병약",
@@ -1615,16 +1631,16 @@ JHB.toc = {
     "할로페리돌",
     "추체외로 증상"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 4,
+   "minutes": 5,
    "order": 2
   },
   {
    "slug": "second-generation",
    "section": "7",
    "title": "2세대 항정신병약 총론",
-   "summary": "\"비정형\" 항정신병약이라 불리는 2세대의 정의, 공통 특징(추체외로 증상 적고 대사 부작용 많음), 32개 약을 비교한 2019년 네트워크 메타분석의 효과·부작용 순위, 그리고 \"선택 기준은 부작용 프로파일\"이라는 결론을 정리했어요.",
+   "summary": "\"비정형\" 항정신병약이라 불리는 2세대의 정의, 공통 특징(추체외로 증상 적고 대사 부작용 많음), 32개 약을 비교한 2019년 네트워크 메타분석의 효과·부작용 비교, 그리고 \"선택 기준은 부작용 프로파일\"이라는 결론을 정리했어요.",
    "tags": [
     "약물 치료",
     "2세대 항정신병약",
@@ -1632,7 +1648,7 @@ JHB.toc = {
     "메타분석",
     "부작용"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
    "minutes": 4,
    "order": 3
@@ -1641,7 +1657,7 @@ JHB.toc = {
    "slug": "risperidone",
    "section": "7",
    "title": "리스페리돈",
-   "summary": "리스페리돈(risperidone)은 D2·5-HT2A 차단 2세대 약으로 효과 상위권이지만, 용량이 올라가면 프로락틴 상승과 추체외로 증상이 생겨요. 2주 간격 근육주사부터 월 1회 피하주사까지 장기지속형이 여럿 있어요.",
+   "summary": "리스페리돈(risperidone)은 D2·5-HT2A를 막는 2세대 약으로, 프로락틴 상승이 대표 부작용이고 용량이 올라가면 추체외로 증상이 늘어요. 장기지속형 주사는 나라마다 달라서, 국내에도 장기지속형 피하주사가 있어요.",
    "tags": [
     "약물 치료",
     "리스페리돈",
@@ -1649,9 +1665,9 @@ JHB.toc = {
     "프로락틴",
     "장기지속형 주사제"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 4,
+   "minutes": 5,
    "order": 4
   },
   {
@@ -1666,16 +1682,16 @@ JHB.toc = {
     "장기지속형 주사제",
     "프로락틴"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 4,
+   "minutes": 6,
    "order": 5
   },
   {
    "slug": "olanzapine",
    "section": "7",
    "title": "올란자핀",
-   "summary": "올란자핀(olanzapine)은 효과가 상위권인 2세대 약이지만 체중·혈당·지질 부작용이 가장 큰 축에 들어요. 진정 작용, 구강붕해정, 대사 모니터링, 그리고 체중 증가를 줄이려 만든 올란자핀+사미도르판(미국 2021년 승인)까지 정리했어요.",
+   "summary": "올란자핀(olanzapine)은 효과가 여러 연구로 확인된 2세대 약이지만 체중·혈당·지질 부작용이 가장 큰 축에 들어요. 진정 작용, 구강붕해정, 대사 모니터링, 그리고 체중 증가를 줄이려 만든 올란자핀+사미도르판(미국 2021년 승인)까지 정리했어요.",
    "tags": [
     "약물 치료",
     "올란자핀",
@@ -1683,9 +1699,9 @@ JHB.toc = {
     "체중 증가",
     "대사 부작용"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 4,
+   "minutes": 6,
    "order": 6
   },
   {
@@ -1700,16 +1716,16 @@ JHB.toc = {
     "정좌불능",
     "장기지속형 주사제"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 4,
+   "minutes": 5,
    "order": 7
   },
   {
    "slug": "quetiapine",
    "section": "7",
    "title": "쿠에티아핀",
-   "summary": "쿠에티아핀(quetiapine)은 D2 수용체를 짧고 약하게 점유해 추체외로 증상이 거의 없지만, 조현병에서의 효과는 중간 이하예요. 강한 진정 때문에 저용량이 수면제처럼 쓰이는 문제가 논쟁이고, 체중·대사 부작용이 있어요. 양극성 우울에도 적응증이 있고 서방형이 있어요.",
+   "summary": "쿠에티아핀(quetiapine)은 D2 수용체를 짧고 약하게 점유해 추체외로 증상이 거의 없지만, 조현병에서의 효과는 중간 이하예요. 졸림이 대표 부작용이라 저용량이 수면제처럼 쓰이는 문제가 논쟁이고, 체중·대사 부작용이 있어요. 양극성 우울에도 적응증이 있고 서방형이 있어요.",
    "tags": [
     "약물 치료",
     "쿠에티아핀",
@@ -1717,16 +1733,17 @@ JHB.toc = {
     "진정",
     "양극성 우울"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 4,
-   "order": 8
+   "minutes": 6,
+   "order": 8,
+   "reviewed": "2026-11-14"
   },
   {
    "slug": "amisulpride",
    "section": "7",
    "title": "아미설프리드",
-   "summary": "아미설프리드(amisulpride)는 도파민 D2·D3 수용체만 골라 막는 약이에요. 32개 약 비교에서 효과 상위권이고 양성 증상에는 1위였지만, 프로락틴 상승과 QT 연장이 약점이에요. 미국에서는 조현병 약으로 허가되지 않았고, 한국·유럽에서 쓰여요.",
+   "summary": "아미설프리드(amisulpride)는 도파민 D2·D3 수용체만 골라 막는 약이에요. 32개 약 비교 메타분석에서 효과가 큰 쪽이었지만 위약 대조 시험이 없는 간접 비교이고, 프로락틴 상승과 QT 연장이 약점이에요. 미국에서는 조현병 약으로 허가되지 않았고, 한국·유럽에서 쓰여요.",
    "tags": [
     "약물 치료",
     "아미설프리드",
@@ -1734,10 +1751,11 @@ JHB.toc = {
     "프로락틴",
     "QT 연장"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 3,
-   "order": 9
+   "minutes": 6,
+   "order": 9,
+   "reviewed": "2026-11-14"
   },
   {
    "slug": "lurasidone",
@@ -1751,16 +1769,17 @@ JHB.toc = {
     "대사 부작용",
     "정좌불능"
    ],
-   "updated": "2026-10-25",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 3,
-   "order": 10
+   "minutes": 5,
+   "order": 10,
+   "reviewed": "2026-11-14"
   },
   {
    "slug": "brexpiprazole",
    "section": "7",
    "title": "브렉스피프라졸",
-   "summary": "브렉스피프라졸(brexpiprazole)은 아리피프라졸의 후속 부분 작용제예요. D2 자극 정도가 더 낮고 세로토닌 수용체 친화도가 높아 정좌불능이 적은 편이지만, 조현병 효과는 32개 약 중 유의한 약 가운데 가장 작았어요. 우울증 보조와 알츠하이머 초조(2023년 미국 승인) 적응증이 있어요.",
+   "summary": "브렉스피프라졸(brexpiprazole)은 아리피프라졸의 후속 부분 작용제예요. D2 자극 정도를 더 낮추고 세로토닌 수용체 친화도를 높인 약으로, 조현병 시험에서 정좌불능은 위약과 차이가 작았지만 조현병 효과는 32개 약 중 유의한 약 가운데 가장 작았어요. 우울증 보조와 알츠하이머 초조(2023년 미국 승인) 적응증이 있어요.",
    "tags": [
     "약물 치료",
     "브렉스피프라졸",
@@ -1768,16 +1787,17 @@ JHB.toc = {
     "정좌불능",
     "알츠하이머 초조"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 4,
-   "order": 11
+   "minutes": 6,
+   "order": 11,
+   "reviewed": "2026-11-14"
   },
   {
    "slug": "cariprazine",
    "section": "7",
    "title": "카리프라진",
-   "summary": "카리프라진(cariprazine)은 D3 수용체를 더 좋아하는 부분 작용제로, 반감기가 몇 주에 이를 만큼 길어요. 음성 증상이 두드러진 사람에서 리스페리돈보다 나았던 26주 시험이 있고, 체중·대사는 유리하지만 정좌불능·추체외로 증상이 흔해요. 국내 시판 허가는 2026년 10월 현재 확인되지 않았어요.",
+   "summary": "카리프라진(cariprazine)은 D3 수용체를 더 좋아하는 부분 작용제로, 반감기가 몇 주에 이를 만큼 길어요. 음성 증상이 두드러진 사람에서 리스페리돈보다 나았던 26주 시험이 있고, 체중·대사는 유리하지만 정좌불능·추체외로 증상이 흔해요. 국내 시판 허가는 2026년 11월 현재 확인되지 않았어요.",
    "tags": [
     "약물 치료",
     "카리프라진",
@@ -1785,16 +1805,16 @@ JHB.toc = {
     "음성 증상",
     "정좌불능"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 4,
+   "minutes": 5,
    "order": 12
   },
   {
    "slug": "ziprasidone",
    "section": "7",
    "title": "지프라시돈",
-   "summary": "지프라시돈(ziprasidone)은 32개 약 가운데 체중 증가가 가장 적은 약이지만, 조현병 효과는 낮은 편이고 심전도 QT 간격을 다른 약보다 더 늘려요. 18,154명을 추적한 ZODIAC 연구에서 사망률은 올란자핀과 같았어요. 반드시 음식과 함께 먹어야 하고, 급성 초조용 근육주사가 있어요.",
+   "summary": "지프라시돈(ziprasidone)은 32개 약 가운데 체중 증가가 가장 적은 약이지만, 조현병 효과는 낮은 편이고 심전도 QT 간격을 다른 약보다 더 늘려요. 18,154명을 추적한 ZODIAC 연구에서 사망률은 올란자핀과 같았어요. 음식과 함께 먹어야 흡수가 잘 되고, 미국에는 급성 초조용 근육주사도 있어요.",
    "tags": [
     "약물 치료",
     "지프라시돈",
@@ -1802,16 +1822,17 @@ JHB.toc = {
     "QT 연장",
     "체중"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 4,
-   "order": 13
+   "minutes": 6,
+   "order": 13,
+   "reviewed": "2026-11-14"
   },
   {
    "slug": "haloperidol",
    "section": "7",
    "title": "할로페리돌",
-   "summary": "할로페리돌(haloperidol)은 대표적인 1세대 약이에요. 양성 증상 효과는 2세대 상위권과 비슷하고 체중 증가는 가장 적지만, 떨림·뻣뻣함 같은 추체외로 증상이 가장 많은 축이에요. 급성 초조 때 주사로 쓰이고, 월 1회 데카노에이트 주사가 있어요.",
+   "summary": "할로페리돌(haloperidol)은 대표적인 1세대 약이에요. 2019년 메타분석에서 양성 증상 효과가 여러 2세대 약과 비슷했고 체중 증가는 적은 편이지만, 떨림·뻣뻣함 같은 추체외로 증상이 가장 많은 축이에요. 급성 초조 때 주사로 쓰이고, 월 1회 데카노에이트 주사가 있어요.",
    "tags": [
     "약물 치료",
     "할로페리돌",
@@ -1819,10 +1840,11 @@ JHB.toc = {
     "추체외로 증상",
     "급성 초조"
    ],
-   "updated": "2026-10-25",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 5,
-   "order": 14
+   "minutes": 6,
+   "order": 14,
+   "reviewed": "2026-11-14"
   },
   {
    "slug": "clozapine",
@@ -1835,12 +1857,14 @@ JHB.toc = {
     "치료저항성",
     "무과립구증",
     "혈액검사",
-    "위기"
+    "위기",
+    "응급"
    ],
-   "updated": "2026-10-25",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 5,
-   "order": 15
+   "minutes": 8,
+   "order": 15,
+   "reviewed": "2026-11-14"
   },
   {
    "slug": "lai",
@@ -1855,9 +1879,9 @@ JHB.toc = {
     "팔리페리돈",
     "아리피프라졸"
    ],
-   "updated": "2026-10-25",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 4,
+   "minutes": 6,
    "order": 16
   },
   {
@@ -1871,11 +1895,12 @@ JHB.toc = {
     "모니터링",
     "체중",
     "프로락틴",
-    "추체외로"
+    "추체외로",
+    "응급"
    ],
-   "updated": "2026-10-25",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 4,
+   "minutes": 8,
    "order": 17
   },
   {
@@ -1892,7 +1917,7 @@ JHB.toc = {
     "근긴장이상",
     "위기"
    ],
-   "updated": "2026-10-25",
+   "updated": "2026-11-14",
    "evidence": "연구",
    "minutes": 5,
    "order": 18
@@ -1910,9 +1935,9 @@ JHB.toc = {
     "대사증후군",
     "메트포르민"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 5,
+   "minutes": 6,
    "order": 19
   },
   {
@@ -1928,9 +1953,9 @@ JHB.toc = {
     "성기능",
     "골밀도"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 4,
+   "minutes": 5,
    "order": 20
   },
   {
@@ -1946,9 +1971,9 @@ JHB.toc = {
     "변비",
     "인지"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 5,
+   "minutes": 6,
    "order": 21
   },
   {
@@ -1964,9 +1989,9 @@ JHB.toc = {
     "약사",
     "위기"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 5,
+   "minutes": 6,
    "order": 22
   },
   {
@@ -1982,9 +2007,9 @@ JHB.toc = {
     "교체",
     "위기"
    ],
-   "updated": "2026-10-25",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 6,
+   "minutes": 7,
    "order": 23
   },
   {
@@ -2000,7 +2025,7 @@ JHB.toc = {
     "도파민",
     "TRRIP"
    ],
-   "updated": "2026-10-25",
+   "updated": "2026-11-14",
    "evidence": "연구",
    "minutes": 5,
    "order": 24
@@ -2018,9 +2043,9 @@ JHB.toc = {
     "벤조디아제핀",
     "병용"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 4,
+   "minutes": 5,
    "order": 25
   },
   {
@@ -2037,10 +2062,11 @@ JHB.toc = {
     "상호작용",
     "클로자핀"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 4,
-   "order": 26
+   "minutes": 7,
+   "order": 26,
+   "reviewed": "2026-11-14"
   },
   {
    "slug": "new-drugs",
@@ -2055,10 +2081,11 @@ JHB.toc = {
     "코벤피",
     "파이프라인"
    ],
-   "updated": "2026-10-25",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 5,
-   "order": 27
+   "minutes": 6,
+   "order": 27,
+   "reviewed": "2026-11-14"
   },
   {
    "slug": "missed-dose",
@@ -2073,10 +2100,11 @@ JHB.toc = {
     "장기지속형주사제",
     "자기관리"
    ],
-   "updated": "2026-10-24",
+   "updated": "2026-11-14",
    "evidence": "연구",
    "minutes": 5,
-   "order": 28
+   "order": 28,
+   "reviewed": "2026-11-14"
   },
   {
    "slug": "clozapine-hypersalivation",
@@ -2091,10 +2119,11 @@ JHB.toc = {
     "타액과다",
     "치료저항성"
    ],
-   "updated": "2026-10-24",
+   "updated": "2026-11-14",
    "evidence": "연구",
    "minutes": 5,
-   "order": 29
+   "order": 29,
+   "reviewed": "2026-11-14"
   },
   {
    "slug": "orthostatic-hypotension",
@@ -2110,9 +2139,9 @@ JHB.toc = {
     "실신",
     "클로자핀"
    ],
-   "updated": "2026-10-25",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 5,
+   "minutes": 6,
    "order": 30
   },
   {
@@ -2129,9 +2158,9 @@ JHB.toc = {
     "관계",
     "공유 의사결정"
    ],
-   "updated": "2026-10-24",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 5,
+   "minutes": 6,
    "order": 31
   },
   {
@@ -2149,16 +2178,17 @@ JHB.toc = {
     "긴장증",
     "보조 약물"
    ],
-   "updated": "2026-10-24",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 5,
-   "order": 32
+   "minutes": 6,
+   "order": 32,
+   "reviewed": "2026-11-14"
   },
   {
    "slug": "drug-costs-coverage",
    "section": "7",
    "title": "약값과 건강보험",
-   "summary": "조현병 진단을 받으면 산정특례로 급여 약값의 10%만 내고, 의료급여 수급자는 약국에서 처방전 한 건에 500원 수준이에요. 제네릭(복제약)과 오리지널의 차이, 약값이 정해지는 원리, 장기지속형 주사제의 급여 조건, 약값이 부담될 때 상담할 곳을 2026년 10월에 확인한 범위에서 정리했어요. 금액과 기준은 해마다 바뀌어요.",
+   "summary": "조현병 진단을 받으면 산정특례로 급여 약값의 10%만 내고, 의료급여 수급자는 약국에서 처방전 한 건에 500원 수준이에요. 제네릭(복제약)과 오리지널의 차이, 약값이 정해지는 원리, 장기지속형 주사제의 급여 조건, 약값이 부담될 때 상담할 곳을 2026년 11월에 다시 확인한 범위에서 정리했어요. 금액과 기준은 해마다 바뀌어요.",
    "tags": [
     "약물 치료",
     "약값",
@@ -2169,9 +2199,9 @@ JHB.toc = {
     "장기지속형주사제",
     "제도"
    ],
-   "updated": "2026-10-24",
+   "updated": "2026-11-14",
    "evidence": "가이드라인",
-   "minutes": 5,
+   "minutes": 7,
    "order": 33
   },
   {
@@ -2189,7 +2219,8 @@ JHB.toc = {
    "updated": "2026-11-13",
    "evidence": "연구",
    "minutes": 6,
-   "order": 34
+   "order": 34,
+   "reviewed": "2026-11-13"
   },
   {
    "slug": "heart-and-antipsychotics",
@@ -2206,10 +2237,11 @@ JHB.toc = {
     "클로자핀",
     "응급"
    ],
-   "updated": "2026-11-13",
+   "updated": "2026-11-14",
    "evidence": "가이드라인",
    "minutes": 5,
-   "order": 35
+   "order": 35,
+   "reviewed": "2026-11-13"
   },
   {
    "slug": "other-medical-care",
@@ -2228,7 +2260,8 @@ JHB.toc = {
    "updated": "2026-11-13",
    "evidence": "연구",
    "minutes": 5,
-   "order": 36
+   "order": 36,
+   "reviewed": "2026-11-13"
   },
   {
    "slug": "drug-level-test",
@@ -2246,7 +2279,8 @@ JHB.toc = {
    "updated": "2026-11-13",
    "evidence": "가이드라인",
    "minutes": 4,
-   "order": 37
+   "order": 37,
+   "reviewed": "2026-11-13"
   },
   {
    "slug": "cbtp",
@@ -2263,7 +2297,7 @@ JHB.toc = {
    ],
    "updated": "2026-10-25",
    "evidence": "가이드라인",
-   "minutes": 4,
+   "minutes": 5,
    "order": 1
   },
   {
@@ -2280,7 +2314,7 @@ JHB.toc = {
    ],
    "updated": "2026-10-25",
    "evidence": "가이드라인",
-   "minutes": 3,
+   "minutes": 4,
    "order": 2
   },
   {
@@ -2297,7 +2331,7 @@ JHB.toc = {
    ],
    "updated": "2026-10-23",
    "evidence": "연구",
-   "minutes": 3,
+   "minutes": 4,
    "order": 3
   },
   {
@@ -2333,14 +2367,14 @@ JHB.toc = {
    ],
    "updated": "2026-10-23",
    "evidence": "연구",
-   "minutes": 3,
+   "minutes": 4,
    "order": 5
   },
   {
    "slug": "exercise",
    "section": "8",
    "title": "운동",
-   "summary": "주 90분 안팎의 중강도 이상 유산소 운동은 증상, 인지, 기능, 우울을 함께 좋아지게 해요. 해마 부피가 커졌다는 연구도 있어요. 메타분석 수치, 어떤 운동을 얼마나 할지, 그리고 음성 증상이라는 가장 큰 장벽을 넘는 법을 정리했어요.",
+   "summary": "주 90분 안팎의 중강도 이상 운동은 증상, 기능, 인지를 좋아지게 했고, 우울이 줄었다는 메타분석도 있어요. 해마 부피가 커졌다는 연구도 있어요. 메타분석 수치, 어떤 운동을 얼마나 할지, 그리고 음성 증상이라는 가장 큰 장벽을 넘는 법을 정리했어요.",
    "tags": [
     "비약물 치료",
     "운동",
@@ -2349,7 +2383,7 @@ JHB.toc = {
     "음성 증상",
     "대사 건강"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
    "minutes": 4,
    "order": 6
@@ -2367,10 +2401,11 @@ JHB.toc = {
     "치료저항성",
     "클로자핀"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 4,
-   "order": 7
+   "minutes": 6,
+   "order": 7,
+   "reviewed": "2026-11-14"
   },
   {
    "slug": "rtms-tdcs",
@@ -2385,10 +2420,11 @@ JHB.toc = {
     "환청",
     "음성 증상"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
    "minutes": 4,
-   "order": 8
+   "order": 8,
+   "reviewed": "2026-11-14"
   },
   {
    "slug": "avatar-therapy",
@@ -2402,16 +2438,17 @@ JHB.toc = {
     "디지털 치료",
     "심리치료"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
    "minutes": 4,
-   "order": 9
+   "order": 9,
+   "reviewed": "2026-11-14"
   },
   {
    "slug": "peer-support",
    "section": "8",
    "title": "동료 지원",
-   "summary": "같은 병을 겪고 회복 중인 사람이 다른 당사자를 돕는 활동이에요. 증상이나 입원을 줄인다는 근거는 약하지만, 희망·회복·자기효능감에서는 긍정적 효과가 확인됐어요. 한국의 동료지원가 양성 제도와 당사자 모임을 찾는 법을 정리했어요.",
+   "summary": "같은 병을 겪고 회복 중인 사람이 다른 당사자를 돕는 활동이에요. 증상이나 입원을 줄인다는 근거는 약하고, 희망·회복·자기효능감에서는 일부 시험에서 작은 긍정적 효과가 있었어요. 한국의 동료지원가 양성 제도와 당사자 모임을 찾는 법을 정리했어요.",
    "tags": [
     "비약물 치료",
     "동료 지원",
@@ -2420,9 +2457,9 @@ JHB.toc = {
     "자조모임",
     "당사자"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 3,
+   "minutes": 4,
    "order": 10
   },
   {
@@ -2438,7 +2475,7 @@ JHB.toc = {
     "핀란드",
     "초발"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
    "minutes": 4,
    "order": 11
@@ -2456,10 +2493,11 @@ JHB.toc = {
     "퇴원 계획",
     "위기"
    ],
-   "updated": "2026-10-25",
+   "updated": "2026-11-14",
    "evidence": "가이드라인",
-   "minutes": 5,
-   "order": 12
+   "minutes": 6,
+   "order": 12,
+   "reviewed": "2026-11-14"
   },
   {
    "slug": "case-management-act",
@@ -2474,10 +2512,11 @@ JHB.toc = {
     "지역사회",
     "위기 대응"
    ],
-   "updated": "2026-10-25",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 4,
-   "order": 13
+   "minutes": 5,
+   "order": 13,
+   "reviewed": "2026-11-14"
   },
   {
    "slug": "hospital-stay-life",
@@ -2496,10 +2535,11 @@ JHB.toc = {
     "권리",
     "정신건강복지법"
    ],
-   "updated": "2026-10-25",
+   "updated": "2026-11-14",
    "evidence": "가이드라인",
-   "minutes": 7,
-   "order": 14
+   "minutes": 8,
+   "order": 14,
+   "reviewed": "2026-11-14"
   },
   {
    "slug": "arts-music-therapy",
@@ -2516,10 +2556,11 @@ JHB.toc = {
     "정신재활시설",
     "낮병원"
    ],
-   "updated": "2026-10-24",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 5,
-   "order": 15
+   "minutes": 6,
+   "order": 15,
+   "reviewed": "2026-11-14"
   },
   {
    "slug": "psychoeducation",
@@ -2537,7 +2578,8 @@ JHB.toc = {
    "updated": "2026-11-13",
    "evidence": "연구",
    "minutes": 4,
-   "order": 16
+   "order": 16,
+   "reviewed": "2026-11-13"
   },
   {
    "slug": "medication-adherence",
@@ -2552,10 +2594,11 @@ JHB.toc = {
     "공유의사결정",
     "자기관리"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 4,
-   "order": 1
+   "minutes": 5,
+   "order": 1,
+   "reviewed": "2026-11-14"
   },
   {
    "slug": "relapse-prevention-plan",
@@ -2570,10 +2613,11 @@ JHB.toc = {
     "위기계획",
     "위기"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 4,
-   "order": 2
+   "minutes": 5,
+   "order": 2,
+   "reviewed": "2026-11-14"
   },
   {
    "slug": "daily-rhythm",
@@ -2589,8 +2633,9 @@ JHB.toc = {
    ],
    "updated": "2026-10-23",
    "evidence": "연구",
-   "minutes": 3,
-   "order": 3
+   "minutes": 4,
+   "order": 3,
+   "reviewed": "2026-11-14"
   },
   {
    "slug": "diet-exercise",
@@ -2608,7 +2653,8 @@ JHB.toc = {
    "updated": "2026-10-23",
    "evidence": "연구",
    "minutes": 4,
-   "order": 4
+   "order": 4,
+   "reviewed": "2026-11-14"
   },
   {
    "slug": "stress-management",
@@ -2623,10 +2669,11 @@ JHB.toc = {
     "자기관리",
     "위기"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
    "minutes": 4,
-   "order": 5
+   "order": 5,
+   "reviewed": "2026-11-14"
   },
   {
    "slug": "work-study",
@@ -2641,9 +2688,9 @@ JHB.toc = {
     "정당한편의",
     "장애인차별금지법"
    ],
-   "updated": "2026-10-25",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 4,
+   "minutes": 6,
    "order": 6
   },
   {
@@ -2678,9 +2725,9 @@ JHB.toc = {
     "항정신병약",
     "유전"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 4,
+   "minutes": 6,
    "order": 8
   },
   {
@@ -2698,7 +2745,7 @@ JHB.toc = {
    ],
    "updated": "2026-10-23",
    "evidence": "가이드라인",
-   "minutes": 4,
+   "minutes": 5,
    "order": 9
   },
   {
@@ -2715,10 +2762,11 @@ JHB.toc = {
     "대마",
     "재발"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 4,
-   "order": 10
+   "minutes": 6,
+   "order": 10,
+   "reviewed": "2026-11-14"
   },
   {
    "slug": "money-management",
@@ -2732,9 +2780,9 @@ JHB.toc = {
     "성년후견",
     "금융사기"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 4,
+   "minutes": 6,
    "order": 11
   },
   {
@@ -2767,7 +2815,7 @@ JHB.toc = {
     "편견",
     "회복"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
    "minutes": 4,
    "order": 13
@@ -2802,9 +2850,9 @@ JHB.toc = {
     "사회적 고립",
     "동료지원"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 4,
+   "minutes": 5,
    "order": 15
   },
   {
@@ -2840,7 +2888,7 @@ JHB.toc = {
     "외로움",
     "지원주거"
    ],
-   "updated": "2026-10-24",
+   "updated": "2026-11-14",
    "evidence": "연구",
    "minutes": 6,
    "order": 17
@@ -2860,10 +2908,11 @@ JHB.toc = {
     "앱",
     "개인정보"
    ],
-   "updated": "2026-10-24",
+   "updated": "2026-11-14",
    "evidence": "연구",
    "minutes": 6,
-   "order": 18
+   "order": 18,
+   "reviewed": "2026-11-14"
   },
   {
    "slug": "coping-at-work",
@@ -2882,9 +2931,9 @@ JHB.toc = {
     "병가",
     "복귀"
    ],
-   "updated": "2026-10-24",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 7,
+   "minutes": 8,
    "order": 19
   },
   {
@@ -2903,7 +2952,8 @@ JHB.toc = {
    "updated": "2026-11-13",
    "evidence": "연구",
    "minutes": 6,
-   "order": 20
+   "order": 20,
+   "reviewed": "2026-11-13"
   },
   {
    "slug": "womens-health",
@@ -2922,7 +2972,8 @@ JHB.toc = {
    "updated": "2026-11-13",
    "evidence": "연구",
    "minutes": 5,
-   "order": 21
+   "order": 21,
+   "reviewed": "2026-11-13"
   },
   {
    "slug": "family-first-steps",
@@ -2936,9 +2987,9 @@ JHB.toc = {
     "가족교육",
     "돌봄"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "가이드라인",
-   "minutes": 3,
+   "minutes": 5,
    "order": 1
   },
   {
@@ -2954,10 +3005,11 @@ JHB.toc = {
     "망상",
     "표출정서"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "경험",
    "minutes": 4,
-   "order": 2
+   "order": 2,
+   "reviewed": "2026-11-14"
   },
   {
    "slug": "family-during-symptoms",
@@ -2973,10 +3025,11 @@ JHB.toc = {
     "재발",
     "위기"
    ],
-   "updated": "2026-10-25",
+   "updated": "2026-11-14",
    "evidence": "연구",
    "minutes": 4,
-   "order": 3
+   "order": 3,
+   "reviewed": "2026-11-14"
   },
   {
    "slug": "emergency-response",
@@ -2989,10 +3042,11 @@ JHB.toc = {
     "응급입원",
     "가족"
    ],
-   "updated": "2026-10-25",
+   "updated": "2026-11-14",
    "evidence": "가이드라인",
-   "minutes": 4,
-   "order": 4
+   "minutes": 6,
+   "order": 4,
+   "reviewed": "2026-11-14"
   },
   {
    "slug": "caregiver-burnout",
@@ -3007,9 +3061,9 @@ JHB.toc = {
     "가족교육",
     "자조모임"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 3,
+   "minutes": 4,
    "order": 5
   },
   {
@@ -3025,9 +3079,9 @@ JHB.toc = {
     "유전",
     "회복력"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 4,
+   "minutes": 5,
    "order": 6
   },
   {
@@ -3061,9 +3115,9 @@ JHB.toc = {
     "관계",
     "친밀감"
    ],
-   "updated": "2026-11-12",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 5,
+   "minutes": 6,
    "order": 8
   },
   {
@@ -3081,9 +3135,9 @@ JHB.toc = {
     "성년후견",
     "형제자매"
    ],
-   "updated": "2026-10-25",
+   "updated": "2026-11-14",
    "evidence": "가이드라인",
-   "minutes": 5,
+   "minutes": 6,
    "order": 9
   },
   {
@@ -3102,7 +3156,8 @@ JHB.toc = {
    "updated": "2026-11-13",
    "evidence": "연구",
    "minutes": 7,
-   "order": 10
+   "order": 10,
+   "reviewed": "2026-11-13"
   },
   {
    "slug": "missing-person",
@@ -3120,7 +3175,8 @@ JHB.toc = {
    "updated": "2026-11-13",
    "evidence": "가이드라인",
    "minutes": 5,
-   "order": 11
+   "order": 11,
+   "reviewed": "2026-11-13"
   },
   {
    "slug": "suicide-bereavement",
@@ -3135,10 +3191,11 @@ JHB.toc = {
     "자조모임",
     "109"
    ],
-   "updated": "2026-11-13",
+   "updated": "2026-11-14",
    "evidence": "연구",
    "minutes": 5,
-   "order": 12
+   "order": 12,
+   "reviewed": "2026-11-13"
   },
   {
    "slug": "family-grief",
@@ -3156,7 +3213,8 @@ JHB.toc = {
    "updated": "2026-11-13",
    "evidence": "연구",
    "minutes": 4,
-   "order": 13
+   "order": 13,
+   "reviewed": "2026-11-13"
   },
   {
    "slug": "for-friends",
@@ -3176,7 +3234,8 @@ JHB.toc = {
    "updated": "2026-11-13",
    "evidence": "가이드라인",
    "minutes": 5,
-   "order": 14
+   "order": 14,
+   "reviewed": "2026-11-13"
   },
   {
    "slug": "for-teachers",
@@ -3195,7 +3254,8 @@ JHB.toc = {
    "updated": "2026-11-13",
    "evidence": "가이드라인",
    "minutes": 6,
-   "order": 15
+   "order": 15,
+   "reviewed": "2026-11-13"
   },
   {
    "slug": "for-coworkers-managers",
@@ -3215,13 +3275,14 @@ JHB.toc = {
    "updated": "2026-11-13",
    "evidence": "가이드라인",
    "minutes": 5,
-   "order": 16
+   "order": 16,
+   "reviewed": "2026-11-13"
   },
   {
    "slug": "mental-health-welfare-act",
    "section": "11",
    "title": "정신건강복지법 한눈에",
-   "summary": "한국 정신건강 제도의 뿌리인 정신건강복지법을 정리했어요. 2017년 5월 전부개정법이 시행된 배경과 2016년 헌법재판소 헌법불합치 결정, 이후 확인된 주요 개정, 법의 구성, 당사자가 알아야 할 권리 조항을 표로 담았어요. 2026년 10월 현재 시행 중인 법 기준이에요.",
+   "summary": "한국 정신건강 제도의 뿌리인 정신건강복지법을 정리했어요. 2017년 5월 전부개정법이 시행된 배경과 2016년 헌법재판소 헌법불합치 결정, 이후 확인된 주요 개정과 공포됐지만 아직 시행 전인 개정, 법의 구성, 당사자가 알아야 할 권리 조항을 표로 담았어요. 2026년 11월 현재 시행 중인 법 기준이에요.",
    "tags": [
     "제도",
     "정신건강복지법",
@@ -3230,16 +3291,17 @@ JHB.toc = {
     "입원",
     "차별 금지"
    ],
-   "updated": "2026-10-25",
+   "updated": "2026-11-14",
    "evidence": "가이드라인",
-   "minutes": 5,
-   "order": 1
+   "minutes": 6,
+   "order": 1,
+   "reviewed": "2026-11-14"
   },
   {
    "slug": "admission-types",
    "section": "11",
    "title": "입원의 종류와 내 권리",
-   "summary": "정신건강복지법이 정한 다섯 가지 입원(자의·동의·보호의무자에 의한·행정·응급)의 요건, 기간, 퇴원 절차를 표로 정리했어요. 입원적합성심사, 퇴원 등 심사 청구, 국가인권위원회 진정, 사법입원 논의 현황까지 2026년 10월 현재 법 기준으로 담았어요.",
+   "summary": "정신건강복지법이 정한 다섯 가지 입원(자의·동의·보호의무자에 의한·행정·응급)의 요건, 기간, 퇴원 절차를 표로 정리했어요. 입원적합성심사, 퇴원 등 심사 청구, 외래치료 지원, 국가인권위원회 진정, 법원에 묻는 인신보호 구제청구, 사법입원 논의 현황까지 2026년 11월 현재 법 기준으로 담았어요.",
    "tags": [
     "제도",
     "입원",
@@ -3247,12 +3309,14 @@ JHB.toc = {
     "퇴원 청구",
     "입원적합성심사",
     "인권",
-    "국가인권위원회"
+    "국가인권위원회",
+    "위기"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "가이드라인",
-   "minutes": 4,
-   "order": 2
+   "minutes": 7,
+   "order": 2,
+   "reviewed": "2026-11-14"
   },
   {
    "slug": "special-calculation",
@@ -3267,9 +3331,9 @@ JHB.toc = {
     "본인부담",
     "국민건강보험공단"
    ],
-   "updated": "2026-10-25",
+   "updated": "2026-11-14",
    "evidence": "가이드라인",
-   "minutes": 3,
+   "minutes": 4,
    "order": 3
   },
   {
@@ -3285,10 +3349,11 @@ JHB.toc = {
     "활동지원",
     "국민연금공단"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "가이드라인",
-   "minutes": 3,
-   "order": 4
+   "minutes": 4,
+   "order": 4,
+   "reviewed": "2026-11-14"
   },
   {
    "slug": "mental-health-center",
@@ -3303,10 +3368,11 @@ JHB.toc = {
     "1577-0199",
     "퇴원"
    ],
-   "updated": "2026-10-25",
+   "updated": "2026-11-14",
    "evidence": "가이드라인",
-   "minutes": 3,
-   "order": 5
+   "minutes": 5,
+   "order": 5,
+   "reviewed": "2026-11-14"
   },
   {
    "slug": "rehab-facilities",
@@ -3324,7 +3390,7 @@ JHB.toc = {
    ],
    "updated": "2026-10-23",
    "evidence": "가이드라인",
-   "minutes": 3,
+   "minutes": 4,
    "order": 6
   },
   {
@@ -3341,9 +3407,9 @@ JHB.toc = {
     "근로지원인",
     "IPS"
    ],
-   "updated": "2026-10-25",
+   "updated": "2026-11-14",
    "evidence": "가이드라인",
-   "minutes": 3,
+   "minutes": 4,
    "order": 7
   },
   {
@@ -3360,10 +3426,11 @@ JHB.toc = {
     "국민연금 장애연금",
     "129"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "가이드라인",
-   "minutes": 3,
-   "order": 8
+   "minutes": 4,
+   "order": 8,
+   "reviewed": "2026-11-14"
   },
   {
    "slug": "military-service",
@@ -3377,16 +3444,16 @@ JHB.toc = {
     "신체검사",
     "병역처분 변경"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "가이드라인",
-   "minutes": 3,
+   "minutes": 5,
    "order": 9
   },
   {
    "slug": "insurance-employment",
    "section": "11",
    "title": "보험 가입과 취업 차별",
-   "summary": "2016년부터 실손보험이 일부 정신질환의 급여 진료비를 보장하기 시작했다고 보도됐어요. 보험 가입 거절과 고지 의무, 장애인차별금지법, 정신과 치료를 이유로 한 보험 거절을 차별로 본 국가인권위원회 결정, 자격·면허 결격 조항 정비 현황을 확인된 범위에서 정리했어요.",
+   "summary": "2016년부터 실손보험이 일부 정신질환의 급여 진료비를 보장하기 시작했다고 보도됐고, 2026년 5월에는 5세대 실손보험이 나왔어요. 보장은 가입 시기와 약관마다 달라요. 보험 가입 거절과 고지 의무, 장애인차별금지법, 정신과 치료를 이유로 한 보험 거절을 차별로 본 국가인권위원회 결정, 자격·면허 결격 조항의 공통 구조와 정비 현황을 확인된 범위에서 정리했어요.",
    "tags": [
     "제도",
     "보험",
@@ -3397,16 +3464,17 @@ JHB.toc = {
     "결격 조항",
     "취업"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "가이드라인",
-   "minutes": 3,
-   "order": 10
+   "minutes": 5,
+   "order": 10,
+   "reviewed": "2026-11-14"
   },
   {
    "slug": "crisis-hotlines",
    "section": "11",
    "title": "위기 상담 전화와 기관",
-   "summary": "지금 위험하거나 마음이 무너질 때 걸 수 있는 번호를 정리했어요. 2024년 1월 통합된 자살예방상담전화 109, 정신건강위기상담전화 1577-0199, 119, 112, 보건복지상담센터 129, 청소년상담 1388의 운영 시간과 역할, 온라인 상담, 전화할 때 말할 것을 담았어요.",
+   "summary": "지금 위험하거나 마음이 무너질 때 걸 수 있는 번호를 정리했어요. 2024년 1월 통합된 자살예방상담전화 109, 정신건강위기상담전화 1577-0199, 119, 112, 보건복지상담센터 129, 청소년상담 1388의 운영 시간과 역할, 전화가 어려울 때의 문자·온라인 상담, 전화할 때 말할 것을 담았어요.",
    "tags": [
     "위기",
     "제도",
@@ -3415,16 +3483,17 @@ JHB.toc = {
     "자살예방",
     "상담전화"
    ],
-   "updated": "2026-10-25",
+   "updated": "2026-11-14",
    "evidence": "가이드라인",
-   "minutes": 3,
-   "order": 11
+   "minutes": 4,
+   "order": 11,
+   "reviewed": "2026-11-14"
   },
   {
    "slug": "advocacy-groups",
    "section": "11",
    "title": "당사자·가족 단체",
-   "summary": "혼자가 아니라는 걸 확인할 수 있는 당사자·가족 단체를 모았어요. 국가정신건강정보포털에 오른 한국 단체와 공식 누리집이 확인된 자립생활센터, 해외 대표 단체(NAMI, Mind, Hearing Voices Network)를 한 줄씩 소개하고, 나에게 맞는 모임을 고르는 법을 정리했어요.",
+   "summary": "혼자가 아니라는 걸 확인할 수 있는 당사자·가족 단체를 모았어요. 국가정신건강정보포털에 오른 한국 단체와 공식 누리집이 확인된 자립생활센터, 해외 대표 단체(NAMI, Mind, Hearing Voices Network)를 한 줄씩 소개하고, 나에게 맞는 모임을 고르는 법과 법률 도움을 받을 곳을 정리했어요.",
    "tags": [
     "제도",
     "당사자 단체",
@@ -3434,9 +3503,9 @@ JHB.toc = {
     "NAMI",
     "Hearing Voices"
    ],
-   "updated": "2026-10-25",
+   "updated": "2026-11-14",
    "evidence": "경험",
-   "minutes": 3,
+   "minutes": 5,
    "order": 12
   },
   {
@@ -3454,16 +3523,17 @@ JHB.toc = {
     "LH",
     "공공임대"
    ],
-   "updated": "2026-10-24",
+   "updated": "2026-11-14",
    "evidence": "가이드라인",
-   "minutes": 5,
-   "order": 13
+   "minutes": 6,
+   "order": 13,
+   "reviewed": "2026-11-14"
   },
   {
    "slug": "activity-support-service",
    "section": "11",
    "title": "활동지원과 돌봄 서비스",
-   "summary": "장애인활동지원은 등록 장애인(6세 이상 65세 미만)이 활동지원사의 방문 도움을 받는 제도예요. 2019년부터 정신장애를 포함한 모든 등록 장애인이 신청할 수 있어요. 대상·절차·본인부담(2026년), 종합조사에서 정신장애가 평가되는 방식, 정신건강복지센터 사례관리와의 차이, 갑작스러운 공백을 메우는 긴급돌봄을 정리했어요.",
+   "summary": "장애인활동지원은 등록 장애인(6세 이상 65세 미만)이 활동지원사의 방문 도움을 받는 제도예요. 2019년부터 정신장애를 포함한 모든 등록 장애인이 신청할 수 있어요. 대상·절차·본인부담(2026년), 종합조사에서 정신장애가 평가되는 방식, 정신건강복지센터 사례관리와의 차이, 갑작스러운 공백을 메우는 긴급돌봄, 2026년 3월 시행된 돌봄통합지원법의 대상을 정리했어요.",
    "tags": [
     "제도",
     "활동지원",
@@ -3473,16 +3543,17 @@ JHB.toc = {
     "종합조사",
     "국민연금공단"
    ],
-   "updated": "2026-10-24",
+   "updated": "2026-11-14",
    "evidence": "가이드라인",
-   "minutes": 5,
-   "order": 14
+   "minutes": 7,
+   "order": 14,
+   "reviewed": "2026-11-14"
   },
   {
    "slug": "public-guardianship",
    "section": "11",
    "title": "공공후견과 성년후견",
-   "summary": "후견은 큰돈·계약·치료 결정을 혼자 하기 어려운 사람을 법이 지원하는 제도예요. 민법의 성년후견·한정후견·특정후견·임의후견 차이, 가정법원 절차와 비용, 후견이 제한하는 것과 제한하지 않는 것(선거권은 유지), 가족이나 비용이 없을 때의 정신질환자 공공후견활동지원사업을 2026년 10월 현재 기준으로 정리했어요.",
+   "summary": "후견은 큰돈·계약·치료 결정을 혼자 하기 어려운 사람을 법이 지원하는 제도예요. 민법의 성년후견·한정후견·특정후견·임의후견 차이, 가정법원 절차와 비용, 후견이 제한하는 것과 제한하지 않는 것(선거권은 유지), 가족이나 비용이 없을 때의 정신질환자 공공후견활동지원사업과 지자체가 대신 청구하는 성년후견제 이용지원을 2026년 11월 현재 기준으로 정리했어요.",
    "tags": [
     "제도",
     "성년후견",
@@ -3493,10 +3564,11 @@ JHB.toc = {
     "가정법원",
     "의사결정 지원"
    ],
-   "updated": "2026-10-25",
+   "updated": "2026-11-14",
    "evidence": "가이드라인",
-   "minutes": 5,
-   "order": 15
+   "minutes": 6,
+   "order": 15,
+   "reviewed": "2026-11-14"
   },
   {
    "slug": "fee-reductions",
@@ -3513,7 +3585,7 @@ JHB.toc = {
     "세금",
     "복지카드"
    ],
-   "updated": "2026-10-24",
+   "updated": "2026-11-14",
    "evidence": "가이드라인",
    "minutes": 5,
    "order": 16
@@ -3522,7 +3594,7 @@ JHB.toc = {
    "slug": "medical-records-privacy",
    "section": "11",
    "title": "진료 기록과 개인정보",
-   "summary": "정신과 진료 기록은 병원과 건강보험 전산에 남지만, 법은 그것을 누가 볼 수 있는지 엄격하게 정해요. 의료법 제19조·제21조의 비밀 보장과 열람 규칙, 건강보험 기록의 보호, 보험사가 기록을 보려면 본인 동의서가 필요하다는 것, 취업·공무원 채용에서 진료 이력을 낼 의무가 없다는 것(법령으로 확인된 범위), F코드 걱정과 실제, 기록을 열람·정정할 권리를 2026년 10월 현재 기준으로 정리했어요.",
+   "summary": "정신과 진료 기록은 병원과 건강보험 전산에 남지만, 법은 그것을 누가 볼 수 있는지 엄격하게 정해요. 의료법 제19조·제21조의 비밀 보장과 열람 규칙, 건강보험 기록의 보호, 보험사가 기록을 보려면 본인 동의서가 필요하다는 것, 취업·공무원 채용에서 진료 이력을 낼 의무가 없다는 것(법령으로 확인된 범위), F코드 걱정과 실제, 기록을 열람·정정할 권리를 2026년 11월 현재 기준으로 정리했어요.",
    "tags": [
     "제도",
     "진료 기록",
@@ -3533,10 +3605,11 @@ JHB.toc = {
     "취업",
     "열람권"
    ],
-   "updated": "2026-10-24",
+   "updated": "2026-11-14",
    "evidence": "가이드라인",
-   "minutes": 6,
-   "order": 17
+   "minutes": 7,
+   "order": 17,
+   "reviewed": "2026-11-14"
   },
   {
    "slug": "psychiatric-emergency-system",
@@ -3557,7 +3630,8 @@ JHB.toc = {
    "updated": "2026-11-13",
    "evidence": "가이드라인",
    "minutes": 5,
-   "order": 18
+   "order": 18,
+   "reviewed": "2026-11-13"
   },
   {
    "slug": "guardian-duties",
@@ -3577,7 +3651,8 @@ JHB.toc = {
    "updated": "2026-11-13",
    "evidence": "가이드라인",
    "minutes": 5,
-   "order": 19
+   "order": 19,
+   "reviewed": "2026-11-13"
   },
   {
    "slug": "treatment-cost-support",
@@ -3597,7 +3672,8 @@ JHB.toc = {
    "updated": "2026-11-13",
    "evidence": "가이드라인",
    "minutes": 6,
-   "order": 20
+   "order": 20,
+   "reviewed": "2026-11-13"
   },
   {
    "slug": "medical-cost-safety-net",
@@ -3617,7 +3693,8 @@ JHB.toc = {
    "updated": "2026-11-13",
    "evidence": "가이드라인",
    "minutes": 6,
-   "order": 21
+   "order": 21,
+   "reviewed": "2026-11-13"
   },
   {
    "slug": "habeas-corpus-relief",
@@ -3637,7 +3714,8 @@ JHB.toc = {
    "updated": "2026-11-13",
    "evidence": "가이드라인",
    "minutes": 5,
-   "order": 22
+   "order": 22,
+   "reviewed": "2026-11-13"
   },
   {
    "slug": "family-care-leave",
@@ -3657,7 +3735,8 @@ JHB.toc = {
    "updated": "2026-11-13",
    "evidence": "가이드라인",
    "minutes": 6,
-   "order": 23
+   "order": 23,
+   "reviewed": "2026-11-13"
   },
   {
    "slug": "counseling-voucher-and-screening",
@@ -3677,7 +3756,8 @@ JHB.toc = {
    "updated": "2026-11-13",
    "evidence": "가이드라인",
    "minutes": 5,
-   "order": 24
+   "order": 24,
+   "reviewed": "2026-11-13"
   },
   {
    "slug": "justice-system",
@@ -3698,7 +3778,8 @@ JHB.toc = {
    "updated": "2026-11-13",
    "evidence": "가이드라인",
    "minutes": 6,
-   "order": 25
+   "order": 25,
+   "reviewed": "2026-11-13"
   },
   {
    "slug": "dopamine-evolution",
@@ -3751,7 +3832,7 @@ JHB.toc = {
    ],
    "updated": "2026-10-23",
    "evidence": "초기연구",
-   "minutes": 4,
+   "minutes": 5,
    "order": 3
   },
   {
@@ -3788,7 +3869,7 @@ JHB.toc = {
    ],
    "updated": "2026-10-23",
    "evidence": "연구",
-   "minutes": 4,
+   "minutes": 5,
    "order": 5
   },
   {
@@ -3825,9 +3906,9 @@ JHB.toc = {
     "음성 증상",
     "위기"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "초기연구",
-   "minutes": 4,
+   "minutes": 5,
    "order": 7
   },
   {
@@ -3852,7 +3933,7 @@ JHB.toc = {
    "slug": "early-detection",
    "section": "12",
    "title": "조기 발견과 예방 연구",
-   "summary": "고위험군의 정신증 전환율은 해마다 낮아지고 있고, 그 이유는 아직 논쟁 중이에요. 위험 계산기의 외부 검증, 첫 시험에서 놀라운 효과를 보인 오메가3가 대규모 재현에 실패한 과정, 학교·지역 선별 시험, 그리고 한국 청년 조기중재 사업의 확인된 범위까지 정리해요.",
+   "summary": "고위험군의 정신증 전환율은 해마다 낮아지고 있고, 그 이유는 아직 논쟁 중이에요. 위험 계산기의 외부 검증, 첫 시험에서 놀라운 효과를 보인 오메가3가 대규모 재현에 실패한 과정, 학교·지역 선별 시험, 그리고 한국 청년 조기중재 사업과 건강검진·병역판정검사 선별의 확인된 범위까지 정리해요.",
    "tags": [
     "연구 최전선",
     "조기 발견",
@@ -3862,10 +3943,11 @@ JHB.toc = {
     "위험 계산기",
     "청년"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 5,
-   "order": 9
+   "minutes": 6,
+   "order": 9,
+   "reviewed": "2026-11-14"
   },
   {
    "slug": "controversies",
@@ -3884,7 +3966,7 @@ JHB.toc = {
    ],
    "updated": "2026-10-23",
    "evidence": "연구",
-   "minutes": 5,
+   "minutes": 6,
    "order": 10
   },
   {
@@ -3904,7 +3986,7 @@ JHB.toc = {
     "장기 입원",
     "낙인"
    ],
-   "updated": "2026-10-24",
+   "updated": "2026-11-14",
    "evidence": "연구",
    "minutes": 6,
    "order": 11
@@ -3939,7 +4021,7 @@ JHB.toc = {
    ],
    "updated": "2026-10-23",
    "evidence": "초기연구",
-   "minutes": 3,
+   "minutes": 4,
    "order": 2
   },
   {
@@ -3954,9 +4036,9 @@ JHB.toc = {
     "비타민 D",
     "감염"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 3,
+   "minutes": 4,
    "order": 3
   },
   {
@@ -3990,7 +4072,7 @@ JHB.toc = {
    ],
    "updated": "2026-10-23",
    "evidence": "연구",
-   "minutes": 3,
+   "minutes": 4,
    "order": 5
   },
   {
@@ -4022,9 +4104,9 @@ JHB.toc = {
     "바이오마커",
     "신경발달"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 3,
+   "minutes": 4,
    "order": 7
   },
   {
@@ -4094,7 +4176,7 @@ JHB.toc = {
    ],
    "updated": "2026-10-23",
    "evidence": "연구",
-   "minutes": 3,
+   "minutes": 4,
    "order": 11
   },
   {
@@ -4218,7 +4300,7 @@ JHB.toc = {
    ],
    "updated": "2026-10-25",
    "evidence": "연구",
-   "minutes": 4,
+   "minutes": 5,
    "order": 18
   },
   {
@@ -4356,7 +4438,7 @@ JHB.toc = {
    ],
    "updated": "2026-10-23",
    "evidence": "가이드라인",
-   "minutes": 1,
+   "minutes": 2,
    "order": 8
   },
   {
@@ -4444,16 +4526,17 @@ JHB.toc = {
     "정신건강복지센터",
     "위기"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 2,
-   "order": 13
+   "minutes": 3,
+   "order": 13,
+   "reviewed": "2026-11-14"
   },
   {
    "slug": "faq-forced-admission",
    "section": "15",
    "title": "강제로 입원시킬 수 있나요? 입원되면 어떻게 되나요?",
-   "summary": "본인이 원하지 않는 입원은 치료가 필요한 정신질환과 자·타해 위험이 함께 있을 때만, 법이 정한 절차로 가능해요. 입원하더라도 사유를 들을 권리, 외부 심사, 퇴원 심사 청구, 인권위 진정 같은 권리가 있어요. 2026년 10월 현재 시행 중인 법 기준이에요.",
+   "summary": "본인이 원하지 않는 입원은 치료가 필요한 정신질환과 자신의 건강·안전이나 남에게 해를 끼칠 위험이 함께 있을 때만, 법이 정한 절차로 가능해요. 입원하더라도 사유를 들을 권리, 외부 심사, 퇴원 심사 청구, 인권위 진정, 법원에 묻는 인신보호 구제청구 같은 권리가 있어요. 2026년 11월 현재 시행 중인 법 기준이에요.",
    "tags": [
     "FAQ",
     "제도",
@@ -4463,10 +4546,11 @@ JHB.toc = {
     "인권",
     "위기"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "가이드라인",
-   "minutes": 2,
-   "order": 14
+   "minutes": 3,
+   "order": 14,
+   "reviewed": "2026-11-14"
   },
   {
    "slug": "faq-choosing-doctor",
@@ -4480,9 +4564,9 @@ JHB.toc = {
     "세컨드 오피니언",
     "정신건강복지센터"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "가이드라인",
-   "minutes": 2,
+   "minutes": 3,
    "order": 15
   },
   {
@@ -4498,7 +4582,7 @@ JHB.toc = {
     "정신건강복지센터",
     "제도"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "가이드라인",
    "minutes": 2,
    "order": 16
@@ -4518,7 +4602,7 @@ JHB.toc = {
    ],
    "updated": "2026-10-23",
    "evidence": "연구",
-   "minutes": 1,
+   "minutes": 2,
    "order": 17
   },
   {
@@ -4536,7 +4620,7 @@ JHB.toc = {
    ],
    "updated": "2026-10-25",
    "evidence": "연구",
-   "minutes": 1,
+   "minutes": 2,
    "order": 18
   },
   {
@@ -4569,9 +4653,9 @@ JHB.toc = {
     "스트레스-취약성",
     "재발"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 1,
+   "minutes": 2,
    "order": 20
   },
   {
@@ -4625,7 +4709,7 @@ JHB.toc = {
    ],
    "updated": "2026-10-23",
    "evidence": "연구",
-   "minutes": 1,
+   "minutes": 2,
    "order": 23
   },
   {
@@ -4642,7 +4726,7 @@ JHB.toc = {
    ],
    "updated": "2026-10-23",
    "evidence": "연구",
-   "minutes": 1,
+   "minutes": 2,
    "order": 24
   },
   {
@@ -4659,7 +4743,7 @@ JHB.toc = {
     "장애인차별금지법",
     "권리"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
    "minutes": 2,
    "order": 25
@@ -4676,9 +4760,9 @@ JHB.toc = {
     "병무청",
     "신체검사"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "가이드라인",
-   "minutes": 1,
+   "minutes": 2,
    "order": 26
   },
   {
@@ -4695,9 +4779,9 @@ JHB.toc = {
     "차별",
     "국가인권위원회"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "가이드라인",
-   "minutes": 1,
+   "minutes": 2,
    "order": 27
   },
   {
@@ -4732,9 +4816,9 @@ JHB.toc = {
     "음성 증상",
     "대사 건강"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 1,
+   "minutes": 2,
    "order": 29
   },
   {
@@ -4787,9 +4871,9 @@ JHB.toc = {
     "재발 신호",
     "위기"
    ],
-   "updated": "2026-10-24",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 2,
+   "minutes": 3,
    "order": 32
   },
   {
@@ -4848,7 +4932,8 @@ JHB.toc = {
    "updated": "2026-11-14",
    "evidence": "초기연구",
    "minutes": 3,
-   "order": 35
+   "order": 35,
+   "reviewed": "2026-11-14"
   },
   {
    "slug": "faq-early-signs",
@@ -4866,7 +4951,8 @@ JHB.toc = {
    "updated": "2026-11-14",
    "evidence": "가이드라인",
    "minutes": 3,
-   "order": 36
+   "order": 36,
+   "reviewed": "2026-11-14"
   },
   {
    "slug": "faq-hide-meds-in-food",
@@ -4885,7 +4971,8 @@ JHB.toc = {
    "updated": "2026-11-14",
    "evidence": "가이드라인",
    "minutes": 3,
-   "order": 37
+   "order": 37,
+   "reviewed": "2026-11-14"
   },
   {
    "slug": "faq-family-talk-doctor",
@@ -4903,7 +4990,8 @@ JHB.toc = {
    "updated": "2026-11-14",
    "evidence": "가이드라인",
    "minutes": 3,
-   "order": 38
+   "order": 38,
+   "reviewed": "2026-11-14"
   },
   {
    "slug": "faq-memory-meds",
@@ -4921,7 +5009,8 @@ JHB.toc = {
    "updated": "2026-11-14",
    "evidence": "연구",
    "minutes": 2,
-   "order": 39
+   "order": 39,
+   "reviewed": "2026-11-14"
   },
   {
    "slug": "kraepelin-bleuler",
@@ -4956,7 +5045,7 @@ JHB.toc = {
    ],
    "updated": "2026-10-23",
    "evidence": "연구",
-   "minutes": 4,
+   "minutes": 5,
    "order": 2
   },
   {
@@ -5046,7 +5135,7 @@ JHB.toc = {
    ],
    "updated": "2026-10-25",
    "evidence": "연구",
-   "minutes": 3,
+   "minutes": 4,
    "order": 7
   },
   {
@@ -5063,7 +5152,7 @@ JHB.toc = {
    ],
    "updated": "2026-10-23",
    "evidence": "연구",
-   "minutes": 3,
+   "minutes": 4,
    "order": 8
   },
   {
@@ -5079,9 +5168,9 @@ JHB.toc = {
     "범죄 보도",
     "위기"
    ],
-   "updated": "2026-10-23",
+   "updated": "2026-11-14",
    "evidence": "연구",
-   "minutes": 4,
+   "minutes": 5,
    "order": 9
   }
  ]

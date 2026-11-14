@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="ko" data-base="../" data-route="changes">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#fbfbf9" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#15171c" media="(prefers-color-scheme: dark)">
+<title>고침 기록 - 조현병 백과</title>
+<meta name="description" content="조현병 백과에서 새로 쓰거나 보강하거나 바로잡은 글과 바뀐 기능을 날짜순으로 모았어요. AI가 초안을 쓰고 출처를 확인한 백과이고, 전문가 감수는 없어요.">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://duscjf0098.github.io/schizophrenia-encyclopedia/changes/">
+<meta property="og:site_name" content="조현병 백과">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:title" content="고침 기록">
+<meta property="og:description" content="조현병 백과에서 새로 쓰거나 보강하거나 바로잡은 글과 바뀐 기능을 날짜순으로 모았어요. AI가 초안을 쓰고 출처를 확인한 백과이고, 전문가 감수는 없어요.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://duscjf0098.github.io/schizophrenia-encyclopedia/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="조현병 백과 - 출처와 함께 읽는 한국어 백과">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="고침 기록">
+<meta name="twitter:description" content="조현병 백과에서 새로 쓰거나 보강하거나 바로잡은 글과 바뀐 기능을 날짜순으로 모았어요. AI가 초안을 쓰고 출처를 확인한 백과이고, 전문가 감수는 없어요.">
+<meta name="twitter:image" content="https://duscjf0098.github.io/schizophrenia-encyclopedia/og.png">
+<meta property="og:url" content="https://duscjf0098.github.io/schizophrenia-encyclopedia/changes/">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="../manifest.webmanifest">
+<link rel="apple-touch-icon" href="../icon-192.png">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/ui.css">
+<link rel="stylesheet" href="../css/pages/changes.css">
+
+
+
+<style>
+/* 정적 문서의 인쇄용 한 줄(사이트 이름 + 정식 글 주소): 화면에서는 숨기고 인쇄에서만. 자바스크립트가 꺼졌거나 앱이 문서를 다시 그리기 전에 인쇄해도 첫머리에 남아요.
+   인쇄 모듈(js/ui/print.js)이 만든 머리(.prt-head)가 있으면 인쇄에서도 숨겨요(같은 내용을 두 번 싣지 않게) */
+.prt-static { display: none; }
+@media print {
+  .prt-static { display: block; margin: 0 0 12px; padding: 0 0 6px; border-bottom: 1px solid var(--rule-2); font-size: 9.5pt; line-height: 1.5; color: var(--ink-2); overflow-wrap: anywhere; }
+  .prt-static b { font-family: var(--serif); font-weight: 700; color: var(--ink); }
+  .prt-static + .crumb { display: none; }
+  .prt-head ~ .prt-static, .prt-head ~ * .prt-static { display: none; }
+}
+/* 바닥글 링크 줄(이 백과에 대해 · 고침 기록): 따로 선 이동 링크라 화면에서는 누르는 높이를 44px 로(글자 크기는 그대로) */
+@media screen {
+  .sitefoot .foot-links a { display: inline-block; box-sizing: border-box; min-height: 44px; padding: 10px 4px; margin: 0 -4px; }
+}
+/* 자바스크립트가 꺼졌으면(아래 머리 스크립트가 html 에 js 클래스를 달지 못하면) 눌러도 아무 일도 하지 않는 버튼(분류 목차·글자 크기·밝게/어둡게)을 감춰요.
+   "지금 도움"은 링크라서 그대로 둬요 */
+html:not(.js) #btn-nav, html:not(.js) #btn-fs, html:not(.js) #btn-theme { display: none; }
+/* 정적 문서의 저장·공유 단추도 자바스크립트가 있어야 동작해요(앱과 같은 마크업이라 미리 들어 있음) */
+html:not(.js) .doc-meta-m .acts, html:not(.js) .infobox-actions { display: none; }
+</style>
+<script>
+/* 자바스크립트가 켜졌다는 표시(html.js)를 달고, 옛 해시 주소(#/a/…)로 들어오면 새 경로로 옮기고, 첫 그리기 전에 보기 설정을 적용한다.
+   - 옛 해시 주소: js/paths.js 의 hashToPath 와 같은 규칙. 뒤에 화면 안 자리 조각이 붙으면 경로 뒤로('#/about#privacy' → 'about/#privacy')
+   - 보기 설정: js/ui/settings.js 의 load() 와 같은 값(테마 jhb.theme, 글자 크기 jhb.fs 다섯 단계, jhb.ui.settings 의 줄 너비·본문 글꼴·움직임 줄이기).
+     모듈이 실린 뒤 한 번 더 바뀌어 화면이 출렁이지 않게(T16)
+   첫 화면 자리 표시(data-hm-start)는 쓰지 않기로 했어요: 그 속성을 읽던 css/ui/home.css 규칙은 K4 에서 지웠어요(잰 값은 tests/pages.test.cjs 의 '머리 스크립트' 테스트 주석) */
+(function () {
+  var r = document.documentElement;
+  try { r.classList.add('js'); } catch (e) { }
+  var h = location.hash;
+  if (h.indexOf('#/') === 0) {
+    var rest = h.slice(2), fi = rest.indexOf('#'), frag = fi >= 0 ? rest.slice(fi) : '';
+    if (fi >= 0) rest = rest.slice(0, fi);
+    var qi = rest.indexOf('?');
+    var p = (qi >= 0 ? rest.slice(0, qi) : rest).split('/').filter(Boolean).join('/');
+    var to = (r.getAttribute('data-base') || '') + (p ? p + '/' : '') + (qi >= 0 ? rest.slice(qi) : '') + (frag.length > 1 ? frag : '');
+    location.replace(to || './');
+  }
+  function get(k) { try { return JSON.parse(localStorage.getItem(k) || 'null'); } catch (e) { return null; } }
+  try {
+    var t = get('jhb.theme');
+    if (t === 'light' || t === 'dark') r.setAttribute('data-theme', t);
+    var f = get('jhb.fs');
+    if (f === 's' || f === 'l' || f === 'xl' || f === 'xxl') r.setAttribute('data-fs', f);
+    var s = get('jhb.ui.settings') || {};
+    if (s.width === 'wide') r.setAttribute('data-width', 'wide');
+    if (s.font === 'serif') r.setAttribute('data-font', 'serif');
+    if (s.motion === 'reduce') r.setAttribute('data-motion', 'reduce');
+  } catch (e) { }
+})();
+</script>
+</head>
+<body>
+<a class="skip" href="#app">본문으로 건너뛰기</a>
+<div class="progress" id="progress" aria-hidden="true"></div>
+<header class="topbar">
+  <div class="topbar-inner">
+    <button type="button" class="iconbtn nav-toggle" id="btn-nav" aria-label="분류 목차 열기" aria-expanded="false" aria-controls="sidenav">
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none"/></svg>
+    </button>
+    <a class="brand" href="../" aria-label="조현병 백과 첫 화면">
+      <svg class="brand-mark" viewBox="0 0 28 28" aria-hidden="true">
+        <g stroke="currentColor" stroke-width="1.6" stroke-linecap="round" fill="none">
+          <path d="M3 6h22"/><path d="M3 10.5h22"/><path d="M3 15c6 0 8 2.6 11 2.6S19 15 25 15" class="brand-tuned"/><path d="M3 19.5h22"/><path d="M3 24h22"/>
+        </g>
+        <circle cx="14" cy="17.6" r="1.9" class="brand-dot"/>
+      </svg>
+      <span class="brand-name">조현병 백과</span>
+    </a>
+    <div class="qs" role="search">
+      <svg class="qs-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="M15 15l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <input id="q" type="search" autocomplete="off" spellcheck="false" placeholder="문서나 용어 찾기" aria-label="문서나 용어 찾기" aria-haspopup="dialog">
+      <kbd class="qs-key" aria-hidden="true">/ · Ctrl K</kbd>
+    </div>
+    <nav class="tools" aria-label="도구">
+      <a class="tool-help" id="btn-help" href="../a/crisis-hotlines/"><span class="tool-help-long">지금 </span>도움</a>
+      <!--top:start-->
+      <a href="../glossary/" class="tool-link" data-r="glossary">용어 사전</a>
+      <a href="../guide/" class="tool-link" data-r="guide">길잡이</a>
+      <a href="../browse/" class="tool-link" data-r="browse">둘러보기</a>
+      <a href="../me/" class="tool-link" data-r="me" rel="nofollow">내 서재</a>
+      <!--top:end-->
+      <button type="button" class="iconbtn" id="btn-fs" aria-label="글자 크기 바꾸기" title="글자 크기">
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M3 18l4.5-11L12 18M4.6 14h5.8M14 18l3.2-7.5L20.4 18M15.1 15.6h4.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+      </button>
+      <button type="button" class="iconbtn" id="btn-theme" aria-label="밝게 또는 어둡게" title="밝게/어둡게">
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="12" cy="12" r="7.5" stroke="currentColor" stroke-width="1.6" fill="none"/><path d="M12 4.5a7.5 7.5 0 0 1 0 15z" fill="currentColor"/></svg>
+      </button>
+    </nav>
+  </div>
+</header>
+<div class="shell">
+  <nav class="sidenav" id="sidenav" aria-label="분류 목차"></nav>
+  <div class="scrim" id="scrim" hidden></div>
+  <main id="app" tabindex="-1"><nav class="crumb" aria-label="위치"><a href="../">첫 화면</a><span class="sep">/</span>고침 기록</nav><h1 class="page-title">고침 기록</h1><p class="page-lead">이 백과는 AI가 초안을 쓰고 출처를 확인한 글이에요. 전문가 감수는 없어요. 고친 내용을 여기에 남겨요.</p><div class="fp-body" data-page="changes"><p class="pg-changes-sum">기록 299개 · 마지막으로 고친 날 <time datetime="2026-11-14">2026.11.14</time></p><div class="pg-changes-days"><section class="pg-changes-day"><h2 class="pg-changes-h"><time datetime="2026-11-14">2026년 11월 14일</time></h2><ul class="pg-changes-list"><li class="pg-changes-item"><span class="pg-changes-kind pg-changes-k-new">새 글</span><div class="pg-changes-main"><a class="pg-changes-t" href="../a/comorbid-substance-use/"><span class="spine" style="--h:160" aria-hidden="true"></span>술·약물 문제가 함께 있을 때</a><p class="pg-changes-what">이번 판에 새로 쓴 글이에요. 작성자와 다른 검수자가 출처를 하나씩 대조했어요.</p></div></li><li class="pg-changes-item"><span class="pg-changes-kind pg-changes-k-new">새 글</span><div class="pg-changes-main"><a class="pg-changes-t" href="../a/counseling-voucher-and-screening/"><span class="spine" style="--h:220" aria-hidden="true"></span>심리상담 바우처와 건강검진 정신건강검사</a><p class="pg-changes-what">이번 판에 새로 쓴 글이에요. 작성자와 다른 검수자가 출처를 하나씩 대조했어요.</p></div></li><li class="pg-changes-item"><span class="pg-changes-kind pg-changes-k-new">새 글</span><div class="pg-changes-main"><a class="pg-changes-t" href="../a/diagnosis-emotions/"><span class="spine" style="--h:45" aria-hidden="true"></span>진단을 받아들이는 시간</a><p class="pg-changes-what">이번 판에 새로 쓴 글이에요. 작성자와 다른 검수자가 출처를 하나씩 대조했어요.</p></div></li><li class="pg-changes-item"><span class="pg-changes-kind pg-changes-k-new">새 글</span><div class="pg-changes-main"><a class="pg-changes-t" href="../a/drug-level-test/"><span class="spine" style="--h:340" aria-hidden="true"></span>약 농도 검사는 왜 하나</a><p class="pg-changes-what">이번 판에 새로 쓴 글이에요. 작성자와 다른 검수자가 출처를 하나씩 대조했어요.</p></div></li><li class="pg-changes-item"><span class="pg-changes-kind pg-changes-k-new">새 글</span><div class="pg-changes-main"><a class="pg-changes-t" href="../a/family-care-leave/"><span class="spine" style="--h:220" aria-hidden="true"></span>가족이 쓰는 돌봄휴가·휴직·단축 근무</a><p class="pg-changes-what">이번 판에 새로 쓴 글이에요. 작성자와 다른 검수자가 출처를 하나씩 대조했어요.</p></div></li><li class="pg-changes-item"><span class="pg-changes-kind pg-changes-k-new">새 글</span><div class="pg-changes-main"><a class="pg-changes-t" href="../a/family-grief/"><span class="spine" style="--h:185" aria-hidden="true"></span>가족의 슬픔: 기대를 다시 세우는 일</a><p class="pg-changes-what">이번 판에 새로 쓴 글이에요. 작성자와 다른 검수자가 출처를 하나씩 대조했어요.</p></div></li><li class="pg-changes-item"><span class="pg-changes-kind pg-changes-k-new">새 글</span><div class="pg-changes-main"><a class="pg-changes-t" href="../a/family-violence-safety/"><span class="spine" style="--h:185" aria-hidden="true"></span>가족이 위협받을 때: 안전 계획과 도움</a><p class="pg-changes-what">이번 판에 새로 쓴 글이에요. 작성자와 다른 검수자가 출처를 하나씩 대조했어요.</p></div></li><li class="pg-changes-item"><span class="pg-changes-kind pg-changes-k-new">새 글</span><div class="pg-changes-main"><a class="pg-changes-t" href="../a/faq-ai-chatbot/"><span class="spine" style="--h:60" aria-hidden="true"></span>AI 챗봇과 이야기해도 괜찮나요?</a><p class="pg-changes-what">이번 판에 새로 쓴 글이에요. 작성자와 다른 검수자가 출처를 하나씩 대조했어요.</p></div></li><li class="pg-changes-item"><span class="pg-changes-kind pg-changes-k-new">새 글</span><div class="pg-changes-main"><a class="pg-changes-t" href="../a/faq-early-signs/"><span class="spine" style="--h:60" aria-hidden="true"></span>조현병 초기 증상은 뭔가요?</a><p class="pg-changes-what">이번 판에 새로 쓴 글이에요. 작성자와 다른 검수자가 출처를 하나씩 대조했어요.</p></div></li><li class="pg-changes-item"><span class="pg-changes-kind pg-changes-k-new">새 글</span><div class="pg-changes-main"><a class="pg-changes-t" href="../a/faq-family-talk-doctor/"><span class="spine" style="--h:60" aria-hidden="true"></span>가족이 대신 의사와 상담할 수 있나요?</a><p class="pg-changes-what">이번 판에 새로 쓴 글이에요. 작성자와 다른 검수자가 출처를 하나씩 대조했어요.</p></div></li><li class="pg-changes-item"><span class="pg-changes-kind pg-changes-k-new">새 글</span><div class="pg-changes-main"><a class="pg-changes-t" href="../a/faq-hide-meds-in-food/"><span class="spine" style="--h:60" aria-hidden="true"></span>약을 몰래 음식에 섞어도 되나요?</a><p class="pg-changes-what">이번 판에 새로 쓴 글이에요. 작성자와 다른 검수자가 출처를 하나씩 대조했어요.</p></div></li><li class="pg-changes-item"><span class="pg-changes-kind pg-changes-k-new">새 글</span><div class="pg-changes-main"><a class="pg-changes-t" href="../a/faq-memory-meds/"><span class="spine" style="--h:60" aria-hidden="true"></span>약을 오래 먹으면 머리가 나빠지나요?</a><p class="pg-changes-what">이번 판에 새로 쓴 글이에요. 작성자와 다른 검수자가 출처를 하나씩 대조했어요.</p></div></li><li class="pg-changes-item"><span class="pg-changes-kind pg-changes-k-new">새 글</span><div class="pg-changes-main"><a class="pg-changes-t" href="../a/for-coworkers-managers/"><span class="spine" style="--h:185" aria-hidden="true"></span>동료와 관리자를 위한 안내</a><p class="pg-changes-what">이번 판에 새로 쓴 글이에요. 작성자와 다른 검수자가 출처를 하나씩 대조했어요.</p></div></li><li class="pg-changes-item"><span class="pg-changes-kind pg-changes-k-new">새 글</span><div class="pg-changes-main"><a class="pg-changes-t" href="../a/for-friends/"><span class="spine" style="--h:185" aria-hidden="true"></span>친구가 조현병일 때</a><p class="pg-changes-what">이번 판에 새로 쓴 글이에요. 작성자와 다른 검수자가 출처를 하나씩 대조했어요.</p></div></li><li class="pg-changes-item"><span class="pg-changes-kind pg-changes-k-new">새 글</span><div class="pg-changes-main"><a class="pg-changes-t" href="../a/for-teachers/"><span class="spine" style="--h:185" aria-hidden="true"></span>교사가 알아둘 것: 학생에게 변화가 보일 때</a><p class="pg-changes-what">이번 판에 새로 쓴 글이에요. 작성자와 다른 검수자가 출처를 하나씩 대조했어요.</p></div></li><li class="pg-changes-item"><span class="pg-changes-kind pg-changes-k-new">새 글</span><div class="pg-changes-main"><a class="pg-changes-t" href="../a/guardian-duties/"><span class="spine" style="--h:220" aria-hidden="true"></span>보호의무자: 누가 되고 무엇을 하나</a><p class="pg-changes-what">이번 판에 새로 쓴 글이에요. 작성자와 다른 검수자가 출처를 하나씩 대조했어요.</p></div></li><li class="pg-changes-item"><span class="pg-changes-kind pg-changes-k-new">새 글</span><div class="pg-changes-main"><a class="pg-changes-t" href="../a/habeas-corpus-relief/"><span class="spine" style="--h:220" aria-hidden="true"></span>법원에 직접 묻기: 인신보호 구제청구</a><p class="pg-changes-what">이번 판에 새로 쓴 글이에요. 작성자와 다른 검수자가 출처를 하나씩 대조했어요.</p></div></li><li class="pg-changes-item"><span class="pg-changes-kind pg-changes-k-new">새 글</span><div class="pg-changes-main"><a class="pg-changes-t" href="../a/heart-and-antipsychotics/"><span class="spine" style="--h:340" aria-hidden="true"></span>심장과 약: QT 연장·빈맥·심근염</a><p class="pg-changes-what">이번 판에 새로 쓴 글이에요. 작성자와 다른 검수자가 출처를 하나씩 대조했어요.</p></div></li><li class="pg-changes-item"><span class="pg-changes-kind pg-changes-k-new">새 글</span><div class="pg-changes-main"><a class="pg-changes-t" href="../a/heat-and-medication/"><span class="spine" style="--h:160" aria-hidden="true"></span>더위와 약: 여름을 안전하게</a><p class="pg-changes-what">이번 판에 새로 쓴 글이에요. 작성자와 다른 검수자가 출처를 하나씩 대조했어요.</p></div></li><li class="pg-changes-item"><span class="pg-changes-kind pg-changes-k-new">새 글</span><div class="pg-changes-main"><a class="pg-changes-t" href="../a/justice-system/"><span class="spine" style="--h:220" aria-hidden="true"></span>경찰 조사·재판을 받게 됐을 때</a><p class="pg-changes-what">이번 판에 새로 쓴 글이에요. 작성자와 다른 검수자가 출처를 하나씩 대조했어요.</p></div></li><li class="pg-changes-item"><span class="pg-changes-kind pg-changes-k-new">새 글</span><div class="pg-changes-main"><a class="pg-changes-t" href="../a/medical-cost-safety-net/"><span class="spine" style="--h:220" aria-hidden="true"></span>큰 병원비 안전망: 본인부담상한제·재난적의료비·긴급지원</a><p class="pg-changes-what">이번 판에 새로 쓴 글이에요. 작성자와 다른 검수자가 출처를 하나씩 대조했어요.</p></div></li><li class="pg-changes-item"><span class="pg-changes-kind pg-changes-k-new">새 글</span><div class="pg-changes-main"><a class="pg-changes-t" href="../a/missing-person/"><span class="spine" style="--h:185" aria-hidden="true"></span>연락이 끊겼을 때: 실종 신고와 사전등록</a><p class="pg-changes-what">이번 판에 새로 쓴 글이에요. 작성자와 다른 검수자가 출처를 하나씩 대조했어요.</p></div></li><li class="pg-changes-item"><span class="pg-changes-kind pg-changes-k-new">새 글</span><div class="pg-changes-main"><a class="pg-changes-t" href="../a/neuroleptic-malignant-syndrome/"><span class="spine" style="--h:340" aria-hidden="true"></span>신경이완제 악성 증후군: 드물지만 응급</a><p class="pg-changes-what">이번 판에 새로 쓴 글이에요. 작성자와 다른 검수자가 출처를 하나씩 대조했어요.</p></div></li><li class="pg-changes-item"><span class="pg-changes-kind pg-changes-k-new">새 글</span><div class="pg-changes-main"><a class="pg-changes-t" href="../a/other-medical-care/"><span class="spine" style="--h:340" aria-hidden="true"></span>다른 과 진료·수술·치과·약국에서 알릴 것</a><p class="pg-changes-what">이번 판에 새로 쓴 글이에요. 작성자와 다른 검수자가 출처를 하나씩 대조했어요.</p></div></li><li class="pg-changes-item"><span class="pg-changes-kind pg-changes-k-new">새 글</span><div class="pg-changes-main"><a class="pg-changes-t" href="../a/polydipsia-hyponatremia/"><span class="spine" style="--h:160" aria-hidden="true"></span>물을 너무 많이 마실 때: 다음증과 저나트륨</a><p class="pg-changes-what">이번 판에 새로 쓴 글이에요. 작성자와 다른 검수자가 출처를 하나씩 대조했어요.</p></div></li><li class="pg-changes-item"><span class="pg-changes-kind pg-changes-k-new">새 글</span><div class="pg-changes-main"><a class="pg-changes-t" href="../a/psychiatric-emergency-system/"><span class="spine" style="--h:220" aria-hidden="true"></span>정신응급 체계: 정신응급의료센터·합동대응·쉼터</a><p class="pg-changes-what">이번 판에 새로 쓴 글이에요. 작성자와 다른 검수자가 출처를 하나씩 대조했어요.</p></div></li><li class="pg-changes-item"><span class="pg-changes-kind pg-changes-k-new">새 글</span><div class="pg-changes-main"><a class="pg-changes-t" href="../a/psychoeducation/"><span class="spine" style="--h:120" aria-hidden="true"></span>정신교육: 병을 아는 것이 치료가 되는 이유</a><p class="pg-changes-what">이번 판에 새로 쓴 글이에요. 작성자와 다른 검수자가 출처를 하나씩 대조했어요.</p></div></li><li class="pg-changes-item"><span class="pg-changes-kind pg-changes-k-new">새 글</span><div class="pg-changes-main"><a class="pg-changes-t" href="../a/psychosis-what-is/"><span class="spine" style="--h:255" aria-hidden="true"></span>정신증이란: 조현병과 무엇이 같고 다른가</a><p class="pg-changes-what">이번 판에 새로 쓴 글이에요. 작성자와 다른 검수자가 출처를 하나씩 대조했어요.</p></div></li><li class="pg-changes-item"><span class="pg-changes-kind pg-changes-k-new">새 글</span><div class="pg-changes-main"><a class="pg-changes-t" href="../a/shared-decision-making/"><span class="spine" style="--h:30" aria-hidden="true"></span>치료를 함께 정하기</a><p class="pg-changes-what">이번 판에 새로 쓴 글이에요. 작성자와 다른 검수자가 출처를 하나씩 대조했어요.</p></div></li><li class="pg-changes-item"><span class="pg-changes-kind pg-changes-k-new">새 글</span><div class="pg-changes-main"><a class="pg-changes-t" href="../a/suicide-bereavement/"><span class="spine" style="--h:185" aria-hidden="true"></span>가족을 자살로 잃은 뒤</a><p class="pg-changes-what">이번 판에 새로 쓴 글이에요. 작성자와 다른 검수자가 출처를 하나씩 대조했어요.</p></div></li><li class="pg-changes-item"><span class="pg-changes-kind pg-changes-k-new">새 글</span><div class="pg-changes-main"><a class="pg-changes-t" href="../a/trauma-and-psychosis/"><span class="spine" style="--h:160" aria-hidden="true"></span>외상과 정신증: 아픈 기억, 그리고 입원이 남긴 상처</a><p class="pg-changes-what">이번 판에 새로 쓴 글이에요. 작성자와 다른 검수자가 출처를 하나씩 대조했어요.</p></div></li><li class="pg-changes-item"><span class="pg-changes-kind pg-changes-k-new">새 글</span><div class="pg-changes-main"><a class="pg-changes-t" href="../a/treatment-cost-support/"><span class="spine" style="--h:220" aria-hidden="true"></span>정신질환 치료비 지원사업</a><p class="pg-changes-what">이번 판에 새로 쓴 글이에요. 작성자와 다른 검수자가 출처를 하나씩 대조했어요.</p></div></li><li class="pg-changes-item"><span class="pg-changes-kind pg-changes-k-new">새 글</span><div class="pg-changes-main"><a class="pg-changes-t" href="../a/womens-health/"><span class="spine" style="--h:30" aria-hidden="true"></span>여성 당사자의 몸: 생리·피임·폐경과 약</a><p class="pg-changes-what">이번 판에 새로 쓴 글이에요. 작성자와 다른 검수자가 출처를 하나씩 대조했어요.</p></div></li><li class="pg-changes-item"><span class="pg-changes-kind pg-changes-k-enrich">보강</span><div class="pg-changes-main"><a class="pg-changes-t" href="../a/activity-support-service/"><span class="spine" style="--h:220" aria-hidden="true"></span>활동지원과 돌봄 서비스</a><p class="pg-changes-what">종합조사 항목 설명에 장애인복지법 제32조의4 근거를 더하고, 세부 항목은 보도 기준임을 밝혔어요.</p></div></li><li class="pg-changes-item"><span class="pg-changes-kind pg-changes-k-enrich">보강</span><div class="pg-changes-main"><a class="pg-changes-t" href="../a/admission-types/"><span class="spine" style="--h:220" aria-hidden="true"></span>입원의 종류와 내 권리</a><p class="pg-changes-what">외래치료 지원의 청구 주체와 치료 중단 뒤 절차, 인신보호 구제청구의 조건을 법 조문대로 바로잡고 위기 연락처 상자를 더했어요.</p></div></li><li class="pg-changes-item"><span class="pg-changes-kind pg-changes-k-enrich">보강</span><div class="pg-changes-main"><a class="pg-changes-t" href="../a/adolescent-onset/"><span class="spine" style="--h:45" aria-hidden="true"></span>청소년기에 시작되는 조현병</a><p class="pg-changes-what">학교 쪽 상담 창구(위(Wee) 클래스·위(Wee) 센터·병원형 위(Wee)센터) 안내를 더했어요.</p></div></li><li class="pg-changes-item"><span class="pg-changes-kind pg-changes-k-enrich">보강</span><div class="pg-changes-main"><a class="pg-changes-t" href="../a/alcohol-tobacco-cannabis/"><span class="spine" style="--h:30" aria-hidden="true"></span>술·담배·대마</a><p class="pg-changes-what">각성제 소절과 금연상담전화 안내를 더했어요. 오래 마신 술이나 써 온 약물을 한꺼번에 끊을 때의 금단 위험 안내를 넣고, 흡연 오즈비 표기와 대마 연구의 비교 대상을 바로잡았어요.</p></div></li><li class="pg-changes-item"><span class="pg-changes-kind pg-changes-k-enrich">보강</span><div class="pg-changes-main"><a class="pg-changes-t" href="../a/amisulpride/"><span class="spine" style="--h:340" aria-hidden="true"></span>아미설프리드</a><p class="pg-changes-what">부정맥이 의심될 때 바로 119로 가도록 대처를 고치고, 효과 순위처럼 읽히던 표현을 간접 비교라는 한계와 함께 고쳐 썼어요.</p></div></li><li class="pg-changes-item"><span class="pg-changes-kind pg-changes-k-enrich">보강</span><div class="pg-changes-main"><a class="pg-changes-t" href="../a/anger-irritability/"><span class="spine" style="--h:160" aria-hidden="true"></span>화·짜증·공격성: 왜 생기고 어떻게 다루나</a><p class="pg-changes-what">폭력과 피해 위험 소절을 출처에 맞게 고쳐 썼어요. 견줄 수 없는 숫자 비교와 정의가 헷갈리는 수치는 뺐어요.</p></div></li><li class="pg-changes-item"><span class="pg-changes-kind pg-changes-k-enrich">보강</span><div class="pg-changes-main"><a class="pg-changes-t" href="../a/auditory-hallucination/"><span class="spine" style="--h:20" aria-hidden="true"></span>환청</a><p class="pg-changes-what">해치라는 목소리와 자살 위험을 다룬 연구 문장에 근거의 한계를 밝혔어요. 약물 치료 문장은 NIMH 안내에 맞춰 고쳤고, 가족을 위한 119·112 안내를 더했어요.</p></div></li><li class="pg-changes-item"><span class="pg-changes-kind pg-changes-k-enrich">보강</span><div class="pg-changes-main"><a class="pg-changes-t" href="../a/avatar-therapy/"><span class="spine" style="--h:120" aria-hidden="true"></span>아바타 치료</a><p class="pg-changes-what">2025년 분석에서 뇌 자극 치료와 비교한 결과를 더했어요.</p></div></li><li class="pg-changes-item"><span class="pg-changes-kind pg-changes-k-enrich">보강</span><div class="pg-changes-main"><a class="pg-changes-t" href="../a/benzodiazepines-sleep-meds/"><span class="spine" style="--h:340" aria-hidden="true"></span>벤조디아제핀과 수면제</a><p class="pg-changes-what">금단 신호와 숨쉬기 어려움이 생길 때 할 일을 FDA 안전성 서한을 근거로 더하고, 자살이 나오는 연구 아래에 109 안내를 넣었어요.</p></div></li><li class="pg-changes-item"><span class="pg-changes-kind pg-changes-k-enrich">보강</span><div class="pg-changes-main"><a class="pg-changes-t" href="../a/birth-season/"><span class="spine" style="--h:5" aria-hidden="true"></span>태어난 계절과 조현병</a><p class="pg-changes-what">결핍 증후군의 여름 출생 결과가 인구 기반 연구에서 나온 것임을 밝히고, 편의 표본에서는 차이가 없었다는 점을 더했어요.</p></div></li><li class="pg-changes-item"><span class="pg-changes-kind pg-changes-k-enrich">보강</span><div class="pg-changes-main"><a class="pg-changes-t" href="../a/case-management-act/"><span class="spine" style="--h:120" aria-hidden="true"></span>사례관리와 적극적 지역사회치료(ACT)</a><p class="pg-changes-what">근거 수준과 이용료 출처를 바로잡고, NICE 권고와 센터 등록 절차, 위기 때 119 안내를 더했어요.</p></div></li><li class="pg-changes-item"><span class="pg-changes-kind pg-changes-k-enrich">보강</span><div class="pg-changes-main"><a class="pg-changes-t" href="../a/crisis-hotlines/"><span class="spine" style="--h:220" aria-hidden="true"></span>위기 상담 전화와 기관</a><p class="pg-changes-what">전화가 어려울 때 109로 문자를 보내는 마들랜 이용 방법과 1388 휴대전화 이용법을 더했어요.</p></div></li><li class="pg-changes-item"><span class="pg-changes-kind pg-changes-k-enrich">보강</span><div class="pg-changes-main"><a class="pg-changes-t" href="../a/depression-anxiety/"><span class="spine" style="--h:160" aria-hidden="true"></span>우울과 불안</a><p class="pg-changes-what">사회불안 유병률 두 숫자(14.9%, 21%)가 서로 다른 메타분석에서 나왔다는 점을 밝혔어요.</p></div></li><li class="pg-changes-item"><span class="pg-changes-kind pg-changes-k-enrich">보강</span><div class="pg-changes-main"><a class="pg-changes-t" href="../a/disability-registration/"><span class="spine" style="--h:220" aria-hidden="true"></span>정신장애 등록과 혜택</a><p class="pg-changes-what">보건복지상담센터 129 안내에 맞는 출처를 달았어요.</p></div></li><li class="pg-changes-item"><span class="pg-changes-kind pg-changes-k-enrich">보강</span><div class="pg-changes-main"><a class="pg-changes-t" href="../a/drug-costs-coverage/"><span class="spine" style="--h:340" aria-hidden="true"></span>약값과 건강보험</a><p class="pg-changes-what">제네릭 산정률 45% 고시가 2026년 8월 1일부터 시행됐다는 점을 반영하고, 확인하지 못한 의료급여 주사제 본인부담 숫자를 뺐어요.</p></div></li><li class="pg-changes-item"><span class="pg-changes-kind pg-changes-k-enrich">보강</span><div class="pg-changes-main"><a class="pg-changes-t" href="../a/early-detection/"><span class="spine" style="--h:265" aria-hidden="true"></span>조기 발견과 예방 연구</a><p class="pg-changes-what">건강검진 정신건강검사의 확진검사 기관에서 정신병원이 빠진다는 점을 더했어요.</p></div></li><li class="pg-changes-item"><span class="pg-changes-kind pg-changes-k-enrich">보강</span><div class="pg-changes-main"><a class="pg-changes-t" href="../a/ect/"><span class="spine" style="--h:120" aria-hidden="true"></span>전기경련치료(ECT)</a><p class="pg-changes-what">NICE 권고와 현행 정신건강복지법(제6조·제73조)에 맞춰 동의와 권리 설명을 고치고, 핵심 요약에 대상(약이 잘 듣지 않는 조현병)을 밝혔어요.</p></div></li></ul></section></div><noscript><p class="pg-changes-nojs">더 오래된 기록 249개는 자바스크립트를 켜면 볼 수 있어요.</p></noscript><section class="pg-changes-about" aria-labelledby="pg-changes-about-h"><h2 class="pg-changes-about-h" id="pg-changes-about-h">이 기록을 읽는 법</h2><dl class="pg-changes-legend"><div><dt><span class="pg-changes-kind pg-changes-k-new">새 글</span></dt><dd>새로 쓴 글이에요.</dd></div><div><dt><span class="pg-changes-kind pg-changes-k-enrich">보강</span></dt><dd>내용이나 출처를 더한 글이에요.</dd></div><div><dt><span class="pg-changes-kind pg-changes-k-fix">바로잡음</span></dt><dd>틀린 내용·수치·표현이나 출처 주소를 고친 글이에요.</dd></div><div><dt><span class="pg-changes-kind pg-changes-k-feature">기능</span></dt><dd>화면과 기능을 새로 만들거나 바꾼 것이에요.</dd></div></dl><p class="pg-changes-note">글의 "출처 확인" 날짜는 AI 작업자가 그 글의 출처를 다시 열어 본문과 대조한 날이에요. 전문가 감수가 아니에요. 넓은 화면에서는 글 오른쪽 문서 정보 아래에, 휴대폰에서는 글 끝에 보여요. 한 글의 고친 내역은 그 글 끝의 "이 글의 고친 내역"에서도 볼 수 있어요.</p></section></div><div class="fp-notices"><div class="notice notice-general" role="note">일반적인 정보예요. 사람마다 상황이 달라서 진단과 치료는 담당 의사와 상의하는 게 안전해요. 이 백과의 내용은 AI가 공개 자료로 초안을 쓰고 출처를 확인해 만들었으며, 전문가 감수는 받지 않았어요.</div><div class="notice notice-crisis" role="note">힘든 생각이 들면 자살예방상담 <a href="tel:109">109</a>, 정신건강위기상담 <a href="tel:1577-0199">1577-0199</a>에 24시간 전화할 수 있어요. 전화가 어렵다면 109로 문자를 보낼 수 있어요. 당장 위험하면 <a href="tel:119">119</a>에 전화하세요.</div></div></main>
+</div>
+<footer class="sitefoot">
+  <div class="sitefoot-inner">
+    <p>이 백과는 일반적인 정보를 전해요. 진단과 치료는 담당 의사와 상의하세요. 글마다 출처를 달았고, 틀린 내용은 고쳐 나가요.</p>
+    <p>글은 AI가 공개 자료를 바탕으로 초안을 쓰고 출처를 확인해 만들었어요. 전문가 감수는 받지 않았어요.</p>
+    <p>힘든 생각이 들 때 자살예방상담 <a href="tel:109">109</a>, 정신건강위기상담 <a href="tel:1577-0199">1577-0199</a>에 전화하세요. 24시간 받아요. 전화가 어렵다면 109로 문자를 보낼 수 있어요. 생명이 위급하면 <a href="tel:119">119</a>에 전화하세요.</p>
+    <p class="foot-links"><!--foot:start--><a href="../about/">이 백과에 대해</a> · <a href="../changes/">고침 기록</a><!--foot:end--></p>
+  </div>
+</footer>
+<div class="pop" id="pop" role="dialog" aria-modal="false" hidden></div>
+<!--core:start-->
+<script src="../js/core.js"></script>
+<!--core:end-->
+<!--ui:start-->
+<script src="../js/ui.js"></script>
+<!--ui:end-->
+</body>
+</html>
