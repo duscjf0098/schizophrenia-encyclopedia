@@ -10,6 +10,9 @@ const path = require('path');
 const md = require('../js/md.js');
 const P = require('../js/paths.js');
 const A = require('./lib/assets.cjs');
+/* 문서 마크업은 앱과 같은 함수(js/app.js 의 docKit — node 에서 require 하면 화면을 건드리지 않고 순수 함수만 내보냄).
+   그래서 정적 문서를 그대로 살린 화면(하이드레이션)과 앱이 새로 그린 화면의 DOM 이 같다(tests/hydrate.test.cjs) */
+const DK = require('../js/app.js');
 /* 분류 소묶음 모듈(js/ui/hub.js)은 화면 확장 모듈이라 없을 수 있어요. 없으면 분류 정적 페이지는 평평한 목록 */
 function loadHub(file) {
   /* 그 파일 자체가 없을 때만 null. 파일은 있는데 안에서 다른 것을 못 찾거나 문법 오류면 그대로 멈춰요(고장을 숨기지 않게) */
@@ -28,7 +31,8 @@ function load(file) {
   new Function('window', 'JHB', fs.readFileSync(path.join(root, file), 'utf8'))(win, win.JHB);
   return win.JHB;
 }
-const J = Object.assign({}, load('data/sections.js'), load('data/toc.js'), load('data/glossary.js'), load('data/about.js'), fs.existsSync(path.join(root, 'data/courses.js')) ? load('data/courses.js') : {});
+function loadIf(file) { return fs.existsSync(path.join(root, file)) ? load(file) : {}; }
+const J = Object.assign({}, load('data/sections.js'), load('data/toc.js'), load('data/glossary.js'), load('data/about.js'), loadIf('data/courses.js'), loadIf('data/links.js'));
 const courses = J.courses || [];
 const sections = J.sections, articles = J.toc.articles, glossary = J.glossary || [];
 const secById = {}; sections.forEach(function (s) { secById[s.id] = s; });
@@ -95,12 +99,89 @@ function sectionMainHtml(s, list, entry) {
 function prtStaticHtml(slug) {
   return '<p class="prt-static"><b>' + SITE_NAME + '</b> · ' + esc(SITE + 'a/' + slug + '/') + '</p>';
 }
-/* 근거 칩·읽는 시간·고친 날·출처 확인일: 앱이 다시 그리는 휴대폰 머리 줄(.doc-meta-m)과 같은 값(js/md.js 의 docMetaHtml 에 넘김) */
-function docMetaInput(a, docMeta, body) {
-  const meta = Object.assign({}, a, docMeta);
-  const o = { evidence: meta.evidence, ev: (J.EVIDENCE || {})[meta.evidence], minutes: meta.minutes || md.readingMinutes(body || ''), updated: meta.updated };
-  if (meta.reviewed) o.reviewed = String(meta.reviewed);
-  return o;
+/* 정적 문서 본문: 앱과 같은 docHtml(문서 머리·근거 한 줄·위기 배너·응급 줄·핵심 3가지·차례·본문·출처·고지·역링크·함께 읽기·앞뒤 문서·확장 자리 4개·문서 정보 상자).
+   frontmatter 와 차례는 머리의 #doc-meta(JSON)로 함께 넣어, 앱이 글 원문을 다시 받지 않고 이 본문을 그대로 살린다(js/app.js 의 staticDoc·hydrateDoc).
+   a = toc 항목, doc = md.parse 결과. 돌려주는 값: { main, data(머리에 넣을 JSON 스크립트), meta, toc } */
+function docPage(a, doc) {
+  const s = secById[a.section] || {};
+  const r = md.render(doc.body);
+  const meta = Object.assign({}, a, doc.meta);
+  const minutes = meta.minutes || md.readingMinutes(doc.body);
+  const main = DK.docHtml({
+    slug: a.slug, meta: meta, html: r.html, toc: r.toc, minutes: minutes, sec: s, secById: secById, list: sectionArticles(a.section),
+    articles: articles, bySlug: bySlug, links: J.links || null, EV: J.EVIDENCE || {}
+  });
+  return { main: main, data: docMetaScript(a.slug, doc.meta, r.toc), meta: meta, toc: r.toc };
+}
+function docMetaScript(slug, fm, toc) { return '<script type="application/json" id="doc-meta">' + DK.metaJson(slug, fm, toc) + '</script>'; }
+
+/* ---------- 첫 화면 ----------
+   처음 온 사람(기록·역할 없음)에게 앱(js/app.js 의 drawHome)이 그리는 것과 같은 짜임: 머리(설명·문서·용어·출처 수), 책꽂이(js/ui/shelf.js 의 html, 있을 때),
+   오늘의 문서, 읽기 코스 4개, 분류(분류마다 글 5편 + "외 N개"), 오늘의 용어 6개, 맺음말. 순서는 js/progress.js 의 homeOrder(false).
+   오늘의 문서·용어는 날짜로 고르므로(앱 js/util.js 의 dayIndex 와 같은 계산) 빌드한 날 것이에요. 앱은 모듈이 다 실린 뒤 한 번에 다시 그려요.
+   data-hm="static": 자바스크립트가 꺼진 화면에서 home 모듈용 빈자리(css/ui/home.css 의 .portal:not([data-hm]))를 잡지 않게 */
+const PR = require('../js/progress.js');
+let shelf = loadHub('../js/ui/shelf.js');
+const HOME_SUB = '증상과 진단, 약과 치료, 일상과 제도, 최신 연구까지. 조현병에 관해 궁금한 것을 출처와 함께 찾아볼 수 있어요. 어려운 말에는 밑줄이 있고, 누르면 뜻이 나와요.';
+const HOME_NOTE = '이 백과의 글은 AI가 공개 자료를 바탕으로 초안을 쓰고 출처를 확인해 만들었어요. 전문가 감수는 받지 않았어요. 진단과 치료는 담당 의사와 상의하세요.';
+const COURSES_HOME_LEAD = '상황에 맞게 읽을 순서를 정리했어요. 어디서 시작할지 막막할 때 골라 보세요.';
+/* 저장한 문서가 없을 때의 안내(앱 js/app.js 의 favPage 와 같은 글자) */
+const FAV_EMPTY = '문서의 "저장" 버튼을 누르면 여기에 모여요. 이 기기의 브라우저에만 저장돼요.';
+/* js/util.js 의 dayIndex 와 같은 계산(날짜마다 같은 번호) */
+function dayIndex(n, d) {
+  d = d || new Date();
+  const key = d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate();
+  let h = key;
+  h = ((h >>> 16) ^ h) * 0x45d9f3b; h = ((h >>> 16) ^ h) * 0x45d9f3b; h = (h >>> 16) ^ h;
+  return n ? Math.abs(h) % n : 0;
+}
+function spineHtml(s) { return DK.spineHtml(s); }
+function homeMainHtml(day) {
+  const EV = J.EVIDENCE || {};
+  const todayPool = articles.filter(function (a) { const t = a.tags || []; return String(a.section) !== '15' && t.indexOf('위기') < 0 && t.indexOf('응급') < 0; });
+  const pick = todayPool.length ? todayPool[dayIndex(todayPool.length, day)] : null;
+  const dayTerms = [];
+  if (glossary.length) { const start = dayIndex(glossary.length, day); for (let i = 0; i < 6; i++) dayTerms.push(glossary[(start + i * 23) % glossary.length]); }
+  const secs = {};
+  if (pick) {
+    const ps = secById[pick.section] || {};
+    secs.today = '<section data-sec="today"><h2 class="h-sec">오늘의 문서</h2><div class="feature"><div class="feature-m"><span class="row-sec">' + spineHtml(ps) + esc(ps.title || '') + '</span>' + DK.evHtml(pick.evidence, EV) + '</div>' +
+      '<h3 class="feature-t"><a href="#/a/' + pick.slug + '">' + esc(pick.title) + '</a></h3><p class="feature-s">' + esc(pick.summary || '') + '</p>' +
+      '<div class="feature-actions"><a class="btn" href="#/a/' + pick.slug + '">읽기</a><a class="btn" href="#/random">아무 문서나 열기</a></div></div></section>';
+  }
+  if (courses.length) {
+    secs.courses = '<section data-sec="courses"><h2 class="h-sec">읽기 코스<a class="more" href="#/courses">전체 보기</a></h2><p class="page-lead" style="margin:-4px 0 14px">' + esc(COURSES_HOME_LEAD) + '</p><div class="courses">' +
+      courses.slice(0, 4).map(function (c) {
+        return '<a class="course" href="#/course/' + esc(c.id) + '"><div class="who">' + esc(PR.whoText ? PR.whoText(c.who) : '') + '</div><h3>' + esc(c.title) + '</h3><p>' + esc(c.intro) + '</p>' +
+          '<div><div class="bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"><i style="width:0%"></i></div><div class="bar-label"><span>문서 ' + c.steps.length + '개</span><span></span></div></div></a>';
+      }).join('') + '</div></section>';
+  }
+  secs.index = '<section data-sec="index"><h2 class="h-sec">분류</h2><div class="index">' + sections.map(function (s) {
+    if (s.glossary) return '<div class="index-sec"><h3>' + spineHtml(s) + '<a href="#/glossary">' + esc(s.title) + '</a><span class="n">' + glossary.length + '개</span></h3><p>' + esc(s.desc) + '</p></div>';
+    const list = sectionArticles(s.id), shown = list.slice(0, 5);
+    return '<div class="index-sec"><h3>' + spineHtml(s) + '<a href="#/s/' + s.id + '">' + esc(s.title) + '</a><span class="n">' + list.length + '개</span></h3><p>' + esc(s.desc) + '</p><ul>' +
+      shown.map(function (a) { return '<li><a href="#/a/' + a.slug + '">' + esc(a.title) + '</a></li>'; }).join('') +
+      (list.length > shown.length ? '<li class="rest"><a href="#/s/' + s.id + '">외 ' + (list.length - shown.length) + '개</a></li>' : '') + '</ul></div>';
+  }).join('') + '</div></section>';
+  if (dayTerms.length) {
+    secs.terms = '<section data-sec="terms"><h2 class="h-sec">오늘의 용어<a class="more" href="#/glossary">용어 사전 전체</a></h2><dl class="terms">' + dayTerms.map(function (g) {
+      const rel = (g.related || []).filter(function (r) { return bySlug[r]; })[0];
+      return '<div><dt>' + (rel ? '<a href="#/a/' + rel + '">' + esc(g.term) + '</a>' : esc(g.term)) + '</dt><dd>' + esc(g.def) + '</dd></div>';
+    }).join('') + '</dl></section>';
+  }
+  const counts = {}; sections.forEach(function (s) { counts[s.id] = s.glossary ? glossary.length : sectionArticles(s.id).length; });
+  const shelfHtml = shelf && typeof shelf.html === 'function' && typeof shelf.model === 'function' ? shelf.html(shelf.model(sections, counts)) : '';
+  const src = J.toc && J.toc.sources;
+  return '<div class="portal" data-hm="static"><header class="portal-head"><h1 class="portal-title">조현병 백과</h1><p class="portal-sub">' + esc(HOME_SUB) + '</p>' +
+    '<div class="portal-stats"><span><b>' + articles.length + '</b>개 문서</span><span><b>' + glossary.length + '</b>개 용어</span>' +
+    (src ? '<span><b>' + Number(src).toLocaleString('ko-KR') + '</b>개 출처</span>' : '') + '</div></header>' + shelfHtml +
+    PR.homeOrder(false).map(function (k) { return secs[k] || ''; }).join('') +
+    '<p class="portal-note">' + esc(HOME_NOTE) + '</p></div>';
+}
+
+/* 소개 화면 본문(앱 about() 과 같은 마크업: 빵부스러기 + 제목 + div.prose) */
+function aboutMainHtml() {
+  return crumb([{ href: '#/', text: '첫 화면' }, { text: '이 백과에 대해' }]) + '<h1 class="page-title">이 백과에 대해</h1><div class="prose">' + J.aboutHtml + '</div>';
 }
 
 /* ---------- 특집 화면 ---------- */
@@ -158,8 +239,10 @@ function main() {
       OGURL: url ? '<meta property="og:url" content="' + url + '">' : '',
       JSONLD: o.jsonld ? '<script type="application/ld+json">' + JSON.stringify(o.jsonld).replace(/</g, '\\u003c') + '</script>' : '',
       VERIFY: route === '' ? VERIFY_TAGS : '',
+      PAGE_DATA: o.pageData || '',
       PAGE_CSS: o.pageCss ? '<link rel="stylesheet" href="' + base + o.pageCss + '">' : '',
-      UI_SCRIPTS: A.uiScriptsHtml(base),
+      CORE_SCRIPTS: A.coreScriptsHtml(base, route, { bundle: true }),
+      UI_SCRIPTS: A.uiScriptsHtml(base, { bundle: true }),
       TOP_LINKS: A.topLinksHtml(decls, base),
       FOOT_LINKS: A.footLinksHtml(decls, base),
       MAIN: P.rewriteHtml(o.main || '', base)
@@ -169,17 +252,11 @@ function main() {
 
   const pages = [];
 
-  /* 첫 화면. data-hm="static": 자바스크립트가 꺼진 화면에서 home 모듈용 빈자리(css/ui/home.css 의 .portal:not([data-hm]))를 잡지 않게.
-     앱이 첫 화면을 다시 그리면 이 정적 내용은 통째로 바뀌어요 */
+  /* 첫 화면: 처음 온 사람에게 앱이 그리는 것과 같은 짜임(homeMainHtml). 앱은 모듈이 다 실린 뒤 한 번에 다시 그려요 */
   pages.push(page('', {
     title: '조현병 백과 - 출처와 함께 읽는 조현병 백과사전', ogTitle: SITE_NAME, desc: SITE_DESC,
     jsonld: { '@context': 'https://schema.org', '@type': 'WebSite', name: SITE_NAME, url: SITE, inLanguage: 'ko', description: SITE_DESC },
-    main: '<div class="portal" data-hm="static"><header class="portal-head"><h1 class="portal-title">조현병 백과</h1><p class="portal-sub">' + esc(SITE_DESC) + '</p></header>' +
-      sections.map(function (s) {
-        if (s.glossary) return '<section><h2 class="h-sec"><a href="#/glossary">' + esc(s.title) + '</a></h2><p>' + esc(s.desc) + '</p></section>';
-        return '<section><h2 class="h-sec"><a href="#/s/' + s.id + '">' + esc(s.title) + '</a></h2><p>' + esc(s.desc) + '</p><ul>' +
-          sectionArticles(s.id).map(function (a) { return '<li><a href="#/a/' + a.slug + '">' + esc(a.title) + '</a></li>'; }).join('') + '</ul></section>';
-      }).join('') + '</div>'
+    main: homeMainHtml()
   }));
 
   /* 분류 */
@@ -199,15 +276,10 @@ function main() {
   articles.forEach(function (a) {
     const s = secById[a.section];
     const doc = md.parse(fs.readFileSync(path.join(root, 'content', s.dir, a.slug + '.md'), 'utf8'));
-    const r = md.render(doc.body);
     const srcs = doc.meta.sources || [];
-    const list = sectionArticles(a.section);
     const desc = (a.summary || '').slice(0, 155);
-    /* 자바스크립트 없이 보는 사람·검색엔진용: 근거·고친 날·출처 확인일, 위기 배너, 응급 줄, 핵심 3가지, 문서 고지(문구는 앱과 같음) */
-    const tags = a.tags || [];
-    const isCrisis = tags.indexOf('위기') >= 0;
-    const points = md.pointList(doc.meta.points);
-    const metaHtml = md.docMetaHtml(docMetaInput(a, doc.meta, doc.body));
+    /* 자바스크립트 없이 보는 사람·검색엔진도 앱과 같은 본문: 근거·고친 날·출처 확인일, 위기 배너, 응급 줄, 핵심 3가지, 문서 고지, 역링크·함께 읽기·앞뒤 문서 */
+    const dp = docPage(a, doc);
     pages.push(page('a/' + a.slug, {
       title: a.title + ' - 조현병 백과', ogTitle: a.title, desc: desc, ogType: 'article', lastmod: a.updated || today,
       jsonld: {
@@ -217,21 +289,8 @@ function main() {
         author: { '@type': 'Organization', name: SITE_NAME },
         citation: srcs.filter(function (x) { return x.url; }).map(function (x) { return x.url; })
       },
-      main: prtStaticHtml(a.slug) + crumb([{ href: '#/', text: '첫 화면' }, { href: '#/s/' + s.id, text: s.title }]) +
-        '<article class="doc"><div class="doc-main"><header class="doc-head"><h1 class="page-title">' + esc(a.title) + '</h1>' +
-        (a.summary ? '<p class="doc-summary">' + esc(a.summary) + '</p>' : '') +
-        metaHtml + '</header>' +
-        (isCrisis ? md.crisisHtml() : '') +
-        (tags.indexOf('응급') >= 0 ? md.emergencyHtml() : '') +
-        (points.length ? '<div class="doc-slot" data-slot="lead">' + md.keypointsHtml(points, isCrisis) + '</div>' : '') +
-        '<div class="body">' + r.html + '</div>' +
-        (srcs.length ? '<section class="sources" id="sources"><h2>출처</h2><ol>' + srcs.map(function (x, i) {
-          return '<li id="src-' + (i + 1) + '">' + (x.org ? esc(x.org) + '. ' : '') + (x.url ? '<a href="' + esc(x.url) + '" rel="noopener">' + esc(x.title || x.url) + '</a>' : esc(x.title)) + (x.year ? ' (' + esc(x.year) + ')' : '') + '</li>';
-        }).join('') + '</ol></section>' : '') +
-        '<p class="disclaimer">' + esc(md.DISCLAIMER) + '</p>' +
-        '<section class="see-also"><h2>같은 분류의 문서</h2><ul>' + list.filter(function (x) { return x.slug !== a.slug; }).map(function (x) {
-          return '<li><a href="#/a/' + x.slug + '">' + esc(x.title) + '</a></li>';
-        }).join('') + '</ul></section></div></article>'
+      pageData: dp.data,
+      main: prtStaticHtml(a.slug) + dp.main
     }));
   });
 
@@ -264,10 +323,13 @@ function main() {
   }
 
   /* 소개·검색·저장·무작위 */
-  pages.push(page('about', { title: '이 백과에 대해 - 조현병 백과', desc: '조현병 백과가 글을 쓰는 원칙, AI 작성과 전문가 미감수 고지, 읽는 법.', main: '<h1 class="page-title">이 백과에 대해</h1><div class="prose">' + J.aboutHtml + '</div>' }));
+  /* 소개: 앱(js/app.js 의 about)과 같은 마크업(빵부스러기·제목·본문). 앱은 이 본문을 그대로 살리고 data/about.js 를 받지 않는다 */
+  pages.push(page('about', { title: '이 백과에 대해 - 조현병 백과', desc: '조현병 백과가 글을 쓰는 원칙, AI 작성과 전문가 미감수 고지, 읽는 법.', main: aboutMainHtml() }));
   /* 찾기는 등록 화면(data/pages/search.json)이 생기면 그쪽이 만든다 */
   if (!declIds.has('search')) pages.push(page('search', { title: '찾기 - 조현병 백과', robots: 'noindex,follow', noCanonical: true, main: '<h1 class="page-title">본문 찾기</h1>' }));
-  pages.push(page('fav', { title: '저장한 문서 - 조현병 백과', robots: 'noindex,follow', noCanonical: true, main: '<h1 class="page-title">저장한 문서</h1>' }));
+  /* 저장한 문서: 저장한 글이 없을 때 앱(js/app.js 의 favPage)이 그리는 것과 같은 마크업(앱이 다시 그려도 바닥글이 밀리지 않게) */
+  pages.push(page('fav', { title: '저장한 문서 - 조현병 백과', robots: 'noindex,follow', noCanonical: true,
+    main: crumb([{ href: '#/', text: '첫 화면' }, { text: '저장한 문서' }]) + '<h1 class="page-title">저장한 문서</h1><p class="page-lead">' + esc(FAV_EMPTY) + '</p>' }));
   pages.push(page('random', { title: '아무 문서 - 조현병 백과', robots: 'noindex,follow', noCanonical: true, main: '<p class="empty">아무 문서나 고르고 있어요.</p>' }));
 
   /* 특집 화면: 선언마다 <id>/index.html. 본문은 js/pages/<id>.js 의 staticHtml(ctx) — 자바스크립트 없이도 보이는 내용. 고지 줄은 featureNoticesHtml */
@@ -332,9 +394,10 @@ function main() {
   fs.writeFileSync(path.join(root, '404.html'), page('notfound', { base: SITE_PATH, title: '없는 페이지 - 조현병 백과', robots: 'noindex', noCanonical: true, main: '<h1 class="page-title">그런 문서가 없어요</h1>' }).html);
   /* 오프라인용 틀: BASE·ROUTE·HOME 은 서비스 워커가 채운다 */
   fs.writeFileSync(path.join(root, 'app-shell.html'), fill(template, {
-    TITLE: SITE_NAME, OGTITLE: SITE_NAME, DESC: esc(SITE_DESC), ROBOTS: 'noindex', OGTYPE: 'website', CANONICAL: '', OGURL: '', JSONLD: '', VERIFY: '', MAIN: '',
-    /* fill() 은 한 번만 훑으므로 아래 값 속 '{{BASE}}' 는 그대로 남고, 서비스 워커가 채운다 */
-    PAGE_CSS: '', UI_SCRIPTS: A.uiScriptsHtml('{{BASE}}'), TOP_LINKS: A.topLinksHtml(decls, '{{BASE}}'), FOOT_LINKS: A.footLinksHtml(decls, '{{BASE}}')
+    TITLE: SITE_NAME, OGTITLE: SITE_NAME, DESC: esc(SITE_DESC), ROBOTS: 'noindex', OGTYPE: 'website', CANONICAL: '', OGURL: '', JSONLD: '', PAGE_DATA: '', VERIFY: '', MAIN: '',
+    /* fill() 은 한 번만 훑으므로 아래 값 속 '{{BASE}}' 는 그대로 남고, 서비스 워커가 채운다. 틀은 모든 경로에 쓰여서 문서 전용 자료(links)는 싣지 않는다(앱이 필요할 때 받음) */
+    PAGE_CSS: '', CORE_SCRIPTS: A.coreScriptsHtml('{{BASE}}', '', { bundle: true }), UI_SCRIPTS: A.uiScriptsHtml('{{BASE}}', { bundle: true }),
+    TOP_LINKS: A.topLinksHtml(decls, '{{BASE}}'), FOOT_LINKS: A.footLinksHtml(decls, '{{BASE}}')
   }));
   /* sitemap */
   const sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
@@ -349,7 +412,7 @@ if (require.main === module) main();
 module.exports = {
   SITE: SITE, sections: sections, articles: articles, bySlug: bySlug,
   sectionArticles: sectionArticles, sectionMainHtml: sectionMainHtml, hubHtml: hubHtml,
-  prtStaticHtml: prtStaticHtml, docMetaInput: docMetaInput, staticCtx: staticCtx, featureLastmod: featureLastmod, featureNoticesHtml: featureNoticesHtml, coursesDesc: coursesDesc,
+  prtStaticHtml: prtStaticHtml, docPage: docPage, docMetaScript: docMetaScript, aboutMainHtml: aboutMainHtml, homeMainHtml: homeMainHtml, dayIndex: dayIndex, HOME_SUB: HOME_SUB, HOME_NOTE: HOME_NOTE, COURSES_HOME_LEAD: COURSES_HOME_LEAD, FAV_EMPTY: FAV_EMPTY, staticCtx: staticCtx, featureLastmod: featureLastmod, featureNoticesHtml: featureNoticesHtml, coursesDesc: coursesDesc,
   COURSES_LEAD: COURSES_LEAD, loadHub: loadHub,
   /* 테스트용: hub 모듈이 없을 때(null)를 흉내 내고 원래 값을 돌려받아요 */
   setHub: function (h) { const old = hub; hub = h; return old; }

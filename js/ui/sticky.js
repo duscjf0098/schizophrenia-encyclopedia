@@ -7,7 +7,12 @@
   if (!window.JHB || !JHB.app) return;
   const A = JHB.app, el = A.el;
   const NARROW = 760;
-  function reduce() { return window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches; }
+  /* 움직임 줄이기: 보기 설정(html[data-motion=reduce])과 기기 설정을 함께 보는 코어 판정(JHB.app.reducedMotion)을 쓴다. 코어가 없으면 기기 설정만 */
+  function reduce() {
+    const A = window.JHB && JHB.app;
+    if (A && typeof A.reducedMotion === 'function') { try { return !!A.reducedMotion(); } catch (e) { } }
+    return !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+  }
   function topH() { const v = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--top-h')); return isNaN(v) ? 60 : v; }
 
   let state = null;          /* { toc, minutes, body, heads, docHead, docMain } */

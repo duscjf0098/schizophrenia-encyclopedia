@@ -3,9 +3,16 @@
    그리고 특집 화면 <id>/ (data/pages/<id>.json 선언 → data/pages.js 의 JHB.pages, 코드는 js/pages/<id>.js 가 registerPage).
    찾기(search/)도 특집 화면이에요. 검색어는 주소에 싣지 않고 goSearch() 가 sessionStorage 로 한 번만 넘겨요.
    각 페이지의 <html data-base data-route> 로 현재 위치를 안다. 화면에서 쓰는 '#/…' 링크는 실제 경로로 바꿔 끼운다.
-   공개 API(JHB.app)와 이벤트 규칙은 docs/UI모듈가이드.md */
+   공개 API(JHB.app)와 이벤트 규칙은 docs/UI모듈가이드.md
+   node(빌드·시험)에서 require 하면 화면을 건드리지 않고 문서 마크업 순수 함수(docKit)와 검색어 넘기기 규칙(handoff)만 내보낸다
+   (tools/build-pages.cjs 가 같은 docHtml 로 정적 문서를 그려서, 정적 본문을 살린 화면과 앱이 그린 화면이 같은 DOM 이 된다). */
 (function () {
+  if (typeof window === 'undefined' && typeof module !== 'undefined' && module.exports) {
+    module.exports = Object.assign(docKit(require('./md.js'), require('./paths.js')), { handoff: handoffKit });
+    return;
+  }
   const U = JHB.util, el = U.el, esc = U.esc, md = JHB.md, P = JHB.paths;
+  const DK = docKit(md, P);
   const BASE = document.documentElement.getAttribute('data-base') || '';
   function L(h) { return P.link(h, BASE); }
   function go(h) { location.href = L(h); }
@@ -36,7 +43,13 @@
   const PRG = JHB.progress || {};
   const PROG = PRG.create ? PRG.create(U.store) : null;
   const COURSES = (Array.isArray(JHB.courses) ? JHB.courses : []).filter(function (c) { return c && typeof c.id === 'string' && Array.isArray(c.steps); });
-  const LINKS = JHB.links || null;
+  /* 문서 링크 지도(data/links.js)는 모든 화면에 싣지 않는다(T11): 정적 문서 페이지만 앱 뒤에 싣고, 앱이 문서를 새로 그릴 때(app-shell 등)는 needLinks() 로 받는다.
+     그래서 값은 늘 지금 것을 읽는다(JHB.app.links 도 getter, 아직 없으면 null) */
+  function linksNow() { return JHB.links || null; }
+  function needLinks() {
+    if (JHB.links) return Promise.resolve(JHB.links);
+    return load('data/links.js').then(function () { return linksNow(); }).catch(function () { return null; });
+  }
   /* 원형이 없는 색인: ?course=__proto__·toString 같은 이름으로 엉뚱한 값을 집지 않게(js/progress.js 의 courseMap·getCourse) */
   const courseById = Object.create(null); COURSES.forEach(function (c) { courseById[c.id] = c; });
   function getCourse(id) {
@@ -190,7 +203,8 @@
   const live = el('div.sr', { 'aria-live': 'polite', id: 'live' }); document.body.appendChild(live);
   function announce(t) { live.textContent = ''; setTimeout(function () { live.textContent = t; }, 30); }
   function themeLabel() { U.qs('#btn-theme').setAttribute('aria-label', effectiveTheme() === 'dark' ? '지금 어두운 화면이에요. 누르면 밝게 바뀌어요' : '지금 밝은 화면이에요. 누르면 어둡게 바뀌어요'); }
-  function fsLabel() { const cur = document.documentElement.getAttribute('data-fs') || 'm'; U.qs('#btn-fs').setAttribute('aria-label', '글자 크기: ' + ({ s: '작게', m: '보통', l: '크게' })[cur] + '. 누르면 다음 크기로 바뀌어요'); }
+  /* 옛 글자 크기 단추(보기 설정 모듈이 없을 때만 보임). 머리 스크립트가 다섯 단계(xl·xxl 포함)를 미리 적용하므로 이름도 다섯 단계 */
+  function fsLabel() { const cur = document.documentElement.getAttribute('data-fs') || 'm'; U.qs('#btn-fs').setAttribute('aria-label', '글자 크기: ' + ({ s: '작게', m: '보통', l: '크게', xl: '더 크게', xxl: '아주 크게' }[cur] || '보통') + '. 누르면 다음 크기로 바뀌어요'); }
   themeLabel(); fsLabel();
   U.qs('#btn-theme').addEventListener('click', function () {
     const next = effectiveTheme() === 'dark' ? 'light' : 'dark';
@@ -297,7 +311,7 @@
       const n = document.getElementById(id);
       setNav(false);
       if (!n) return;
-      n.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+      n.scrollIntoView({ behavior: reducedMotion() ? 'auto' : 'smooth', block: 'start' });
       if (n.tabIndex < 0 && !n.hasAttribute('tabindex')) n.setAttribute('tabindex', '-1');
       try { n.focus({ preventScroll: true }); } catch (err) { }
     };
@@ -323,11 +337,26 @@
     show.keepScroll = false;
     setProgress(0);
     if (opts && opts.silent) return;
+    pageEvent(opts);
+  }
+  /* jhb:page 보내기(show() 와 정적 본문을 그대로 살린 화면이 같이 씀) */
+  function pageEvent(opts) {
     const w = where();
     /* 특집 화면은 kind 와 id 가 모두 화면 id(주소에 두 번째 칸이 없어서) */
     const detail = { kind: w.path[0] || 'home', id: w.path[1] || (w.path.length === 1 && hasPage(w.path[0]) ? w.path[0] : null), query: w.query };
     if (opts && opts.loading) detail.loading = true;
     window.dispatchEvent(new CustomEvent('jhb:page', { detail: detail }));
+  }
+  /* 모듈 스크립트(js/ui/*.js, 앱 뒤의 일반 스크립트)가 모두 실행된 뒤에 한 번. 정적 문서를 살린 화면은 이때 jhb:page·jhb:article 을 보내서
+     모듈이 첫 이벤트를 놓치지 않게 한다(앱이 문서를 받아 그리던 때는 받는 동안 모듈이 다 실렸어요) */
+  function afterModules(fn) {
+    let done = false;
+    const run = function () { if (done) return; done = true; fn(); };
+    /* 'interactive' 는 DOMContentLoaded 전(defer 스크립트 실행 중)일 수도, 뒤일 수도 있어서 load 도 함께 기다린다(먼저 오는 쪽 한 번) */
+    if (document.readyState !== 'complete') {
+      document.addEventListener('DOMContentLoaded', run, { once: true });
+      window.addEventListener('load', run, { once: true });
+    } else setTimeout(run, 0);
   }
   function hasPage(id) { return Object.prototype.hasOwnProperty.call(pageById, id); }
   /* 주소 조각이 가리키는 #app 안의 요소(없으면 null). 옛 해시 주소('#/…')는 아님 */
@@ -369,6 +398,9 @@
       const st = (has.call(sq, 'q') || has.call(sq, 's')) ? { q: String(sq.q || ''), s: String(sq.s || ''), at: Date.now() } : history.state;
       try { history.replaceState(st, '', location.pathname + location.hash); } catch (e) { }
     }
+    /* 저장소가 막힌 브라우저에서 goSearch 가 window.name 으로 넘긴 검색어·위기 카드 종류: 찾기 화면이 읽는 history.state 로 옮긴다(다른 화면이면 지우기만) */
+    const ho = takeNameHandoff(p[0] === 'search');
+    if (ho) { try { history.replaceState(ho, '', location.pathname + location.hash); } catch (e) { } }
     if (!p.length) return home();
     if (p[0] === 's' && p[1]) return section(p[1]);
     if (p[0] === 'a' && p[1]) return article(p[1]);
@@ -616,10 +648,18 @@
     ])]);
   }
 
-  /* ---------- 첫 화면 ---------- */
+  /* ---------- 첫 화면 ----------
+     빌드한 index.html 에는 처음 온 사람의 첫 화면과 같은 짜임(머리·책꽂이·오늘의 문서·코스·분류·오늘의 용어)이 미리 들어 있다(.portal[data-hm=static]).
+     그 정적 첫 화면이 있으면 앱은 모듈 스크립트가 다 실린 뒤(afterModules) 한 번에 바꿔 그린다: 앱의 첫 화면과 모듈(책꽂이·역할·두 입구·살펴보기·새 글)이
+     같은 작업 안에서 붙어서, 반쯤 그린 화면이 칠해졌다가 모듈이 위에 끼우며 아래 묶음을 미는 흔들림(처음 온 사람 CLS 0.09~0.13, report-K3)이 없다 */
   function home() {
     setTitle('');
     drawNav(null, null, null);
+    const pre = U.qsa('.portal[data-hm="static"]', app).filter(function (n) { return n.parentNode === app; })[0];
+    if (pre) { afterModules(function () { if (app.contains(pre)) drawHome(); }); return; }
+    drawHome();
+  }
+  function drawHome() {
     /* 오늘의 문서: 위기·응급 태그 글과 15분류(자주 묻는 질문)는 맥락 없이 첫 화면에 뜨지 않게 뺀다 */
     const todayPool = articles.filter(function (a) {
       const t = a.tags || [];
@@ -775,6 +815,8 @@
 
   /* 본문 속 용어에 점선 밑줄을 달고, 처음 나올 때만 표시한다 */
   function linkTerms(root, slug) {
+    /* 용어 찾기(js/gloss.js)를 못 받았으면 밑줄 없이(글은 그대로 보이고 나머지 동작은 붙는다) */
+    if (!(JHB.gloss && JHB.gloss.matcher && JHB.gloss.split)) return [];
     const exclude = glossary.filter(function (g) { return (g.related || [])[0] === slug; }).map(function (g) { return g.term; });
     const re = JHB.gloss.matcher(glossary, { exclude: exclude });
     if (!re) return [];
@@ -807,6 +849,11 @@
     return found;
   }
 
+  /* 문서 화면. 두 길이 같은 마크업(docKit 의 docHtml)과 같은 동작 붙이기(hydrateDoc → finishDoc)를 쓴다:
+     - 정적 본문 살리기: 빌드가 그린 a/<slug>/index.html 에 그 글의 #doc-meta(JSON)가 있으면 #app 을 지우지 않고 그대로 쓴다.
+       "문서를 불러오고 있어요"를 보이지 않고 글 원문(.md)을 다시 받지 않는다. 메타는 #doc-meta 와 data/toc.js 에서.
+       jhb:page·jhb:article 은 모듈 스크립트가 다 실린 뒤(afterModules) 한 번씩(자리 문구용 loading 이벤트는 없음).
+     - 그 밖(오프라인 틀 app-shell, 옛 정적 HTML): 지금처럼 원문을 받아 docHtml 로 그린다(자리 문구 → jhb:page loading, 그린 뒤 jhb:page·jhb:article) */
   function article(slug) {
     const a = bySlug[slug];
     if (!a) {
@@ -815,199 +862,325 @@
       if (sb) return keepStatic(sb, '새로 올라온 글이에요. 화면을 새로 고치면 목차와 용어 풀이가 함께 보여요.');
       return notFound();
     }
-    const s = secById[a.section] || {};
     setTitle(a.title);
+    const pre = staticDoc(slug);
+    if (pre) {
+      const d = docData(a, pre.meta, pre.toc, null);
+      drawNav(a.section, slug, d.toc);
+      const h = hydrateDoc(d, pre.art);
+      afterModules(function () {
+        /* 그사이 다른 화면으로 바뀌었으면(정적 본문이 없어짐) 그만 */
+        if (!app.contains(pre.art)) return;
+        finishDoc(d, h, true);
+      });
+      return;
+    }
     drawNav(a.section, slug, null);
     show([el('p.empty', null, ['문서를 불러오고 있어요.'])], { loading: true });
-    loadArticle(a).then(function (doc) {
-      const meta = Object.assign({}, a, doc.meta);
+    Promise.all([loadArticle(a), needLinks()]).then(function (res) {
+      const doc = res[0];
       const r = md.render(doc.body);
-      const tags = meta.tags || [];
-      const srcs = meta.sources || [];
-      const list = sectionArticles(a.section);
-      const idx = list.findIndex(function (x) { return x.slug === slug; });
-      const prev = idx > 0 ? list[idx - 1] : null, next = idx >= 0 && idx < list.length - 1 ? list[idx + 1] : null;
-      const related = articles.filter(function (x) { return x.slug !== slug && (x.tags || []).some(function (t) { return tags.indexOf(t) >= 0; }); })
-        .map(function (x) { return { a: x, n: (x.tags || []).filter(function (t) { return tags.indexOf(t) >= 0; }).length }; })
-        .sort(function (p, q) { return q.n - p.n; }).slice(0, 6).map(function (x) { return x.a; });
-      const minutes = meta.minutes || md.readingMinutes(doc.body);
-      /* 근거·읽는 시간·고친 날·출처 확인일(frontmatter reviewed): 정적 페이지의 p.doc-meta-s 와 같은 함수 */
-      const metaText = md.docMetaText(minutes, meta.updated, meta.reviewed);
-      const points = md.pointList(meta.points);
-      const isCrisis = tags.indexOf('위기') >= 0, isEmergency = tags.indexOf('응급') >= 0;
-      /* 확장 자리: 모듈이 JHB.app.mount(이름, 노드, 순서)로 끼운다. 비어 있으면 css 에서 숨김 */
-      const slots = {};
-      SLOT_NAMES.forEach(function (n) { slots[n] = el('div.doc-slot', { 'data-slot': n }); });
-      if (points.length) { const kp = fromHtml(md.keypointsHtml(points, isCrisis)); kp.setAttribute('data-order', '-1000000'); slots.lead.appendChild(kp); }
-
-      function favBtn() {
-        const b = el('button.btn', { type: 'button', class: isFav(slug) ? 'on' : '', 'aria-pressed': isFav(slug) ? 'true' : 'false' }, [isFav(slug) ? '저장됨' : '저장']);
-        b.addEventListener('click', function () {
-          const on = toggleFav(slug);
-          U.qsa('.js-fav').forEach(function (x) { x.className = 'btn js-fav' + (on ? ' on' : ''); x.textContent = on ? '저장됨' : '저장'; x.setAttribute('aria-pressed', on ? 'true' : 'false'); });
-        });
-        b.classList.add('js-fav');
-        return b;
-      }
-      function shareBtn() {
-        const b = el('button.btn', { type: 'button' }, ['공유']);
-        b.addEventListener('click', function () {
-          const url = location.href;
-          if (navigator.share) navigator.share({ title: a.title + ' - 조현병 백과', url: url }).catch(function () { });
-          else if (navigator.clipboard) navigator.clipboard.writeText(url).then(function () { b.textContent = '주소 복사됨'; });
-        });
-        return b;
-      }
-
-      const body = el('div.body', { html: r.html });
-      /* 요약 보기에서 늘 보이는 소절(core). 첫 번째 h2 는 언제나 core(요약 보기가 글의 입구를 숨기지 않게).
-         소절 안에 위기 연락처(109·1577-0199·119·112·1393, tel: 링크 포함)가 있으면 그 소절도 core(위기 안내는 접기에서도 빠지지 않음) */
-      U.qsa('h2', body).forEach(function (h, i) {
-        const t = h.textContent.trim();
-        h.setAttribute('data-key', i === 0 || CORE_H2.test(t) || sectionHasContact(h) ? 'core' : 'detail');
-      });
-      const notes = el('div.notes');
-      const infobox = el('section.infobox', { 'aria-label': '문서 정보' }, [
-        el('div.infobox-h', null, [spine(s), '문서 정보']),
-        el('dl', null, [
-          el('dt', null, ['분류']), el('dd', null, [el('a', { href: '#/s/' + s.id }, [s.title || ''])]),
-          el('dt', null, ['근거']), el('dd', null, [ev(meta) || '없음']),
-          el('dt', null, ['출처']), el('dd', null, [srcs.length ? el('a', { href: '#sources', onclick: jumpTo('sources') }, [srcs.length + '개']) : '없음']),
-          el('dt', null, ['읽는 시간']), el('dd', null, ['약 ' + minutes + '분']),
-          meta.updated ? el('dt', null, ['고친 날']) : null, meta.updated ? el('dd', null, [U.fmtDate(meta.updated)]) : null
-        ]),
-        el('div.infobox-actions', null, [favBtn(), shareBtn()])
-      ]);
-
-      show([
-        el('nav.crumb', { 'aria-label': '위치' }, [el('a', { href: '#/' }, ['첫 화면']), el('span.sep', null, ['/']), el('a', { href: '#/s/' + s.id }, [s.title || ''])]),
-        el('article.doc', null, [
-          el('div.doc-main', null, [
-            el('header.doc-head', null, [
-              el('h1.page-title', null, [meta.title]),
-              meta.summary ? el('p.doc-summary', null, [meta.summary]) : null,
-              /* 정적 페이지의 p.doc-meta-s 와 같은 글자(js/md.js 의 docMetaText) */
-              el('div.doc-meta-m', null, [ev(meta), el('span', null, [metaText.minutes]), metaText.updated ? el('span', null, [metaText.updated]) : null,
-                metaText.reviewed ? el('span.doc-reviewed', null, [metaText.reviewed]) : null,
-                el('span.acts', null, [favBtn(), shareBtn()])])
-            ]),
-            isCrisis ? fromHtml(md.crisisHtml()) : null,
-            isEmergency ? fromHtml(md.emergencyHtml()) : null,
-            slots.lead,
-            r.toc.length >= 3 ? el('details.toc-m', null, [el('summary', null, ['이 문서의 차례']), el('ol', null, r.toc.map(function (t) {
-              return el('li', { class: t.level === 3 ? 'l3' : '' }, [el('a', { href: '#' + t.id, onclick: jumpTo(t.id) }, [t.text])]);
-            }))]) : null,
-            body,
-            slots['after-body'],
-            srcs.length ? el('section.sources', { id: 'sources' }, [el('h2', null, ['출처']), el('ol', null, srcs.map(function (x, i) {
-              return el('li', { id: 'src-' + (i + 1) }, [x.org ? x.org + '. ' : '', x.url ? el('a', { href: x.url, target: '_blank', rel: 'noopener', 'aria-label': (x.title || x.url) + ' (새 창에서 열림)' }, [x.title || x.url]) : (x.title || ''), x.year ? ' (' + x.year + ')' : '']);
-            }))]) : null,
-            el('p.disclaimer', null, [md.DISCLAIMER]),
-            courseNav(slug),
-            backlinks(slug),
-            related.length ? el('section.see-also', null, [el('h2', null, ['함께 읽기']), el('ul', null, related.map(function (x) {
-              return el('li', null, [el('a', { href: '#/a/' + x.slug }, [spine(secById[x.section]), x.title])]);
-            }))]) : null,
-            (prev || next) ? el('nav.pager', { 'aria-label': '같은 분류의 앞뒤 문서' }, [
-              prev ? el('a.prev', { href: '#/a/' + prev.slug }, [el('small', null, ['앞 문서']), prev.title]) : null,
-              next ? el('a.next', { href: '#/a/' + next.slug }, [el('small', null, ['다음 문서']), next.title]) : null
-            ]) : null,
-            slots.end
-          ]),
-          el('aside.doc-margin', { 'aria-label': '문서 정보와 용어 풀이' }, [infobox, slots.margin, notes])
-        ])
-      ]);
-      curSlots = slots;
+      const d = docData(a, doc.meta, r.toc, doc.body);
+      show(htmlNodes(P.rewriteHtml(DK.docHtml(docInput(d, r.html)), BASE)));
       /* 왼쪽 목차는 불러오는 동안 이미 그렸으니 이 글의 차례만 끼운다(전체를 두 번 그리지 않음) */
       navToc(slug, r.toc);
-
-      /* 출처 번호: 누르면 출처 팝오버 */
-      U.qsa('.fn a', body).forEach(function (link) {
-        const n = Number(link.textContent);
-        const src = srcs[n - 1];
-        if (!src) return;
-        link.setAttribute('role', 'button');
-        link.setAttribute('aria-label', '출처 ' + n + ' 보기');
-        link.setAttribute('aria-expanded', 'false');
-        link.addEventListener('click', function (e) {
-          e.preventDefault();
-          openPop(link, [
-            el('b', null, ['출처 ' + n]),
-            el('span', null, [src.org ? src.org + '. ' : '', src.title || '', src.year ? ' (' + src.year + ')' : '']),
-            el('div.pop-links', null, [
-              src.url ? el('a', { href: src.url, target: '_blank', rel: 'noopener' }, ['원문 열기']) : null,
-              /* 출처 목록으로: 포커스도 그 줄로(팝오버가 닫히며 포커스가 출처 번호로 돌아갔다가 그 줄로 옮겨 가요. K5-2) */
-              el('a', { href: '#src-' + n, onclick: function (ev2) { ev2.preventDefault(); closePop(); const li = document.getElementById('src-' + n); if (li) { if (!li.hasAttribute('tabindex')) li.setAttribute('tabindex', '-1'); try { li.focus({ preventScroll: true }); } catch (e3) { } li.scrollIntoView({ block: 'center' }); li.classList.add('flash'); setTimeout(function () { li.classList.remove('flash'); }, 1800); } } }, ['출처 목록에서 보기'])
-            ])
-          ]);
-        });
-      });
-
-      /* 용어: 점선 밑줄, 넓은 화면은 여백 주석, 좁은 화면은 팝오버 */
-      const found = linkTerms(body, slug);
-      found.forEach(function (f) {
-        f.el.addEventListener('click', function () { openPop(f.el, termPopContent(f.g, slug)); });
-      });
-      const noteEls = [];
-      function layoutNotes() {
-        notes.innerHTML = ''; noteEls.length = 0;
-        const margin = notes.parentNode;
-        if (!margin || getComputedStyle(margin).display === 'none' || !found.length) return;
-        const top0 = notes.getBoundingClientRect().top;
-        let floor = 18;
-        found.forEach(function (f) {
-          const rel = (f.g.related || []).filter(function (x) { return bySlug[x] && x !== slug; })[0];
-          const n = el('div.note', null, [el('b', null, [f.g.term]), f.g.def, rel ? el('div', null, [el('a', { href: '#/a/' + rel }, [bySlug[rel].title + ' 문서'])]) : null]);
-          notes.appendChild(n);
-          const want = f.el.getBoundingClientRect().top - top0 - 2;
-          const top = Math.max(want, floor);
-          n.style.top = top + 'px';
-          floor = top + n.offsetHeight + 14;
-          n.addEventListener('mouseenter', function () { f.el.classList.add('hot'); });
-          n.addEventListener('mouseleave', function () { f.el.classList.remove('hot'); });
-          f.el.addEventListener('mouseenter', function () { n.classList.add('hot'); });
-          f.el.addEventListener('mouseleave', function () { n.classList.remove('hot'); });
-          noteEls.push(n);
-        });
-        notes.style.height = floor + 'px';
-      }
-      requestAnimationFrame(layoutNotes);
-      if (document.fonts && document.fonts.ready) document.fonts.ready.then(layoutNotes);
-      let rt; const onResize = function () { clearTimeout(rt); rt = setTimeout(layoutNotes, 120); };
-      window.addEventListener('resize', onResize);
-      window.addEventListener('jhb:layout', onResize);
-
-      /* 읽기 진행 막대와 현재 소제목 표시 */
-      const heads = U.qsa('h2[id], h3[id]', body);
-      const onScroll = function () {
-        const docEl = document.documentElement;
-        const max = Math.max(1, docEl.scrollHeight - innerHeight);
-        setProgress(Math.min(1, scrollY / max));
-        let cur = null;
-        for (let i = 0; i < heads.length; i++) { if (heads[i].getBoundingClientRect().top < 120) cur = heads[i].id; else break; }
-        U.qsa('.nav-toc a', nav).forEach(function (x) { x.classList.toggle('on', x.getAttribute('data-h') === cur); });
-      };
-      window.addEventListener('scroll', onScroll, { passive: true });
-      onScroll();
-      pageCleanup.push(function () {
-        window.removeEventListener('resize', onResize); window.removeEventListener('jhb:layout', onResize); window.removeEventListener('scroll', onScroll);
-      });
-
-      /* 기록 쉼이면 읽음 표시·최근 읽은 글을 쓰지 않는다 */
-      if (!privacy.paused()) {
-        if (PROG) PROG.markRead(slug);
-        const recent = U.store.get('jhb.recent', []).filter(function (x) { return x !== slug; }); recent.unshift(slug); U.store.set('jhb.recent', recent.slice(0, 20));
-      }
-      /* ?course= 로 그 코스의 글을 열었으면 "들어간 코스"로 남긴다(이어서 읽기가 코스 이름을 붙이는 조건) */
-      const wantedCourse = getCourse(where().query.course);
-      if (wantedCourse && wantedCourse.steps.some(function (st) { return st.slug === slug; })) enterCourse(wantedCourse.id);
-      window.dispatchEvent(new CustomEvent('jhb:article', { detail: { slug: slug, article: a, meta: meta, toc: r.toc, prev: prev, next: next, minutes: minutes, body: body, points: points.length ? points.slice() : null } }));
-      /* 소절 주소(a/<slug>/#h-3)로 들어왔으면 모듈이 다 붙은 뒤(요약 보기 접기·제목 줄 여백) 그 소절을 펴고 그 자리로.
-         show() 가 한 번 옮겼어도 접기 뒤 자리가 바뀌므로 다시 맞춘다(같은 작업 안이라 화면에 두 번 튀지 않음) */
-      scrollToHash();
+      finishDoc(d, hydrateDoc(d, U.qs('article.doc', app)), false);
     }).catch(function (e) {
       show([el('p.empty', null, ['문서를 불러오지 못했어요(' + e.message + '). 인터넷 연결을 확인하고 새로고침해 주세요.'])]);
     });
+  }
+  /* 정적 문서(빌드가 docHtml 로 그린 것)가 지금 slug 의 것이고 살릴 수 있는 모양이면 { art, meta(frontmatter), toc } */
+  function staticDoc(slug) {
+    const s = document.getElementById('doc-meta');
+    if (!s) return null;
+    let j = null;
+    try { j = JSON.parse(s.textContent); } catch (e) { return null; }
+    if (!j || j.slug !== slug || !j.meta || typeof j.meta !== 'object') return null;
+    const art = U.qsa('article.doc', app).filter(function (n) { return n.parentNode === app; })[0];
+    if (!art || !U.qs('.doc-main > .body', art) || !U.qs('.doc-margin > .notes', art)) return null;
+    const slots = docSlots(art);
+    if (SLOT_NAMES.some(function (n) { return !slots[n]; })) return null;
+    return { art: art, meta: j.meta, toc: Array.isArray(j.toc) ? j.toc : [] };
+  }
+  function docSlots(art) {
+    const out = {};
+    U.qsa('.doc-slot[data-slot]', art).forEach(function (n) { const k = n.getAttribute('data-slot'); if (SLOT_NAMES.indexOf(k) >= 0 && !out[k]) out[k] = n; });
+    return out;
+  }
+  /* 글 하나의 값: meta 는 지금처럼 toc 항목 + frontmatter(jhb:article 의 meta 와 같음) */
+  function docData(a, fm, toc, bodyMd) {
+    const meta = Object.assign({}, a, fm);
+    const list = sectionArticles(a.section);
+    const pn = DK.prevNext(list, a.slug);
+    return {
+      slug: a.slug, article: a, meta: meta, toc: toc || [], srcs: Array.isArray(meta.sources) ? meta.sources : [], list: list, prev: pn.prev, next: pn.next,
+      minutes: meta.minutes || md.readingMinutes(bodyMd || ''), points: md.pointList(meta.points)
+    };
+  }
+  function docInput(d, html) {
+    return { slug: d.slug, meta: d.meta, html: html, toc: d.toc, minutes: d.minutes, sec: secById[d.article.section] || {}, secById: secById, list: d.list, articles: articles, bySlug: bySlug, links: linksNow(), EV: JHB.EVIDENCE };
+  }
+  function htmlNodes(html) {
+    const t = document.createElement('template'); t.innerHTML = html;
+    return Array.prototype.slice.call(t.content.childNodes);
+  }
+  /* 문서 DOM 에 동작을 붙인다(마크업은 바꾸지 않고 덧붙이기만): 저장·공유 단추, 차례·출처 수 링크, 출처 번호 팝오버, 용어 밑줄과 여백 주석,
+     진행 막대, 코스 길잡이(기기 기록에 따라). 요약 보기 표시(data-key)와 확장 자리 등록은 finishDoc 이 이벤트 직전에 한다 */
+  function hydrateDoc(d, art) {
+    const slug = d.slug, srcs = d.srcs;
+    const body = U.qs('.doc-main > .body', art);
+    const notes = U.qs('.doc-margin > .notes', art);
+    /* 요약 보기에서 늘 보이는 소절(core). 첫 번째 h2 는 언제나 core(요약 보기가 글의 입구를 숨기지 않게).
+       소절 안에 위기 연락처(109·1577-0199·119·112·1393, tel: 링크 포함)가 있으면 그 소절도 core(위기 안내는 접기에서도 빠지지 않음).
+       용어 밑줄을 달기 전의 본문으로 셈하고, 값은 finishDoc 이 단다(모듈이 jhb:article 전에 반쯤 붙지 않게) */
+    const keys = U.qsa('h2', body).map(function (h, i) {
+      const t = h.textContent.trim();
+      return i === 0 || CORE_H2.test(t) || sectionHasContact(h) ? 'core' : 'detail';
+    });
+
+    /* 저장(문서 정보 상자·휴대폰 머리 줄 두 곳) */
+    U.qsa('.js-fav', art).forEach(function (b) {
+      if (isFav(slug)) { b.classList.add('on'); b.textContent = '저장됨'; b.setAttribute('aria-pressed', 'true'); }
+      b.addEventListener('click', function () {
+        const on = toggleFav(slug);
+        U.qsa('.js-fav').forEach(function (x) { x.className = 'btn js-fav' + (on ? ' on' : ''); x.textContent = on ? '저장됨' : '저장'; x.setAttribute('aria-pressed', on ? 'true' : 'false'); });
+      });
+    });
+    U.qsa('.js-share', art).forEach(function (b) {
+      b.addEventListener('click', function () {
+        const url = location.href;
+        if (navigator.share) navigator.share({ title: d.article.title + ' - 조현병 백과', url: url }).catch(function () { });
+        else if (navigator.clipboard) navigator.clipboard.writeText(url).then(function () { b.textContent = '주소 복사됨'; });
+      });
+    });
+    /* 본문 차례(휴대폰)·출처 수 링크: 소절 주소와 같은 길(jumpTo) */
+    U.qsa('.toc-m a[href^="#"], .infobox a[href="#sources"]', art).forEach(function (x) {
+      x.addEventListener('click', jumpTo(x.getAttribute('href').slice(1)));
+    });
+    /* 코스 길잡이: 주소의 ?course= 나 들어간 코스에 따라(기기 기록이라 정적 HTML 에는 없음). 문서 고지 바로 뒤 */
+    const cn = courseNav(slug);
+    const disc = U.qs('.doc-main > .disclaimer', art);
+    if (cn && disc) disc.parentNode.insertBefore(cn, disc.nextSibling);
+
+    /* 출처 번호: 누르면 출처 팝오버 */
+    U.qsa('.fn a', body).forEach(function (link) {
+      const n = Number(link.textContent);
+      const src = srcs[n - 1];
+      if (!src) return;
+      link.setAttribute('role', 'button');
+      link.setAttribute('aria-label', '출처 ' + n + ' 보기');
+      link.setAttribute('aria-expanded', 'false');
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+        openPop(link, [
+          el('b', null, ['출처 ' + n]),
+          el('span', null, [src.org ? src.org + '. ' : '', src.title || '', src.year ? ' (' + src.year + ')' : '']),
+          el('div.pop-links', null, [
+            src.url ? el('a', { href: src.url, target: '_blank', rel: 'noopener' }, ['원문 열기']) : null,
+            /* 출처 목록으로: 포커스도 그 줄로(팝오버가 닫히며 포커스가 출처 번호로 돌아갔다가 그 줄로 옮겨 가요. K5-2) */
+            el('a', { href: '#src-' + n, onclick: function (ev2) { ev2.preventDefault(); closePop(); const li = document.getElementById('src-' + n); if (li) { if (!li.hasAttribute('tabindex')) li.setAttribute('tabindex', '-1'); try { li.focus({ preventScroll: true }); } catch (e3) { } li.scrollIntoView({ block: 'center' }); li.classList.add('flash'); setTimeout(function () { li.classList.remove('flash'); }, 1800); } } }, ['출처 목록에서 보기'])
+          ])
+        ]);
+      });
+    });
+
+    /* 용어: 점선 밑줄, 넓은 화면은 여백 주석, 좁은 화면은 팝오버 */
+    const found = linkTerms(body, slug);
+    found.forEach(function (f) {
+      f.el.addEventListener('click', function () { openPop(f.el, termPopContent(f.g, slug)); });
+    });
+    const noteEls = [];
+    function layoutNotes() {
+      notes.innerHTML = ''; noteEls.length = 0;
+      const margin = notes.parentNode;
+      if (!margin || getComputedStyle(margin).display === 'none' || !found.length) return;
+      const top0 = notes.getBoundingClientRect().top;
+      let floor = 18;
+      found.forEach(function (f) {
+        const rel = (f.g.related || []).filter(function (x) { return bySlug[x] && x !== slug; })[0];
+        const n = el('div.note', null, [el('b', null, [f.g.term]), f.g.def, rel ? el('div', null, [el('a', { href: '#/a/' + rel }, [bySlug[rel].title + ' 문서'])]) : null]);
+        notes.appendChild(n);
+        const want = f.el.getBoundingClientRect().top - top0 - 2;
+        const top = Math.max(want, floor);
+        n.style.top = top + 'px';
+        floor = top + n.offsetHeight + 14;
+        n.addEventListener('mouseenter', function () { f.el.classList.add('hot'); });
+        n.addEventListener('mouseleave', function () { f.el.classList.remove('hot'); });
+        f.el.addEventListener('mouseenter', function () { n.classList.add('hot'); });
+        f.el.addEventListener('mouseleave', function () { n.classList.remove('hot'); });
+        noteEls.push(n);
+      });
+      notes.style.height = floor + 'px';
+    }
+    requestAnimationFrame(layoutNotes);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(layoutNotes);
+    let rt; const onResize = function () { clearTimeout(rt); rt = setTimeout(layoutNotes, 120); };
+    window.addEventListener('resize', onResize);
+    window.addEventListener('jhb:layout', onResize);
+
+    /* 읽기 진행 막대와 현재 소제목 표시 */
+    const heads = U.qsa('h2[id], h3[id]', body);
+    const onScroll = function () {
+      const docEl = document.documentElement;
+      const max = Math.max(1, docEl.scrollHeight - innerHeight);
+      setProgress(Math.min(1, scrollY / max));
+      let cur = null;
+      for (let i = 0; i < heads.length; i++) { if (heads[i].getBoundingClientRect().top < 120) cur = heads[i].id; else break; }
+      U.qsa('.nav-toc a', nav).forEach(function (x) { x.classList.toggle('on', x.getAttribute('data-h') === cur); });
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    pageCleanup.push(function () {
+      window.removeEventListener('resize', onResize); window.removeEventListener('jhb:layout', onResize); window.removeEventListener('scroll', onScroll);
+    });
+    return { body: body, keys: keys, slots: docSlots(art) };
+  }
+  /* 동작을 다 붙인 뒤: 요약 보기 표시를 달고, 확장 자리를 열고, 읽음을 남기고, jhb:article(정적 본문을 살린 화면은 jhb:page 도 먼저) */
+  function finishDoc(d, h, fromStatic) {
+    const slug = d.slug;
+    U.qsa('h2', h.body).forEach(function (x, i) { if (h.keys[i]) x.setAttribute('data-key', h.keys[i]); });
+    curSlots = h.slots;
+    if (fromStatic) pageEvent();
+    /* 기록 쉼이면 읽음 표시·최근 읽은 글을 쓰지 않는다 */
+    if (!privacy.paused()) {
+      if (PROG) PROG.markRead(slug);
+      const recent = U.store.get('jhb.recent', []).filter(function (x) { return x !== slug; }); recent.unshift(slug); U.store.set('jhb.recent', recent.slice(0, 20));
+    }
+    /* ?course= 로 그 코스의 글을 열었으면 "들어간 코스"로 남긴다(이어서 읽기가 코스 이름을 붙이는 조건) */
+    const wantedCourse = getCourse(where().query.course);
+    if (wantedCourse && wantedCourse.steps.some(function (st) { return st.slug === slug; })) enterCourse(wantedCourse.id);
+    window.dispatchEvent(new CustomEvent('jhb:article', { detail: { slug: slug, article: d.article, meta: d.meta, toc: d.toc, prev: d.prev, next: d.next, minutes: d.minutes, body: h.body, points: d.points.length ? d.points.slice() : null } }));
+    /* 소절 주소(a/<slug>/#h-3)로 들어왔으면 모듈이 다 붙은 뒤(요약 보기 접기·제목 줄 여백) 그 소절을 펴고 그 자리로 */
+    scrollToHash();
+  }
+
+  /* ---------- 문서 마크업(순수 함수, node 겸용: tools/build-pages.cjs 가 require) ----------
+     앱(새로 그릴 때)과 빌드(정적 a/<slug>/)가 이 함수 하나로 같은 HTML 을 만든다. 기기 기록에 따라 달라지는 것
+     (저장 단추 상태·코스 길잡이·읽음·용어 밑줄·출처 팝오버)은 넣지 않고 hydrateDoc 이 붙인다. 링크는 '#/…' 꼴(빌드 P.rewriteHtml, 앱도 같은 함수로 실제 경로).
+     o = { slug, meta(toc 항목 + frontmatter), html(md.render 결과), toc, minutes, sec, list(같은 분류 글, 순서대로), articles, bySlug, links(data/links.js 값이나 null), EV(근거 표) } */
+  function docKit(md, P) {
+    const esc = md.esc;
+    function spineHtml(s) { return '<span class="spine" style="--h:' + ((s && s.hue) || 250) + '" aria-hidden="true"></span>'; }
+    function evHtml(key, EV) {
+      if (!key) return '';
+      const info = (EV && Object.prototype.hasOwnProperty.call(EV, key) ? EV[key] : null) || {};
+      return '<span class="ev ev-' + esc(key) + '" title="' + esc(info.desc || '') + '">' + esc(info.label || key) + '</span>';
+    }
+    function dot(s) { const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(s || '')); return m ? m[1] + '.' + m[2] + '.' + m[3] : String(s || ''); }
+    function prevNext(list, slug) {
+      const l = Array.isArray(list) ? list : [];
+      const i = l.findIndex(function (x) { return x.slug === slug; });
+      return { prev: i > 0 ? l[i - 1] : null, next: i >= 0 && i < l.length - 1 ? l[i + 1] : null };
+    }
+    /* 함께 읽기: 태그가 겹치는 글(겹친 수가 많은 순, 같으면 목록 순서) 6편 */
+    function related(articles, slug, tags) {
+      const t = Array.isArray(tags) ? tags : [];
+      return (articles || []).filter(function (x) { return x.slug !== slug && (x.tags || []).some(function (g) { return t.indexOf(g) >= 0; }); })
+        .map(function (x) { return { a: x, n: (x.tags || []).filter(function (g) { return t.indexOf(g) >= 0; }).length }; })
+        .sort(function (p, q) { return q.n - p.n; }).slice(0, 6).map(function (x) { return x.a; });
+    }
+    function backlinkList(links, slug, bySlug) {
+      const inn = links && links.in && Object.prototype.hasOwnProperty.call(links.in, slug) ? links.in[slug] : null;
+      return Array.isArray(inn) ? inn.map(function (x) { return Object.prototype.hasOwnProperty.call(bySlug || {}, x) ? bySlug[x] : null; }).filter(Boolean) : [];
+    }
+    function docHtml(o) {
+      const meta = o.meta || {}, slug = o.slug, s = o.sec || {}, secs = o.secById || null;
+      const tags = Array.isArray(meta.tags) ? meta.tags : [];
+      const srcs = Array.isArray(meta.sources) ? meta.sources : [];
+      const isCrisis = tags.indexOf('위기') >= 0, isEmergency = tags.indexOf('응급') >= 0;
+      const points = md.pointList(meta.points);
+      const mt = md.docMetaText(o.minutes, meta.updated, meta.reviewed);
+      const pn = prevNext(o.list, slug);
+      const rel = related(o.articles, slug, tags);
+      const backs = backlinkList(o.links, slug, o.bySlug);
+      const toc = Array.isArray(o.toc) ? o.toc : [];
+      const ev = evHtml(meta.evidence, o.EV);
+      const fav = '<button type="button" class="btn js-fav" aria-pressed="false">저장</button>';
+      const share = '<button type="button" class="btn js-share">공유</button>';
+      const secLink = '<a href="#/s/' + esc(s.id) + '">' + esc(s.title || '') + '</a>';
+      function secOf(x) { return secs && Object.prototype.hasOwnProperty.call(secs, x.section) ? secs[x.section] : null; }
+      function docLink(x) { return '<li><a href="#/a/' + esc(x.slug) + '">' + spineHtml(secOf(x)) + esc(x.title) + '</a></li>'; }
+      let h = '<nav class="crumb" aria-label="위치"><a href="#/">첫 화면</a><span class="sep">/</span>' + secLink + '</nav>' +
+        '<article class="doc"><div class="doc-main"><header class="doc-head"><h1 class="page-title">' + esc(meta.title) + '</h1>' +
+        (meta.summary ? '<p class="doc-summary">' + esc(meta.summary) + '</p>' : '') +
+        '<div class="doc-meta-m">' + ev + '<span>' + esc(mt.minutes) + '</span>' + (mt.updated ? '<span>' + esc(mt.updated) + '</span>' : '') +
+        (mt.reviewed ? '<span class="doc-reviewed">' + esc(mt.reviewed) + '</span>' : '') + '<span class="acts">' + fav + share + '</span></div></header>';
+      if (isCrisis) h += md.crisisHtml();
+      if (isEmergency) h += md.emergencyHtml();
+      h += '<div class="doc-slot" data-slot="lead">' + (points.length ? md.keypointsHtml(points, isCrisis).replace('<section class="keypoints"', '<section class="keypoints" data-order="-1000000"') : '') + '</div>';
+      if (toc.length >= 3) {
+        h += '<details class="toc-m"><summary>이 문서의 차례</summary><ol>' + toc.map(function (t) {
+          return '<li' + (t.level === 3 ? ' class="l3"' : '') + '><a href="#' + esc(t.id) + '">' + esc(t.text) + '</a></li>';
+        }).join('') + '</ol></details>';
+      }
+      h += '<div class="body">' + (o.html || '') + '</div><div class="doc-slot" data-slot="after-body"></div>';
+      if (srcs.length) {
+        h += '<section class="sources" id="sources"><h2>출처</h2><ol>' + srcs.map(function (x, i) {
+          return '<li id="src-' + (i + 1) + '">' + (x.org ? esc(x.org) + '. ' : '') +
+            (x.url ? '<a href="' + esc(x.url) + '" target="_blank" rel="noopener" aria-label="' + esc((x.title || x.url) + ' (새 창에서 열림)') + '">' + esc(x.title || x.url) + '</a>' : esc(x.title || '')) +
+            (x.year ? ' (' + esc(x.year) + ')' : '') + '</li>';
+        }).join('') + '</ol></section>';
+      }
+      h += '<p class="disclaimer">' + esc(md.DISCLAIMER) + '</p>';
+      if (backs.length) {
+        const shown = backs.slice(0, 10);
+        h += '<section class="backlinks"><h2>이 문서를 가리키는 문서 ' + backs.length + '개</h2><ul>' + shown.map(docLink).join('') + '</ul>' +
+          (backs.length > shown.length ? '<p class="more">그 밖에 ' + (backs.length - shown.length) + '개 문서가 더 있어요.</p>' : '') + '</section>';
+      }
+      if (rel.length) h += '<section class="see-also"><h2>함께 읽기</h2><ul>' + rel.map(docLink).join('') + '</ul></section>';
+      if (pn.prev || pn.next) {
+        h += '<nav class="pager" aria-label="같은 분류의 앞뒤 문서">' +
+          (pn.prev ? '<a class="prev" href="#/a/' + esc(pn.prev.slug) + '"><small>앞 문서</small>' + esc(pn.prev.title) + '</a>' : '') +
+          (pn.next ? '<a class="next" href="#/a/' + esc(pn.next.slug) + '"><small>다음 문서</small>' + esc(pn.next.title) + '</a>' : '') + '</nav>';
+      }
+      h += '<div class="doc-slot" data-slot="end"></div></div>' +
+        '<aside class="doc-margin" aria-label="문서 정보와 용어 풀이"><section class="infobox" aria-label="문서 정보"><div class="infobox-h">' + spineHtml(s) + '문서 정보</div><dl>' +
+        '<dt>분류</dt><dd>' + secLink + '</dd><dt>근거</dt><dd>' + (ev || '없음') + '</dd>' +
+        '<dt>출처</dt><dd>' + (srcs.length ? '<a href="#sources">' + srcs.length + '개</a>' : '없음') + '</dd>' +
+        '<dt>읽는 시간</dt><dd>약 ' + esc(o.minutes) + '분</dd>' +
+        (meta.updated ? '<dt>고친 날</dt><dd>' + esc(dot(meta.updated)) + '</dd>' : '') +
+        '</dl><div class="infobox-actions">' + fav + share + '</div></section><div class="doc-slot" data-slot="margin"></div><div class="notes"></div></aside></article>';
+      return h;
+    }
+    /* 정적 문서 머리의 <script type="application/json" id="doc-meta"> 내용: frontmatter(md.parse 의 meta 전부)와 차례. '<' 는 < 로 */
+    function metaJson(slug, fm, toc) {
+      return JSON.stringify({ v: 1, slug: slug, meta: fm || {}, toc: toc || [] }).replace(/</g, '\\u003c');
+    }
+    return { docHtml: docHtml, metaJson: metaJson, prevNext: prevNext, related: related, backlinkList: backlinkList, evHtml: evHtml, spineHtml: spineHtml };
+  }
+
+  /* ---------- 검색어 넘기기(저장소가 막힌 브라우저용, 순수 함수 · node 겸용) ----------
+     goSearch 는 보통 sessionStorage['jhb.q'] 로 넘긴다. 그게 예외면 이 탭의 window.name 에 'jhb.q:' + JSON 을 한 번만 싣는다.
+     window.name 은 같은 탭의 다음 페이지까지 메모리로 이어지는 값이라 주소·서버·캐시·저장소에 남지 않는다. 받는 쪽(route)이 읽자마자 지운다.
+     위기로 감지된 말(detect 가 값을 돌려줌)은 문장을 싣지 않고 카드 종류만(js/pages/search.js 의 history.state {q:'', s, at, crisis} 과 같은 꼴) */
+  function handoffKit() {
+    const PREFIX = 'jhb.q:';
+    const KINDS = ['high', 'harm', 'watch'];
+    /* js/pages/search.js 의 cardKinds 와 같은 규칙 */
+    function cardKinds(r) {
+      if (!r) return [];
+      if (r.level === 'high') return r.harm ? ['high', 'harm'] : ['high'];
+      if (r.level === 'harm') return ['harm'];
+      return ['watch'];
+    }
+    function pack(q, s, detect) {
+      const v = String(q == null ? '' : q), sec = String(s == null ? '' : s);
+      let r = null;
+      try { r = typeof detect === 'function' && v ? detect(v) : null; } catch (e) { r = null; }
+      return PREFIX + JSON.stringify(r ? { q: '', s: sec, crisis: cardKinds(r) } : { q: v, s: sec });
+    }
+    /* history.state 로 옮길 값({q, s, at} 또는 {q:'', s, at, crisis}). 꼴이 아니면 null */
+    function unpack(name, now) {
+      if (typeof name !== 'string' || name.indexOf(PREFIX) !== 0) return null;
+      let v = null;
+      try { v = JSON.parse(name.slice(PREFIX.length)); } catch (e) { return null; }
+      if (!v || typeof v !== 'object' || Array.isArray(v)) return null;
+      const s = typeof v.s === 'string' ? v.s : '';
+      const k = Array.isArray(v.crisis) ? v.crisis.filter(function (x, i, a) { return KINDS.indexOf(x) >= 0 && a.indexOf(x) === i; }) : [];
+      if (k.length) return { q: '', s: s, at: now, crisis: k };
+      return { q: typeof v.q === 'string' ? v.q.slice(0, 500) : '', s: s, at: now };
+    }
+    return { PREFIX: PREFIX, pack: pack, unpack: unpack, cardKinds: cardKinds };
   }
 
   function termPopContent(g, curSlug) {
@@ -1140,19 +1313,33 @@
   /* ---------- 찾기로 가기 (검색어는 주소·서버·캐시·제목에 남기지 않는다) ----------
      goSearch(q, {section}) : 검색어를 sessionStorage['jhb.q'](JSON {q, s}, 찾기 화면이 읽자마자 지움)에 한 번만 넣고
      쿼리·조각 없는 search/ 로 간다. 이미 찾기 화면이면 화면이 'jhb:gosearch'(취소 가능)를 받아 그 자리에서 찾는다.
-     sessionStorage 를 못 쓰면 검색어 없이 search/ 로 가서 입력창에 포커스만 준다(주소에는 절대 싣지 않음). */
+     sessionStorage 를 못 쓰면 이 탭의 window.name 에 한 번만 싣는다(handoffKit, 위기 말은 문장 없이 카드 종류만. 주소에는 절대 싣지 않음). */
   const Q_KEY = 'jhb.q';
+  const HO = handoffKit();
   function goSearch(q, opts) {
     const v = String(q == null ? '' : q).trim();
     const s = opts && opts.section != null ? String(opts.section) : '';
     let handled = false;
     try { handled = !window.dispatchEvent(new CustomEvent('jhb:gosearch', { detail: { q: v, s: s }, cancelable: true })); } catch (e) { }
     if (handled) return;
+    let saved = false;
     try {
       if (v || s) sessionStorage.setItem(Q_KEY, JSON.stringify({ q: v, s: s }));
       else sessionStorage.removeItem(Q_KEY);
-    } catch (e) { /* 검색어 없이 간다 */ }
+      saved = true;
+    } catch (e) { }
+    /* 사이트 데이터를 막은 브라우저(sessionStorage 가 예외): 이 탭의 window.name 에 한 번만 싣고 간다(주소·저장소에는 싣지 않음).
+       위기로 감지된 말은 문장 없이 카드 종류만(handoffKit.pack). 찾기 화면을 여는 route() 가 읽자마자 지우고 history.state 로 옮긴다 */
+    if (!saved && (v || s)) { try { window.name = HO.pack(v, s, JHB.crisis && JHB.crisis.detect); } catch (e) { } }
     location.href = L('#/search');
+  }
+  /* window.name 에 실린 넘기기 값: 어느 화면이든 열리면 지우고, 찾기 화면이면 history.state 꼴로 돌려준다(아니면 null) */
+  function takeNameHandoff(isSearch) {
+    let name = '';
+    try { name = String(window.name || ''); } catch (e) { return null; }
+    if (name.indexOf(HO.PREFIX) !== 0) return null;
+    try { window.name = ''; } catch (e) { }
+    return isSearch ? HO.unpack(name, Date.now()) : null;
   }
 
   /* ---------- 상단 검색창 #q ----------
@@ -1244,14 +1431,23 @@
   }
 
   /* ---------- 소개 ---------- */
+  /* 소개 본문(data/about.js)은 모든 화면에 싣지 않는다(T11). 빌드한 about/ 에는 같은 마크업(tools/build-pages.cjs 의 aboutMainHtml)이
+     미리 들어 있어서 그대로 살리고, 정적 본문이 없을 때(오프라인 틀 app-shell)만 받아서 그린다 */
   function about() {
     setTitle('이 백과에 대해');
     drawNav(null, null, null);
-    show([
-      el('nav.crumb', { 'aria-label': '위치' }, [el('a', { href: '#/' }, ['첫 화면']), el('span.sep', null, ['/']), '이 백과에 대해']),
-      el('h1.page-title', null, ['이 백과에 대해']),
-      el('div.prose', { html: JHB.aboutHtml })
-    ]);
+    const head = function () { return [el('nav.crumb', { 'aria-label': '위치' }, [el('a', { href: '#/' }, ['첫 화면']), el('span.sep', null, ['/']), '이 백과에 대해']), el('h1.page-title', null, ['이 백과에 대해'])]; };
+    const pre = U.qsa('.prose', app).filter(function (n) { return n.parentNode === app; })[0];
+    if (pre && U.qs('nav.crumb', app)) { pageEvent(); scrollToHash(); return; }
+    const draw = function () { show(head().concat([el('div.prose', { html: JHB.aboutHtml })])); };
+    if (JHB.aboutHtml) return draw();
+    show(head().concat([el('p.empty', null, ['화면을 불러오고 있어요.'])]), { silent: true });
+    load('data/about.js').then(function () {
+      if (where().path[0] !== 'about') return;
+      if (JHB.aboutHtml) draw(); else throw new Error('소개 본문 없음');
+    }).catch(function () {
+      show(head().concat([el('p.fp-fail', { role: 'status' }, ['화면을 불러오지 못했어요. 인터넷 연결을 확인하고 ', reloadBtn(), '해 주세요.'])]));
+    });
   }
 
   /* ---------- 읽기 코스 ---------- */
@@ -1324,17 +1520,6 @@
       next ? el('span', null, ['다음은 ', el('a', { href: '#/a/' + next.slug + '?course=' + c.id }, [next.title]), '.']) : el('span', null, ['마지막 문서예요.'])
     ]);
   }
-  function backlinks(slug) {
-    if (!LINKS || !LINKS.in || !LINKS.in[slug] || !LINKS.in[slug].length) return null;
-    const list = LINKS.in[slug].map(function (x) { return bySlug[x]; }).filter(Boolean);
-    const shown = list.slice(0, 10);
-    return el('section.backlinks', null, [
-      el('h2', null, ['이 문서를 가리키는 문서 ' + list.length + '개']),
-      el('ul', null, shown.map(function (x) { return el('li', null, [el('a', { href: '#/a/' + x.slug }, [spine(secById[x.section]), x.title])]); })),
-      list.length > shown.length ? el('p.more', null, ['그 밖에 ' + (list.length - shown.length) + '개 문서가 더 있어요.']) : null
-    ]);
-  }
-
   function notFound() {
     setTitle('없는 페이지');
     drawNav(null, null, null);
@@ -1353,7 +1538,8 @@
     /* 0A 기반 공사: 특집 화면·지연 로딩·화면 도구·문서 자리·고지·기기 안 기록 */
     pages: PAGES, pageById: pageById, registerPage: registerPage,
     load: load, loadData: loadData, loadArticle: function (slug) { return loadArticle(slug); },
-    md: md || null, links: LINKS,
+    /* links 는 getter: 정적 문서 페이지는 앱 뒤에 data/links.js 를 싣고, 앱이 새로 그리는 문서는 needLinks() 로 받아서(T11) */
+    md: md || null, get links() { return linksNow(); },
     show: show, setTitle: setTitle, crumb: crumb, notFound: notFound, onCleanup: onCleanup,
     slot: slot, mount: mountInSlot, notice: notice, privacy: privacy, reducedMotion: reducedMotion
   };

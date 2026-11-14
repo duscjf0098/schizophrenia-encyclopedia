@@ -37,6 +37,59 @@ function listDir(dir, re) {
 function stripBom(t) { t = String(t); return t.charCodeAt(0) === 0xFEFF ? t.slice(1) : t; }
 function isStrList(v) { return Array.isArray(v) && v.every(function (x) { return typeof x === 'string' && x.trim(); }); }
 
+/* ---------- 코어 스크립트(자료 + 앱) ----------
+   모든 화면이 앱보다 먼저 싣는 자료와 코어 코드, 실행 순서 그대로. 위기 감지(js/crisis.js)와 위기 카드(data/crisis-card.js)는 여기 있어서
+   앱·모듈보다 먼저(사용자가 첫 글자를 치기 전에) 준비돼요.
+   모든 화면에 싣지 않는 자료(T11): data/about.js(소개 화면, 앱이 필요할 때 받음), data/links.js(문서 화면만 앱 뒤에 싣고, 앱이 새로 그리는 문서는 받아서) */
+const CORE_DATA = ['data/sections.js', 'data/toc.js', 'data/glossary.js', 'data/synonyms.js', 'data/crisis-card.js', 'data/courses.js', 'data/pages.js'];
+const CORE_JS = ['js/util.js', 'js/paths.js', 'js/md.js', 'js/search.js', 'js/gloss.js', 'js/synonyms.js', 'js/crisis.js', 'js/progress.js', 'js/app.js'];
+const LAZY_DATA = ['data/about.js', 'data/links.js'];
+/* 묶음 파일(tools/build-ui-js.cjs 가 만드는 생성 파일, 손으로 고치지 않음) */
+const BUNDLES = { core: 'js/core.js', ui: 'js/ui.js' };
+function coreFiles() { return CORE_DATA.concat(CORE_JS); }
+/* 경로(data-route)에 따라 앱 뒤에 더 싣는 자료: 문서 화면(a/<slug>)은 링크 지도(역링크·다음 걸음) */
+function pageDataFiles(route) { return /^a\/[^/]+$/.test(String(route || '')) ? ['data/links.js'] : []; }
+function tags(base, list) { return list.map(function (src) { return '<script src="' + base + src + '"></script>'; }).join('\n'); }
+/* opts.bundle: 묶음 하나(js/core.js), 아니면 낱개(개발 서버). 어느 쪽이든 그 경로의 자료(pageDataFiles)를 뒤에 */
+function coreScriptsHtml(base, route, opts) {
+  const list = (opts && opts.bundle ? [BUNDLES.core] : coreFiles()).concat(pageDataFiles(route));
+  return '\n' + tags(base, list) + '\n';
+}
+
+/* ---------- 묶음 만들기(tools/build-ui-js.cjs) ----------
+   파일마다 따로 감싸서 이어 붙여요: 한 파일의 최상위 예외가 뒤 파일을 멈추지 않게(낱개 <script> 일 때와 같게).
+   예외는 setTimeout 으로 다시 던져 콘솔·window.onerror 에는 그대로 보여요. 감싸도 전역 이름은 그대로예요(파일들이 최상위 선언 없이
+   JHB.* 에만 내보냄 — 최상위 선언이 있으면 오류로 멈춤). 문법 오류는 파일마다 검사해 어느 파일인지 알리고 멈춰요. */
+function wrapFile(rel, code) {
+  return '/* ===== ' + rel + ' ===== */\n(function () { try {\n' + code + '\n} catch (e) { setTimeout(function () { throw e; }); } }).call(this);\n';
+}
+/* 파일 맨 앞 줄(들여쓰기 없는 줄)에 var·let·const·function·class 선언이 있는지(감싸면 전역에서 사라지므로 묶음에 넣지 않음) */
+function topLevelDecl(code) {
+  const m = /^(?:var|let|const|function|async\s+function|class)\s+([A-Za-z_$][\w$]*)/m.exec(code);
+  return m ? m[1] : null;
+}
+/* files: 사이트 루트 기준 경로 목록. 돌려주는 값: { text, errors: [..], sizes: { 파일: 바이트 } } */
+function bundle(files, opts) {
+  const root = rootOf(opts);
+  const vm = require('vm');
+  const errors = [], parts = [], sizes = {};
+  files.forEach(function (rel) {
+    let code;
+    try { code = stripBom(fs.readFileSync(path.join(root, rel), 'utf8')); }
+    catch (e) { errors.push(rel + ': 파일을 읽지 못했어요(' + e.code + ')'); return; }
+    try { new vm.Script(code, { filename: rel }); }
+    catch (e) { errors.push(rel + ': 문법 오류 — ' + e.message); return; }
+    const top = topLevelDecl(code);
+    if (top) { errors.push(rel + ': 최상위 선언 "' + top + '" 이 있어요(묶음에서 감싸면 전역에서 사라져요. JHB.* 에 내보내거나 즉시 실행 함수 안으로)'); return; }
+    sizes[rel] = Buffer.byteLength(code);
+    parts.push(wrapFile(rel, code));
+  });
+  const head = '/* 자동 생성: node tools/build-ui-js.cjs — 직접 고치지 마세요. 원본(이 순서): ' + files.join(', ') + ' */\n';
+  const text = head + parts.join('');
+  if (!errors.length) { try { new vm.Script(text, { filename: 'bundle' }); } catch (e) { errors.push('묶음 전체 문법 오류 — ' + e.message); } }
+  return { text: text, errors: errors, sizes: sizes };
+}
+
 /* ---------- 화면 확장 모듈 ---------- */
 function uiOrder(opts) {
   try {
@@ -235,8 +288,9 @@ function escAttr(s) {
   return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; });
 }
 /* base 는 그 페이지에서 사이트 루트까지의 상대 경로. app-shell.html 은 '{{BASE}}' 글자 그대로(서비스 워커가 채움) */
+/* opts.bundle: 묶음 하나(js/ui.js, 정적 페이지), 아니면 낱개(개발 서버: 빌드 없이 새 모듈이 보이게) */
 function uiScriptsHtml(base, opts) {
-  return '\n' + uiModules(opts).map(function (src) { return '<script src="' + base + src + '"></script>'; }).join('\n') + '\n';
+  return '\n' + tags(base, opts && opts.bundle ? [BUNDLES.ui] : uiModules(opts)) + '\n';
 }
 function topLinksHtml(pages, base) {
   const list = pages || [];
@@ -257,10 +311,13 @@ function footLinksHtml(pages, base) {
   if (ch) links.push('<a href="' + base + 'changes/">' + escAttr(ch.label || ch.title || '고침 기록') + '</a>');
   return links.join(' · ');
 }
-/* 이미 만들어진 HTML 의 <!--ui:start-->…<!--ui:end-->, <!--top:start-->…<!--top:end-->, <!--foot:start-->…<!--foot:end--> 사이를
-   지금 파일 기준으로 바꾼다(개발 서버용. 표식이 없는 옛 HTML 은 그 부분만 그대로) */
+/* 이미 만들어진 HTML 의 <!--core:start-->…<!--core:end-->, <!--ui:start-->…<!--ui:end-->, <!--top:start-->…<!--top:end-->,
+   <!--foot:start-->…<!--foot:end--> 사이를 지금 파일 기준으로 바꾼다(개발 서버용: 묶음 대신 낱개 스크립트. 표식이 없는 옛 HTML 은 그 부분만 그대로).
+   opts.route: 그 페이지의 data-route(문서 화면이면 data/links.js 를 앱 뒤에) */
 function applyShellMarkers(html, base, pages, opts) {
+  const route = opts && opts.route != null ? opts.route : ((/<html[^>]*\sdata-route="([^"]*)"/.exec(String(html)) || [])[1] || '');
   return String(html)
+    .replace(/<!--core:start-->[\s\S]*?<!--core:end-->/, function () { return '<!--core:start-->' + coreScriptsHtml(base, route, opts) + '<!--core:end-->'; })
     .replace(/<!--ui:start-->[\s\S]*?<!--ui:end-->/, function () { return '<!--ui:start-->' + uiScriptsHtml(base, opts) + '<!--ui:end-->'; })
     .replace(/<!--top:start-->[\s\S]*?<!--top:end-->/, function () { return '<!--top:start-->' + topLinksHtml(pages, base) + '<!--top:end-->'; })
     .replace(/<!--foot:start-->[\s\S]*?<!--foot:end-->/, function () { return '<!--foot:start-->' + footLinksHtml(pages, base) + '<!--foot:end-->'; });
@@ -273,5 +330,7 @@ module.exports = {
   validateDecl: validateDecl, normalizeDecl: normalizeDecl, sortPages: sortPages, pageDecls: pageDecls, pagesJs: pagesJs,
   kbLastmod: kbLastmod, resolveLastmod: resolveLastmod, resolveNoticeDate: resolveNoticeDate,
   kbFiles: kbFiles, kbCheck: kbCheck, pageAssetFiles: pageAssetFiles,
-  stripBom: stripBom, uiScriptsHtml: uiScriptsHtml, topLinksHtml: topLinksHtml, footLinksHtml: footLinksHtml, applyShellMarkers: applyShellMarkers
+  stripBom: stripBom, uiScriptsHtml: uiScriptsHtml, topLinksHtml: topLinksHtml, footLinksHtml: footLinksHtml, applyShellMarkers: applyShellMarkers,
+  CORE_DATA: CORE_DATA, CORE_JS: CORE_JS, LAZY_DATA: LAZY_DATA, BUNDLES: BUNDLES, coreFiles: coreFiles, pageDataFiles: pageDataFiles, coreScriptsHtml: coreScriptsHtml,
+  bundle: bundle, wrapFile: wrapFile, topLevelDecl: topLevelDecl
 };

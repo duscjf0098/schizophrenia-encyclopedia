@@ -1,8 +1,8 @@
-/* 전체 빌드 한 번에: 글 검사 → 생성기(tools/gen/*.cjs) → 특집 화면 선언 → 글 목록·색인·프리캐시 → 문서 링크 지도 → 모듈 css → 정적 페이지.
+/* 전체 빌드 한 번에: 글 검사 → 생성기(tools/gen/*.cjs) → 특집 화면 선언 → 글 목록·색인·프리캐시 → 문서 링크 지도 → 모듈 css → 스크립트 묶음(js/core.js·js/ui.js) → 정적 페이지.
    하나라도 실패하면 거기서 멈춘다(종료 코드 1). 실행: node tools/build-all.cjs */
 const path = require('path');
 const spawnSync = require('child_process').spawnSync;
-const steps = ['check-content', 'build-gen', 'build-kb', 'build-index', 'build-links', 'build-ui-css', 'build-pages'];
+const steps = ['check-content', 'build-gen', 'build-kb', 'build-index', 'build-links', 'build-ui-css', 'build-ui-js', 'build-pages'];
 const t0 = Date.now();
 for (const name of steps) {
   console.log('\n== ' + name + ' ==');

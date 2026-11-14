@@ -218,7 +218,7 @@ function slugsIn(html) {
 }
 
 test('build-pages 를 require 해도 파일을 쓰지 않고 도우미만 내보낸다', function () {
-  ['sectionMainHtml', 'sectionArticles', 'staticCtx', 'prtStaticHtml', 'docMetaInput', 'coursesDesc', 'featureLastmod'].forEach(function (k) {
+  ['sectionMainHtml', 'sectionArticles', 'staticCtx', 'prtStaticHtml', 'docPage', 'docMetaScript', 'aboutMainHtml', 'coursesDesc', 'featureLastmod'].forEach(function (k) {
     eq(typeof B[k], 'function', k);
   });
 });
@@ -304,19 +304,21 @@ test('분류 글 순서는 앱의 sectionArticles 와 같은 규칙(order → �
   }
 });
 
-test('정적 문서: 인쇄용 한 줄(.prt-static)은 사이트 이름과 정식 글 주소, 근거 줄에 reviewed 를 넘긴다', function () {
+test('정적 문서: 인쇄용 한 줄(.prt-static)은 사이트 이름과 정식 글 주소, 근거 줄은 frontmatter 가 toc 보다 앞(reviewed·updated)', function () {
   const h = B.prtStaticHtml('crisis-hotlines');
   has(h, 'class="prt-static"');
   has(h, '조현병 백과');
   has(h, B.SITE + 'a/crisis-hotlines/');
   ok(/^https:\/\/[^/]+\/[^/]+\/$/.test(B.SITE), '정식 주소(canonical 과 같은 사이트 주소)');
   not(h, 'prt-head');
-  const o = B.docMetaInput({ slug: 'x', evidence: 'A', minutes: 4, updated: '2026-11-01' }, { reviewed: '2026-11-14', updated: '2026-11-02' }, '');
-  eq(o.reviewed, '2026-11-14');
-  eq(o.updated, '2026-11-02');
-  eq(o.minutes, 4);
-  eq(o.evidence, 'A');
-  eq(B.docMetaInput({ slug: 'x', minutes: 2 }, {}, '').reviewed, undefined, 'reviewed 가 없으면 넘기지 않음');
+  /* 근거 한 줄(.doc-meta-m)은 앱과 같은 docHtml: meta = toc 항목 + frontmatter(frontmatter 가 이김) */
+  const a = Object.assign({}, B.articles[0], { slug: B.articles[0].slug, evidence: '연구', minutes: 4, updated: '2026-11-01' });
+  const dp = B.docPage(a, { meta: { title: a.title, reviewed: '2026-11-14', updated: '2026-11-02' }, body: '## 가\n본문' });
+  has(dp.main, '<span class="doc-reviewed">출처 확인 2026.11.14</span>');
+  has(dp.main, '<span>2026.11.02 고침</span>');
+  has(dp.main, '<span>약 4분</span>');
+  const dp2 = B.docPage(Object.assign({}, a, { reviewed: undefined }), { meta: { title: a.title }, body: '본문' });
+  not(dp2.main, 'doc-reviewed', 'reviewed 가 없으면 넣지 않음');
 });
 
 test('build-index 의 글 항목: reviewed(YYYY-MM-DD)는 frontmatter 에 있을 때만, 나머지 모양은 그대로', function () {
@@ -486,11 +488,44 @@ function runHead(ls, ss, opt) {
    다시 온 사람 CLS 가 1280 0.014~0.017, 390 0.002~0.003 이에요(속성을 달아 본 비교: 1280 0.0148~0.0294, 390 0.003 — 줄지 않음).
    (그 전, K2 때는 속성을 달면 390px 0.10 → 0.35, 1280px 0.18~0.21 → 0.25~0.28 로 오히려 커졌어요.)
    이 테스트는 머리 스크립트가 그 속성을 달지 않는지만 지켜요 */
-test('머리 스크립트: 테마·글자 크기만 적용하고(첫 화면 자리 표시 data-hm-start 는 쓰지 않음), 저장소에 닿을 수 없어도 던지지 않는다', function () {
+test('머리 스크립트: 보기 설정(테마·글자 크기 다섯 단계·줄 너비·본문 글꼴·움직임 줄이기)을 첫 그리기 전에 적용하고(첫 화면 자리 표시 data-hm-start 는 쓰지 않음), 저장소에 닿을 수 없어도 던지지 않는다', function () {
   const a = runHead({ 'jhb.theme': '"dark"', 'jhb.fs': '"l"', 'jhb.ui.home.role': '"family"', 'jhb.recent': '["a"]' }, {});
   eq(a['data-theme'], 'dark');
   eq(a['data-fs'], 'l');
   eq(a['data-hm-start'], undefined);
   eq(runHead({ 'jhb.theme': '"blue"' }, {})['data-theme'], undefined, '모르는 테마');
   eq(runHead({}, {}, { throws: 'localStorage' })['data-theme'], undefined);
+  /* T16: settings.js 가 실린 뒤 다시 바꾸지 않게 같은 값(js/ui/settings.js 의 load 와 같은 규칙) */
+  ['s', 'l', 'xl', 'xxl'].forEach(function (f) { eq(runHead({ 'jhb.fs': JSON.stringify(f) }, {})['data-fs'], f, f); });
+  eq(runHead({ 'jhb.fs': '"m"' }, {})['data-fs'], undefined, '보통은 속성 없음');
+  eq(runHead({ 'jhb.fs': '"huge"' }, {})['data-fs'], undefined);
+  const s = runHead({ 'jhb.ui.settings': JSON.stringify({ width: 'wide', font: 'serif', motion: 'reduce', theme: 'dark' }) }, {});
+  eq([s['data-width'], s['data-font'], s['data-motion'], s['data-theme']], ['wide', 'serif', 'reduce', undefined], '테마는 jhb.theme 에서만(settings.js 와 같음)');
+  const d = runHead({ 'jhb.ui.settings': JSON.stringify({ width: 'normal', font: 'sans', motion: 'normal' }) }, {});
+  eq([d['data-width'], d['data-font'], d['data-motion']], [undefined, undefined, undefined], '기본값은 속성 없음');
+  eq(runHead({ 'jhb.ui.settings': '{깨진' }, {})['data-width'], undefined, '깨진 값에도 던지지 않음');
+  /* settings.js 의 load 와 같은 키·값을 읽는다 */
+  const set = fs.readFileSync(path.join(__dirname, '..', 'js', 'ui', 'settings.js'), 'utf8');
+  ["s.width === 'wide'", "s.font === 'serif'", "s.motion === 'reduce'", "KEY = 'jhb.ui.settings'", "KEY_THEME = 'jhb.theme'", "KEY_FS = 'jhb.fs'", "['s', 'm', 'l', 'xl', 'xxl']"].forEach(function (k) { has(set, k, 'settings.js 의 ' + k); });
+});
+
+/* 머리 스크립트의 옛 해시 주소 옮기기(location.replace 로 가는 곳) */
+function headGo(base, hash) {
+  const src = /<script>([\s\S]*?)<\/script>/.exec(SHELL)[1];
+  const root = { classList: { add: function () { } }, getAttribute: function (k) { return k === 'data-base' ? base : null; }, setAttribute: function () { } };
+  let to = null;
+  const loc = { hash: hash, replace: function (u) { to = u; } };
+  new Function('window', 'document', 'location', 'localStorage', 'sessionStorage', src)({}, { documentElement: root }, loc, { getItem: function () { return null; } }, undefined);
+  return to;
+}
+test('머리 스크립트: 옛 해시 주소는 js/paths.js 의 hashToPath 와 같은 곳으로(화면 안 자리 조각은 경로 뒤로, K8 남은 것)', function () {
+  const P = require('../js/paths.js');
+  [['', '#/about#privacy'], ['../../', '#/about#privacy'], ['', '#/plan#safety-card'], ['../', '#/a/x?course=y#h-3'], ['', '#/a/x'], ['../../', '#/s/7'],
+    ['', '#/search?q=a'], ['../', '#/'], ['', '#/'], ['', '#/about#']].forEach(function (c) {
+    const want = P.link(c[1], c[0]);
+    eq(headGo(c[0], c[1]), want === '' ? './' : want, c[0] + ' ' + c[1]);
+  });
+  eq(headGo('', '#/about#privacy'), 'about/#privacy', '끝에 / 를 붙이지 않음');
+  eq(headGo('', '#h-3'), null, '화면 안 자리 조각만 있으면 옮기지 않음');
+  eq(headGo('', ''), null);
 });

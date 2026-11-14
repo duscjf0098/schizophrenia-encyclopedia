@@ -13,13 +13,17 @@
 ### 파일 규칙
 - 코드: `js/ui/<이름>.js` — 즉시 실행 함수 하나. 전역은 만들지 않고, 필요하면 `JHB.ui = JHB.ui || {}; JHB.ui.<이름> = {...}` 에만 노출해요.
 - 스타일: `css/ui/<이름>.css` — `node tools/build-ui-css.cjs` 가 `css/ui.css` 로 이어 붙여요(이름순). 선택자는 모두 자기 모듈 접두어(`.pal-`, `.pv-`, `.mb-`, `.stk-`, `.rd-`, `.set-`, `.pol-`, `.hm-`, `.sh-` 처럼)로 시작해 서로 겹치지 않게 해요.
-- **스크립트 줄은 손으로 넣지 않아요.** `tools/shell.html` 의 `<!--ui:start-->{{UI_SCRIPTS}}<!--ui:end-->` 를 `build-pages` 가 채워요. 순서는 `tools/ui-order.json`(기존 9개: palette → preview → mobile → sticky → reading → settings → polish → home → shelf, 바꾸지 않음) 다음에 나머지 `js/ui/*.js` 가 이름순이에요. 순서에 기대야 하면 이름으로 정하지 말고 이벤트로 기다려요.
+  - 예외 하나: `css/ui/zz-a11y.css`(접근성 덮어쓰기, F3)는 짝이 되는 스크립트가 없는 스타일 파일이에요. 이름순으로 **맨 끝에** 붙도록 `zz-` 로 시작해서, 앞 모듈의 규칙을 낮은 특이도로 덮어 누르는 범위(휴대폰 44px 목표)·포커스 표시·낮은 화면에서 고정 막대 높이를 다듬어요. 선택자는 `.a11y-` 접두어이거나 기존 클래스를 낮은 특이도로 쓰고, 모든 규칙이 `@media screen` 안이라 인쇄에는 적용되지 않아요. 새 모듈 CSS 이름을 `zz-` 뒤로 오게 짓지 않아요(그 뒤에 붙으면 접근성 덮어쓰기를 다시 덮어요).
+- **스크립트 줄은 손으로 넣지 않아요.** `tools/shell.html` 의 `<!--core:start-->{{CORE_SCRIPTS}}<!--core:end-->`(자료·코어)와 `<!--ui:start-->{{UI_SCRIPTS}}<!--ui:end-->`(모듈)를 `build-pages` 가 채워요. 순서는 `tools/ui-order.json`(기존 9개: palette → preview → mobile → sticky → reading → settings → polish → home → shelf, 바꾸지 않음) 다음에 나머지 `js/ui/*.js` 가 이름순이에요. 순서에 기대야 하면 이름으로 정하지 말고 이벤트로 기다려요.
+- **묶음(F1)**: 정적 페이지(빌드 결과)는 모듈을 낱개가 아니라 생성 파일 `js/ui.js` 하나로, 자료와 코어 코드는 `js/core.js` 하나로 실어요(`tools/build-ui-js.cjs`, 위 순서 그대로 이어 붙임). 두 파일은 **손으로 고치지 않는 생성 파일**이에요. 개발 서버(`node serve.cjs`)는 지금처럼 낱개 파일을 실어서 빌드 없이 새 모듈이 보여요(묶음 그대로 보려면 `RAW=1`, 8장).
+  - 묶음 안에서도 파일마다 따로 감싸서(`(function () { try { … } catch (e) { setTimeout(function () { throw e; }); } }).call(this)`) 한 모듈의 최상위 예외가 뒤 모듈을 멈추지 않아요(예외는 콘솔·`window.onerror` 에 그대로 보임). 그래서 모듈 파일은 **맨 앞 줄(들여쓰기 없는 줄)에 `var`·`let`·`const`·`function`·`class` 선언을 두지 않아요**(감싸면 전역에서 사라지므로 빌드가 어느 파일인지 알리고 멈춰요). 즉시 실행 함수 안에서 `JHB.ui.<이름>` 에만 내보내요(1장 첫 줄 규칙 그대로). 문법 오류도 파일마다 검사해 빌드를 멈춰요.
+  - 실행 순서는 낱개일 때와 같아요(자료 → util·paths·md·search·gloss·synonyms·crisis·progress·app → 모듈). `document.currentScript` 는 묶음에서는 `js/ui.js` 를 가리키니 쓰지 않아요.
 - 색·글꼴은 `css/style.css` 의 토큰만 써요: `--paper --paper-2 --paper-3 --ink --ink-2 --muted --rule --rule-2 --accent --accent-2 --accent-soft --accent-ink --mark --bad --bad-soft --warn --warn-soft --ok --ok-soft --calm --calm-soft --calm-ink --serif --sans --fs-body --top-h --shadow-pop`. 어두운 화면은 토큰이 알아서 바뀌어요.
 - **위기 안내 색은 `--calm` 계열**(차분한 청록빛 남색): `--calm` 글자·띠·테두리·전화 버튼, `--calm-soft` 바탕, `--calm-ink` 꽉 찬 전화 버튼의 글자. 지금 문서 위기 배너(`.crisis`)·본문 위기 콜아웃(`.callout-crisis`)·찾기 위기 카드(`.crisis-card`)와 길잡이·종이·신호 한 장 화면의 위기 줄이 써요. `--bad`(빨강)는 **오류 표시에만** 써요(`css/style.css` 의 규칙에는 `var(--bad)` 가 하나도 없어요. `tests/core.test.cjs` K3-3 이 지켜요). 몸의 응급 줄(`.emergency`)은 `--warn` 이에요. 인쇄에서는 `css/ui/print.css` 가 `--calm` 셋도 밝은 값으로 정해요(3-1).
 - 외부 라이브러리·CDN·분석 도구·외부 API 금지. 움직임은 `JHB.app.reducedMotion()` 이 true 면 꺼요. 키보드로 전부 쓸 수 있어야 하고(Tab·Enter·Esc), 포커스 표시는 `:focus-visible`.
 - 저장은 `JHB.app.store.get(key, fallback)` / `.set(key, val)` / `.remove(key)`(localStorage 래퍼). 키 규칙은 6장.
 - 한국어 해요체. 문구는 짧고 구체적으로("저장됨", "주소 복사됨").
-- 모듈 스크립트는 `app.js` 뒤에 실행돼서 첫 `jhb:page` 를 놓칠 수 있어요 → 모듈 시작 때 `JHB.app.where()` 로 한 번 직접 처리해요.
+- 모듈 스크립트는 `app.js` 뒤에 실행돼서 첫 `jhb:page` 를 놓칠 수 있어요 → 모듈 시작 때 `JHB.app.where()` 로 한 번 직접 처리해요. 단 **문서 화면(정적 본문 살리기)과 정적 첫 화면**은 앱이 모듈이 다 실린 뒤(`DOMContentLoaded`) `jhb:page`(와 문서면 `jhb:article`)를 보내요(3장·5장). 그 둘은 모듈 시작 때 화면을 직접 고치지 말고 이벤트를 기다려도 돼요(이미 있는 "놓쳤을 때 한 번" 코드는 같은 일을 두 번 해도 괜찮게 — 이미 붙였으면 건너뛰게 — 두세요).
 
 ## 2. 특집 화면 만드는 법 (`data/pages/<id>.json` + `js/pages/<id>.js`)
 
@@ -120,10 +124,13 @@
   - 분류 글 순서는 앱과 같은 `js/paths.js` 의 `sectionArticles(articles, id)` 한 곳(order 오름차순, 없거나 0 이면 맨 뒤 → 제목 가나다). 빌드에도 앱에도 정렬 규칙 사본이 없어요(`tests/core.test.cjs` K3-7·K5-4).
   - 분류 `s/<id>/`: `data/kb/groups.json` 이 있으면 `js/ui/hub.js` 의 `arrange()` 를 그대로 써서 앱과 같은 "먼저 읽을 글"·묶음 제목·글 순서로 그려요(hub 모듈과 같은 마크업 `.hb`, 같은 css). 없는 slug 는 건너뛰고 빠진 글은 "그 밖의 글". 자료가 없거나 `js/ui/hub.js` 가 없으면 평평한 목록(빌드는 hub 모듈 없이도 멈추지 않아요). 머리 문장은 앱과 같은 "설명. 문서 N개."
   - 읽기 코스 `courses/`: 머리 문장은 앱(`coursesPage`)과 같아요. 코스 수(`data/courses.js` 에서 셈)는 설명(meta description)에만 넣어요.
-  - 문서 `a/<slug>/`: 근거 줄(`p.doc-meta-s`)은 `md.docMetaHtml` 에 `reviewed` 까지 넘겨서 "출처 확인 YYYY.MM.DD"(`span.doc-reviewed`)가 정적 HTML 에도 보여요. 맨 앞에 화면에서는 숨고 인쇄에서만 보이는 한 줄 `p.prt-static`(사이트 이름 + 정식 글 주소. 스타일은 `tools/shell.html` 의 `<style>`. 인쇄 모듈 머리 `.prt-head` 가 있으면 인쇄에서도 숨음)이 있어요. 자바스크립트가 꺼졌거나 앱이 다시 그리기 전에 인쇄해도 첫머리에 출처가 남아요.
+  - 문서 `a/<slug>/`: 본문 전체를 **앱과 같은 마크업 함수**(`js/app.js` 의 `docKit` → `docHtml`. node 에서 `require('js/app.js')` 하면 화면을 건드리지 않고 이 순수 함수만 내보내요)로 그려요: 빵부스러기, 문서 머리(제목·요약·근거 한 줄 `.doc-meta-m` + 저장·공유 단추), 위기 배너·응급 줄, 확장 자리 4개(`lead` 에는 핵심 3가지), 휴대폰 차례(`details.toc-m`, 소제목 3개 이상), 본문, 출처, 문서 고지, 역링크(`data/links.js`), 함께 읽기(태그가 겹치는 글 6편), 앞뒤 문서, 오른쪽 여백(문서 정보 상자·`margin` 자리·여백 주석 틀). 그 글의 frontmatter 전부와 차례는 머리의 `<script type="application/json" id="doc-meta">`(`{ v, slug, meta, toc }`)에 넣어요. 앱은 이 본문을 **지우지 않고 그대로 살려**(3장 "정적 본문 살리기") 글 원문을 다시 받지 않아요. 저장·공유 단추는 자바스크립트가 꺼진 화면(`html:not(.js)`)에서 숨어요. 맨 앞에 화면에서는 숨고 인쇄에서만 보이는 한 줄 `p.prt-static`(사이트 이름 + 정식 글 주소. 스타일은 `tools/shell.html` 의 `<style>`. 인쇄 모듈 머리 `.prt-head` 가 있으면 인쇄에서도 숨음)이 있어요. 자바스크립트가 꺼졌거나 앱이 동작을 붙이기 전에 인쇄해도 첫머리에 출처가 남아요(앱이 살린 뒤에도 그대로 남아요). 예전 정적 문서의 "같은 분류의 문서" 전체 목록은 없어지고 앱과 같은 앞뒤 문서·함께 읽기·역링크로 바뀌었어요(분류 전체 목록은 빵부스러기의 분류 화면).
+  - 첫 화면 `index.html`: 처음 온 사람(기록·역할 없음)에게 앱이 그리는 것과 같은 짜임(머리 설명·문서·용어·출처 수, 책꽂이(`js/ui/shelf.js` 의 `html`·`model`), 오늘의 문서, 읽기 코스 4개, 분류(분류마다 글 5편 + "외 N개"), 오늘의 용어, 맺음말 — `homeMainHtml`). 오늘의 문서·용어는 빌드한 날 것이에요. `.portal[data-hm="static"]` 이 있으면 앱은 모듈이 다 실린 뒤 첫 화면을 한 번에 다시 그려서, 앱의 첫 화면과 모듈(역할·두 입구·살펴보기·새 글)이 같은 작업 안에서 붙어요(처음 온 사람 CLS 0.105~0.13 → 0.0006~0.0012).
+  - 소개 `about/`(빵부스러기 + 제목 + `div.prose`)와 저장한 문서 `fav/`(저장한 글이 없을 때의 안내)도 앱과 같은 마크업이에요. 소개 본문(`data/about.js`)은 모든 화면에 싣지 않고, 앱은 정적 본문을 그대로 살려요(정적 본문이 없는 app-shell 에서만 받아서 그림).
   - 바닥글 링크 줄(`<!--foot:start-->…<!--foot:end-->`): "이 백과에 대해" + `changes` 화면이 있으면 "고침 기록". 개발 서버도 같은 함수(`assets.footLinksHtml`)로 바꿔 보내요. 이 줄은 `p.foot-links` 이고, 화면에서는 링크의 누르는 높이가 44px(글자 크기는 그대로, 인쇄에는 적용 안 함)예요. 위기 줄은 앱 고지(`md.noticeHtml('crisis')`)와 같은 뜻으로 109·1577-0199·119와 "전화가 어렵다면 109로 문자를 보낼 수 있어요."를 실어요(`tests/pages.test.cjs` 가 두 곳의 문자 안내를 맞대요).
-  - 머리 스크립트는 첫 그리기 전에 `<html class="js">` 를 달아요. 자바스크립트가 꺼진 화면(`html:not(.js)`)에서는 눌러도 동작하지 않는 상단 버튼(`#btn-nav`·`#btn-fs`·`#btn-theme`)을 감춰요("지금 도움"은 링크라 그대로). 모듈이 JS 없는 화면만 따로 꾸밀 때도 `html:not(.js)` 를 쓰면 돼요. 첫 화면 자리 표시 `data-hm-start` 는 **쓰지 않아요**: 머리 스크립트가 달지 않고, 그 속성을 읽던 `css/ui/home.css` 규칙(72px 예약)도 지웠어요(K4). 코어가 다시 온 사람의 첫 화면을 처음부터 이어서 읽기·코스·오늘의 문서 순으로 그려서 속성 없이도 CLS 가 1280 0.014~0.017, 390 0.002~0.003 이에요(잰 값은 `tests/pages.test.cjs` 의 '머리 스크립트' 테스트 주석).
-- `build-index`: `data/toc.js` 글 항목에 frontmatter 의 `reviewed`(YYYY-MM-DD)를 있을 때만 넣어요(`JHB.app.articles[i].reviewed`). 프리캐시에 `data/pages.js`, `js/pages/*.js`, `css/pages/*.css`, `data/kb/*.json`, 모든 `js/ui/*.js` 를 넣어요(오프라인에서도 열림).
+  - 머리 스크립트는 첫 그리기 전에 `<html class="js">` 를 달고, 보기 설정을 모두 적용해요: 테마(`jhb.theme` → `data-theme`), 글자 크기 다섯 단계(`jhb.fs` 의 s·l·xl·xxl → `data-fs`), `jhb.ui.settings` 의 줄 너비(`data-width="wide"`)·본문 글꼴(`data-font="serif"`)·움직임 줄이기(`data-motion="reduce"`). `js/ui/settings.js` 의 `load()` 와 같은 값이라 모듈이 실린 뒤 화면이 한 번 더 출렁이지 않아요(T16). 옛 해시 주소(`#/a/…`)는 `js/paths.js` 의 `hashToPath` 와 같은 규칙으로 옮겨요(화면 안 자리 조각은 경로 뒤로: `#/about#privacy` → `about/#privacy`). 자바스크립트가 꺼진 화면(`html:not(.js)`)에서는 눌러도 동작하지 않는 상단 버튼(`#btn-nav`·`#btn-fs`·`#btn-theme`)을 감춰요("지금 도움"은 링크라 그대로). 모듈이 JS 없는 화면만 따로 꾸밀 때도 `html:not(.js)` 를 쓰면 돼요. 첫 화면 자리 표시 `data-hm-start` 는 **쓰지 않아요**: 머리 스크립트가 달지 않고, 그 속성을 읽던 `css/ui/home.css` 규칙(72px 예약)도 지웠어요(K4). 코어가 다시 온 사람의 첫 화면을 처음부터 이어서 읽기·코스·오늘의 문서 순으로 그려서 속성 없이도 CLS 가 1280 0.014~0.017, 390 0.002~0.003 이에요(잰 값은 `tests/pages.test.cjs` 의 '머리 스크립트' 테스트 주석).
+- `build-index`: `data/toc.js` 글 항목에 frontmatter 의 `reviewed`(YYYY-MM-DD)를 있을 때만 넣어요(`JHB.app.articles[i].reviewed`). 프리캐시(`precacheShell`)에는 정적 페이지가 싣는 묶음(`js/core.js`·`js/ui.js`)과 css, 앱이 필요할 때 받는 자료(`data/about.js`·`data/links.js`), `js/pages/*.js`, `css/pages/*.css`, `data/kb/*.json`, 아이콘, 글 원문(.md)을 넣어요(오프라인에서도 열림). 묶음 안에 든 낱개 파일은 넣지 않아요(개발 서버는 `data/precache.json` 에 낱개 파일을 더해 보내서 개발 서버에서도 오프라인 시험이 돼요).
+- `build-ui-js`(F1): `js/core.js`(자료 + 코어, `tools/lib/assets.cjs` 의 `CORE_DATA`·`CORE_JS` 순서)와 `js/ui.js`(모듈)를 만들어요(1장 "묶음"). 화면별 자료: 문서 화면 `a/<slug>/` 만 `js/core.js` 뒤에 `data/links.js` 를 따로 실어요(`assets.pageDataFiles`). 모든 화면에 싣지 않는 자료는 `assets.LAZY_DATA`(`data/about.js`·`data/links.js`). 위기 감지(`js/crisis.js`)·위기 카드(`data/crisis-card.js`)는 코어 묶음에 있어서 모듈(팔레트 등)보다 먼저 준비돼요.
 - 상단 도구 줄: "용어 사전" + `nav` 에 `top` 이 있는 화면(label). `me` 가 없으면 "저장한 문서", `browse` 가 없으면 "아무 문서" 링크가 남아요.
 - 왼쪽 목차: 분류 아래 "살펴보기" 묶음(`side` 화면, 묶음 작은 제목과 함께). 화면이 0개면 그리지 않아요. `me` 가 있으면 아래 "저장한 문서" 줄 대신 `me` 의 제목(내 서재)이 보이고, 살펴보기에는 넣지 않아요.
 
@@ -182,7 +189,8 @@
 글 frontmatter 와 이어진 표시(앱과 정적 HTML 이 같은 마크업):
 - `points:` 목록(2~4줄)이 있으면 `lead` 맨 앞에 `section.keypoints`(제목 "핵심 3가지", 줄 수가 3이 아니면 "핵심 정리"). `위기` 태그 글이면 상자 끝에 "지금 힘들면 109 · 1577-0199".
 - `tags` 에 `응급` 이 있으면 위기 배너 자리 근처에 `div.emergency`(role=note, 119 tel 링크, 경고 노랑 계열). `위기` 와 함께면 둘 다.
-- 정적 문서 HTML 에도 위기 배너, 응급 줄, 핵심 3가지, 근거·읽는 시간·고친 날 한 줄(`p.doc-meta-s`: 근거 칩 · "약 N분" · "2026.10.25 고침" · `reviewed` 가 있으면 "출처 확인 2026.11.14". 앱의 휴대폰 머리 줄 `.doc-meta-m` 과 같은 글자, `md.docMetaText`·`md.docMetaHtml`), 문서 고지(`p.disclaimer`), 인쇄용 한 줄(`p.prt-static`)이 들어가요.
+- 정적 문서 HTML 은 앱이 그리는 문서와 같은 마크업이에요(2-4, `docHtml`): 위기 배너, 응급 줄, 핵심 3가지, 근거·읽는 시간·고친 날 한 줄(`.doc-meta-m`: 근거 칩 · "약 N분" · "2026.10.25 고침" · `reviewed` 가 있으면 "출처 확인 2026.11.14", `md.docMetaText`), 문서 고지(`p.disclaimer`), 문서 정보 상자, 인쇄용 한 줄(`p.prt-static`, 정적 HTML 에만)이 들어가요. 예전 정적 전용 한 줄 `p.doc-meta-s`(`md.docMetaHtml`)는 정적 문서에 더 이상 쓰지 않아요(넓은 화면에서 앱이 그린 뒤 그 줄이 사라지며 본문이 밀리던 원인).
+
 - 본문 전화번호: `**109**` 처럼 굵게 싼 공공 번호(109·112·119·129·13xx 등)와 `1577-0199` 꼴(15xx~18xx-xxxx)은 `tel:` 링크가 돼요. "109명", "제119조", 연도 범위("1650-1750 사이", "1990-2017년"), ISSN·ISBN 뒤 번호, DOI 속 숫자, 링크·코드 안은 그대로예요. 규칙은 `js/md.js` 의 `telLinks` 한 곳이에요:
   - 굵게 싼 짧은 번호 뒤에 단위가 붙으면 번호가 아니에요(`TEL_UNITS`: 명·개·년·조·항·호·세·살·%·번째·만·천·억·원·회·건·곳·일·시간·분·위·차·쪽·mg·kg·ml·cm 등). 주·점은 붙여 쓴 것만("**12**주", "**120**점". "**109** 주 7일"처럼 띄우면 번호).
   - 15xx~18xx-xxxx 꼴은 굵게 싸지 않아도 링크예요. 앞 글자가 숫자·영문·`-./`(주소·DOI 속 숫자), 뒤가 숫자·`-`·"년"이면 아니에요.
@@ -190,6 +198,14 @@
   - 굵게 싼 번호(`**1588-1600**`)는 늘 링크예요.
 - 콜아웃(`::: 종류 제목`)은 `div.callout.callout-<종류>[role=note][aria-label=제목]` 이에요(예전 `aside` 아님, 클래스는 같음).
 - 글에서 특집 화면으로 가는 링크는 `[미리 써 두는 종이](#/plan)` 처럼 `#/<화면 id>` 로 써요(글은 `#/a/<slug>`). 앱(화면에 붙는 `#/…` 링크)과 빌드(`P.rewriteHtml`)가 `js/paths.js` 의 `hashToPath` 로 `plan/` 같은 실제 경로로 바꾸고, 뒤의 조각은 경로 뒤로 옮겨요(`#/about#privacy` → `about/#privacy`). 미리 써 두는 종이는 `#/plan#safety-card`(→ `plan/#safety-card`)로 그 양식 탭을 바로 열 수 있고, 화면이 양식을 고른 뒤 `history.replaceState` 로 조각을 걷고 고른 양식을 이 탭의 기록 state(`planForm`)에 둬요(`dropHash`. 경로·쿼리와 state 의 다른 값은 그대로, 기록을 늘리지 않음. 탭을 바꿀 때·처음 그릴 때·이미 그 화면에서 조각만 바뀔 때 모두 이 함수). 그래서 주소창과 이 탭의 뒤로 가기 목록에는 양식 이름이 남지 않고, 새로 고침·뒤로·앞으로 와도 고른 양식이 다시 열려요(state 가 없으면 첫 양식). 조각이 양식 id 일 때만(끝의 `/` 하나는 봐줌) 그렇게 하고, 양식 id 가 아닌 조각(`#app` 등)은 처음 그릴 때도 건드리지 않아요. 한계: 페이지 스크립트가 돌기 전에 브라우저가 확정한 이동이라, 브라우저 전체 방문 기록(예: chrome://history)과 주소창 자동 완성에는 `plan/#safety-card` 가 남을 수 있어요(이 탭의 목록은 바뀌어도 그쪽은 페이지가 지울 수 없어요). 이미 그 화면에서 주소창에 조각을 직접 바꾸면 브라우저가 쌓은 기록 하나가 남아 뒤로 가기 목록에 `plan/` 가 하나 늘어요. 그 기록의 state 에 앞 양식이 있어서 뒤로 가면 앞 양식 탭으로 돌아가요(`popstate`). 흔적을 아예 없애려면 글 링크에서 조각을 빼고 양식 선택을 sessionStorage 로 한 번만 넘기는 방식이 다음 판 후보예요.
+
+### 3-2. 정적 본문 살리기(하이드레이션, F1)
+문서 화면을 실제 주소(`a/<slug>/`)로 열면 앱은 미리 그려진 본문을 **지우지 않고 그대로 써요**("문서를 불러오고 있어요"가 보이지 않고, 글 원문 `.md` 를 다시 받지 않음).
+- 조건(`js/app.js` 의 `staticDoc`): 머리의 `#doc-meta` JSON 의 `slug` 가 지금 글이고, `#app > article.doc` 에 `.doc-main > .body`·확장 자리 4개·`.doc-margin > .notes` 가 있을 때. 아니면(오프라인 틀 app-shell, 예전 정적 HTML) 지금처럼 원문을 받아 **같은 `docHtml` 로** 그린 뒤 같은 동작을 붙여요(그래서 두 길의 최종 DOM 이 같아요 — `tests/hydrate.test.cjs`, `D:/.playwright-mcp/jhb-hydrate-compare.js`).
+- 앱이 붙이는 것(`hydrateDoc` → `finishDoc`, 두 길 공통): 저장·공유 단추 동작과 저장 상태, 차례·출처 수 링크, 출처 번호 팝오버, 용어 밑줄과 여백 주석, 진행 막대, 코스 길잡이(`?course=`·들어간 코스, 문서 고지 바로 뒤), 요약 보기 표시(`h2[data-key]`), 확장 자리 열기(`JHB.app.slot`·`mount`), 읽음·최근 기록.
+- 이벤트: 살리기 길에서는 모듈이 다 실린 뒤(`DOMContentLoaded`) `jhb:page`(kind `a`, `loading` 자리 문구 이벤트는 **없음**) → `jhb:article` 이 한 번씩 와요. `detail` 모양은 같아요(`meta` = toc 항목 + `#doc-meta` 의 frontmatter, `toc` = `#doc-meta` 의 차례). `jhb:article` 전에는 `data-key` 가 없고 `JHB.app.slot()` 이 null 이에요(모듈이 반쯤 붙지 않게).
+- 모듈은 `jhb:article` 에서 붙이면 돼요(지금처럼). "모듈이 늦게 실려 첫 이벤트를 놓쳤을 때"의 시작 코드가 살린 본문에 먼저 한 번 돌 수 있으니, 같은 노드에 두 번 붙지 않게(이미 붙였으면 건너뛰게) 해 두세요(지금 모듈은 모두 그래요: ask·print·reading·trust·nextsteps).
+- `JHB.app.loadArticle(slug)` 는 그대로 원문을 받아요(살린 글도 원문이 필요하면 받음). 지금 글의 frontmatter 만 필요하면 `jhb:article` 의 `meta` 를 쓰세요.
 
 ## 4. 공개 API: `JHB.app`
 
@@ -214,14 +230,14 @@
 | `courseCard(course)` | 읽기 코스 카드(`a.course`, 첫 화면·코스 목록과 같은 마크업. 진도 막대 포함) |
 | `spine(section)` | 분류 색 막대 |
 | `search()` | 검색 색인 로드(Promise → index; `JHB.search.query(index, q, {limit})`) |
-| **`goSearch(q, {section})`** | 찾기 화면으로 가기. 검색어는 `sessionStorage['jhb.q']` 로 한 번만 넘기고 주소는 쿼리 없는 `search/`(검색어를 주소·서버·캐시·탭 제목에 남기지 않음). **검색 이동은 꼭 이것으로**(`'#/search?q='` 금지). 이미 찾기 화면이면 그 자리에서 찾아요 |
+| **`goSearch(q, {section})`** | 찾기 화면으로 가기. 검색어는 `sessionStorage['jhb.q']` 로 한 번만 넘기고 주소는 쿼리 없는 `search/`(검색어를 주소·서버·캐시·탭 제목에 남기지 않음). **검색 이동은 꼭 이것으로**(`'#/search?q='` 금지). 이미 찾기 화면이면 그 자리에서 찾아요. 사이트 데이터를 막은 브라우저(sessionStorage 쓰기가 예외)에서는 이 탭의 `window.name` 에 `'jhb.q:' + JSON` 을 한 번만 싣고(`handoffKit.pack`. 위기로 감지된 말은 **문장 없이** 카드 종류만 `{q:'', s, crisis:[…]}`), 다음 화면의 `route()` 가 읽자마자 지운 뒤 찾기 화면이면 `history.state`(`{q, s, at}` 또는 `{q:'', s, at, crisis}`)로 옮겨요. 그래서 저장소가 막혀도 검색어와 위기 카드가 찾기 화면에 닿아요(주소·저장소에는 싣지 않음) |
 | `store` | localStorage 래퍼 `get(key, fallback)`·`set(key, val)`(실패하면 false)·`remove(key)` |
 | **`pages`**, **`pageById`** | 특집 화면 선언 배열(정렬됨)과 색인 |
 | **`registerPage(page)`** | `js/pages/<id>.js` 가 불러요 |
 | **`load(src)`** | `.js`·`.css` 를 한 번만 붙이고 Promise(실패 시 reject). src 는 사이트 루트 기준 상대 경로(`'js/pages/guide.js'`). 이미 페이지에 같은 주소의 태그가 있으면 **바로 resolve** 해요(그 스크립트가 벌써 실행됐는지·실패했는지는 보지 않아요). 그래서 화면 코드에서 모듈 API(`JHB.ui.*`)를 `load('js/ui/…')` 로 기다릴 수 없어요 → **모듈 API 는 `DOMContentLoaded` 뒤에 확인**해요(`document.readyState === 'loading'` 이면 그 이벤트를 기다림). 앱이 특집 화면 코드를 모듈 스크립트보다 먼저 붙일 수 있어서예요 |
 | **`loadData(name)`** | `data/kb/<name>.json` 을 받아 Promise(한 번만 받음) |
 | **`loadArticle(slug)`** | 글 원문을 받아 `Promise<{meta, body}>`(frontmatter·본문 Markdown, 앱 캐시 사용). 없는 글이면 reject |
-| **`md`**, **`links`** | `JHB.md`(렌더러·고정 안내 문구), `JHB.links`(없으면 null) |
+| **`md`**, **`links`** | `JHB.md`(렌더러·고정 안내 문구), `JHB.links`(없으면 null). `links` 는 읽을 때마다 지금 값(getter): 문서 링크 지도(`data/links.js`)는 모든 화면에 싣지 않고 문서 화면만 앱 뒤에 싣거나 앱이 문서를 새로 그릴 때 받아요(F1). 문서 화면의 `jhb:article` 때는 늘 실려 있고(받지 못했으면 null), 그 밖의 화면에서는 null 일 수 있어요 |
 | **`show(nodes, opts)`** | `#app` 을 그 노드들로 바꿔요(정리 함수 실행 → 그리기 → `jhb:page`). `opts.silent` 면 `jhb:page` 를 보내지 않고, `opts.loading` 이면 detail 에 `loading: true` 를 붙여요(자리 문구용) |
 | **`setTitle(t)`** | 탭 제목 "t - 조현병 백과"(빈 값이면 "조현병 백과") |
 | **`crumb(parts)`** | 빵부스러기 `nav.crumb`. `crumb([{href:'#/', text:'첫 화면'}, '길잡이'])` |
@@ -257,18 +273,21 @@
 | `home.role()`, `home.setRole(r)` → `{ role, ok, tab }`, `home.refresh()`, `home.roles`, `home.roleName(r)` | `js/ui/home.js` | 첫 화면 역할(`self`·`family`·`near`·`curious`). 기록 쉼이면 이 탭에만 기억(`tab: true`) |
 | `reading.mode()`, `reading.setMode(m)`, `reading.savePos()`, `reading.reveal(id)` | `js/ui/reading.js` | 요약/전체 보기, 읽던 자리, 접힌 소절 펴기(3장) |
 | `settings.get()`, `settings.set(key, value)`, `settings.open()`, `settings.close()` | `js/ui/settings.js` | 보기 설정 패널 |
-| `palette.open(q?)`, `palette.close()`, `palette.toggle()`, `palette.isOpen()` | `js/ui/palette.js` | Ctrl+K 명령 팔레트 |
-| `toast(text, opts)`, `polish.toast`, `polish.setSection(sec)` | `js/ui/polish.js` | 짧은 알림 줄(`JHB.ui.toast`, opts 예: `{ kind, duration }`), 분류 색 |
-| `preview.hide()`, `preview.isOpen()` · `sticky.update()`, `sticky.openToc()`, `sticky.close()` · `shelf.refresh()` | `preview.js` · `sticky.js` · `shelf.js` | 링크 미리보기 카드 · 따라오는 제목 줄 · 첫 화면 책꽂이 |
+| `palette.open(q?)`, `palette.close()`, `palette.toggle()`, `palette.isOpen()` | `js/ui/palette.js` | Ctrl+K(맥 ⌘K)·`/` 명령 팔레트. 위기·타해로 감지되면 맨 위에 위기 줄(줄 자체는 찾기 화면으로, 전화는 줄 안 버튼으로만: high 109·1577-0199·119, harm 112·119, watch 109·1577-0199). 맨 아래 고정 줄 "지금 많이 힘들다면 · 지금 도움"(기본 선택이 아니고, 위기 줄이 떠 있으면 두지 않음. 지금 도움 시트, 없으면 위기 상담 전화 글). 특집 화면 이름·찾기 말과 같은 말이면 그 화면 줄(`JHB.search.screens`·`screenSlot`). 상단 `#q` 와의 관계는 7장 |
+| `JHB.search.*`(모듈이 아니라 코어 `js/search.js`, node 에서도 `require`) | `js/search.js` | 팔레트·찾기 화면이 함께 쓰는 검색 두뇌: `hangul{jamo, initials, isInitials, distance, josa}`, `prepare(src)`·`quickFor(app)`(한 번만 만드는 준비물)·`warm(P, detect, step)`, `find(P, q, opts)`, `plan(P, q, {detect, card, section})`(위기 감지·고친 질의·짧은 답 카드·화면 줄 결정), `results(plan, index, {section})`, `query(index, q, {section, limit, strict})`, `merge(quick, body, opts)`, `shortAnswer(body)`(글의 "## 짧은 답" 원문), `crisis(detect, texts)`, `cardSlugs(card, kinds)`, `kinds(cl)`, `screens(P, pages, q)`·`screenSlot(top, strength, kw)`, `analyze`·`stems`·`isQuestion`·`correct`·`defOf`·`roots`·`cardOk`·`markHtml`·`esc`, `build(docs)`(본문 색인). 위기 문장은 받는 쪽도 저장·전송하지 않아요 |
+| `JHB.syn.*` | `js/synonyms.js` | 일상 말 사전 매칭: `build(list)`, `expand(matcher, q)`(강한 일치), `loose(matcher, q)`(느슨한 일치: 두 낱말 이상인 say 의 낱말이 순서와 상관없이 모두 맞거나, 앞 두 낱말 이상이 이어서 맞음 — 빠른 찾기의 낮은 단계에서만), `words`, `compact`, `stems` |
+| `toast(text, opts)`, `polish.toast`, `polish.setSection(sec)`, `polish.reduced()` | `js/ui/polish.js` | 짧은 알림 줄(`JHB.ui.toast`, opts 예: `{ kind, duration }`), 분류 색, 지금 움직임을 줄일지(`<html data-motion>`·운영체제 설정·`JHB.app.reducedMotion()`·저장된 `jhb.ui.settings` 의 `motion` 중 하나라도 줄이기면 `true`. 저장값까지 보는 까닭은 새 페이지의 화면 전환이 보기 설정 모듈보다 먼저 시작될 수 있어서). 보통 모듈은 `JHB.app.reducedMotion()` 을 쓰면 돼요(머리 스크립트가 저장된 `motion` 을 첫 그리기 전에 `data-motion` 으로 달아 둬요). node 에서 `require` 하면 `{ motionReduced }` |
+| `shelf.refresh()`, `shelf.model(sections, counts)`, `shelf.rows(m)`, `shelf.html(m, L)` | `js/ui/shelf.js` | 첫 화면 책꽂이(분류를 책등으로, 용어 사전은 맨 끝)와 분류·용어 사전 화면의 큰 책등. `model` 은 책등 목록(높이·색·대비 맞춘 글자색), `rows` 는 휴대폰 두 줄로 나누기, `html` 은 같은 마크업 문자열(`L` 은 옛 해시 링크를 실제 경로로 바꾸는 함수). 빌드가 정적 첫 화면에 같은 책꽂이를 미리 그리고, 모듈은 `data-sig` 가 같으면 지우지 않고 그대로 써요(첫 화면 흔들림 없음). node 에서 `require` 하면 순수 함수들 |
+| `preview.hide()`, `preview.isOpen()` · `sticky.update()`, `sticky.openToc()`, `sticky.close()` | `preview.js` · `sticky.js` | 링크 미리보기 카드 · 따라오는 제목 줄(차례 이동의 부드러운 스크롤은 `JHB.app.reducedMotion()` 을 따라요) |
 
 ## 5. 이벤트 (`window`)
 
 | 이벤트 | 언제 | `detail` |
 |---|---|---|
-| `jhb:page` | 화면을 새로 그린 직후(`show()`) — 첫 로드에도 와요 | `{ kind, id, query, loading? }`. kind 는 `home`·`a`·`s`·`glossary`·… 또는 특집 화면 id(찾기 `search` 포함, 모르는 kind 는 무시하세요). id 는 문서면 slug, 분류면 분류 id, **특집 화면이면 kind 와 같은 화면 id**, 그 밖에는 null. **문서 화면은 두 번 와요**: "문서를 불러오고 있어요" 자리 문구 때 `loading: true` 로 한 번, 실제 문서를 그릴 때 한 번(다 그린 뒤에는 `jhb:article`). 특집 화면은 실제 화면(또는 실패 안내)을 그릴 때 한 번이에요 |
+| `jhb:page` | 화면을 새로 그린 직후(`show()`) — 첫 로드에도 와요 | `{ kind, id, query, loading? }`. kind 는 `home`·`a`·`s`·`glossary`·… 또는 특집 화면 id(찾기 `search` 포함, 모르는 kind 는 무시하세요). id 는 문서면 slug, 분류면 분류 id, **특집 화면이면 kind 와 같은 화면 id**, 그 밖에는 null. **문서 화면**: 정적 본문을 살린 화면(실제 주소로 연 문서, 3-2)은 모듈이 다 실린 뒤 한 번(`loading` 이벤트 없음, 바로 뒤 `jhb:article`). 앱이 원문을 받아 새로 그리는 화면(app-shell 등)은 두 번: "문서를 불러오고 있어요" 자리 문구 때 `loading: true` 로 한 번, 실제 문서를 그릴 때 한 번(다 그린 뒤에는 `jhb:article`). **정적 첫 화면**(`index.html`)도 모듈이 다 실린 뒤 한 번. 특집 화면은 실제 화면(또는 실패 안내)을 그릴 때 한 번이에요 |
 | `jhb:article` | 문서를 다 그린 직후 | `{ slug, article, meta, toc:[{id,text,level}], prev, next, minutes, body, points }`(body 는 `.body` 요소, points 는 frontmatter 핵심 줄 배열 또는 null) |
 | `jhb:pageready` | 특집 화면이 `render` 까지 끝났거나 실패한 뒤(화면마다 한 번) | `{ id, ok }` — 실패면 `ok: false` 와 `reason`(`net` 파일을 받지 못함·시간 초과, `data` 자료 파일 404·JSON 오류, `code` 등록 안 됨·그리기 예외, `empty` 그릴 내용 없음), `error`(있으면 메시지) |
-| `jhb:search` | 찾기 화면이 결과를 그린 뒤(입력이 바뀔 때마다) | `{ query, section, results:[slug…](보여 준 것), total, offline }`. 검색어가 들어 있으니 저장·전송하지 마세요 |
+| `jhb:search` | 찾기 화면이 결과를 그린 뒤(입력이 바뀔 때마다) | `{ query, crisis, section, results:[slug…](보여 준 것), total, offline }`. `crisis` 는 위기·타해·정보성 위기로 감지됐을 때 카드 종류 배열(`['high']`·`['high','harm']`·`['harm']`·`['watch']`), 아니면 null. **위기로 감지된 질의는 `query` 가 `''`** 예요(문장을 싣지 않음). 검색어가 들어 있으니 저장·전송하지 마세요. 찾기 화면의 `history.state` 는 `{ q, s, at }`(위기 질의면 `{ q: '', s, at, crisis: [카드 종류] }` — 돌아오면 카드와 그 글만 다시 보임) |
 | `jhb:gosearch` | `goSearch()` 직전(취소 가능). 찾기 화면이 `preventDefault()` 하면 이동 없이 그 자리에서 찾아요 | `{ q, s }` |
 | `jhb:update` | 새 서비스 워커가 이 페이지를 넘겨받음(새 판 설치, 첫 설치는 아님). 토스트가 있으면 "새 판이 준비됐어요. 새로 고치면 보여요." | 없음 |
 | `jhb:layout` | 글자 크기 등 레이아웃이 바뀜, 자리에 `mount` 함 | 없음 |
@@ -297,7 +316,7 @@
 | | `jhb.privacy.recentq` | true = 최근 검색 저장 켬(**기본 꺼짐**) | app | (설정) |
 | | `jhb.ui.ask.keep`, `jhb.ui.ask.items` | 질문 바구니를 이 기기에 저장할 때만 | ask | ask(모듈이 등록) |
 | | `jhb.ui.plan.keep`, `jhb.ui.plan.data` | 미리 써 두는 종이를 이 기기에 저장할 때만(**기본 꺼짐**. `keep` = true, `data` = `{ v: 1, at, forms: { 양식id: { 칸id: 글 } } }`. 저장을 켜지 않으면 적은 글은 화면 메모리에만 있고 떠나면 사라져요) | `js/pages/plan.js`(내 서재는 있어요·없어요만. 장 수·양식 이름·적은 글은 보이지 않음) | plan(코어 기본 종류, 모든 화면) |
-| sessionStorage | `jhb.q` | 검색어를 찾기 화면으로 한 번 넘길 때만 | app·search | recentq |
+| sessionStorage | `jhb.q` | 검색어를 찾기 화면으로 한 번 넘길 때만(쓰기가 예외인 브라우저는 저장소 대신 이 탭의 `window.name` 에 `jhb.q:` 로 한 번, 다음 화면이 읽자마자 지움 — 4장 `goSearch`) | app·search | recentq |
 | | `jhb.q.cleared` | 최근 검색을 지운 시각(검색어는 아님. 찾기 화면이 그보다 오래된 `history.state` 검색어를 되살리지 않음) | app·search | — |
 | | `jhb.ui.ask.session` | 이 탭의 질문 바구니(기본) | ask | ask |
 | | `jhb.ui.home.role` | 기록 쉼 중에 이 탭에서만 고른 역할 | home | role(모듈이 session 에 더함) |
@@ -331,7 +350,7 @@
 
 ## 7. 화면 구조(선택자)
 
-- 상단 `.topbar` (`#btn-nav`, `.brand`, `.qs`/`#q`(포커스만으로는 아무것도 열지 않아요. 글자 입력·클릭·Enter·아래 화살표에서 팔레트가 열리고, 팔레트가 없으면 Enter → `goSearch`. 한글 조합 입력은 조합이 끊기지 않게 #q 에서 치다가 0.5초 멈추면 그 값으로 열려요), `.tools` 안에 `#btn-help.tool-help`(지금 도움, 자바스크립트 없이도 위기 상담 전화 글로 감), `.tool-link[data-r]`(상단 링크), `#btn-fs`, `#btn-theme`), 진행 막대 `#progress`
+- 상단 `.topbar` (`#btn-nav`, `.brand`, `.qs`/`#q`(포커스만으로는 아무것도 열지 않아요(Tab 이 다음 요소로 넘어감). 영문·숫자 입력·클릭(탭)·Enter·아래 화살표에서 팔레트가 그 값으로 열려요. 비어 있을 때 `/` 는 글자로 넣지 않고 팔레트만 열고, 값이 있을 때 Esc 는 지워요. **한글(IME)**: 한 음절을 조합하는 동안에는 절대 넘기지 않아요(조합이 끊겨 글자가 깨지지 않게). 조합이 끝난 뒤(`compositionend`) 0.5초 멈추면 그 값으로 열리고, 조합 뒤 Enter 는 넘기면서 고른 줄을 바로 실행해요(Windows 의 keyup Enter 포함). 한국어 입력기는 마지막 음절을 조합 중으로 두므로 치고 기다리기만 하면 열리지 않을 수 있어요(스페이스·Enter·아래 화살표·클릭 때 열림). 팔레트 모듈이 없으면 Enter → `goSearch`. 옆의 단축키 표시 `.qs-key` 는 넓은 화면에서 "/ · Ctrl K", 휴대폰(760px 이하)에서는 숨김), `.tools` 안에 `#btn-help.tool-help`(지금 도움, 자바스크립트 없이도 위기 상담 전화 글로 감), `.tool-link[data-r]`(상단 링크), `#btn-fs`, `#btn-theme`), 진행 막대 `#progress`
 - 왼쪽 `#sidenav`(≤1080px 서랍, `.open`): 분류 → `.nav-pages`(살펴보기, `.nav-group-h` 묶음 제목) → `.nav-extra`
 - 본문 `#app`. 문서 `article.doc > .doc-main`(`.doc-head`, `.crisis`, `.emergency`, `.doc-slot[data-slot=lead]`(`.keypoints`), `.toc-m`, `.body`, `.doc-slot[data-slot=after-body]`, `.sources`, `.disclaimer`, `.course-nav`, `.backlinks`, `.see-also`, `.pager`, `.doc-slot[data-slot=end]`) + `.doc-margin`(`.infobox`, `.doc-slot[data-slot=margin]`, `.notes`)
 - 특집 화면 `#app > .crumb, h1.page-title, p.page-lead, .fp-body[data-page=<id>], .fp-notices > .notice.notice-<종류>`
@@ -350,7 +369,9 @@
 
 ## 8. 시험하는 법
 
-- **빌드 없이 보기**: `node serve.cjs`(기본 5174, 다른 포트는 `PORT=5175 node serve.cjs`). 개발 서버는 `css/ui.css` 와 `data/pages.js` 를 즉석에서 만들고, 모든 HTML 의 모듈 줄·상단 링크를 지금 파일 기준으로 바꿔 보내요. `<id>/` 폴더가 아직 없어도 `data/pages/<id>.json` 이 있으면 그 주소가 열려요(정적 본문 없이 앱이 그림). 선언 오류는 서버 터미널에 나와요. 개발 서버는 `tools/lib/assets.cjs` 와 그 파일이 불러오는 `js/progress.js` 를 켤 때 한 번 읽어서, 그 파일(선언 정리·검사 규칙·`lastmod` 날짜 규칙)을 고친 뒤에는 서버를 다시 켜야 `data/pages.js` 에 반영돼요(브라우저가 받는 `js/progress.js` 는 새로 고치면 바로 바뀌어서, 그 사이에는 앱과 `data/pages.js` 가 다른 규칙일 수 있어요). 새 고지 종류(예: `revised`)처럼 검사 규칙이 넓어진 선언은 다시 켜기 전의 서버가 오류로 보고 `data/pages.js` 에서 빼서, 그 화면이 개발 서버에서 "그런 문서가 없어요"가 될 수 있어요. 생성기(2-6)는 돌리지 않아요.
+- **빌드 없이 보기**: `node serve.cjs`(기본 5174, 다른 포트는 `PORT=5175 node serve.cjs`). 개발 서버는 `css/ui.css` 와 `data/pages.js` 를 즉석에서 만들고, 모든 HTML 의 모듈 줄·상단 링크를 지금 파일 기준으로 바꿔 보내요. `<id>/` 폴더가 아직 없어도 `data/pages/<id>.json` 이 있으면 그 주소가 열려요(정적 본문 없이 앱이 그림). 선언 오류는 서버 터미널에 나와요. 개발 서버는 `tools/lib/assets.cjs` 와 그 파일이 불러오는 `js/progress.js` 를 켤 때 한 번 읽어서, 그 파일(선언 정리·검사 규칙·`lastmod` 날짜 규칙)을 고친 뒤에는 서버를 다시 켜야 `data/pages.js` 에 반영돼요(브라우저가 받는 `js/progress.js` 는 새로 고치면 바로 바뀌어서, 그 사이에는 앱과 `data/pages.js` 가 다른 규칙일 수 있어요). 새 고지 종류(예: `revised`)처럼 검사 규칙이 넓어진 선언은 다시 켜기 전의 서버가 오류로 보고 `data/pages.js` 에서 빼서, 그 화면이 개발 서버에서 "그런 문서가 없어요"가 될 수 있어요. 생성기(2-6)는 돌리지 않아요. 개발 서버는 HTML 의 `<!--core:start-->`·`<!--ui:start-->` 사이를 묶음 대신 **낱개 파일**로 바꿔 보내요(그 페이지의 `data-route` 가 문서면 `data/links.js` 도). 그래서 정적 본문(문서 마크업·첫 화면 짜임)은 빌드해야 바뀌지만, 모듈·코어 코드 변경은 새로 고치면 보여요.
+- **빌드 결과 그대로 보기**: `RAW=1 node serve.cjs`(포트는 `PORT=…`). 덧씌우기를 하나도 하지 않고 빌드한 파일을 그대로 보내요(묶음 `js/core.js`·`js/ui.js`, 빌드한 `css/ui.css`·`data/pages.js`, 아직 빌드하지 않은 특집 화면은 열리지 않음). 404 페이지의 사이트 경로만 로컬 루트로 바꿔요. 묶음·정적 본문·오프라인을 배포본처럼 시험할 때 먼저 `node tools/build-all.cjs`.
+- **같음 검사**: `D:/.playwright-mcp/jhb-hydrate-compare.js`(문서 31편을 정적으로 연 것과 app-shell 로 새로 그린 것의 `.doc-main`·`.doc-margin` DOM·용어 밑줄·여백 주석·출처 번호·자리 내용·이벤트 수 비교), **묶음 격리 검사**: `D:/.playwright-mcp/jhb-bundle-isolation.js`(RAW 서버에서 묶음의 파일마다 예외를 끼워 나머지 모듈이 사는지).
 - 브라우저 확인: 1280×800 과 390×844 에서 실제로 눌러 보고 콘솔 오류 0, 가로 넘침 0, 밝은·어두운 화면을 확인해요. Playwright 를 여럿이 함께 쓰면 공유 page 를 건드리지 말고 자기 컨텍스트(`browser.newContext({ viewport, serviceWorkers: 'block' })`)를 만들어 쓰고 닫아요.
 - `node tests/run.cjs` 는 깨지지 않아야 해요. 테스트 파일을 불러오다 예외가 나면(모듈 없음·문법 오류·최상위에서 던짐) 그 파일을 FAIL 1건으로 세고 파일 이름과 예외 글을 보여 준 뒤 다음 파일로 넘어가요(마지막 줄에 "불러오지 못한 파일"). 선언 검사만: `node tools/build-kb.cjs`.
-- 전체 빌드(통합 담당): `node tools/build-all.cjs` = check-content → build-gen → build-kb → build-index → build-links → build-ui-css → build-pages(하나라도 실패하면 멈춤).
+- 전체 빌드(통합 담당): `node tools/build-all.cjs` = check-content → build-gen → build-kb → build-index → build-links → build-ui-css → build-ui-js → build-pages(하나라도 실패하면 멈춤). 손으로 고치지 않는 생성 파일에 `js/core.js`·`js/ui.js`(묶음)가 더해졌어요.

@@ -572,10 +572,9 @@ test('위기 안내의 문자 109 한 줄은 지금 위기 상담 전화 글과 
 });
 
 /* ---------- 11. CSS 정리 ---------- */
-test('style.css: 쓰이지 않는 .qs-list 계열 규칙이 없고 .qs-hint 는 남음, 인쇄 숨김에 .sitefoot 없음, 휴대폰 머리 줄 버튼 누르는 범위 44px', function () {
+test('style.css: 쓰이지 않는 .qs-list 계열 규칙이 없음(.qs-hint 도 찾기 화면이 더는 쓰지 않아 F1 에서 지움), 인쇄 숨김에 .sitefoot 없음, 휴대폰 머리 줄 버튼 누르는 범위 44px', function () {
   const css = read('css/style.css');
-  ['.qs-list', '.qs-group', '.qs-item', '.qs-all', '.qs-empty', '.qs.collapsed'].forEach(function (s) { not(css, s, s); });
-  has(css, '.qs-hint');
+  ['.qs-list', '.qs-group', '.qs-item', '.qs-all', '.qs-empty', '.qs.collapsed', '.qs-hint'].forEach(function (s) { not(css, s, s); });
   const pr = /@media print \{\s*([^{]*)\{ display: none !important; \}/.exec(css);
   ok(pr && pr[1].indexOf('.sitefoot') < 0, 'print 숨김 목록에 .sitefoot');
   ok(/\.doc-meta-m \.acts \.btn::before \{[^}]*top: -5px; bottom: -5px;/.test(css), '::before 로 36 → 44px(테두리 1px 안쪽 기준)');
@@ -636,7 +635,7 @@ test('K3-2 소개: 질문 바구니는 켜지 않아도 이 탭에 남고 "닫�
   has(tabItem, '진료 질문 바구니', '탭 기록이 돌아오는 예에 질문 바구니도');
   has(tabItem, '찾기 화면에서 찾은 말');
   /* 글꼴 줄은 이번에 건드리지 않음(마무리 단계에서 글꼴과 함께) */
-  has(sec, '<li>글꼴은 지금 외부 서비스(jsDelivr, Google Fonts)에서 받아요. 그래서 글을 열 때 이 서비스들에도 접속해요.</li>');
+  has(sec, '<li>글꼴은 이 기기에 깔려 있는 글꼴을 써요. 글꼴 때문에 바깥 서비스에 접속하지 않아요.</li>'); not(sec, 'Google Fonts'); not(sec, 'jsDelivr');
 });
 
 test('K3-2 소개 "꼭 알아둘 것": 1577-0199·109·119 는 전화 링크, 문자 109 한 줄은 공용 위기 고지와 같은 글자', function () {

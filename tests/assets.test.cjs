@@ -57,6 +57,95 @@ test('applyShellMarkers(): 바닥 링크 표식도 지금 선언 기준으로 �
   eq(A.applyShellMarkers('<p>표식 없음</p>', '', []), '<p>표식 없음</p>', '표식이 없는 옛 HTML 은 그대로');
 });
 
+/* ---------- F1 스크립트 묶음(js/core.js·js/ui.js)과 화면별 자료 ---------- */
+test('F1 코어 목록: 지금 실행 순서 그대로, 위기 감지·위기 카드는 앱·모듈보다 먼저, 늦게 받는 자료(about·links)는 빠짐', function () {
+  const list = A.coreFiles();
+  eq(list, ['data/sections.js', 'data/toc.js', 'data/glossary.js', 'data/synonyms.js', 'data/crisis-card.js', 'data/courses.js', 'data/pages.js',
+    'js/util.js', 'js/paths.js', 'js/md.js', 'js/search.js', 'js/gloss.js', 'js/synonyms.js', 'js/crisis.js', 'js/progress.js', 'js/app.js']);
+  ok(list.indexOf('js/crisis.js') < list.indexOf('js/app.js') && list.indexOf('data/crisis-card.js') < list.indexOf('js/app.js'));
+  eq(A.LAZY_DATA, ['data/about.js', 'data/links.js']);
+  A.LAZY_DATA.forEach(function (f) { ok(list.indexOf(f) < 0, f); });
+  list.forEach(function (f) { ok(fs.existsSync(path.join(__dirname, '..', f)), f + ' 가 있음'); });
+});
+
+test('F1 스크립트 줄: 정적 페이지는 묶음 둘(js/core.js → js/ui.js), 개발 서버는 낱개. 문서 화면만 앱 뒤에 data/links.js', function () {
+  const b = A.coreScriptsHtml('../../', 'a/x', { bundle: true });
+  has(b, '<script src="../../js/core.js"></script>\n<script src="../../data/links.js"></script>');
+  not(A.coreScriptsHtml('', '', { bundle: true }), 'links.js', '첫 화면');
+  not(A.coreScriptsHtml('../', 's/7', { bundle: true }), 'links.js', '분류');
+  not(A.coreScriptsHtml('../../', 'course/x', { bundle: true }), 'links.js');
+  const dev = A.coreScriptsHtml('../../', 'a/x');
+  ok(dev.indexOf('js/crisis.js') < dev.indexOf('js/app.js') && dev.indexOf('js/app.js') < dev.indexOf('data/links.js'), dev);
+  not(dev, 'js/core.js');
+  eq(A.uiScriptsHtml('../', { bundle: true }), '\n<script src="../js/ui.js"></script>\n');
+  /* 개발 서버: 표식 사이를 낱개로, data-route 에 따라 문서 자료 */
+  const html = '<html data-base="../../" data-route="a/x"><!--core:start--><script src="../../js/core.js"></script>\n<script src="../../data/links.js"></script><!--core:end--><!--ui:start--><script src="../../js/ui.js"></script><!--ui:end-->';
+  const out = A.applyShellMarkers(html, '../../', []);
+  has(out, '<script src="../../js/util.js"></script>');
+  has(out, '<script src="../../data/links.js"></script>');
+  has(out, '<script src="../../js/ui/palette.js"></script>');
+  not(out, 'js/core.js'); not(out, 'js/ui.js"');
+  not(A.applyShellMarkers(html.replace('data-route="a/x"', 'data-route=""'), '', []), 'links.js', '문서 화면이 아니면 없음');
+  /* 틀(tools/shell.html)에 두 표식이 앱 스크립트 자리에 있고, 낱개 자료·코어 줄은 남지 않음 */
+  const shell = fs.readFileSync(path.join(__dirname, '..', 'tools', 'shell.html'), 'utf8');
+  has(shell, '<!--core:start-->{{CORE_SCRIPTS}}<!--core:end-->\n<!--ui:start-->{{UI_SCRIPTS}}<!--ui:end-->');
+  not(shell, 'data/about.js'); not(shell, 'data/links.js'); not(shell, 'js/app.js');
+});
+
+/* 묶음을 vm 에서 돌려 본다(브라우저처럼 window = 전역, setTimeout 으로 다시 던진 예외는 모아 둠) */
+function runBundle(text) {
+  const vm = require('vm');
+  const thrown = [];
+  const sb = { setTimeout: function (f) { try { f(); } catch (e) { thrown.push(e.message); } } };
+  sb.window = sb;
+  vm.runInNewContext(text, sb);
+  return { sb: sb, thrown: thrown };
+}
+function tmpFiles(files) {
+  const tmp = fs.mkdtempSync(path.join(require('os').tmpdir(), 'jhb-f1-'));
+  Object.keys(files).forEach(function (n) { fs.mkdirSync(path.dirname(path.join(tmp, n)), { recursive: true }); fs.writeFileSync(path.join(tmp, n), files[n]); });
+  return tmp;
+}
+test('F1 묶음: 파일마다 따로 감싸서 앞 파일의 최상위 예외가 뒤 파일을 멈추지 않고, 순서와 전역(JHB.*)은 그대로', function () {
+  const root = tmpFiles({
+    'a.js': 'window.JHB = window.JHB || {};\nJHB.order = ["a"];',
+    'b.js': '(function () { JHB.order.push("b"); throw new Error("b 가 죽음"); })();',
+    'c.js': "(function () {\n  'use strict';\n  JHB.order.push('c'); JHB.c = { ok: true };\n})();\n// 마지막 줄 주석"
+  });
+  const r = A.bundle(['a.js', 'b.js', 'c.js'], { root: root });
+  eq(r.errors, []);
+  has(r.text, '/* ===== b.js ===== */');
+  const run = runBundle(r.text);
+  eq(run.sb.JHB.order, ['a', 'b', 'c'], '실행 순서');
+  eq(run.sb.JHB.c, { ok: true }, 'b 가 던져도 c 는 실행됨(전역 이름도 그대로)');
+  eq(run.thrown, ['b 가 죽음'], '예외는 다시 던져져 콘솔·onerror 에 보임');
+});
+
+test('F1 묶음: 문법 오류·최상위 선언(감싸면 전역에서 사라짐)·없는 파일은 어느 파일인지 알리고 묶지 않음', function () {
+  const root = tmpFiles({ 'ok.js': 'window.x = 1;', 'bad.js': 'function (', 'top.js': 'var leaked = 1;\nfunction helper() {}' });
+  const r = A.bundle(['ok.js', 'bad.js', 'top.js', 'none.js'], { root: root });
+  eq(r.errors.length, 3, JSON.stringify(r.errors));
+  ok(/^bad\.js: 문법 오류/.test(r.errors[0]), r.errors[0]);
+  ok(/^top\.js: 최상위 선언 "leaked"/.test(r.errors[1]), r.errors[1]);
+  ok(/^none\.js: 파일을 읽지 못했어요/.test(r.errors[2]), r.errors[2]);
+  eq(A.topLevelDecl('(function () {\n  var a = 1;\n  function f() {}\n})();'), null, '즉시 실행 함수 안은 괜찮음');
+});
+
+test('F1 묶음: 지금 파일들(코어 16개·모듈 전부)은 모두 묶을 수 있다(문법·최상위 선언 없음)', function () {
+  const core = A.bundle(A.coreFiles());
+  eq(core.errors, []);
+  const ui = A.bundle(A.uiModules());
+  eq(ui.errors, []);
+  A.uiModules().forEach(function (f) { has(ui.text, '/* ===== ' + f + ' ===== */'); });
+  ok(ui.text.indexOf('js/ui/palette.js') < ui.text.indexOf('js/ui/shelf.js'), 'ui-order 순서');
+  eq(A.BUNDLES, { core: 'js/core.js', ui: 'js/ui.js' });
+});
+
+test('F1 build-all: 묶음 단계(build-ui-js)는 모듈 css 다음, 정적 페이지 앞', function () {
+  const src = fs.readFileSync(path.join(__dirname, '..', 'tools', 'build-all.cjs'), 'utf8');
+  has(src, "'build-kb', 'build-index', 'build-links', 'build-ui-css', 'build-ui-js', 'build-pages'");
+});
+
 test('uiCss(): css/ui/*.css 를 모두 담는다', function () {
   const css = A.uiCss();
   A.uiCssFiles().forEach(function (f) { has(css, '/* ===== ' + f + ' ===== */'); });

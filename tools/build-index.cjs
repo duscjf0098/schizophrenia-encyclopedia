@@ -29,6 +29,15 @@ function tocEntry(slug, sectionId, meta, body) {
   return a;
 }
 
+/* 오프라인 목록(글 원문 .md 는 main 이 뒤에 더함): 정적 페이지가 싣는 것(묶음 js/core.js·js/ui.js, css) + 앱이 필요할 때 받는 자료(data/about.js·data/links.js)
+   + 특집 화면 코드·스타일 + 지식 데이터 + 아이콘. 묶음 안에 든 낱개 파일(코어·모듈·자료)은 넣지 않는다(정적 페이지·app-shell 은 묶음만 실음).
+   개발 서버(serve.cjs, 낱개를 실음)는 이 목록에 낱개 파일을 더해 보낸다(오프라인 시험이 개발 서버에서도 되게). 본문 검색 색인(data/search-index.json)은 크기 때문에 넣지 않는다. */
+function precacheShell() {
+  const core = ['./', 'index.html', 'app-shell.html', 'css/style.css', 'css/ui.css', A.BUNDLES.core, A.BUNDLES.ui].concat(A.LAZY_DATA,
+    ['manifest.webmanifest', 'favicon.svg', 'icon-192.png', 'icon-512.png', 'og.png']);
+  return core.concat(A.pageAssetFiles(), A.kbFiles()).filter(function (f, i, all) { return all.indexOf(f) === i; });
+}
+
 function loadSections() {
   const src = fs.readFileSync(path.join(root, 'data/sections.js'), 'utf8');
   const win = { JHB: {} };
@@ -69,12 +78,7 @@ function main() {
   const stamp = new Date().toISOString().slice(0, 10);
   fs.writeFileSync(path.join(root, 'data/toc.js'), '/* 자동 생성: node tools/build-index.cjs (' + stamp + ') — 직접 고치지 마세요 */\nwindow.JHB = window.JHB || {};\nJHB.toc = ' + JSON.stringify({ generated: stamp, sources: sourceUrls.size, articles: articles }, null, 1) + ';\n');
   fs.writeFileSync(path.join(root, 'data/search-index.json'), JSON.stringify(index));
-  /* 오프라인 목록: 핵심 파일 + 화면 확장 모듈(tools/ui-order.json 순서 + 새 모듈) + 특집 화면 선언·코드·스타일 + 지식 데이터.
-     본문 검색 색인(data/search-index.json)은 크기 때문에 넣지 않는다. */
-  const core = ['./', 'index.html', 'app-shell.html', 'css/style.css', 'js/util.js', 'js/paths.js', 'js/md.js', 'js/search.js', 'js/gloss.js', 'js/synonyms.js', 'js/crisis.js', 'js/progress.js', 'js/app.js',
-    'data/sections.js', 'data/toc.js', 'data/glossary.js', 'data/about.js', 'data/synonyms.js', 'data/crisis-card.js', 'data/courses.js', 'data/links.js', 'manifest.webmanifest', 'favicon.svg', 'icon-192.png', 'icon-512.png', 'og.png'];
-  const shell = core.concat(['css/ui.css'], A.uiModules(), ['data/pages.js'], A.pageAssetFiles(), A.kbFiles())
-    .filter(function (f, i, all) { return all.indexOf(f) === i; });
+  const shell = precacheShell();
   const version = stamp + '-' + files.length + '-' + Date.now().toString(36);
   fs.writeFileSync(path.join(root, 'data/precache.json'), JSON.stringify({ version: version, files: shell.concat(files) }, null, 1));
   const swPath = path.join(root, 'sw.js');
@@ -85,4 +89,4 @@ function main() {
 }
 
 if (require.main === module) main();
-module.exports = { tocEntry: tocEntry };
+module.exports = { tocEntry: tocEntry, precacheShell: precacheShell };

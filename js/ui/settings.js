@@ -48,7 +48,8 @@
     if (S.theme === 'auto') remove(KEY_THEME); else write(KEY_THEME, S.theme);
     write(KEY_FS, S.fs);
   }
-  /* 첫 그리기 전에 바로 적용(깜빡임 줄이기). 테마와 s/l 글자 크기는 shell 의 인라인 스크립트가 이미 넣었다 */
+  /* 바로 적용. 첫 그리기 전 적용은 shell 의 머리 스크립트가 같은 값으로 이미 했다(테마·글자 크기 다섯 단계·줄 너비·본문 글꼴·움직임, F1·T16 —
+     load() 의 키·값을 바꾸면 tools/shell.html 의 머리 스크립트도 함께 바꿔요. tests/pages.test.cjs 가 맞대요) */
   applyAll();
 
   /* 기기 안 기록 지우기(JHB.app.privacy.clear)로 보기 설정 키가 지워지면 기억해 둔 값도 기본값으로 되돌리고 다시 적용한다.
